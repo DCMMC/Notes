@@ -61,6 +61,8 @@ task copy(type: Copy) {
 }
 ~~~
 键入 ==gradlew copy== 就能执行了, 还这个task会将当前目录下的src复制成dest并放在当前目录.
+5. 使用插件
+
 
 
 ## Create Building Scans
