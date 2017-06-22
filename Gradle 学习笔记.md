@@ -62,6 +62,8 @@ task copy(type: Copy) {
 ~~~
 键入 ==gradlew copy== 就能执行了, 还这个task会将当前目录下的src复制成dest并放在当前目录.
 5. 使用插件
+Gradle包含了很多plugins, 还有更多的插件在 [the Gradle plugin protal](http://plugins.gradle.org/)中.
+e.g. ==base== 这个插件中有一个 ==core type== 叫 ==Zip==, 可以提供name和location来创建压缩文件
 
 
 
@@ -117,3 +119,4 @@ rootProject {
 
 # *Reference*
 * [官方Guide](https://gradle.org/guides#getting-started)
+* [the Gradle plugin protal](http://plugins.gradle.org/)
