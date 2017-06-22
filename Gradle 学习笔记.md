@@ -70,10 +70,24 @@ plugins {
     id 'base'
 }
 ~~~
-P.S. plugins语句块必要放在build.gradle的开, 必须在task语句块前面.
+P.S. plugins语句块必要放在build.gradle的最前面, 必须在task语句块前面.
+在新建一个task:
+~~~
+task zip(type: Zip) {
+    from 'src'
+}
+~~~
+执行 ==./gradlew zip== 就会自动将src目录打包成 ==\%project_name\%-\%version\%.zip== 的形式到 ==\%project_root\%/build/distribution== 目录下.
+P.S. ==clean== task可以用来清除 ==build== 文件夹.
 
-
-
+## Building Java Applications
+==java== plugin
+一些convertions(惯例):
+* 你的==production source code==放在==src/main/java==中
+* ==test source code== 放在==src/test/java==中
+* 所有在==src/main/resources==的文件会作为resources加入到JAR file
+* 所有在==src/test/resources==中的文件都会包括在 ==classpath== 中用来运行test.
+* 所有的输出文件都会创建在==build==目录, JAR file会在 ==build/libs==中
 
 ## Create Building Scans
 ==build scan== 就是一个Gradle提供的可分享的, 便于集中记录一次build, 并且给出build的时候发生了什么和为什么的一个插件. 
