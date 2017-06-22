@@ -80,8 +80,89 @@ task zip(type: Zip) {
 执行 ==./gradlew zip== 就会自动将src目录打包成 ==\%project_name\%-\%version\%.zip== 的形式到 ==\%project_root\%/build/distribution== 目录下.
 P.S. ==clean== task可以用来清除 ==build== 文件夹.
 
-## Building Java Applications
-==java== plugin
+## Dependency Management Basics
+大部分项目不是`completely self-contained`, 他们大多都依赖别的项目构建出来的文件(称为 ==dependencies==, build和upload的文件(包括jars, docs)称为 ==publications== ), 这些依赖可能来自于远程服务器 ==Maven== 或者 ==Ivy== respository(依赖库)中, 在一个本地文件夹中, 或者是在 ==multi-project build== 中的另外一个 ==project==  build出来的. Gradle寻找这些依赖的过程叫 ==dependency resolution== (依赖解析).
+不过 ==project== 所调用的依赖自己本身也有一些依赖, 这种子依赖称为 ==transitive dependencies==. Gradle会自动找到这些 ==transitive dependencies==.
+**声明依赖**
+e.g.
+~~~ Groovy
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '3.6.7.Final'
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+~~~
+在Gradle中, 这些依赖都是作为 ==Dependency configuration== 写在 ==build.gradle==中的.
+例如 ==Java==这个plugin定义了一些标准configuration:
+* compile
+* runtime
+* testCompile
+* testRuntime
+
+定义自定义configuration: [Section 25.3, “Dependency configurations"](https://docs.gradle.org/3.5/userguide/dependency_management.html#sub:configurations)
+
+** 依赖库Repositories**
+~~~
+repositories {
+    mavenCentral()
+	 jcenter()
+}
+~~~
+这里声明了两个依赖库 == Maven central repository== 和 ==JCenter repository==.
+或者声明url来使用远程Maven依赖库:
+~~~
+repositories {
+    maven {
+        url "http://repo.mycompany.com/maven2"
+    }
+}
+~~~
+或者远程 ==Ivy directory==
+~~~
+repositories {
+    ivy {
+        url "http://repo.mycompany.com/repo"
+    }
+}
+~~~
+或者在本地文件系统中(支持 ==Ivy== 和 ==Maven== ):
+~~~
+repositories {
+    ivy {
+        // URL can refer to a local directory
+        url "../local-repo"
+    }
+}
+~~~
+
+
+**外部依赖(External dependencies)**
+声明存储在 ==resposity== (e.g.  Maven central, or a corporate Maven or Ivy repository, or a directory in the local file system)中的依赖:
+e.g.
+~~~
+dependencies {
+    compile group: 'org.hibernate', name: 'hibernate-core', version: '3.6.7.Final'
+}
+~~~
+一个依赖是由 ==group==, ==name== , ==version== 确定, 不过取决于不同的依赖库, ==group== 和 ==version== 有时候是可选的.
+也可以用简短形式来声明依赖:
+~~~
+dependencies {
+    compile 'org.hibernate:hibernate-core:3.6.7.Final'
+}
+~~~
+For more details: [ Section 25.4, “How to declare your dependencies”.](https://docs.gradle.org/3.5/userguide/dependency_management.html#sec:how_to_declare_your_dependencies)
+
+
+
+
+# Building Java Applications
+**==java== plugin**
 一些convertions(惯例):
 * 你的==production source code==放在==src/main/java==中
 * ==test source code== 放在==src/test/java==中
@@ -93,6 +174,24 @@ P.S. ==clean== task可以用来清除 ==build== 文件夹.
 * ==java== plugin自带了一些tasks, 最常用的就是 ==build==, 这个task能够完整的build整个项目, 执行junit 的test, 创建JAR. 
 * 还有就是 ==assemble== task, 编译并且将字节码打包成jar, 但是不会进行 ==unite tests==.
 * ==check== 编译并且test代码. 有一些plugins还会加入很多的checks, e.g. `checkstyle ` 这个plugin还会运行 ==Checkstyle==.
+
+**外部依赖(External Dependencies)**
+一般一个Java Project都会有一些需要使用外部JAR文件的依赖, 要引用这些依赖, 在Gradle中像外部JAR文件这样的**Artifacts**都位于 ==repository==(依赖库)中.
+e.g. 如果要使用 ==the public Maven repository== 只需要在==build.gradle==中添加:
+~~~
+repositories {
+    mavenCentral()
+}
+~~~
+添加依赖
+如果我们的 ==project==的 ==prodection classes== 需要一个编译时依赖(Compile-time) ==commons collections==, 而在==test classes==中需要一个编译时依赖==junit==. 可以添加一下代码到==build.gradle==:
+~~~
+dependencies {
+    compile group: 'commons-collections', name: 'commons-collections', version: '3.2.2'
+    testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+~~~
+
 
 
 ## Create Building Scans
