@@ -89,6 +89,12 @@ P.S. ==clean== task可以用来清除 ==build== 文件夹.
 * 所有在==src/test/resources==中的文件都会包括在 ==classpath== 中用来运行test.
 * 所有的输出文件都会创建在==build==目录, JAR file会在 ==build/libs==中
 
+一些tasks:
+* ==java== plugin自带了一些tasks, 最常用的就是 ==build==, 这个task能够完整的build整个项目, 执行junit 的test, 创建JAR. 
+* 还有就是 ==assemble== task, 编译并且将字节码打包成jar, 但是不会进行 ==unite tests==.
+* ==check== 编译并且test代码. 有一些plugins还会加入很多的checks, e.g. `checkstyle ` 这个plugin还会运行 ==Checkstyle==
+
+
 ## Create Building Scans
 ==build scan== 就是一个Gradle提供的可分享的, 便于集中记录一次build, 并且给出build的时候发生了什么和为什么的一个插件. 
 可以免费使用.
