@@ -64,6 +64,12 @@ task copy(type: Copy) {
 5. 使用插件
 Gradle包含了很多plugins, 还有更多的插件在 [the Gradle plugin protal](http://plugins.gradle.org/)中.
 e.g. ==base== 这个插件中有一个 ==core type== 叫 ==Zip==, 可以提供name和location来创建压缩文件
+通过加入 ==plugins== 语句块来添加插件:
+~~~
+plugins {
+    id 'base'
+}
+~~~
 
 
 
@@ -77,7 +83,7 @@ e.g. ==base== 这个插件中有一个 ==core type== 叫 ==Zip==, 可以提供na
 1. 在==Project==中的==build.gradle==文件中加入以下语句块:
 ~~~ Groovy
 plugins {
-    id 'com.gradle.build-scan' version '1.6'  //version后面必须加版本号, 版本号自己去Gradle官网找最新的
+    id 'com.gradle.build-scan' version '1.8'  //version后面必须加版本号, 版本号自己去Gradle官网找最新的
 }
 ~~~
 2. 在==build.gradle==中加入==license agreement==
