@@ -21,7 +21,14 @@ plugins {
     id 'com.gradle.build-scan' version '1.6'  //version后面必须加版本号, 版本号自己去Gradle官网找最新的
 }
 ~~~
-2. 在` ./gradlew build` 后面加上 ==--scan==
+2. 在==build.gradle==中加入==license agreement==
+~~~ Groovy
+buildScan {
+    licenseAgreementUrl = 'https://gradle.com/terms-of-service'
+    licenseAgree = 'yes'
+}
+~~~
+3. 在` ./gradlew build` 后面加上 ==--scan==
 
 
 ## *Reference*
