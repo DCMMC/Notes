@@ -70,6 +70,8 @@ plugins {
     id 'base'
 }
 ~~~
+P.S. plugins语句块必要放在build.gradle的开, 必须在task语句块前面.
+
 
 
 
