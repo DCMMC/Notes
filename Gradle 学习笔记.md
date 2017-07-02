@@ -172,6 +172,27 @@ description 'Print "hello, world" to Console' //添加task的描述
 }
 ~~~
 
+使输出的消息可配置化:
+e.g.
+~~~ Groovy
+class Greeting extends DefaultTask {   //在build.gradle中的DSL必须是Groovy-base DSL, 也就是这些class必须是Groovy class. 虽然可以在具体情况下直接使用Graoovy API中的class, 不过最常用的就是继承DefaultTask.
+    String message 
+    String recipient //定义变量, Groovy语法. 是task type称为configurable
+
+    @TaskAction //Annotate the default task action.
+    void sayGreeting() {
+        println "${message}, ${recipient}!" //	Print the message using a standard Groovy interpolated string(标准Groovy插值字符串, 就是字符串里面加上变量名来引用变量).
+    }
+}
+
+task hello ( type : Greeting ) { //指定task type
+    group 'Welcome'
+    description 'Produces a world greeting'
+    message 'Hello' 
+    recipient 'World' //配置Greeting类中的这两个变量
+}
+~~~
+
 # Java Develpment
 
 ## Building Java Applications
