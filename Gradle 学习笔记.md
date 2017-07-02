@@ -293,10 +293,13 @@ dependencies {
 * 公共注解类型
 
 而 ==implementation== 依赖用于:
-* 只用于方法体中的类型
+* 只用于**方法体**中的类型
 * 只用于private成员的类型
 * 只出现在内部类中的类型(未来的Gradle会让用户定义那一些 ==packages== 属于 ==public API==)
 
+**==java-library== plugin的 ==configuration== 关系图**
+好复杂, 没太看懂, 感觉好多 ==configurations== 我都用不上.
+详细请看 [48.4](https://docs.gradle.org/3.5/userguide/java_library_plugin.html)
 
 
 
