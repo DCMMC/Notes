@@ -15,7 +15,7 @@ Wrapper能够方便的控制用户使用正确的版本的build工具. 用别人
 
 如果project已经建立了Wrapper, 直接`gradlew <task>`就行了. 每一个Wrapper就绑定了指定版本的Gradle, 所以第一次build的时候, 会自动下载安装自动版本的Gradle, 这样使用Wrapper分发的==project==就不需要提前安装==Gradle==了.
 
-**Installation**
+### Installation
 作为==project==的作者, 你需要把Wrapper安装至你的==project==: `gradle wrapper --gradle-version 4.0 --distribution-type bin )` 
 默认的分发类型是==bin==(最小化Gradle Distribution, 但是使用==all==作为distribution-type时, Android Studio或者IDEA能够提供额外的contex information.
 还可以用`--gradle-distribution-url`来指定下载Gradle的url.
