@@ -313,6 +313,8 @@ dependencies {
 好复杂, 没太看懂, 感觉好多 ==configurations== 我都用不上.
 详细请看 [48.4](https://docs.gradle.org/3.5/userguide/java_library_plugin.html)
 
+**添加API Document**
+执行 ==javadoc== 操作就行了, 会自动把源码中的javadoc注释生成html到 ==/build/docs/javadoc==, 打开 ==index.html== 即可查看所有的javadoc.
 
 
 ## Create Building Scans
