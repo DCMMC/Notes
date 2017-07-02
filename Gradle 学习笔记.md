@@ -219,6 +219,17 @@ uploadArchives {
 ~~~
 将会把生成的jar文件放在根目录中的repos文件夹下
 
+**定制JAR的签名**
+通过配置 [==jar== task](https://docs.gradle.org/3.5/userguide/more_about_tasks.html#sec:configuring_tasks).
+~~~ Groovy
+jar {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                   'Implementation-Version': project.version)
+    }
+}
+~~~
+
 **Multi-project的构建**
 首先在源码树的根目录下创建 ==setting.gradle== 文件, 在这个目录中如果存在两个子项目 ==demo== 和 ==model==, 则在 ==setting.gradle== 中添加 `include "demo", "model"`
 或者
@@ -296,6 +307,7 @@ dependencies {
 * 只用于**方法体**中的类型
 * 只用于private成员的类型
 * 只出现在内部类中的类型(未来的Gradle会让用户定义那一些 ==packages== 属于 ==public API==)
+
 
 **==java-library== plugin的 ==configuration== 关系图**
 好复杂, 没太看懂, 感觉好多 ==configurations== 我都用不上.
