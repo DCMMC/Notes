@@ -106,7 +106,7 @@ dependencies {
 
 定义自定义configuration: [Section 25.3, “Dependency configurations"](https://docs.gradle.org/3.5/userguide/dependency_management.html#sub:configurations)
 
-** 依赖库Repositories**
+### 依赖库Repositories
 ~~~
 repositories {
     mavenCentral()
@@ -141,7 +141,7 @@ repositories {
 ~~~
 
 
-**外部依赖(External dependencies)**
+### 外部依赖(External dependencies)
 声明存储在 ==resposity== (e.g.  Maven central, or a corporate Maven or Ivy repository, or a directory in the local file system)中的依赖:
 e.g.
 ~~~
@@ -158,6 +158,8 @@ dependencies {
 ~~~
 For more details: [ Section 25.4, “How to declare your dependencies”.](https://docs.gradle.org/3.5/userguide/dependency_management.html#sec:how_to_declare_your_dependencies)
 
+## More about Tasks
+### 创建一个 ==ad-hoc== task
 
 
 # Java Develpment
