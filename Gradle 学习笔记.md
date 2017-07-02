@@ -249,6 +249,16 @@ subprojects {
     }
 }
 ~~~
+P.S. 这些 ==subprojects== 块中的 ==configuration== 只作用于所有的子项目, 不会作用于 ==root level==.
+
+*multi-project*中的项目间依赖:
+在上个例子中, 如果要在子项目 ==demo== 中依赖 ==model== 项目生成的jar, 只需要在子项目 ==demo== 的 ==build.gradle== 中添加:
+~~~
+dependencies {
+    compile project(':model')
+}
+~~~
+P.S. 注意前面的 ==:== 号.
 
 ## Create Building Scans
 ==build scan== 就是一个Gradle提供的可分享的, 便于集中记录一次build, 并且给出build的时候发生了什么和为什么的一个插件. 
