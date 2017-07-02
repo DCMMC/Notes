@@ -160,7 +160,17 @@ For more details: [ Section 25.4, “How to declare your dependencies”.](https
 
 ## More about Tasks
 ### 创建一个 ==ad-hoc== task
+e.g.
+~~~ Groovy
+task hello { //创建一个新的 ad-hoc task
+group 'Welcome' //声明该task的组别, 缺省为Other tasks
+description 'Print "hello, world" to Console' //添加task的描述
 
+  doLast { //添加一个task action
+      println 'Hello, World!'
+  }
+}
+~~~
 
 # Java Develpment
 
