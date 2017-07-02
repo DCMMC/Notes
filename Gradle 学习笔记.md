@@ -175,6 +175,8 @@ For more details: [ Section 25.4, “How to declare your dependencies”.](https
 * 还有就是 ==assemble== task, 编译并且将字节码打包成jar, 但是不会进行 ==unite tests==.
 * ==check== 编译并且test代码. 有一些plugins还会加入很多的checks, e.g. `checkstyle ` 这个plugin还会运行 ==Checkstyle==.
 
+==gradle init --type java-application== 在当前目录生成gradlew所需要的所有文件以及src的所有目录结构.
+
 **外部依赖(External Dependencies)**
 一般一个Java Project都会有一些需要使用外部JAR文件的依赖, 要引用这些依赖, 在Gradle中像外部JAR文件这样的**Artifacts**都位于 ==repository==(依赖库)中.
 e.g. 如果要使用 ==the public Maven repository== 只需要在==build.gradle==中添加:
@@ -191,8 +193,62 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.+'
 }
 ~~~
+**Customizing the project**
+==Java== plugin在你的项目中加入了很多 ==properties==, 而且这些 ==properties== 都有默认的值, 要改变这些值, 只需要在 ==build.gradle== 中加入相应代码就行了.
+e.g. 
+~~~
+sourceCompatibility = 1.7 //代码兼容的JDK版本
+version = '1.0'
+jar {
+    manifest { //用来定制MANIFEST.MF文件
+        attributes 'Implementation-Title': 'Gradle Quickstart',
+                   'Implementation-Version': version
+    }
+}
+~~~
 
+**发布JAR**
+~~~
+uploadArchives {
+    repositories {
+       flatDir {
+           dirs 'repos'
+       }
+    }
+}
+~~~
+将会把生成的jar文件放在根目录中的repos文件夹下
 
+**Multi-project的构建**
+首先在源码树的根目录下创建 ==setting.gradle== 文件, 在这个目录中如果存在两个子项目 ==demo== 和 ==model==, 则在 ==setting.gradle== 中添加 `include "demo", "model"`
+或者
+~~~ Groovy
+include "demo"
+include "model"
+~~~
+并且每一个子项目都要包含他们自己的 ==build.gradle== 文件
+
+在主项目的 ==build.gradle== 中声明所有子项目的 `common configuration` :
+在 主项目的 ==build.gradle== 中添加 ==subprojects== 代码块, e.g.
+~~~
+subprojects {
+    apply plugin: 'java'
+
+    repositories {
+       mavenCentral()
+    }
+
+    dependencies {
+        testCompile 'junit:junit:4.12'
+    }
+
+    version = '1.0'
+
+    jar {
+        manifest.attributes provider: 'gradle'
+    }
+}
+~~~
 
 ## Create Building Scans
 ==build scan== 就是一个Gradle提供的可分享的, 便于集中记录一次build, 并且给出build的时候发生了什么和为什么的一个插件. 
