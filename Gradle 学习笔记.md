@@ -165,7 +165,7 @@ For more details: [ Section 25.4, “How to declare your dependencies”.](https
 # Java Develpment
 
 ## Building Java Applications
-**==java== plugin**
+### ==java== plugin
 一些convertions(惯例):
 * 你的==production source code==放在==src/main/java==中
 * ==test source code== 放在==src/test/java==中
@@ -180,7 +180,7 @@ For more details: [ Section 25.4, “How to declare your dependencies”.](https
 
 ==gradle init --type java-application== 在当前目录生成gradlew所需要的所有文件以及src的所有目录结构.
 
-**外部依赖(External Dependencies)**
+### 外部依赖(External Dependencies)
 一般一个Java Project都会有一些需要使用外部JAR文件的依赖, 要引用这些依赖, 在Gradle中像外部JAR文件这样的**Artifacts**都位于 ==repository==(依赖库)中.
 e.g. 如果要使用 ==the public Maven repository== 只需要在==build.gradle==中添加:
 ~~~
@@ -188,7 +188,7 @@ repositories {
     mavenCentral()
 }
 ~~~
-添加依赖
+**添加依赖**
 如果我们的 ==project==的 ==prodection classes== 需要一个编译时依赖(Compile-time) ==commons collections==, 而在==test classes==中需要一个编译时依赖==junit==. 可以添加一下代码到==build.gradle==:
 ~~~
 dependencies {
@@ -196,7 +196,7 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.+'
 }
 ~~~
-**Customizing the project**
+### Customizing the project
 ==Java== plugin在你的项目中加入了很多 ==properties==, 而且这些 ==properties== 都有默认的值, 要改变这些值, 只需要在 ==build.gradle== 中加入相应代码就行了.
 e.g. 
 ~~~
@@ -210,7 +210,7 @@ jar {
 }
 ~~~
 
-**发布JAR**
+### 发布JAR
 ~~~
 uploadArchives {
     repositories {
@@ -222,7 +222,7 @@ uploadArchives {
 ~~~
 将会把生成的jar文件放在根目录中的repos文件夹下
 
-**定制JAR的签名**
+### 定制JAR的签名
 通过配置 [==jar== task](https://docs.gradle.org/3.5/userguide/more_about_tasks.html#sec:configuring_tasks).
 ~~~ Groovy
 jar {
@@ -233,7 +233,7 @@ jar {
 }
 ~~~
 
-**Multi-project的构建**
+### Multi-project的构建
 首先在源码树的根目录下创建 ==setting.gradle== 文件, 在这个目录中如果存在两个子项目 ==demo== 和 ==model==, 则在 ==setting.gradle== 中添加 `include "demo", "model"`
 或者
 ~~~ Groovy
@@ -265,7 +265,7 @@ subprojects {
 ~~~
 P.S. 这些 ==subprojects== 块中的 ==configuration== 只作用于所有的子项目, 不会作用于 ==root level==.
 
-***multi-project*中的项目间依赖:**
+### *multi-project*中的项目间依赖
 在上个例子中, 如果要在子项目 ==demo== 中依赖 ==model== 项目生成的jar, 只需要在子项目 ==demo== 的 ==build.gradle== 中添加:
 ~~~
 dependencies {
