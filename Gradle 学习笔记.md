@@ -83,7 +83,7 @@ P.S. ==clean== task可以用来清除 ==build== 文件夹.
 ## Dependency Management Basics
 大部分项目不是`completely self-contained`, 他们大多都依赖别的项目构建出来的文件(称为 ==dependencies==, build和upload的文件(包括jars, docs)称为 ==publications== ), 这些依赖可能来自于远程服务器 ==Maven== 或者 ==Ivy== respository(依赖库)中, 在一个本地文件夹中, 或者是在 ==multi-project build== 中的另外一个 ==project==  build出来的. Gradle寻找这些依赖的过程叫 ==dependency resolution== (依赖解析).
 不过 ==project== 所调用的依赖自己本身也有一些依赖, 这种子依赖称为 ==transitive dependencies==. Gradle会自动找到这些 ==transitive dependencies==.
-**声明依赖**
+### 声明依赖
 e.g.
 ~~~ Groovy
 apply plugin: 'java'
