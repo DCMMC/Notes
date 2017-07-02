@@ -251,7 +251,7 @@ subprojects {
 ~~~
 P.S. 这些 ==subprojects== 块中的 ==configuration== 只作用于所有的子项目, 不会作用于 ==root level==.
 
-*multi-project*中的项目间依赖:
+***multi-project*中的项目间依赖:**
 在上个例子中, 如果要在子项目 ==demo== 中依赖 ==model== 项目生成的jar, 只需要在子项目 ==demo== 的 ==build.gradle== 中添加:
 ~~~
 dependencies {
@@ -259,6 +259,46 @@ dependencies {
 }
 ~~~
 P.S. 注意前面的 ==:== 号.
+
+## Building Java Libraries
+**创建一个新项目**
+执行 ==init== task:
+==gradle init --type java-libraries==
+
+**java-library plugin**
+==Java Libraries== 使用的 ==java-library== plugin相当于 ==Java Application== 使用的 ==java== plugin的一个超集, ==java-library== 在 ==java== 的基础上添加了一些 ==Java Library== 要用到的一些东西. 特别的, ==Java Library== 会暴露一个API给客户端程序员(i.e., consumers of this library).
+
+**API and implementation separation**
+*A library is a Java component meant to be consumed by other componets.*
+==java library== 在 ==multi-project== 中很常见, ==java-library== plugin提供两个 ==configurations== 用来在==build.gradle== 中声明依赖: ==api== 和 ==implementation==.
+* ==api== 用来声明将被这个 ==library API== 导出的依赖, 会出现在 ==libraries consumers== 的 ==complie classpath== 中.
+* ==implementation== 用来声明只是在这个 ==component== 内部的依赖, 不会出现在 ==libraries consumers== 的 ==complie classpath== 中.
+
+e.g.
+~~~ Groovy
+dependencies {
+    api 'commons-httpclient:commons-httpclient:3.1'
+    implementation 'org.apache.commons:commons-lang3:3.5'
+}
+~~~
+这样的好处:
+* 当 ==implementation dependencies== 改变的时候, ==library consumers==不需要重新编译.
+* 减小 ==classpath== 的大小, 很短的编译时间
+* 使用 ==maven-publish== plugin时会有更加清晰的分发, 因为生成POM文件的时候会区别那些是编译时库那些是运行时库.
+
+认识 ==api== 和 ==implementation== dependencies:
+==api== 依赖用于但不限于:
+* 公共域, 公共方法参数(包括泛型)中的类型
+* 超类或者接口中的类型
+* 公共注解类型
+
+而 ==implementation== 依赖用于:
+* 只用于方法体中的类型
+* 只用于private成员的类型
+* 只出现在内部类中的类型(未来的Gradle会让用户定义那一些 ==packages== 属于 ==public API==)
+
+
+
 
 ## Create Building Scans
 ==build scan== 就是一个Gradle提供的可分享的, 便于集中记录一次build, 并且给出build的时候发生了什么和为什么的一个插件. 
