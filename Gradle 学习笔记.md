@@ -275,14 +275,14 @@ dependencies {
 P.S. 注意前面的 ==:== 号.
 
 ## Building Java Libraries
-**创建一个新项目**
+### 创建一个新项目
 执行 ==init== task:
 ==gradle init --type java-libraries==
 
-**java-library plugin**
+### java-library plugin
 ==Java Libraries== 使用的 ==java-library== plugin相当于 ==Java Application== 使用的 ==java== plugin的一个超集, ==java-library== 在 ==java== 的基础上添加了一些 ==Java Library== 要用到的一些东西. 特别的, ==Java Library== 会暴露一个API给客户端程序员(i.e., consumers of this library).
 
-**API and implementation separation**
+### API and implementation separation
 *A library is a Java component meant to be consumed by other componets.*
 ==java library== 在 ==multi-project== 中很常见, ==java-library== plugin提供两个 ==configurations== 用来在==build.gradle== 中声明依赖: ==api== 和 ==implementation==.
 * ==api== 用来声明将被这个 ==library API== 导出的依赖, 会出现在 ==libraries consumers== 的 ==complie classpath== 中.
@@ -312,11 +312,11 @@ dependencies {
 * 只出现在内部类中的类型(未来的Gradle会让用户定义那一些 ==packages== 属于 ==public API==)
 
 
-**==java-library== plugin的 ==configuration== 关系图**
+### ==java-library== plugin的 ==configuration== 关系图
 好复杂, 没太看懂, 感觉好多 ==configurations== 我都用不上.
 详细请看 [48.4](https://docs.gradle.org/3.5/userguide/java_library_plugin.html)
 
-**添加API Document**
+### 添加API Document
 执行 ==javadoc== 操作就行了, 会自动把源码中的javadoc注释生成html到 ==/build/docs/javadoc==, 打开 ==index.html== 即可查看所有的javadoc.
 
 
