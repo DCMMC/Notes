@@ -160,8 +160,9 @@ For more details: [ Section 25.4, “How to declare your dependencies”.](https
 
 
 
+# Java Develpment
 
-# Building Java Applications
+## Building Java Applications
 **==java== plugin**
 一些convertions(惯例):
 * 你的==production source code==放在==src/main/java==中
@@ -317,7 +318,7 @@ dependencies {
 执行 ==javadoc== 操作就行了, 会自动把源码中的javadoc注释生成html到 ==/build/docs/javadoc==, 打开 ==index.html== 即可查看所有的javadoc.
 
 
-## Create Building Scans
+# Create Building Scans
 ==build scan== 就是一个Gradle提供的可分享的, 便于集中记录一次build, 并且给出build的时候发生了什么和为什么的一个插件. 
 可以免费使用.
 
