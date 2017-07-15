@@ -360,7 +360,19 @@ dependencies {
 P.S. 注意前面的 ==:== 号.
 
 ### 在指定的子项目中添加Configuration
+在主项目的 ==build.gradle== 中添加:
+~~~ GROOVY
+configure(subprojects.findAll {it.name == 'greeter' || it.name == 'greeting-library'} ) { //假设这两个子项目的名称为greeter 和 greeting-library 
 
+    apply plugin : 'groovy'
+
+    dependencies {
+        testCompile 'org.spockframework:spock-core:1.0-groovy-2.4', {
+            exclude module : 'groovy-all'
+        }
+    }
+}
+~~~
 
 ## Building Java Libraries
 ### 创建一个新项目
