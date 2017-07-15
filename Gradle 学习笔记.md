@@ -315,11 +315,14 @@ P.S. 这些 ==subprojects== 块中的 ==configuration== 只作用于所有的子
 apply plugin : 'java' 
 apply plugin : 'application' //application这个插件使这个Java项目可以运行(就是有 run这个task)
 
-mainClassName = 'tk.dcmmcc.App' //这个是application比如要声明的, 这个class作为程序运行的入口, 而且这个class必须包含main方法
+mainClassName = 'tk.dcmmcc.App' //这个是application比如要声明的, 这个class作为程序运行的入口, 而且这个class必须包含标准main方法
 ~~~
-在root project的 ==setting.gradle== 中加入 用 ==include== 语句加入子项目.
+在root project的 ==setting.gradle== 中加入 用 ==include javaDemo== 语句加入子项目(这里假设子项目名称为javaDemo).
 
-测试这个Java application子项目:
+**==application== 插件**
+The Application plugin allows you to bundle all of your applications JARs as well as all of their transitive dependencies into a single ZIP or TAR file. It will also add two startup scripts (one for UNIX-like operations systems and one for Windows) to the archive to make it easy for your users to run your application.
+
+**测试这个Java application子项目:**
 常用  ==Spock Framework== 来测试项目, 所以在子项目的 ==build.gradle==中添加:
 ~~~
 apply plugin : 'groovy' //groovy插件包含了java插件, 所以可以不必再添加java插件,不过为了语义完整,还是保留java插件比较好
@@ -332,6 +335,14 @@ dependencies {
     }
 }
 ~~~
+
+假设java的项目目录为 ==src/main/java/javaDemo==, 则test目录必须为==src/main/groovy/javaDemo==.
+
+**执行任意子项目的task**
+在主项目根目录执行任意subprojects的任意task:
+==gradlew :SUBPROJECT:TASK==,
+e.g. gradlew :javaDemo:build
+
 
 
 ### *multi-project*中的项目间依赖
