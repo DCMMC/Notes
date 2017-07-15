@@ -343,6 +343,11 @@ dependencies {
 ==gradlew :SUBPROJECT:TASK==,
 e.g. gradlew :javaDemo:build
 
+也可以
+~~~
+$ cd javaDemo
+$ ../gradlew test //假设当前目录的父目录就包含了 Gradle wrapper script
+~~~
 
 
 ### *multi-project*中的项目间依赖
