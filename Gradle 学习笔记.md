@@ -282,6 +282,8 @@ allprojects {
     }
 }
 ~~~
+> 	Add the JCenter repository to all projects.
+
 
 **为所有的子项目添加Configuration - subprojects block**
 在主项目的 ==build.gradle== 中声明所有子项目的 `common configuration` :
