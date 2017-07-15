@@ -359,6 +359,7 @@ dependencies {
 ~~~
 P.S. 注意前面的 ==:== 号.
 
+### 在指定的子项目中添加Configuration
 
 
 ## Building Java Libraries
