@@ -309,6 +309,9 @@ subprojects {
 ~~~
 P.S. 这些 ==subprojects== 块中的 ==configuration== 只作用于所有的子项目, 不会作用于 ==root level==.
 
+### 添加一个Java application的子项目
+
+
 ### *multi-project*中的项目间依赖
 在上个例子中, 如果要在子项目 ==demo== 中依赖 ==model== 项目生成的jar, 只需要在子项目 ==demo== 的 ==build.gradle== 中添加:
 ~~~
