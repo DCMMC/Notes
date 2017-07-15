@@ -351,13 +351,15 @@ $ ../gradlew test //假设当前目录的父目录就包含了 Gradle wrapper sc
 
 
 ### *multi-project*中的项目间依赖
-在上个例子中, 如果要在子项目 ==demo== 中依赖 ==model== 项目生成的jar, 只需要在子项目 ==demo== 的 ==build.gradle== 中添加:
+在上个例子中, 如果要在子项目 ==demo== 中依赖 另一个子项目 ==model== 生成的jar, 只需要在子项目 ==demo== 的 ==build.gradle== 中添加:
 ~~~
 dependencies {
     compile project(':model')
 }
 ~~~
 P.S. 注意前面的 ==:== 号.
+
+
 
 ## Building Java Libraries
 ### 创建一个新项目
