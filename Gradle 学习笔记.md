@@ -319,6 +319,20 @@ mainClassName = 'tk.dcmmcc.App' //这个是application比如要声明的, 这个
 ~~~
 在root project的 ==setting.gradle== 中加入 用 ==include== 语句加入子项目.
 
+测试这个Java application子项目:
+常用  ==Spock Framework== 来测试项目, 所以在子项目的 ==build.gradle==中添加:
+~~~
+apply plugin : 'groovy' //groovy插件包含了java插件, 所以可以不必再添加java插件,不过为了语义完整,还是保留java插件比较好
+
+// then, add the following testCompile dependency to the dependencies block:
+
+dependencies {
+    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4', {
+        exclude module : 'groovy-all'
+    }
+}
+~~~
+
 
 ### *multi-project*中的项目间依赖
 在上个例子中, 如果要在子项目 ==demo== 中依赖 ==model== 项目生成的jar, 只需要在子项目 ==demo== 的 ==build.gradle== 中添加:
