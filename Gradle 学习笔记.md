@@ -314,6 +314,8 @@ P.S. 这些 ==subprojects== 块中的 ==configuration== 只作用于所有的子
 ~~~
 apply plugin : 'java' 
 apply plugin : 'application' //application这个插件使这个Java项目可以运行(就是有 run这个task)
+
+mainClassName = 'tk.dcmmcc.App' //这个是application比如要声明的, 这个class作为程序运行的入口, 而且这个class必须包含main方法
 ~~~
 在root project的 ==setting.gradle== 中加入 用 ==include== 语句加入子项目.
 
