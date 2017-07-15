@@ -273,6 +273,17 @@ include "model"
 ~~~
 并且每一个子项目都要包含他们自己的 ==build.gradle== 文件
 
+**为所有项目(包括root project和subprojects)添加Configuration - allprojects block**
+e.g.
+~~~
+allprojects {
+    repositories {
+        jcenter() 
+    }
+}
+~~~
+
+**为所有的子项目添加Configuration - subprojects block**
 在主项目的 ==build.gradle== 中声明所有子项目的 `common configuration` :
 在 主项目的 ==build.gradle== 中添加 ==subprojects== 代码块, e.g.
 ~~~
