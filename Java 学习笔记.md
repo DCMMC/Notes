@@ -4,12 +4,35 @@ tags: Java,入门,笔记
 grammar_cjkRuby: true
 ---
 
-# 0x00 绪论
+# 绪论
 
 ## OOP三原则：
 * 封装（encapsulation） 
 * 继承（inheritance） 
 * 多态（polymorphism）
+
+## OOP导论：（原理和ADT类似） 
+### 访问控制
+限制类的内部访问边界：public ：后面接的元素对所有用户都可用，private ：除类型创建者和类型的内部方法外不能访问，protected ：与private相当，不过继承的类可以访问protected，默认的访问权限（包访问权限）：类可以访问同一个包中的其他类的成员，在包之外，这些成员如同指定了private一样。
+
+### 继承
+创建类的副本，当源类（基类、超类或父类）发生改变时，导出类（集成类或子类）也发生改变。 
+使导出类和基类产生差异：1.直接在导出类中添加新的方法（导出类与基类的关系：“像是一个”） 2.改变现有基类的方法（覆盖）（导出类与基类的关系：“是一个”）导出类可用于纯粹替代基类。 
+伴随多态的可互换对象：对于一个泛化的对象，Java（以及其他OOP语言）的编译器采用**后期绑定**的方法处理泛化的对象，当对象发送消息的时候，被调用的代码直到程序运行的时候才被确定。且该动态绑定在Java中是默认行为。 
+
+### 向上转型
+将导出类（子类）看作是它的基类（泛化的）的过程。 
+
+### 单根继承结构
+除C++外，所有的OOP语言，所有的类最终都继承自单一的基类，（这个基类就叫Object）即单根继承结构中的所有对象都具有一个共用接口。 
+容器：用于存储对象，在任何需要时都可以扩充自己以容纳你置于其中的所有东西。如List（用于存储序列）、Map（关联数组）、Set（每种对象类型只持有一个）...... 
+e.g. ArrayList（数组序列）和LinkedList（链表序列），在序列中插入一个项目，LinkedList比ArrayList的开销要小，而随机读取时ArrayList比LinkedList的开销要小，接口List所带来的抽象，把在容器之间进行转换时对代码产生的影响降低到最低限度。 
+参数化类型（JavaSE5新特性）：编译器可以定制作用于特定类型上的类，只接纳和取出特定对象的容器。参数化类型在Java中称为范型，用一对尖括号中间包含类型信息，通过这些特征可以识别对范型的使用。 
+JavaSE5之前，容器的存储对象都只具有Object类型（Java中的通用类型），这样可以存储所有单根继承结构的类型，可是向上转型为Object再向下转型可能会转型到错误的类型，除非知道确切的类型（不然会消耗更多的时间来处理异常和额外的检查时间）。 
+对象的创建和生命期：在C++中，将对象置于堆栈或静态存储区域中，对象的存储空间和生命周期可在编程时确定。在Java中在称为堆的内存池中动态的创建对象，并由Java的垃圾回收机制自动回收，这样可以有效的避免内存泄漏。 
+异常处理：异常被表示为一个对象（虽然异常处理不是面向对象的特征），异常在程序运行时的出错点被抛出，并由异常处理器捕获，并且异常是不能被忽略的。 
+并发编程（多线程）：Java的并发是内置的。并发能提高响应速度，但存在共享资源的问题，所以某个任务执行时可以锁定该资源，完成其任务时才释放资源锁。 
+Java在WEB上的应用：Java Web可以在客户端浏览器上完成复杂的任务。![enter description here][1]
 
 p.s. 可以用代码块替代statement
 Java基本元素：空白符（而且Java是一种格式自由的语言）、标识符（Java大小写敏感，SE8不推荐用 `_` 作为标识符）、字面值（literal）、注释（Java有文档注释）、运算符（SE8引入 `::` 用于创建方法或构造函数引用）、分隔符以及关键字（Java保留 `const` 和 `goto` 关键字但没有用）
@@ -404,7 +427,7 @@ e.g. interface MyNumbre {
 double getValue();
 } MyNumber就是一个函数式接口,其功能由getValue()定义
 函数式接口可以指定Object定义的任何公有方法,例如equals,而不影响其作为函数式接口的状态.Object的公有方法被视为函数式接口的隐式成员,以newi函数式接口的实例会默认自动实现它们.
-lambda表达式在Java语言中引入了一个新的操作符: ->(lambda操作符) 左侧制订了表达式需要的所有参数(如果不需要参数,则使用空的参数列表) 右侧制订了lambda体.
+lambda表达式在Java语言中引入了一个新的操作符: `->`(lambda操作符) 左侧指定了表达式需要的所有参数(如果不需要参数,则使用空的参数列表) 右侧制订了lambda体.
 e.g. () -> Math.random() * 100 e.g. (n) -> (n % 2) == 0 也可以显式的指定参数类型为int n,不过很多时候参数的类型是可以推测出来的. 如果要显式的声明参数类型,就要为所有的出声明类型
 
 当把一个lambda表达式赋给一个函数式接口(包括泛型函数式接口)引用 变量初始化 return语句 方法参数 类型转换 ?运算符 数组初始化器 lambda表达式本身 等提供了目标类型的上下文 时,就相对于为定义了lambda表达式的目标类型的上下文.
@@ -424,7 +447,7 @@ lambda表达式可以显式的或隐式的访问this变量 访问并设置其外
 
 方法引用：貌似这些方法引用都是用在方法参数中作为兼容的函数式接口的实例的引用.
 静态方法的方法引用：
-ClassName::methodName (::是JDK8新增的分隔符)
+ClassName::methodName (`::`是JDK8新增的分隔符)
 只要是与目标类型兼容(方法返回值 参数 异常)的任何地方都可以使用这个方法引用
 和lambda表达式一样,ClassName::methodName方法引用的返回值就是这个函数式接口的一个实例的引用.(所以如果作为参数,那么这个参数应该是函数式接口类型的,而不是该静态方法的返回值)
 e.g. public static\<T> T max(Collection\<?extendsT> coll,Comparator<?superT> comp)中的Comparator就是一个函数式接口,可以直接用方法引用出来一个ClassName::instanceMethodName(这里的instanceMethodName正好要和Comparator函数式接口中的方法兼容)直接作为参数comp,因为方法引用与Comparator兼容.
@@ -452,13 +475,13 @@ Java中的String类操作都不会改变原字符串,只有StringBuffer和String
 这三个类都在java.lang类库中定义.而且都是final的.都是实现了CharSequence接口.
 
 String类中的构造器可以构造出类似于ASCII字符集的8位字节数组 : String(byte chrs[]) 和 String(byte chrs[], int startIndex, int numChars)
-p.s.String类从输出创建字符串之后修改数组内容不会改变String对象（因为是复制过去的）
+> p.s.String类从输出创建字符串之后修改数组内容不会改变String对象（因为是复制过去的）
 
 String（int codePoints[],int startIndex,int numChars）支持扩展的unicode字符集.codePoints是包含Unicode代码点的数组.
 
 int length() 获取String字符串包含的字符数量
 
-对于String,有重载的+运算符.
+对于String,有重载的`+`运算符.
 
 可以直接使用字符串字面值创建String对象
 
@@ -1841,3 +1864,6 @@ MenuBar只有一个默认构造器, 所以一开始菜单栏为空, 在使用之
 通常只使用MenuBar中的ObservableList<Menu> getMenus() 获得由菜单栏管理的菜单列表.向这个列表使用add()可以把Menu实例添加到这个菜单列表中.add(int index, Menu menu)中的index从0开始,0表示最左边的菜单
 
 Menu 封装了菜单, 菜单用MenuItem填充.派生自MenuItem
+
+
+  [1]: ./images/1500195281730.jpg
