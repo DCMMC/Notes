@@ -12,7 +12,7 @@ OOP三原则：
 * 多态（polymorphism）
 
 p.s. 可以用代码块替代statement
-Java基本元素：空白符（而且Java是一种格式自由的语言）、标识符（Java大小写敏感，SE8不推荐用_作为标识符）、字面值（literal）、注释（Java有文档注释）、运算符（SE8引入：：用于创建方法或构造函数引用）、分隔符以及关键字（Java保留const和goto关键字但没有用）
+Java基本元素：空白符（而且Java是一种格式自由的语言）、标识符（Java大小写敏感，SE8不推荐用 `_` 作为标识符）、字面值（literal）、注释（Java有文档注释）、运算符（SE8引入：：用于创建方法或构造函数引用）、分隔符以及关键字（Java保留const和goto关键字但没有用）
 
 数据结构：
 Java是强类型化的语言（和C一样）。
@@ -310,7 +310,7 @@ java.awt 抽象窗口包
 java.applet applet通过GUI框架与用户进行交互 主类需要继承自applet
 applet每次必须重新绘制输出时都会调用paint(Graphics g)方法,所以必须在主类中覆盖该方法.
 
-在IDEA中调试applet需要配置一下配置器,use the default one provided by IntelliJ in the application bin directory called appletviewer.policy
+在IDEA中调试applet需要配置一下配置器,use the default one provided by IntelliJ in the application bin directory called appletviewer.policy
 而且从JDK7开始,所有applet都需要签名才能在web浏览器中运行,比如在Java控制面板中调整安全设置.也可以直接用在cmd中使用appletviewer运行
 
 applet程序不是从main入口处运行的,用户IO不是使用Java的IO流类完成的,而是使用GUI框架提供的接口.
