@@ -197,13 +197,14 @@ e.g. class SaticTest {
 
 使用javadoc的方式:嵌入html,或使用文档标签.
 	独立文档便签:/**@标签内容…*/ ;
-	行内文档标签:可以在源代码中的任何位置,以@开头,但是要在花括号内.e.g. class Demo {@override void fun() {} }
+	行内文档标签(怎么感觉像是注解):可以在源代码中的任何位置,以@开头,但是要在花括号内.e.g. class Demo {@override void fun() {} }
 	三种类型的注释文档:类,域和方法注释,都放在它们的前面.
 	e.g.
-	//: object/Hello.java
+``` java
+//: object/Hello.java
 	import java.util.*;
 	
-	/**  A class comment
+/**  A class comment
 	 *@author DCMMC
 	 *@version 1.0
 	 */
@@ -218,27 +219,31 @@ e.g. class SaticTest {
 			System.out.println("hello");
 			System.out.println(new Date());
 		}
-	} /*Output:(55% match) // /*Output标签表示输出的开始部分将有这个文件生成,55%match是向测试系统(???作者写的基于ant的测试系统???)说明程序的输出与输出预期只有55%的相关性
+} /*Output:(55% match) // /*Output标签表示输出的开始部分将有这个文件生成,55%match是向测试系统(???作者写的基于ant的测试系统???)说明程序的输出与输出预期只有55%的相关性
 	hello
 	Wed Oct 05 14:39:36 MDT 2017
 	*///:~
-	p.s. javadoc只能为public和protected成员进行文档注释,private和包内可访问成员的注释会被忽略掉,所以输出结果中看不到它们(可以用-private进行标记,这样输出也能看到private成员的注释)
-	可在javadoc注释总内嵌html语法,在文档注释中,位于每一行的星号和前导空格都会被javadoc丢弃.
-	标签： 1. @see fully-qualified-classname#mathod-name 引用其他类的文档 在生成的文档中一个具有超链接的"See Also(参加)"条目
-	2. {@link package.class#member label} 与@see类似,只是它作用于行内,而且用"label"作为超链接文本
-	3. {@docRoot} 生成文档根目录的相对路径,用于文档树的显示超链接.
-	4. {@inheritDoc} 从当前这个类的最直接的基类中继承相关文档到当前的文档注释中
-	5. @version version-information 如果javadoc命令行使用了-version标记,那么就从生成的html文档中特别提取出版本信息.
-	6. @author author-information 可以使用多个标签(必须连续放置)
-	7. @since 指定程序代码最早使用的版本
-	8. @param parameter-name description 为参数写描述,description是可以延续数行的文本,终止于新的文档标签出现,下同
-	9. @return description 描述返回值的含义
-	10. @throws fully-qualified-class-name description对异常类进行说明
-	11. @deprecated 指出一些就特性已由改进的新特性所取代,如果是使用一个标记为@deprecated的方法,编译器会发出警告.
+```
+
+> p.s. javadoc只能为public和protected成员进行文档注释,private和包内可访问成员的注释会被忽略掉,所以输出结果中看不到它们(可以用-private进行标记,这样输出也能看到private成员的注释)
+
+可在javadoc注释总内嵌html语法,在文档注释中,位于每一行的星号和前导空格都会被javadoc丢弃.
+	标签： 
+1. @see fully-qualified-classname#mathod-name 引用其他类的文档 在生成的文档中一个具有超链接的"See Also(参加)"条目
+1.  {@link package.class#member label} 与@see类似,只是它作用于行内,而且用"label"作为超链接文本
+3. {@docRoot} 生成文档根目录的相对路径,用于文档树的显示超链接.
+4. {@inheritDoc} 从当前这个类的最直接的基类中继承相关文档到当前的文档注释中
+5. @version version-information 如果javadoc命令行使用了-version标记,那么就从生成的html文档中特别提取出版本信息.
+6. @author author-information 可以使用多个标签(必须连续放置)
+7. @since 指定程序代码最早使用的版本
+8. @param parameter-name description 为参数写描述,description是可以延续数行的文本,终止于新的文档标签出现,下同
+9. @return description 描述返回值的含义
+10. @throws fully-qualified-class-name description对异常类进行说明
+11. @deprecated 指出一些就特性已由改进的新特性所取代,如果是使用一个标记为@deprecated的方法,编译器会发出警告.
 
 [Java编程语言编码定](http://www.oracle.com/technetwork/java/codeconv/index.html)
 
-## (p)1.3 运算符
+## (p)1.4 运算符
 基本和C一样，多了>>>（按位右移0填充，而且只对32bit或64bit数值有意义，short byte char这些都会自动提升（也就是会发生符号扩展））instanceof和->（JDK8新增）运算符
 p.s. 因为Java的表达式的自动提升，移位操作符用于byte short 时，要把结果强制转换一下。
 右移>>后的最高位会使用右移前的最高最填充（符号扩展）。使用左移和右移操作符可以高效的实现乘以和除以2 。
