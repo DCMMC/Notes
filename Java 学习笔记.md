@@ -1,7 +1,35 @@
 ---
 title: Java 学习笔记
 tags: Java,入门,笔记
+grammar_abbr: true
+grammar_table: true
+grammar_defList: true
+grammar_emoji: true
+grammar_footnote: true
+grammar_ins: true
+grammar_mark: true
+grammar_sub: true
+grammar_sup: true
+grammar_checkbox: true
+grammar_mathjax: true
+grammar_flow: true
+grammar_sequence: true
+grammar_plot: true
+grammar_code: true
+grammar_highlight: true
+grammar_html: true
+grammar_linkify: true
+grammar_typographer: true
+grammar_video: true
+grammar_audio: true
+grammar_attachment: true
+grammar_mermaid: true
+grammar_classy: true
+grammar_cjkEmphasis: true
 grammar_cjkRuby: true
+grammar_center: true
+grammar_align: true
+grammar_tableExtra: true
 ---
 
 # 绪论
@@ -38,14 +66,17 @@ JavaSE5之前，容器的存储对象都只具有Object类型（Java中的通用
 在C++中，将对象置于堆栈或静态存储区域中，对象的存储空间和生命周期可在编程时确定。在Java中在称为堆的内存池中动态的创建对象，并由Java的垃圾回收机制自动回收，这样可以有效的避免内存泄漏。 
 
 
-# Java基础
+# (P)1 Java基础
 
-## Java基本元素
+## (p)1.1 Java基本元素
 空白符（而且Java是一种格式自由的语言）、标识符（Java大小写敏感，SE8不推荐用 `_` 作为标识符）、字面值（literal）、注释（Java有文档注释）、运算符（SE8引入 `::` 用于创建方法或构造函数引用）、分隔符以及关键字（Java保留 `const` 和 `goto` 关键字但没有用）
 
 > p.s. 可以用代码块替代statement
 
-## 基本数据结构：
+## (p)1.2 数据结构
+
+### (p)1.2.1 基本数据结构
+
 Java是强类型化的语言（和C一样）。
 基本数据类型：
 * byte（8bits，在使用网络或文件的数据流时很有用）
@@ -70,14 +101,17 @@ void       |   -          | Void
 
 > p.s. Java的所有类型都是有符号的
 
-## 自动包装机制
+### (p)1.2.2 自动包装机制
+
 在有需要的时候，Java会隐式的自动把基本数据类型包装成包装器类型。
 p.s. JDK7新增二进制表示整数：需要加上前缀0b或者0B e.g. int x = 0b1010；JDK7还允许在数字间（包括小数）加入一个或者多个下划线方便记忆大数字，在编译的时候会自动删除 e.g. int x = 123_456\_\_7\_\_\_\_9;（尤其是在二进制数字中可以作为四个四个的分隔符）
 
-## 高精度数字
+### (p)1.2.3 高精度数字
+
  Java提供了两种用于高精度计算的类:BigInter和BigDecimal(不是基本类型)
  
-## 字面量（literal）
+### (p)1.2.4 字面量（literal）
+
 * 八进制：0前缀 
 * 十六进制：0X或0x前缀  
 * 二进制（SE7）：0b或0B前缀 
@@ -89,7 +123,20 @@ JDK7还允许在数字间（包括小数）加入一个或者多个下划线方�
 
 变量声明：Java支持动态声明。Java不支持方法内部声明的变量在该方法内部被内层定义覆盖（和C不一样），不过方法可以覆盖所属类中的域变量。
 
-## 作用域
+### (p)1.2.5 类型转换
+
+Java能自动执行扩展转换，窄化转换需要显式的使用指派操作符强制转换（可能会造成移除）。浮点型窄化转换会趋零截尾。
+表达式中会发生自动类型提升，所有的byte short char自动提升到int，整数表达式的值都会自动提升到int  e.g. byte b = 50；b = b * 2；这时就会报错，必须（byte）强制转换。
+含有float（double）的表达式的值会被提升到float（double）。
+
+### (p)1.2.6 数组：（可以使用int[] arr也就是使用int arr[]的形式）
+p.s. 数组类中的length成员字段只是反映数组最初设计时所能包含的元素数量。
+可以手动分配某一维的每一个元素的大小，使同一维度的元素的长度不同，创建不规则数组。
+数组初始化的时候可以使用表达式。
+
+p.s. Java不支持（可以修改的）指针（因为在JVM中使用指针不安全嘛），不过可以调用native C++代码使用指针233333
+
+### (p)1.2.7 作用域
 Java支持动态声明。Java的基本类型和对象的引用的生命周期和C/C++一样(因为在堆栈中),但是Java不支持方法内部声明的变量在该方法内部被内层定义覆盖（和C不一样），不过方法可以覆盖所属类中的域变量。
  i.e. 
  ~~~ java
@@ -104,17 +151,6 @@ Java支持动态声明。Java的基本类型和对象的引用的生命周期和
 Java的对象不具备和基本类型一样的生命周期,他们可以存活于作用域之外.Java有一个垃圾回收器用来监视new创建的所有对象,当不在需要时自动销毁.
 
 
-## 类型转换
-Java能自动执行扩展转换，窄化转换需要显式的使用指派操作符强制转换（可能会造成移除）。浮点型窄化转换会趋零截尾。
-表达式中会发生自动类型提升，所有的byte short char自动提升到int，整数表达式的值都会自动提升到int  e.g. byte b = 50；b = b * 2；这时就会报错，必须（byte）强制转换。
-含有float（double）的表达式的值会被提升到float（double）。
-
-## 数组：（可以使用int[] arr也就是使用int arr[]的形式）
-p.s. 数组类中的length成员字段只是反映数组最初设计时所能包含的元素数量。
-可以手动分配某一维的每一个元素的大小，使同一维度的元素的长度不同，创建不规则数组。
-数组初始化的时候可以使用表达式。
-
-p.s. Java不支持（可以修改的）指针（因为在JVM中使用指针不安全嘛），不过可以调用native C++代码使用指针233333
 
 ## 运算符
 基本和C一样，多了>>>（按位右移0填充，而且只对32bit或64bit数值有意义，short byte char这些都会自动提升（也就是会发生符号扩展））instanceof和->（JDK8新增）运算符
@@ -124,6 +160,7 @@ p.s. 因为Java的表达式的自动提升，移位操作符用于byte short 时
 补码=反码（符号位不变）+1
 Java使用2的补码存储负数。这样原码1000_0000表示的-0就能变成补码1_0000_0000超出了八位二进制的范围了，而且反码能够很好的计算含有负数的加法。
 p.s. 为了减少迷糊性和提升优先级，多使用（）来明确优先级而不是记忆那些复杂的优先级表。
+
 
 ## 控制语句
 ### 选择语句
@@ -232,6 +269,7 @@ Thread类的其他构造器:Thread(Runnable threadOb,String threadName) 新线�
 扩展Thread类：需要重载run方法 
 两种方法都需要在构造其中调用start或者run方法
 如果不需要对Thread类进行修改或增强的话 推荐使用实现Runnable接口的方法来创建线程.
+
 ### 线程优先级：
 高优先级的线程会获得更多的cpu时间，具有高优先级的线程可能会取代低优先级的线程（e.g. 从休眠或者等待IO中恢复的高优先级线程会取代低优先级的线程）
 理论上,具有相同优先级的线程应当得到相等的cpu时间,不过不同的环境上的jvm实现不一定相同,为了安全起见,具有相同优先级的线程应当是不是释放控制权.
@@ -242,6 +280,7 @@ Thread类的其他构造器:Thread(Runnable threadOb,String threadName) 新线�
 在方法前使用synchronzied关键字限定,使之成为同步方法,一旦线程进入一个实例的同步方法,所有其他线程就不能再进入相同实例的任何同步方法.
 所有对象都有与自身关联的隐式监视器,为了进入对象的监视器,只需要调用使用synchronized关键字修饰过的方法.为了退出监视器并将对象的控制权交给下一个等待线程,监视器的拥有者只需简单得从同步方法返回.
 synchronized语句:对于不能修改源代码的没有同步方法的类（也就是没有针对多线程设计的）,可以通过把方法调用放在synchronized(objRef) { /…}中，实现同步方法。synachronized代码块确保对objRef对象的成员方法调用是会在当前线程成功进去objRef的监视器之后发生。
+
 ### 线程间通信：
 进程间通信可以更细微级别的控制。
 为了避免轮询检测,Java提供wait() notify() notifyAll() 方法(这些方法是Object类中的final方法)进行更巧妙的线程间通信.
