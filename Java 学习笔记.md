@@ -16,8 +16,17 @@ Java基本元素：空白符（而且Java是一种格式自由的语言）、标
 
 数据结构：
 Java是强类型化的语言（和C一样）。
-基本数据类型：byte（8bits，在使用网络或文件的数据流时很有用） short（16bits，最不常用） int（32bits，最常用） long（64bits 字面量通常用后缀L或l） char（16bits unicode码） float（32bits 字面量后缀f或F） double（64bits，适用于保持精度的运算，最常用 字面量后缀D或d） boolean （true false并没有对应的数值，而且0不代表假 非0不代表真 和C/C++不一样）
-p.s. Java的所有类型都是有符号的
+基本数据类型：
+* byte（8bits，在使用网络或文件的数据流时很有用）
+* short（16bits，最不常用）
+* int（32bits，最常用） 
+* long（64bits 字面量通常用后缀L或l）
+* char（16bits unicode码） float（32bits 字面量后缀f或F） 
+* double（64bits，适用于保持精度的运算，最常用 字面量后缀D或d） 
+* boolean （true false并没有对应的数值，而且0不代表假 非0不代表真 和C/C++不一样）
+
+> p.s. Java的所有类型都是有符号的
+
 字面量（literal）：
 八进制：0前缀 十六进制：0X或0x前缀  二进制（SE7）：0b或0B前缀 
 JDK7开始，可在数字字面量中嵌入下划线_增强大数字的可阅读性，编译时编译器会自动去掉。e.g. int x = 123_456__789;
