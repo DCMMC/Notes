@@ -38,19 +38,19 @@ JDK7开始，可在数字字面量中嵌入下划线 `_`增强大数字的可阅
 
 变量声明：Java支持动态声明。Java不支持方法内部声明的变量在该方法内部被内层定义覆盖（和C不一样），不过方法可以覆盖所属类中的域变量。
 
-类型转换：
+## 类型转换：
 Java能自动执行扩展转换，窄化转换需要显式的使用指派操作符强制转换（可能会造成移除）。浮点型窄化转换会趋零截尾。
 表达式中会发生自动类型提升，所有的byte short char自动提升到int，整数表达式的值都会自动提升到int  e.g. byte b = 50；b = b * 2；这时就会报错，必须（byte）强制转换。
 含有float（double）的表达式的值会被提升到float（double）。
 
-数组：（可以使用int[] arr也就是使用int arr[]的形式）
+## 数组：（可以使用int[] arr也就是使用int arr[]的形式）
 p.s. 数组类中的length成员字段只是反映数组最初设计时所能包含的元素数量。
 可以手动分配某一维的每一个元素的大小，使同一维度的元素的长度不同，创建不规则数组。
 数组初始化的时候可以使用表达式。
 
 p.s. Java不支持（可以修改的）指针（因为在JVM中使用指针不安全嘛），不过可以调用native C++代码使用指针233333
 
-运算符：
+## 运算符：
 基本和C一样，多了>>>（按位右移0填充，而且只对32bit或64bit数值有意义，short byte char这些都会自动提升（也就是会发生符号扩展））instanceof和->（JDK8新增）运算符
 p.s. 因为Java的表达式的自动提升，移位操作符用于byte short 时，要把结果强制转换一下。
 右移>>后的最高位会使用右移前的最高最填充（符号扩展）。使用左移和右移操作符可以高效的实现乘以和除以2 。
@@ -59,8 +59,8 @@ p.s. 因为Java的表达式的自动提升，移位操作符用于byte short 时
 Java使用2的补码存储负数。这样原码1000_0000表示的-0就能变成补码1_0000_0000超出了八位二进制的范围了，而且反码能够很好的计算含有负数的加法。
 p.s. 为了减少迷糊性和提升优先级，多使用（）来明确优先级而不是记忆那些复杂的优先级表。
 
-控制语句：
-选择语句：
+## 控制语句：
+### 选择语句：
 结构化语句：
 if（condition）
 	statement；
@@ -88,7 +88,7 @@ do
 for（initialization；condition；iteration）statement；
 foreach（SE5）：for（type itr-var ： collection）statement；//这里的 每一个itr-var都只是拷贝，改变他们不会影响原数组
 
-转跳语句：continue break return （异常其实也算）
+### 转跳语句：continue break return （异常其实也算）
 Java的类goto语法：
 break label；label只能放在代码块（就有标签的代码块必须具有break语句）前面，break常用于退出多个循环
 continue  label；label只能放在迭代语句前
@@ -104,7 +104,7 @@ outer-iteration {
 	}
 }
 
-类
+## 类
 对象 对象的引用
 域（实例变量） 方法 构造器 重载（根据方法签名） this关键字
 垃圾回收
@@ -127,7 +127,7 @@ super关键字 this关键字
 跳。。。。
 。。。。。
 
-JDK8对接口的修改：
+## JDK8对接口的修改：
 JDK8为接口新增了默认方法（在接口中为方法指定默认实现）的新功能：1.提供一种扩展接口的方法，而不破坏实现了这个接口的类的代码。2.在接口中指定本质上可选的方法，也就是如果接口的实现并没有覆盖这个接口作为占位符性质的方法，也没问题。（因为有些实现可以不需要接口中的某些方法）
 在需要提供默认实现的方法前面加上default关键字。
 不过接口还是不能使用实例变量，里面定义的所有变量都是final的。
@@ -135,6 +135,7 @@ p.s. 类实现的优先级永远高于接口的默认实现。如果一个类要
 在子级接口中调用父级接口中的默认实现时，需要使用super关键字显式的调用：InterfaceName.super.methodName()
 JDK8中接口还可以定义一个或多个静态方法,可以不用实现接口或接口的实例:InterfaceName.staticMethodName();
 
+## 异常
 Java的内置异常(也就是未经检查的异常):有点多…不写了…
 链式异常(since 1.4):Throwable中有两个重载的构造器:Throwable(Throwable causeEXc) 和 Throwable(String msg,Throwable causeExc) //causeExc是引发当前异常的异常
 getCause() 返回引发当前异常的异常,如果不存在就返回null.
@@ -143,7 +144,7 @@ initCause() 将causeExc和调用异常关联在一起,并返回对异常的引�
 JDK7对新增的异常特性:1.带资源的try语句 2.多重捕获(在一个catch子句的参数中使用|运算符把多个异常放在一起,且每个多重捕获参数都被隐式的声明为final) 3.更精确的重新抛出(只能抛出满足条件的异常:有关联的try代码块抛出,并没有被前面的catch子句处理,并且是参数的子类型或者超类型)
 
 
-多线程编程:
+## 多线程编程:
 在基于进程的多任务处理中,程序是调度程序能够调度的最小代码单元.
 在基于线程的多任务环境中风,最小的可调度代码单元是线程:
 进程是重量级任务,线程是轻量级任务.
@@ -151,12 +152,12 @@ JDK7对新增的异常特性:1.带资源的try语句 2.多重捕获(在一个cat
 线程的状态:运行 挂起(suspended) (可以被恢复(resumed)) 堵塞(blocked) 任何时候都可以终结线程,终结.
 每个线程都有优先级(为整数):优先级决定上下文切换.
 决定上下文切换发生时机的规则:1.线程自愿放弃控制(显示的放弃控制权,休眠或者I/O之前堵塞),这是会检查所有其他线程,并准备运行的线程中优先级最高的那个线程会获得CPU资源 2.线程被优先级更高的线程取代(抢占式多任务处理)
-p.s. 相同优先级的两个线程竞争CPU资源:Windows以循环方式自动获取CPU资源,其他系统优先级相等的线程必须自愿的想其他线程放弃控制权,否则其他线程就不能运行.这里可能引发移植问题.
+p.s. 相同优先级的两个线程竞争CPU资源:Windows以循环方式自动获取CPU资源,其他系统优先级相等的线程必须自愿的向其他线程放弃控制权,否则其他线程就不能运行.这里可能引发移植问题.
 相同优先级的子线程共享CPU
 因为多线程为程序引入了异步行为,所以必须有强制同步的方法.
 每个对象都有自己的隐式监视器,如果调用对象的同步方法,就会自动进入对象的隐式监视器.一旦某个线程位于一个同步方法中,其他线程就不能调用同一对象的任何其他同步方法.
-Thread类和Runnable接口:
-Thread类中的方法:getName() setName() setPriority()设置优先级(优先级在MIN_PROIORITY到MAX_PRIORITY之间也就是1到10) getPriority()获取线程的优先级 isAlive() 确定线程时候扔在运行 join() 等待进程终结，否则一直运行该方法 run() 线程的入口点 static sleep() 挂起当前线程一段时间(sleep(long millis)单位ms sleep(long millis,int nanos)第二个参数为纳秒单位,挂起时间为millis+nanos) start() 通过调用线程的run()方法启动线程 static Thead currentThread()返回调用它的线程的引用 toString() 输出由线程名称 优先级 所属线程组构成的Steing[] main方法的优先级默认为5
+### Thread类和Runnable接口:
+Thread类中的方法:getName() setName() setPriority()设置优先级(优先级在MIN_PROIORITY到MAX_PRIORITY之间也就是1到10) getPriority()获取线程的优先级 isAlive() 确定线程是否仍在运行 join() 等待进程终结，否则一直运行该方法 run() 线程的入口点 static sleep() 挂起当前线程一段时间(sleep(long millis)单位ms sleep(long millis,int nanos)第二个参数为纳秒单位,挂起时间为millis+nanos) start() 通过调用线程的run()方法启动线程 static Thead currentThread()返回调用它的线程的引用 toString() 输出由线程名称 优先级 所属线程组构成的Steing[] main方法的优先级默认为5
 主线程(程序启动时自动创建):其他子线程都是从主线程中产生的,主线程必须是最后才结束执行的线程,因为它要执行各种关闭动作.
 创建线程:实现Runnable接口或者扩展Thread类
 为了实现Runnable接口,类只需要实现public void run()方法,run方法为程序中另外一个并发线程的执行建立了入口点.当run方法返回的时候,这个线程就会结束.
@@ -164,7 +165,7 @@ Thread类的其他构造器:Thread(Runnable threadOb,String threadName) 新线�
 扩展Thread类：需要重载run方法 
 两种方法都需要在构造其中调用start或者run方法
 如果不需要对Thread类进行修改或增强的话 推荐使用实现Runnable接口的方法来创建线程.
-线程优先级：
+### 线程优先级：
 高优先级的线程会获得更多的cpu时间，具有高优先级的线程可能会取代低优先级的线程（e.g. 从休眠或者等待IO中恢复的高优先级线程会取代低优先级的线程）
 理论上,具有相同优先级的线程应当得到相等的cpu时间,不过不同的环境上的jvm实现不一定相同,为了安全起见,具有相同优先级的线程应当是不是释放控制权.
 如果线程依赖于抢占式行为,经常会引起相同优先级的线程的不一致性.
@@ -174,16 +175,17 @@ Thread类的其他构造器:Thread(Runnable threadOb,String threadName) 新线�
 在方法前使用synchronzied关键字限定,使之成为同步方法,一旦线程进入一个实例的同步方法,所有其他线程就不能再进入相同实例的任何同步方法.
 所有对象都有与自身关联的隐式监视器,为了进入对象的监视器,只需要调用使用synchronized关键字修饰过的方法.为了退出监视器并将对象的控制权交给下一个等待线程,监视器的拥有者只需简单得从同步方法返回.
 synchronized语句:对于不能修改源代码的没有同步方法的类（也就是没有针对多线程设计的）,可以通过把方法调用放在synchronized(objRef) { /…}中，实现同步方法。synachronized代码块确保对objRef对象的成员方法调用是会在当前线程成功进去objRef的监视器之后发生。
-线程间通信：
+### 线程间通信：
 进程间通信可以更细微级别的控制。
 为了避免轮询检测,Java提供wait() notify() notifyAll() 方法(这些方法是Object类中的final方法)进行更巧妙的线程间通信.
 wait方法通知线程放弃监视器并进入休眠,直到其他一些线程进入同一个监视器(也就是同一个对象)并调用notify() notifyAll() 方法.
 notify() 唤醒调用相同对象的wait方法的线程.
-notifyAll方法环形调用相同对象的wait方法的所有线程,其中的一个线程将得到授权访问.
+notifyAll方法唤醒调用相同对象的wait方法的所有线程,其中的一个线程将得到授权访问.
 p.s. 理论上,wait方法会等待直到调用notify方法或notify方法,但是极小可能会由于假唤醒而被唤醒,Oracle推荐在一个检查线程等待条件的循环中调用wait方法
 死锁(deadlock):当两个线程循环依赖一对同步对象时,就会发生死锁.多线程程序偶尔被锁住的时候应当首先检查是否是死锁.
 
-不推荐使用那个suspend方法和stop方法和resume方法(suspend和stop方法在Java2中有时会导致严重错误,如果为关键数据加锁的线程用suspend挂起那么这些锁无法释放,其他等待这些资源的线程会被死锁;resume有必须配合suspend一起使用;如果在线程正在向关键数据结构写入数据且只完成了部分发生变化的数据时使用stop方法可能导致数据结构处于损坏状态,stop会导致释放调用线程的所有锁,其他等待相同锁的线程就会使用这些损坏的数据)
+不推荐使用那个suspend方法和stop方法和resume方法(suspend和stop方法在Java2中有时会导致严重错误,如果为关键数据加锁的线程用suspend挂起那么这些锁无法释放,其他等待这些资源的线程会被死锁;resume又必须配合suspend一起使用;如果在线程正在向关键数据结构写入数据且只完成了部分发生变化的数据时使用stop方法可能导致数据结构处于损坏状态,stop会导致释放调用线程的所有锁,其他等待相同锁的线程就会使用这些损坏的数据)
+
 可以用wait和notify方法实现。
 
 获取线程状态：
@@ -193,7 +195,7 @@ Thread.State getState()  (State是Thread中的一个枚举类型)
 
 线程不要创建太多,不然花费在上下文切换的CPU时间会比执行程序的实际时间更长
 
-枚举(Java SE5)
+## 枚举(Java SE5)
 枚举类型不能在方法内定义也不能实例化 不过枚举类依然是类类型枚举为类添加构造器 实例变量和方法
 public static enum-type[] values（） 
 public static enum-type valueOf(String str)
@@ -206,13 +208,13 @@ Enum中的方法:
 final int ordinal() 返回枚举常数的序列值
 final int compareTo(enum-type e) 比较调用常数的序列值与e的序列值的大小关系,小于e就返回负值,等于就返回0,大于返回正数 调用常数必须与e是相同的枚举 (可以使用Object类中定义的equals方法 比较是否为同一枚举类的相同序列 也可以使用==比较这两个枚举引用是否相同)
 
-自动包装器 (Java SE5) :
+## 自动包装器 (Java SE5) :
 每个包装器类中都有对应的typeValue方法 e.g. int intValue()
 而且所有包装器类都有重载的接收String类作为对象的构造器,如果String没有包含有效的数值,就会抛出NumberFormatException异常
 p.s. 包装也叫装箱(封装器) 包装器类转成基本数据类型叫拆箱
 不过装箱和拆箱效率比基本数据类型低很多,不要滥用
 
-注解(元数据) (Java SE5):
+## 注解(元数据) (Java SE5):
 Java支持在源文件中风嵌入补充信息,这类信息被称为注解 e.g. @Override
 注解通过基于接口的机制创建的:
 @interface MyAnno {
