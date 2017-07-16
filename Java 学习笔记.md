@@ -269,7 +269,7 @@ p.s. 注解数组级别(JDK8): e.g @TypeAnno String @MaxLen(10) [] @NotZeroLen [
 
 ### 重复注解:
 JDK8新增能够在相同元素上重复引用注解的特性.
-可重复注解必须用@Repeatable进行注解.其value域指定了重复注解的容器类型（Class<?extendsAnnotation> value（）；）,也就是重复注解类型的数组.要创建重复注解,需要创建容器注解,然后将注解的类型指定为@Pepeatable注解的参数.
+可重复注解必须用@Repeatable进行注解.其value域指定了重复注解的容器类型（Class<?extends Annotation> value();）,也就是重复注解类型的数组.要创建重复注解,需要创建容器注解,然后将注解的类型指定为@Pepeatable注解的参数.
 为了使用getAnnotation方法访问重复注解,需要使用容器注解(就是那个用@Repeatable注解的那个单成员注解(只有一个需要重复注解的那个注解的数组作为返回值的成员方法))而不是重复注解.
 获取重复注解的另一种方式是使用JDK8添加到AnnotatedElement中的新方法:
 <T extends Annotation> T[] getAnnotationsByType(Class<T> annoType)和getDeclaredAnnotationByType()
