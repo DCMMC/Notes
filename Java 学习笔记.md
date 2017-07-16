@@ -272,7 +272,7 @@ JDK8新增能够在相同元素上重复引用注解的特性.
 可重复注解必须用@Repeatable进行注解.其value域指定了重复注解的容器类型（Class<?extends Annotation> value();）,也就是重复注解类型的数组.要创建重复注解,需要创建容器注解,然后将注解的类型指定为@Pepeatable注解的参数.
 为了使用getAnnotation方法访问重复注解,需要使用容器注解(就是那个用@Repeatable注解的那个单成员注解(只有一个需要重复注解的那个注解的数组作为返回值的成员方法))而不是重复注解.
 获取重复注解的另一种方式是使用JDK8添加到AnnotatedElement中的新方法:
-<T extends Annotation> T[] getAnnotationsByType(Class<T> annoType)和getDeclaredAnnotationByType()
+\<T extends Annotation> T[] getAnnotationsByType(Class\<T> annoType)和getDeclaredAnnotationByType()
 
 一些限制:注解不能继承另外一个注解 注解声明的所有方法都必须不带参数 ,注解不能被泛型化.注解方法不能指定throws子句
 
@@ -293,10 +293,12 @@ Buffered(缓冲) ByteArray(字节数组) Data(Java标准数据类型) File(文�
 \+ 后缀InputStream和OutputStream (Input都是读取 Output都是写入)
 
 PrintStream 包含print()和println()的输出流 PushbackInputStream (支持1字节"取消获取"输入流,这种流向输入流返回1字节) SequenceInputStream (由多个按顺序依次读取的输入流组合而成的输入流)
-字符流类:
+
+### 字符流
 字符流通过底层的两个抽象类Reader和Writer定义.这两个抽象类处理Unicode字符流
 java.io中的字符流类:Buffered CharArray File Filter(过滤的读取或写入器) Piped(管道) String 后接Reader或Writer分别表示xx输入流(读取)或输出流(写入)
 InputStreamReader(将字节转换成字符的输入流) OutputStreamWriter(将字符转换成字节的输出流) LineNumberReader (计算行数的输入流) PushbackReader(允许字符返回至输入流的输入流)
+
 
 上面这些类全部都继承了Reader 或 Writer 或 InputStream 或 OutputStrem 中的 read和write（int byteval）（write只能写入byteval的低八位）方法
 
@@ -311,7 +313,7 @@ BufferReader是支持缓冲的输入流:BufferedReader(Reader inputReader)
 PrintWriter类:PrintWriter(OutputStream outputStream,boolean flushingOn) flushingOn为true表示每次调用print()方法 println方法时刷新输出流
 使用PrintWriter可以使实际的应用程序更容易国际化.
 
-读写文件:
+### 读写文件
 FileInputStream(String fileName) throws FileNotFoundException 文件不存在的时候就会抛出
 FileOutputStream(String fileName) throws FileNotFoundException 不能打开文件或不能创建文件 就会抛出 打开输出文件时 先前存在的同名文件将被销毁
 FileNotFoundException 属于IOException的子类
@@ -328,7 +330,7 @@ try (resource-specification) {
 resource-specification是用来声明和初始化资源的语句 而且在resource-specification中声明的资源被隐式的声明为final 可以用分号分隔多个资源声明
 p.s 至于哦那些实现了AutoCloseable接口的资源,才能使用带资源的try语句
 
-applet:
+## applet
 java.awt 抽象窗口包
 java.applet applet通过GUI框架与用户进行交互 主类需要继承自applet
 applet每次必须重新绘制输出时都会调用paint(Graphics g)方法,所以必须在主类中覆盖该方法.
@@ -338,7 +340,7 @@ applet每次必须重新绘制输出时都会调用paint(Graphics g)方法,所�
 
 applet程序不是从main入口处运行的,用户IO不是使用Java的IO流类完成的,而是使用GUI框架提供的接口.
 
-transient和volatile修饰符:
+## transient和volatile修饰符
 实例变量声明为transient表明存储对象的时候实例变量的值将不需要永久保存.
 volatile告诉编译器变量可以被程序的其他部分随意修改:在多线程程序中,有时候多个线程共享相同的变量时,处于效率反面的考虑,每个线程自身可以保存这种共享变量的私有副本.真正的变量副本(主变量副本在各个时间被更新,例如进入同步方法时)这样有时效率不高,为了确保变量的主副本总是反映自身的当前状态,可以将变量修改为volatile告诉编译器必须总是使用volatile变量的主副本(至少总是保持所有私有版本和最新的主副本一致) 此外,访问主变量的顺序必须和所有私有副本相同,以精确的顺序执行.
 
