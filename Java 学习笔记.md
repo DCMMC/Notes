@@ -273,8 +273,9 @@ Java中的Boolean类型不能比较大小,因为他们没有数字值.
 Java没有sizeof操作符
 溢出的时候Java并不会报错。
 
-## 控制语句
-### 选择语句
+## (p)1.5 控制语句
+
+### (p)1.5.1 选择语句
 结构化语句：
 if（condition）
 	statement；
@@ -302,7 +303,16 @@ do
 for（initialization；condition；iteration）statement；
 foreach（SE5）：for（type itr-var ： collection）statement；//这里的 每一个itr-var都只是拷贝，改变他们不会影响原数组
 
-### 转跳语句：continue break return （异常其实也算）
+### (p)1.5.2 foreach语法（Java SE5）
+自动产生数组的每一项的序列
+e.g. float arr[] = new float[10];
+for(float x : arr)
+	st;
+这里的x会会在循环中自动的从arr[0]到arr[9]按顺序的初始化。
+String类中有个toCharArray方法对字符串返回字符数组。String类有个split（String）方法可以按照参数的字符串分隔开一个字符串并且返回字符串数组。
+
+
+### (p)1.5.3 转跳语句：continue break return （异常其实也算）
 Java的类goto语法：
 break label；label只能放在代码块（就有标签的代码块必须具有break语句）前面，break常用于退出多个循环
 continue  label；label只能放在迭代语句前
@@ -2060,4 +2070,4 @@ MenuBar只有一个默认构造器, 所以一开始菜单栏为空, 在使用之
 Menu 封装了菜单, 菜单用MenuItem填充.派生自MenuItem
 
 
-  [1]: ./images/1500199149819.jpg
+  [1]: ./images/1500199542280.jpg
