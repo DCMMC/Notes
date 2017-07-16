@@ -230,44 +230,44 @@ int val();
 public static void myMeth() {}
 所以注解中的方法更加像域变量
 
-指定保留策略:
+### 指定保留策略:
 保留策略决定在什么配置丢弃注解(他们被封装到java.lang.annotation.RetentionPolicy枚举中): SOURCE CLASS(p.s. 局部变量声明的注解不能存储在.class文件中) RUNTIME
 保留策略通过Java内置注解@Retention指定: @Retention(retention-policy)  retention-policy只能是上面这三个枚举常量中的一个,如果没有为注解指定保留策略,将会使用默认策略CLASS
-对Class Method Field Constructor 对象调用<A extends Annotation> getAnnotation(Class<A> annoType)方法(如果没找到注解 e.g.注解的保留策略不是RUNTIME 就会返回null) (要配合反射一起使用) 也可以用Annotation[] getAnnotations()获取所有Annotation
+对Class Method Field Constructor 对象调用\<A extends Annotation> getAnnotation(Class\<A> annoType)方法(如果没找到注解 e.g.注解的保留策略不是RUNTIME 就会返回null) (要配合反射一起使用) 也可以用Annotation[] getAnnotations()获取所有Annotation
   JDK5以来，除了getAnnotation和getAnnotations 还有AnnotatedElement接口中定义的getDeclaredAnnotations返回调用对象中存在的所有非继承类注解，isAnnotationPresent（Class <? extends Annotation> annoType）返回annoType指定的注解与调用对象相关联就返回true 否则返回false
 JDK8新增getDeclaredAnnotation和getAnnotationByType和getDeclaredAnnotation方法(后面两个方法自动使用重复注解)
 
-使用默认值:
+### 使用默认值:
 可以在成员声明后面添加default子句: e.g. @interface MyAnno { String str() default "Default";}
 
-标记注解: e.g. @Override
+### 标记注解: e.g. @Override
 标记注解也就是不包含任何成员,唯一的目的就是标记声明.可以用AnnotatedElement接口(Method Field Class Constructor类实现了该接口)定义的isAnnotationPresent()方法确定标记注解是否存在
 
-单成员注解:
+### 单成员注解:
 当注解中只包含一个成员,在使用注解的时候可以直接使用()设置成员的值 e.g @Retention(RetentionPolicy.RUNTIME) 就可以使用单值语法(只要没有默认值的成员只有一个的都可以用单值语法)
-只要使用单成员注解,成员的名称就必须是value
+只要使用单成员注解,成员的名称就**必须**是**value**
 
-内置注解:
+### 内置注解:
 Java的内置注解中有9个用于一般用途:
 来自java.lang.annotation包的4个:
 @Retention 指定注解的保留策略 只能用于注解其他注解
 @Documented 标记接口,用于通知某个工具--注解将被文档化 只能注解其他注解
- @Target 用于指定可以应用注解的声明的类型,被设计为只能注解其他注解.它只有一个参数(必须来自ElementType):ANNOTATION_TYPE 另外一个注解 CONSTRUCTOR 构造器 FIELD 域变量 LOCAL_VARIABLE局部变量 METHOD 方法 PACKAGE 包 PARAMETER 参数 TYPE 类 接口或枚举 TYPE_PARAMETER 类型参数(JDK8) TYPE_USE 类型使用(JDK8)
+@Target 用于指定可以应用注解的声明的类型,被设计为只能注解其他注解.它只有一个参数(必须来自ElementType):ANNOTATION_TYPE 另外一个注解 CONSTRUCTOR 构造器 FIELD 域变量 LOCAL_VARIABLE局部变量 METHOD 方法 PACKAGE 包 PARAMETER 参数 TYPE 类 接口或枚举 TYPE_PARAMETER 类型参数(JDK8) TYPE_USE 类型使用(JDK8)
 如果要指定多个值:@Target (  {ElementType.FIELD,ElementType.LOCAL_VARIABLE}) 如果不使用@Target 那么除了类型参数之类,注解可以应用于任何声明
  @Inherited 标记注解,只能用于另外一个注解声明 而且只 影响用于类声明的注解 @Inherited会导致超类的注解被子类继承
 
 来自java.lang包的5个:
 @Override  标记注解,只能用于方法.带有它的方法必须覆盖超类中的方法
- @Deprecated 标记注解,用于指定声明是过时的,并且已经被更新的形式取代
+@Deprecated 标记注解,用于指定声明是过时的,并且已经被更新的形式取代
 @FunctionalInterface (JDK8新增)标记注解 用于接口,指出被注解的接口是函数式接口.函数式接口是指仅包含一个抽象方法的接口
- @SafeVarargs 标记注解 只能用于varargs方法和final构造器,指示没发生与可变长参数相关的不安全操作.可以用于抑制"未检查不安全代码"
- @SupressWarnings 用于指定能抑制一个或多个编译器可能会报告的警告.使用字符串形式表示的名称来指示要被抑制的警告.
+@SafeVarargs 标记注解 只能用于varargs方法和final构造器,指示没发生与可变长参数相关的不安全操作.可以用于抑制"未检查不安全代码"
+@SupressWarnings 用于指定能抑制一个或多个编译器可能会报告的警告.使用字符串形式表示的名称来指示要被抑制的警告.
 
 JDK8开始 Java注解除了可以在声明处使用外,还可以用于类型注解:方法的返回类型(放在方法声明前) 方法内this的类型 强制转换 数组级别 被继承的类 throws子句 泛型 
 
 p.s. 注解数组级别(JDK8): e.g @TypeAnno String @MaxLen(10) [] @NotZeroLen [] str; @MaxLen注解了第一级类型  @NotZeroLen注解了第二级类型 @TypeAnno注解的是变量类型
 
-重复注解:
+### 重复注解:
 JDK8新增能够在相同元素上重复引用注解的特性.
 可重复注解必须用@Repeatable进行注解.其value域指定了重复注解的容器类型（Class<?extendsAnnotation> value（）；）,也就是重复注解类型的数组.要创建重复注解,需要创建容器注解,然后将注解的类型指定为@Pepeatable注解的参数.
 为了使用getAnnotation方法访问重复注解,需要使用容器注解(就是那个用@Repeatable注解的那个单成员注解(只有一个需要重复注解的那个注解的数组作为返回值的成员方法))而不是重复注解.
