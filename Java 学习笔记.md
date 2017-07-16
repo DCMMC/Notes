@@ -87,7 +87,7 @@ Java是强类型化的语言（和C一样）。
 * double（64bits，适用于保持精度的运算，最常用 字面量后缀D或d） 
 * boolean （true false并没有对应的数值，而且0不代表假 非0不代表真 和C/C++不一样）
 
-类型 | 所占空间 | 包装器类型 | 默认值(只有当变量作为类的成员时才给定默认值,不适用于局部变量(i.e.在某个方法内))
+类型 | 所占空间 | 包装器类型 | 默认值(只有当变量作为类的成员(域变量)时才给定默认值,不适用于局部变量(i.e.在某个方法内))
 ------------- | ------------- | ------------ | ------------
 boolean |   -         | Boolean                              |   false
 char       |  16bits  | Character                          |    '\u0000'(null)(unicode编码)
@@ -150,9 +150,95 @@ Java支持动态声明。Java的基本类型和对象的引用的生命周期和
 
 Java的对象不具备和基本类型一样的生命周期,他们可以存活于作用域之外.Java有一个垃圾回收器用来监视new创建的所有对象,当不在需要时自动销毁.
 
+## (p)1.3 对象
 
+### (p)1.3.1 字段和方法
 
-## 运算符
+可以在类中设置两种类型的元素：字段（数据成员）和方法(成员函数).字段可以是任意类型的对象(需要引用和初始化(用new初始化))和任意基本类型.普通字段不能在对象间共享,给对象赋值:objectReference.member 
+e.g. 
+~~~ java
+class DataOnly {
+	int i; //自动赋默认值0
+	} 
+DataOnly data = new DataOnly();
+data.i = 47;//DataOnly为类,data为对象,i为字段.
+~~~
+而在某个方法内定义的局部变量不初始化是和C/C++一样得到垃圾数据,不过Java编译时会对这种未初始化的局部变量视为错误.
+Java支持在定义类成员变量的地方为其赋初始值（可以调用某个方法来提供初始值）（C++不行）.
+
+方法,参数和返回值 ReturnType methodName(/\*Argument list\*/) {/\*Method body方法体\*/} 方法名和参数列表(合称方法签名)唯一的标识出某个方法.
+> p.s. Main的参数列表是从所接收的参数开始的,而非是从程序名称开始(所以和C/C++不同)，args.length为参数个数，
+
+Java中的方法只能作为类的一部分来创建，方法(非static的)只能通过对象才能被调用。i.e. objectName.methodName(arg1,…);
+e.g.  x = a.fun();这种调用被称为发送消息给对象  (fun()是消息,a是对象)
+参数列表中必须指定每个所传递对象的类型及名字.关键字return的用法和在C/C++中的函数是一样的.
+
+### (p)1.3.2 名字可见性
+
+用反转的域名来表示包名(类库（library）)
+e.g. `com.google.system.android`.
+
+调用某个在同一源文件中的类,可以在任意位置定义该类(不一定要调用前定义).如果类位于其他的文件中,用关键字import来导入所在的类库(包) e.g. import java.util.ArrayList;(这是Java标准类库里面的构件,所以不用写一大段的反转域名,java.util是类库,ArrayList是其中的一个类),如果要导入util中的所有类,可以 import java.util.\*;使用通配符`*`.
+
+### (p)1.3.3 static关键字
+适用于
+* 只想为某个特定域分配单一存储空间
+* 希望某个方法不与包含它的类的任何对象关联在一起(即使没有创建对象,也能够调用这个方法)
+
+e.g. class SaticTest {
+		static int i = 47; } 
+如果创建了两个StaticTest对象,StaticTest.i也只有一份存储空间,这两个对象共享同一个i;也可以直接通过其类名直接引用，e.g. StaticTest.i++;
+	对于静态的方法,也可以用ClassName.mehod()直接引用.在静态的方法中不能引用非静态的方法或字段.
+无论创建多少个对象，静态数据都只占用一份存储区域，static关键字不能应用于局部变量，只能作用与域。如果一个域是静态的基本类型域且没有初始化，编译器会给他自动初始化为标准类型的标准初值，如果是对象引用，那么它的默认初始化值就是null。
+
+### (p)1.3.4 注释
+
+`/**/`和`//`的用法和C/C++一样, ==javadoc== 可以用于提取注释的工具,输出一个html文件. 所有javadoc命令都只能在 ==/\*\*(两个\*)开头\*/== 结尾的注释中.
+
+使用javadoc的方式:嵌入html,或使用文档标签.
+	独立文档便签:/**@标签内容…*/ ;
+	行内文档标签:可以在源代码中的任何位置,以@开头,但是要在花括号内.e.g. class Demo {@override void fun() {} }
+	三种类型的注释文档:类,域和方法注释,都放在它们的前面.
+	e.g.
+	//: object/Hello.java
+	import java.util.*;
+	
+	/**  A class comment
+	 *@author DCMMC
+	 *@version 1.0
+	 */
+	public class Hello {
+		/** A field comment */
+		public int i;
+		/** A method comment 
+		 @param args arrays of string arguments
+		 @throws exceptions No exceptions thrown
+		*/
+		public static void main(String[] args) {
+			System.out.println("hello");
+			System.out.println(new Date());
+		}
+	} /*Output:(55% match) // /*Output标签表示输出的开始部分将有这个文件生成,55%match是向测试系统(???作者写的基于ant的测试系统???)说明程序的输出与输出预期只有55%的相关性
+	hello
+	Wed Oct 05 14:39:36 MDT 2017
+	*///:~
+	p.s. javadoc只能为public和protected成员进行文档注释,private和包内可访问成员的注释会被忽略掉,所以输出结果中看不到它们(可以用-private进行标记,这样输出也能看到private成员的注释)
+	可在javadoc注释总内嵌html语法,在文档注释中,位于每一行的星号和前导空格都会被javadoc丢弃.
+	标签： 1. @see fully-qualified-classname#mathod-name 引用其他类的文档 在生成的文档中一个具有超链接的"See Also(参加)"条目
+	2. {@link package.class#member label} 与@see类似,只是它作用于行内,而且用"label"作为超链接文本
+	3. {@docRoot} 生成文档根目录的相对路径,用于文档树的显示超链接.
+	4. {@inheritDoc} 从当前这个类的最直接的基类中继承相关文档到当前的文档注释中
+	5. @version version-information 如果javadoc命令行使用了-version标记,那么就从生成的html文档中特别提取出版本信息.
+	6. @author author-information 可以使用多个标签(必须连续放置)
+	7. @since 指定程序代码最早使用的版本
+	8. @param parameter-name description 为参数写描述,description是可以延续数行的文本,终止于新的文档标签出现,下同
+	9. @return description 描述返回值的含义
+	10. @throws fully-qualified-class-name description对异常类进行说明
+	11. @deprecated 指出一些就特性已由改进的新特性所取代,如果是使用一个标记为@deprecated的方法,编译器会发出警告.
+
+[Java编程语言编码定](http://www.oracle.com/technetwork/java/codeconv/index.html)
+
+## (p)1.3 运算符
 基本和C一样，多了>>>（按位右移0填充，而且只对32bit或64bit数值有意义，short byte char这些都会自动提升（也就是会发生符号扩展））instanceof和->（JDK8新增）运算符
 p.s. 因为Java的表达式的自动提升，移位操作符用于byte short 时，要把结果强制转换一下。
 右移>>后的最高位会使用右移前的最高最填充（符号扩展）。使用左移和右移操作符可以高效的实现乘以和除以2 。
@@ -1947,3 +2033,6 @@ MenuBar只有一个默认构造器, 所以一开始菜单栏为空, 在使用之
 通常只使用MenuBar中的ObservableList<Menu> getMenus() 获得由菜单栏管理的菜单列表.向这个列表使用add()可以把Menu实例添加到这个菜单列表中.add(int index, Menu menu)中的index从0开始,0表示最左边的菜单
 
 Menu 封装了菜单, 菜单用MenuItem填充.派生自MenuItem
+
+
+  [1]: ./images/1500198081549.jpg
