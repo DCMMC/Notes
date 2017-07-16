@@ -378,7 +378,7 @@ import static 可以用于导入包中的静态方法.比如简写版的print方
 
 
 ## 泛型：（@since JDK5）
-JDK7开始，可以缩短创建泛型类的实例的语法：e.g.Gen<String> gen = new Gen<>(args); //<>被称为菱形运算符，告诉编译器要去推断
+JDK7开始，可以缩短创建泛型类的实例的语法：e.g.Gen\<String> gen = new Gen\<>(args); //<>被称为菱形运算符，告诉编译器要去推断
 //感觉也就是SE5的那个自动类型判断嘛。。而且不是很智能的感觉。。辣鸡擦除特性。。
 
 类型参数只使用引用类型，不能使用基本数据类型。
@@ -392,12 +392,12 @@ JDK7开始，可以缩短创建泛型类的实例的语法：e.g.Gen<String> gen
 擦除导致的限制：
 不能实例化类型参数。
 静态成员不能使用在类中声明的类型参数。
-不能创建参数类型或者特定参数类型作为元素的数组：e.g. new T[]; e.g. Gen<Integer> gens[]  = new Gen<Integer>[10];而Gen<?> gens[] = new Gen<?>[10];就是可以的,在泛型类中声明泛型引用也是可以的:T[] gens;
+不能创建参数类型或者特定参数类型作为元素的数组：e.g. new T[]; e.g. Gen\<Integer> gens[]  = new Gen\<Integer>[10];而Gen<?> gens[] = new Gen<?>[10];就是可以的,在泛型类中声明泛型引用也是可以的:T[] gens;
 泛型不能扩展Throwable.
 
 
 
-lambda表达式(JDK8):
+## lambda表达式(@since JDK8)
 lambda表达式本质就是一个匿名(未命名)方法.而且这个方法不能独立执行,只能用于实现由函数式接口(仅包含一个抽象画方法的接口)定义的另一个方法.因此,lambda表达式会产生一个匿名类.lambda表达式也常被称为闭包.
 函数式接口定义了lambda表达式的目标类型,lambda表达式只能用于其目标类型已被指定的上下文中.
 e.g. interface MyNumbre {
@@ -427,7 +427,7 @@ lambda表达式可以显式的或隐式的访问this变量 访问并设置其外
 ClassName::methodName (::是JDK8新增的分隔符)
 只要是与目标类型兼容(方法返回值 参数 异常)的任何地方都可以使用这个方法引用
 和lambda表达式一样,ClassName::methodName方法引用的返回值就是这个函数式接口的一个实例的引用.(所以如果作为参数,那么这个参数应该是函数式接口类型的,而不是该静态方法的返回值)
-e.g. public static<T> T max(Collection<?extendsT> coll,Comparator<?superT> comp)中的Comparator就是一个函数式接口,可以直接用方法引用出来一个ClassName::instanceMethodName(这里的instanceMethodName正好要和Comparator函数式接口中的方法兼容)直接作为参数comp,因为方法引用与Comparator兼容.
+e.g. public static\<T> T max(Collection\<?extendsT> coll,Comparator<?superT> comp)中的Comparator就是一个函数式接口,可以直接用方法引用出来一个ClassName::instanceMethodName(这里的instanceMethodName正好要和Comparator函数式接口中的方法兼容)直接作为参数comp,因为方法引用与Comparator兼容.
 实例方法的方法引用:objRef::methodName
 实例方法的方法引用:
 ClassName::instanceMethodName
@@ -444,10 +444,10 @@ JDK8中的新包java.util.function
 
 
 
-# 类库:
+# 类库
 
 
-## 字符串类库:
+## 字符串类库
 Java中的String类操作都不会改变原字符串,只有StringBuffer和StringBuilder(效率比StringBuffer高点)能够保存可以进行修改的字符串.
 这三个类都在java.lang类库中定义.而且都是final的.都是实现了CharSequence接口.
 
