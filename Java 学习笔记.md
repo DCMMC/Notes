@@ -51,25 +51,31 @@ Java是强类型化的语言（和C一样）。
 * double（64bits，适用于保持精度的运算，最常用 字面量后缀D或d） 
 * boolean （true false并没有对应的数值，而且0不代表假 非0不代表真 和C/C++不一样）
 
-类型       所占空间  包装器类型  默认值(只有当变量作为类的成员时才给定默认值,不适用于局部变量(i.e.在某个方法内))
-boolean   -             Boolean      false
-char         16bits     Character  '\u0000'(null) （unicode编码）
-byte         8bits      Byte              (byte)0
-short        16bits     Short          (short)0
-int            32bits    Integer        0
-long         64bits   Long             0L
-float         32bits   Float             0.0f
-double     64bits   Double        0.0d
-void          -           Void
+类型 | 所占空间 | 包装器类型 | 默认值(只有当变量作为类的成员时才给定默认值,不适用于局部变量(i.e.在某个方法内))
+------------- | ------------- | ------------ | ------------
+boolean |   -         | Boolean                              |   false
+char       |  16bits  | Character                          |    '\u0000'(null)(unicode编码)
+byte       |  8bits    |  Byte                                  |   (byte)0
+short      |  16bits  |  Short                                |   (short)0
+int          |  32bits  |  Integer                              |   0
+long       |  64bits  |  Long                                 |   0L
+float       |  32bits  | Float                                   |   0.0f
+double   |  64bits  | Double                                |   0.0d
+void       |   -          | Void
 
 > p.s. Java的所有类型都是有符号的
+
+## 自动包装机制
+在有需要的时候，Java会隐式的自动把基本数据类型包装成包装器类型。
+p.s. JDK7新增二进制表示整数：需要加上前缀0b或者0B e.g. int x = 0b1010；JDK7还允许在数字间（包括小数）加入一个或者多个下划线方便记忆大数字，在编译的时候会自动删除 e.g. int x = 123_456\_\_7\_\_\_\_9;（尤其是在二进制数字中可以作为四个四个的分隔符）
+
 
 ## 字面量（literal）
 * 八进制：0前缀 
 * 十六进制：0X或0x前缀  
 * 二进制（SE7）：0b或0B前缀 
 
-JDK7开始，可在数字字面量中嵌入下划线 `_`增强大数字的可阅读性，编译时编译器会自动去掉。e.g. int x = 123_456\_\_789;
+JDK7新增二进制表示整数：需要加上前缀0b或者0B e.g. int x = 0b1010；JDK7还允许在数字间（包括小数）加入一个或者多个下划线方便记忆大数字，在编译的时候会自动删除 e.g. int x = 123_456\_\_7\_\_\_\_9;（尤其是在二进制数字中可以作为四个四个的分隔符）
 
 字符型字面量：转义字符：\ddd （d为八进制数） \uxxxx（x为十六进数）
 
@@ -1881,5 +1887,5 @@ MenuBar只有一个默认构造器, 所以一开始菜单栏为空, 在使用之
 Menu 封装了菜单, 菜单用MenuItem填充.派生自MenuItem
 
 
-  [1]: ./images/1500195637065.jpg
+  [1]: ./images/1500196327652.jpg
   [2]: ./images/1500195281730.jpg
