@@ -443,6 +443,19 @@ e.g. Access enum Test｛element1,…,element_n｝//Access：public protected pri
 3. 创建static values(）方法，用来按照enum常量的声明顺序，产生由这些常量构成的数组。
 enum可以配合switch语句使用
 
+
+枚举类型不能在方法内定义也不能实例化 不过枚举类依然是类类型枚举为类添加构造器 实例变量和方法
+public static enum-type[] values（） 
+public static enum-type valueOf(String str)
+枚举类型可以用在foreach 和switch中
+每个枚举常量都是所属的枚举类型的对象,且都是final static的:
+每个枚举常量都相当于调用了枚举类型的构造器 而且对于默认构造器枚举常量有没有括号都会调用默认构造器
+枚举类型不能实例化
+枚举类都继承自java.lang.Enmu类:
+Enum中的方法:
+final int ordinal() 返回枚举常数的序列值
+final int compareTo(enum-type e) 比较调用常数的序列值与e的序列值的大小关系,小于e就返回负值,等于就返回0,大于返回正数 调用常数必须与e是相同的枚举 (可以使用Object类中定义的equals方法 比较是否为同一枚举类的相同序列 也可以使用==比较这两个枚举引用是否相同)
+
 ## (p)1.7 访问权限控制
 
 在重构时，类库（library）开发者会更改实现甚至更改域，而类库的消费者（客户端程序员）则不想发生这样的变动。
@@ -733,57 +746,102 @@ e.g. void method（）｛class Inner｛｝｝
 
 ## (p)1.12 持有对象(容器)
 
-容器（Collections）提供了比数组更加完善的方法来保存对象，容器可自动的调整自己的尺寸。
-Java SE5新增一个注解：｛@SuppressWarnings("unchecked")｝表示只有有关“不受检查的异常”的警告信息都会被抑制。
-通过声明ArrayList<参数类型>（）这种泛型可以在编译器防止将错误类型的对象放置到容器中，参数类型可以为多个，参数类型就是类的名字。向上转型也能作用于泛型。
-Java的容器类类库分两种：Collection和Map
-Collection：（可在尖括号中接收一个引用参数作为泛型）一个独立元素的序列，Collection可以直接用foreach。List（子类：ArrayList（长于随机访问，但是在List中间插入和移除元素比较慢） LinkedList（跟更快的在List中插入和删除元素，但是随机访问慢））必须按照插入的顺序保存元素，Set（子类：HashSet TreeSet LinkedHashSet）不能有重复元素而且HashSet最快但是无顺序，TreeSet按照比较结果的升序保存对象，LinkedHashSet按照被添加的顺序保存对象，Queue（只能在容器的一段插入对象，在另一端移除对象）按照排队规则来确定产生的顺序（通常与它们被插入的顺序相同）。对于每个键，Map只接收保存一次。
-List接口在Collection的基础上添加了大量方法，是的可以在List中插入和移除元素：add(int index,Integer element)或者add（Integer e）插入对象，get(int index)访问这些对象，size()知道有多少个数据添加了进来，set（int index，Integer element）修改某一个元素，remove(Object o)方法删除某个数据，contains（Object o）确定那个List中是否有该元素，返回boolean类型，containsAll（Colllection<?> c）确实是否有c中的所有元素，indexOf(Object o)返回该对象在List中的索引编号，重载方法addAll（）可以在List中间插入新的列表，subLIst（int fromIndex，int toIndex）从List中复制出一个片段，removeAll（Collection c）移除List中和c共有的元素（基于Object.equals（）的比较），isEmpty()返回是否为空的boolean结果，clear（）清除所有的元素，toArray（）返回一个Object数组。ArrayList保存的是Object。List类是抽象的。
+**容器**（Collections）提供了比数组更加完善的方法来保存对象，容器可自动的调整自己的尺寸。
+
+Java SE5新增一个注解：｛==@SuppressWarnings("unchecked")==｝表示只有有关“不受检查的异常”的警告信息都会被抑制。
+
+通过声明ArrayList<参数类型>（）这种泛型可以在编译期防止将错误类型的对象放置到容器中，参数类型可以为多个，参数类型就是类的名字。向上转型也能作用于泛型。
+
+Java的容器类类库分两种：==Collection==和==Map==
+
+### (p)1.12.1 Collection
+
+（可在尖括号中接收一个引用参数作为泛型）一个独立元素的序列，Collection可以直接用foreach。
+
+List（子类：ArrayList（长于随机访问，但是在List中间插入和移除元素比较慢） LinkedList（跟更快的在List中插入和删除元素，但是随机访问慢））必须按照插入的顺序保存元素，
+Set（子类：HashSet TreeSet LinkedHashSet）不能有重复元素而且HashSet最快但是无顺序，TreeSet按照比较结果的升序保存对象，LinkedHashSet按照被添加的顺序保存对象，
+Queue（只能在容器的一段插入对象，在另一端移除对象）按照排队规则来确定产生的顺序（通常与它们被插入的顺序相同）。
+对于每个键，Map只接收保存一次。
+
+List接口在Collection的基础上添加了大量方法，可以在List中插入和移除元素：add(int index,Integer element)或者add（Integer e）插入对象，get(int index)访问这些对象，size()知道有多少个数据添加了进来，set（int index，Integer element）修改某一个元素，remove(Object o)方法删除某个数据，contains（Object o）确定那个List中是否有该元素，返回boolean类型，containsAll（Colllection<?> c）确实是否有c中的所有元素，indexOf(Object o)返回该对象在List中的索引编号，重载方法addAll（）可以在List中间插入新的列表，subLIst（int fromIndex，int toIndex）从List中复制出一个片段，removeAll（Collection c）移除List中和c共有的元素（基于Object.equals（）的比较），isEmpty()返回是否为空的boolean结果，clear（）清除所有的元素，toArray（）返回一个Object数组。ArrayList保存的是Object。List类是抽象的。
+
+### (p)1.12.2 Collections工具库和Arrays工具库
+
 Collections.sort（list）简单升序排序，Collections.shuffle(List, Random)随机打乱顺序;
-可以这样声明：List<Apple> apples = new LinkedList<Apple>(); 因为ArrayList LinkedList都是List的子类，这里向上转型了。List又继承自Collection类。
-所有的Collection都可以用foreach遍历。
-Arrays.asList()方法接收一个数组或者逗号分隔的元素列表（使用可变参数），并将其转化为List对象（不是ArrayList 是他们的基类List）。Arrays.asList方法输出的是List，但是其低沉表示是数组，因此不能调整大小，如果试图用add() delete()方法在这个List上会得到运行时错误“Unsupported Operation”。
+可以这样声明：List<Apple> apples = new LinkedList<Apple>(); 因为ArrayList LinkedList都是List的子类，这里向上转型了。
+
+Arrays.asList()方法接收一个数组或者逗号分隔的元素列表（使用可变参数），并将其转化为List对象（不是ArrayList 是他们的基类List）。Arrays.asList方法输出的是List，但是其底层表示是数组，因此不能调整大小，如果试图用add() delete()方法在这个List上会得到运行时错误“Unsupported Operation”。
+
 p.s. Arrays.asList()如果接收的所有参数都是一个基类型Super的不同子类，那么就会产生Super的List的引用，如果这时候赋值给了一个Super的基类Root的List的引用，不会再次向上转型，直接报错。除非List<Root> list = new Arrays.<Root>asList(new Sub1(),new Sub2());告诉Arrays.asList要向上转型为Root。（这叫显示参数说明）
+
 不过使用Collections.addAll(RootRefence，SubRefence1，SubRefence2，…)（在RootRefence的末尾插入新的列表）就可以，它可以连续向上转型很多次，因为第一个参数已经确定好了目标类型。
 Collections.addAll(Collection对象的引用，元素…)方法（注意Collections类有个s）可以接收Collection类的引用加一个数组或者逗号分隔的元素列表（使用可变参数），往Collection类中添加元素。
-容器的打印：
-数组需要使用方法Arrays.toString()来产生数组的可打印表示。而容器可以直接被println print printf这些方法打印。
-Collection：输出结果：[元素1，元素1，…，元素n]
-Map：输出结果：{键1=值1，键2=值2，…，键n=值n}
-迭代器：（iterator）
-只是使用容器，而不关心容器的类型，这样更加通用。它的工作是遍历并选择序列中的对象。迭代器通常被称为轻量级对象，创建它的代价很小，不过功能也少。
-Java的Iterator只能单向移动，使用Collection.iterator（）方法要求容器返回一个Iterator类（和容器一样，也能用尖括号指定泛型）的对象的引用。Iterator类中的方法：
-hasNext（）检查序列中是否还有下一个元素（返回boolean），next（）得到序列中的下一个元素，remove（）将迭代器最近返回（所以一般调用remove（）前先调用next（））的元素删除（可选方法）。
-迭代器统一了对容器的访问方式。
-ListIterator：ListIterator是一个更加强大的Iterator子类型，它只能用于List类的访问。ListIterator支持双向移动。
-listIterator（）方法产生一个指向List开始处的ListIterator，并且可以通过调用listIterator（n）方法创建一个一开始就指向列表索引为n的元素处的ListIterator。
-nextIndex（）返回下一个元素的序列索引，previousIndex（）方法返回最近访问的那个元素的索引（也就是nextIndex（） - 1），hasPrevious（）返回时候前面还有元素，
-set（Integer e）把最近访问的那个元素替换为e，previous（）访问上一个元素。
 
-LinkedList：LinkedList添加了可以使其用作栈、队列或双端队列的方法。
+
+### (p)1.12.3 LinkedList：LinkedList添加了可以使其用作栈、队列或双端队列的方法。
 getFirst（）和element（）都是返回列表的头（第一个元素），如果List为空，则抛出NoSuchElementException，peek（）与这两个方法稍微有点差异，在列表为空的时候返回null。
 removeFirst（）与remove（）完全一样，他们移除并返回列表的头，在列表为空的时候抛出NoSuchElementException，poll（）稍有差异，它们在列表为空的时候返回null。
 addFirst（）将某个元素插入列表的头部。
 offer（）与add（）和addLast（）相同，它们都是将某个元素插入列表的尾部。
 removeLast（）移除并返回列表的最后一个元素。
-Stack（栈）：栈通常是指后进先出（LIFO）的容器，又是栈也被称为叠加栈，因为最后压入栈的元素，第一个弹出栈。
+
+### (p)1.12.5 Stack（栈）
+
+栈通常是指后进先出（LIFO）的容器，又是栈也被称为叠加栈，因为最后压入栈的元素，第一个弹出栈。
 LinkedList具有能够直接实现栈的所有功能的方法，因此可以直接作为栈使用。
 class Stack<T> { }尖括号（泛型）告诉编译器这是一个参数化类型，其中的类型参数，即在类被使用时将会被实际类型替换的参数，就是T。这个Stack类声明：定义一个可以持有T类型对象的Stack。在类的内部的容器声明也可以使用<T>表示持有T对象。
 push（T v）即LinkedList中的addFirst（v），peek（）即LinkedList中的getFirst（），pop即LinkedList中的removeFirst（），empty（）即LinkedList中的isEmpty（）。
-Set：Set不保存重复的元素。Set最常被使用的是测试归属性，可以很容易的查询某个对象是否在某个Set中。Set（除TreeSet）具有和Collection一模一样的接口：
+
+### (p)1.12.6 Set
+
+Set不保存重复的元素。Set最常被使用的是测试归属性，可以很容易的查询某个对象是否在某个Set中。Set（除TreeSet）具有和Collection一模一样的接口：
 add（） addAll（） remove（） contains（） containsAll（） removeAll（）
 默认TreeSet是按照字典序排序的，要想按照字母顺序（不区分大小写）排序，可以向TreeSet的构造器中传入String.CASE_INSENTIVE_ORDER比较器（比较器就是建立排序顺序的对象）。
-Map：（可在尖括号中接受两个引用参数（<键类型，值类型>）作为泛型，子类：HashMap（最快的获取元素的方式但是不按顺序） TreeMap（按照比较的结果保存键） LinkedHashMap（按照插入的顺序保存键，同时还保留了HashMap的查询速度））一组成对的“键值对”对象，允许使用键来查找值。映射表（字典）允许我们使用另一个对象来查找某个对象，它也被称为“关联数组”。用方法Map.put(key，value)插入键和值，Map.get(key)将返回与该key相关联的value，containsKey（） containsValue（）方法分别查看Map中是否存在对应的键和值，keySet（）和values（）返回油所有键组成的Set的所有value组成的List。
+
+### (p)1.12.7 Map
+
+（可在尖括号中接受两个引用参数（<键类型，值类型>）作为泛型，子类：HashMap（最快的获取元素的方式但是不按顺序） TreeMap（按照比较的结果保存键） LinkedHashMap（按照插入的顺序保存键，同时还保留了HashMap的查询速度））一组成对的“键值对”对象，允许使用键来查找值。映射表（字典）允许我们使用另一个对象来查找某个对象，它也被称为“关联数组”。用方法Map.put(key，value)插入键和值，Map.get(key)将返回与该key相关联的value，containsKey（） containsValue（）方法分别查看Map中是否存在对应的键和值，keySet（）和values（）返回油所有键组成的Set的所有value组成的List。
 Map可以很容易的扩展到多维：将其值设置为Map（或者其他容器），e.g. 要跟踪拥有多个宠物的人：Map<Person,List<Pet>>;
-Queue：队列是一种先进先出（FIFO）的容器。LinkedList可以作为用作Queue的一种实现。
+
+###(p)1.12.8 Queue
+
+队列是一种先进先出（FIFO）的容器。LinkedList可以作为用作Queue的一种实现。
 offer（）将一个元素插到队尾失败返回false，peek（）在不移除的情况下返回队头，为空时返回null，poll（）移除并返回队头，队列为空的时候返回null。
+
 PriorityQueue（JavaSE5）：优先级队列声明下一个弹出元素是最需要的元素（具有最高优先级的），这跟普通的Queue按照等待时间来确定下一个弹出的元素的方式不同。
 默认的排序是使用对象在对列中的自然顺序（按照ASCII（unicode）升序的顺序）。PriorityQueue确保当调用peek（） poll（） remove（）的时候，获取的元素是队列中优先级最高的元素。构造器PriorityQueue<>(int initsize，Comparator comparator)；Comparator可以用Comparator.reverseOrder()（JavaSE8放在了Comparator类里面，而SE5是放在了Collection里面）反序比较器，默认的是Comparator.naturalOrder（）比较器，这时候只能使用peek（）和poll（）方法来打印出排序后的结果，用print（）直接打印的会出错。
-Collection和Iterator：
+
+### (p)1.12.4 容器的打印
+
+数组需要使用方法Arrays.toString()来产生数组的可打印表示。而容器可以直接被println print printf这些方法打印。
+Collection：输出结果：[元素1，元素1，…，元素n]
+Map：输出结果：{键1=值1，键2=值2，…，键n=值n}
+
+**迭代器：(iterator)**
+
+只是使用容器，而不关心容器的类型，这样更加通用。它的工作是遍历并选择序列中的对象。迭代器通常被称为轻量级对象，创建它的代价很小，不过功能也少。
+
+Java的Iterator只能单向移动，使用Collection.iterator（）方法要求容器返回一个Iterator类（和容器一样，也能用尖括号指定泛型）的对象的引用。
+
+Iterator类中的方法：
+hasNext（）检查序列中是否还有下一个元素（返回boolean），next（）得到序列中的下一个元素，remove（）将迭代器最近返回（所以一般调用remove（）前先调用next（））的元素删除（可选方法）。
+
+迭代器统一了对容器的访问方式。
+ListIterator：ListIterator是一个更加强大的Iterator子类型，它只能用于List类的访问。ListIterator支持双向移动。
+
+listIterator（）方法产生一个指向List开始处的ListIterator，并且可以通过调用listIterator（n）方法创建一个一开始就指向列表索引为n的元素处的ListIterator。
+nextIndex（）返回下一个元素的序列索引，previousIndex（）方法返回最近访问的那个元素的索引（也就是nextIndex（） - 1），hasPrevious（）返回时候前面还有元素，
+set（Integer e）把最近访问的那个元素替换为e，previous（）访问上一个元素。
+
+**Collection和Iterator：**
+
 对于Collection类型，Collection比使用Iterator要更加简单，可以直接使用foreach。而要实现一个不是Collection的外部类时，实现Collection接口（要extends AbstractCollection<T>,这样就不能在继承别的类而需要自己实现所有要用到的方法）会很麻烦（里面的抽象方法很多而且还包括iterator（）），不如直接使用Iterator。
 这时最好的方法就是在这个外部类中加入一个iterator方法就可以了返回一个Iterator<>的匿名内部类。
+
 使用创建iterator方法的方式能使耦合度更加小。
-Foreach与迭代器：
+
+**Foreach与迭代器：**
+
 Java SE5引入了新的被称为Iterable的接口，该接口包含一个能够产生Iterator的iterator（）方法，并且Iterable接口被foreach用来在序列中移动。因此如果创建了任何实现Iterable的类，都可以用于foreach语句。（声明类的时候implements Iterable<T>，T指泛型）返回值同样也可以使用<T>作为泛型
 所有的Collection类（不包括所有的Map）都是Iterable类型的。
 p.s. 数组不是Iterable。
@@ -792,9 +850,487 @@ e.g. for（Map.Entry entry : System.getenv().entrySet()）{ entry.getKey()获得
 适配器发惯用法：如果现在有一个Iterable类，要想添加一个或多个在foreach中使用这个类的方法。可以继承该类，在构造器中显式的调用基类的构造器（super（参数）;），然后创建一个或多个返回包含iterator方法的返回Iterable<T>类的方法。e.g. for（Collection<T> c :  Class.YourMethod）{ }
 新建一个ArrayList包装asList的返回结果能够防止改变低沉数组的顺序，e.g. List<String> list = new ArrayList<>(Arrays.asList(array));
 
-p.s. 新程序不应该使用过时的Vector Hashtable Stack。
+> p.s. 新程序不应该使用过时的Vector Hashtable Stack。
 
 ![容器分类][1]
+
+
+## (p)1.13  通过异常处理错误
+
+
+Java使用异常来提供一致的错误报告模型，使得构件能够与客户端代码可靠的沟通。异常机制将保证能够捕获这个错误，只需在统一在一个地方（异常处理程序）处理错误，能够跟程序执行部分分开。
+
+### (p)1.13.1 基本异常
+
+异常情形是指阻止当前方法或作用域继续执行的问题。抛出异常时，Java会使用new在堆上创建异常对象，当前执行路径被终止，从当前环境中弹出对异常对象的调用，此时，异常处理机制接管程序，并开始寻找异常处理程序继续执行。关键字==throw==用来抛出异常对象，能够抛出任意类型的Throwable（异常类型的根类）对象。在作用域中的==throw==或着==return==语句后面的语句都是无法访问的语句。
+
+异常参数:
+标准异常类都有两个构造器：默认构造器和接收字符串作为参数的构造器。
+
+### (p)1.13.2 捕获异常
+
+监控区域：
+一段可能产生异常的代码，并且后面跟着处理这些异常的代码。
+可以设置一个try块（关键字try）来捕获异常：try ｛//Code that might generate exceptions ｝这样只需在一个地方就可以捕获所有异常。
+
+异常处理程序：
+异常处理程序紧跟在try块后面，用关键字catch表示：try ｛//Code that might generate exceptions｝catch(Type id1) ｛//Handle exceptions of Type1｝catch(Type2 id2) ｛//Handle exceptions of Type2｝//etc.. 
+
+p.s. try子句中必须含有能够（可能）抛出对应的Type的异常，在try子句抛出对应的时候执行对应的catch子句，finally子句：异常的统一出口。永远都能在方法被中止或程序被终结的时候执行，就算前面执行了return，finally子句的内容依然会执行，如果finally子句包含return语句则会覆盖掉原来的return。
+
+强烈建议独立使用 try/catch 和 try/finally 语句块，不要把try catch finally 放在一个层次上面，这样可以提高代码的清晰度。（try catch和finally不能单独使用）
+
+### (p)1.13.3 终止与恢复
+
+终止模块：
+直接终止当前方法或作用域；
+
+恢复模块：
+异常处理程序是修正错误，然后重新尝试调用问题的方法，并认为第二次能成功。要想实现该恢复行为：要么在遇见错误的时候不抛出异常而是通过调用方法来修正错误，要么把try块写到while循环里面，这样就不断的进入try块直到得到满意的结果。
+
+恢复性的处理程序需要了解异常抛出的地点，增加了耦合程度和代码的编写及维护难度。
+
+### (p)1.13.4 创建自定义异常
+
+要自定义异常类，必须从已有的异常（Throwable类）来继承（可以继承Exception）。错误信息最好送到System.err标准错误流单中，因为System.out也许会被重定向。
+
+可以调用Throeable类声明的printStackTrace（）方法打印从方法调用处直到异常抛出处的方法调用序列，无参的话会把信息输出到标准错误流（System.err）中，也可以printStackTrace（System.out）把信息输出到System.out，并自动的被捕获和显示在输出中。
+
+### (p)1.13.5 异常与记录日志：java.util.logging.*
+
+Logger.getLogger()方法创建一个String参数相关联的Logger对象（通常与错误相关的包名和类名），这个Logger对象会将其输出发送到System.err。使用Logger.severe（String）向Logger写入一个severe（严重级别）事件。printStackTrace（）默认是将信息输出到System.err并打印，可以使用重载的printStackTrace（java.io.PrintWriter）把错误信息输出到PrintWriter对象中，PrintWriter对象可以用new PrintWriter(new StringWriter);创建。
+可以对异常类型添加新的功能，不过一般都用不上。
+
+### (p)1.13.6 异常说明
+
+Java强制开发者对会抛出异常的方法的声明处使用异常说明（使用关键字throws注意有s）：void f（args） throws Exception1，Exception2 … ｛…｝
+
+如果方法声明中没有包含throws,那么说明方法除了自动从RuntimeException继承的异常外，没有其他的异常。
+
+调用使用了异常捕获（throws）的方法时必须有try-catch子句对其捕捉或声明以便抛出。对于RuntimeException错误，默认系统会自动抛出并终结程序，不过也可以自己用try--catch捕获，而且可以在catch中指定执行的操作。
+
+在定义抽象基类和接口的时候，可以在实际上不会抛出这个异常的情况下声明该方法会抛出异常，为异常先占个位子，以后就可以抛出这种异常而不用修改已有的代码，这样派生类或接口实现就能够抛出这些预先声明的异常。这种在编译时强制检查的异常被称为被检查的异常。
+
+捕获所有异常：通过不过异常类型的基类Exception（事实上还有其他的基类，不过Exception是同编程活动相关的基类）就可以了：catch（Exception e） ｛｝
+
+最好把它放在异常处理程序列表的末尾，以防止抢在其他程序之前先把异常捕获了。
+因为Exception是与编程有关的所有异常的基类，所以它只有从其基类Throwable继承的方法：String getMessage（）获取详细信息和String getLocalizedMessage（）用本地语言表示的详细信息 和Object基类就有的toString（）方法返回对Trowable的简单描述。
+从Object根类继承的方法：getClass（） getSimpleName（）
+同时还有void printStackTrace（） void printStackTrace（PrintSteam） void printStackTrace（java.io.PrintWriter）（默认无参是输出到标准错误流，后面两个重载版本可以自定义流）打印Throwable和Throwable的调用栈轨迹。getStackTrace()返回栈轨迹。调用栈显示了把你带到异常抛出地点的方法调用序列。Throwable fillInStackTrace（）用于在Throwable对象的内部记录栈帧的当前状态。
+
+### (p)1.13.7 栈轨迹
+
+printStackTrace（）所提供的信息可以通过Exception.getStackTrace（）方法直接访问，这个方法返回一个由栈轨迹中的元素（这个元素的类型为StackTraceElement，而且StackTraceElement中有个方法getMethodName（）可获取该栈轨迹元素的方法名）所构成的数组，其中每一个元素都表示栈中的一帧。元素0是栈顶元素，并且是调用序列中最后一个方法调用（这个Throwable被创建和抛出之处）。数组最后一个元素（栈底）是调用序列中的第一个方法调用。
+
+### (p)1.13.8 重新抛出异常
+
+重抛异常会把异常抛给上一级环境中的异常处理程序，同一个try块的后续catch子句会被忽略。而且，异常对象的所有信息都得以保持，所以只是把当前异常对象重新抛出，那么printStackTrace（）方法显示的将是原来异常抛出点的调用栈信息，并非是重新抛出点的信息。要想更新这个信息，可以调用fillInStackTrace（）方法，这将返回一个Throwable对象（一般都要强制类型转化），它是通过把当前调用栈的信息填入原来的那个异常对象而建立的。
+
+### (p)1.13.9 异常链：有时候需要捕获一个异常的时候再抛出另外一个异常，而且希望把原始的异常的信息保存下来，这被称为异常链。
+
+Java SE5新增所有Throwable的子类在构造器中都可以接受一个cause（因由）对象作为参数，这个cause用来表示原始异常，把原始异常包装成新的异常，用Throwable getCause（）来获取原始异常。在Throwable的子类中，只有三种基本的异常类提供了带cause的参数的构造器：Error（用于JVM报告系统错误） Exception 和 RuntimeException，如果要把其他类型的异常链接起来，只能使用initCause（Throwable cause）（所有的Throwable类都有）方法把cause和当前创建的异常链接（添加在一起）以来而不能用构造器。
+
+### (p)1.13.10 RuntimeException
+
+对于RuntimeException（或者任何从它继承的异常）都不需要异常说明（所以RuntimeException是个特例，别的异常都要进行异常说明），输出会自动报告给System.err。如果RuntimeException没有被捕获，那么程序被强行终止前还会自动调用printStackTrace。被捕获的话你就可以自定义你要做什么了。
+
+### (p)1.13.11 finally子句
+
+finally子句也只能配合try子句一起使用。无论异常是否抛出，finally总能执行。当要把除内存之外的资源（e.g. 已打开的文件或网络连接 在屏幕上画的图形…）恢复到它们的初始状态时，就要用到finally子句。
+当涉及break continue return 的语句中，finally都会得到执行。
+
+### (p)1.13.12 遗憾:异常丢失
+
+在一个try子句中镶嵌了一个try-finally块而且这try（-catch）-finally块中的try子句和（catch子句）和finally子句都能抛出异常，而在外层的try子句如果被catch捕获，则只能捕获到finally子句产生的异常，内层的try子句的异常就丢失了，直到Java SE8都没有修复这个缺陷。还有直接把return放在finally子句中，这样可以屏蔽所有同一级别的try抛出的异常，无法把异常传递到异常处理程序而直接退出该方法。
+
+### (p)1.13.13 异常的限制
+
+当覆盖方法时，只能抛出基类方法的异常说明里列出的那些异常（包括基类方法声明的异常的基类异常）。派生构造器会隐式的声明基类方法中构造器的异常声明，而且还可以额外的添加其他异常声明。
+子类中的派生类方法可以不抛出基类方法中声明的异常，但必须显示的写出所有基类方法中的异常声明。
+如果处理的一个对象创建的时候是向上转型了，那么编译器会要求你正确的捕获基类的异常。
+重载是根据方法签名（i.e. 方法名和参数）的，不能通过异常说明来重载方法。
+但是派生类构造器不能捕获基类构造器抛出的异常。（没看懂）
+
+### (p)1.13.14 构造器
+
+如果构造器抛出了异常，那么类中的清理行为也许就不能正常工作了。
+
+e.g. 在构造器中打开文件。不能在构造器中使用来关闭抛出异常时的文件，因为不论是否抛出异常，finally子句都会执行。
+
+对于在构造阶段可能会抛出的异常，并且要求清理的类，最安全的使用方式就是使用嵌套的try子句。基本规则是：对于创建需要清理的对象之后，立即进入一个try-finally语句块。
+对于对象构造不可能失败的类的创建使用可以直接使用try-finally子句，可以不需要catch。
+
+### (p)1.13.15 异常匹配
+
+抛出异常的时候，异常处理系统会按照代码的书写顺序找到最近的处理程序，当找到匹配的处理程序之后就不会继续查找了，派生类的异常对象也可以匹配其基类的处理程序。
+
+异常处理的一个重要原则：只有在你知道怎么处理异常的情况下才捕获异常。有时候异常声明带来的强制性捕获异常并非什么好事（对于大型工程来说更是如此），这会导致程序员仓促的异常编写处理程序（有时候直接用RuntimeException（某种你不知道处理的异常类型的引用）;把不知道处理的异常包装进RuntimeException//@since 1.4）。
+
+
+## (p)1.14 字符串
+
+字符串操作是计算机程序设计中最常见的行为。
+
+String对象是不可变的，String中每一个看起来会修改String值的方法，实际上都是创建了一个全新的String对象，以包含修改后的字符串内容，而最初的String对象并未改变。
+
+### (p)1.14.1 重载的 ==+== 和StringBuilder（Java SE5）
+
+对于创建字符串对象的时候，用+连接的多个常量会在编译器就直接转化为一个常量。如果=号右边是一个常数的话，就会进入内存池，查找是否已经有了该对象，有的话就直接引用已有的对象，没有才创建。
+String对象具有只读特征，所以指向它的任何引用都不可能改变它的值，所以一个String对象可以有很多的别名（也就是其他指向它的引用）。但是这也带来了效率问题。
+
+Java仅有的两个重载的操作符是+和+=，而且不允许程序员重载任何操作符。
+
+（Java SE5之前用的是StringBuffer）
+在用重载的+进行字符串连接的时候，每连接一个，编译器都会隐式得创建一个StringBuilder对象并调用StringBuilter.append（）。使用重载的+操作符不如直接显示的创建StringBuilder对象并调用append（）方法进行连接，如果实现知道最终的字符串的大小，还可以预先指定StringBuilder的大小以避免多次重新分配缓存。
+
+StringBuilder中的方法：append（） delete（int from，int to）（从第from个字符后面开始删一直删到第to个字符（包括to）） insert（） replace（） substring（） reverse（）（逆序） toString（）
+
+> 无意识的递归:
+如果想创建一个toString（）方法，在重载的+后面接this想打印地址，this会发生自动类型转换，调用this.toString()方法，这就会一直递归下去知道栈溢出。需要把this改成super.toString（）。
+
+### (p)1.14.2 String对象具备的一些基本方法
+
+length（） charAt（int index） getChars（） getBytes（）复制char或byte到目标数组中 toCharArray（）equals（） （比较内容）equalsIgnoreCase（）compareTo（）（按照字典顺序比较String内容，比较结果为负数 零或正数，大小写不等价） contains（） contentEquals（）（与参数（CharSequence或者StringBuffer）比较内容是否完全一致） regionMatcher（）（比较两String指定的区域是否一模一样的内容，重载版本还可以忽略大小写） startsWith（String） （判断字符串是否以参数中的字符串开始的） endsWith（String）（判断字符串是否以参数中的字符串结尾）indexOf（）（返回参数中指定的char或者String在字符串中的起始索引，如果不包含就返回-1）lastIndexOf（）（与indexOf（）差不多，不过是从后向前搜索） substring（）（参数为起始索引，返回一个由起始索引指定的子字符串）subSequence（）返回的是CharSequence和substring（）类似 concat（String）（将参数中的String连接到原始String后面，并且返回新的字符串）replace（）替换字符或CharSequence，如果没有发生替换过程，则返回原始的String对象 matches（）检查是否和参数中的内容（这个参数常常是用正则表达式表示的字符串）一模一样replaceAll（） replaceFirst（） toLowerCase（） toUpperCase（） trim（）（将字符串两端的空白字符删除后，返回新的String对象）valueOf（）返回一个表示参数内容的String intern（）为每一个字符序列生成一个且仅生成一个String引用。比如要创建一个字符串“string”用“string”.intern（）创建的时候，会先检查内存池中是否有了“string”为内容的对象（通过equals（）方法确定），有就直接返回这个已有的对象的引用，否则将此String对象添加到内存池中再返回它的引用。
+
+
+### (p)1.14.3 格式化输出
+
+Java SE5新增了和C语言一模一样的printf（），不过Java有重载的+了（SE5还没有，不知道后面哪个版本加上去的）。
+Java SE5引入了System.out.format（）可用于PrintSteam或PrintWriter对象，用法和printf（）一样。
+所有新的格式化功能都由java.util.Formatter类处理，创建Formatter类的对象时，要在构造器的参数中指定要输出在哪里。
+Formatter类中的format方法 的类型转换说明符（接在%后面）：c表示Unicode b表示Boolean（对于非布尔值，只要不是null输出都是true） s表示String h表示散列码（hashCode，十六进制）d十进制整数 f十进制浮点数 e科学计数法的浮点数 x十六进制整数
+String.format（）：静态方法，类似于C中的sprintf（） 
+
+
+### (p)1.14.4 正则表达式
+
+`\d`表示一位数字，在Java中`\\`的意思是插入一个正则表达式的反斜杠，所以如果需要表示一位数字，那么正则表达式应该是`\\d`，不过换行和制表符之类的东西只需要用单反斜杠：\n\t\r\f  (f是换页) 因为单斜杠表示转移字符
+如果只想插入一个普通的反斜杠，那要写成`\\\\`（4个\）
+普通的括号也好加//
+要表示一个或多个之前的表达式，应该（直接）使用+，所以要表达不同字符+要用`\\+`表示，将+转义成普通字符。 e.g.` -?\\d+` 表示负号开头后面跟着以为或者多位数字
+|表示或操作
+括号有这将表达式分组（捕获组）的效果 e.g.` (-|\\+)?` 表示可能有-或者+或者都没有（？的效果）
+可以用String中的matches（）和split（）（重载的split（CharSequence input，int limit）中的limit表示最多的分割数量）这两个正则表达式工具。
+字符组：
+. （点）表示任意字符 （字面意思的点好就要用\\.）
+[abc]表示a、b或者c（和a|b|c一样的效果）
+[a-cK-Z]表示a到c或者K到Z的任意字符
+[^abc]除了a b c之外的任意字符
+[a-k&&[abc]]表示a b c中任意一个字符
+[abc[def]]表示a、b、c、d、e、f中的任意字符
+ \w 表示单词字符（包括数字）   \W 表示非单词字符
+\s 空白符（空格 tab 换行 换页 回车） \S 非空白符（[^\s]）
+\d 数字（0到9） \D 非数字
+POSIX 字符集 (US-ASCII only)：
+\p{ASCII}    所有ASCII字符（[\x00-\x7F]）
+\p{Punct}  标点符号
+\p{Cntrl}  控制字符（[\x00-\x1F\x7F]）
+\p{Space} 空白字符（[\t\n\r\x0B]）
+逻辑操作符：
+XY 表示Y跟在X后面
+X|Y X或Y
+（X）  捕获组。可以在表达式中用\i引用第i个捕获组
+边界匹配器：
+^   一行的开始
+$ 一行的结束
+\b 词的边界的的的那个单词字符
+\B 非词的边界的那个非单词字符
+\G 前一个匹配的结束
+量词：（？ + ｛｝）
+量词描述了一个模式吸收输入文本的方式：
+贪婪型：贪婪表达式会为所有可能的模式发现尽可能多的匹配。
+勉强型：用问好来指定（也就是在贪婪型表达式的后面加上一个问号），这个量词匹配满足模式所需的最少字符数。
+占有型：用加号来指定（也就是在贪婪型表达式的后面加上一个加号）。只有在Java语言中才可用，所以用的不多。当正则表达式被应用于字符串时，它会产生相当多的状态，以便在匹配失败的时候可以回溯。而占有型量词并不保存这些中间状态，因此他们可以防止回溯。它们常常用于防止正则表达式失控，因此可以使正则表达式执行起来更有效。
+设表达式X（通常必须要用括号括起来）
+贪婪型示例：
+X?   匹配 一个或零个X
+X*  匹配零个或多个X
+X+ 匹配一个或多个X
+X｛n｝ 匹配恰好n次X
+X｛n，｝ 匹配至少n次X
+X｛n，m｝ 匹配至少n次，最多m次X
+接口CharSequence从CharBuffer String StringBuffer StringBuilder类之中抽象出了字符序列的一般化定义：
+interface CharSequence {
+	charAt(int i);
+	length();
+	subSequence(int start,int end);
+	toString();
+}
+多数正则表达式操作都接收CharSequence类型的参数。
+Pattern和Matcher类：
+位于java.util.regex包。用static Pattern.compile（String）方法将用String类型的正则表达式生成一个Pattern对象。把想要检索的字符串传入Pattern对象的matcher（）方法，matcher（）方法会返回一个Matcher对象，该对象有很多功能：boolean find（） matches（） lookingAt（） groupCount（） group（） start（） end（） relpaceFirst（） relpaceAll（） appendReplacement（StringBuffer subf，String replacement）执行渐进式的替换，渐进式得将替换结果拼接到subf中  appendTail（StringBuffer sbuf）在执行了一次或多次appendReplacement（）之后，调用appendTail可以将输入字符串余下的部分复制到subf中。
+p.s. lookingAt和matches都只有在输入的最开始部分就匹配成功才会成功，lookingAt可以只成功匹配输入的开头一部分，matches要匹配整个输入才会成功。
+reset（String）将现有的Matcher对象应用于一个新的字符序列 使用不带参数的reset（）可以将Macher对象重新设置到当前字符序列的其实位置。
+
+组：
+
+组是用括号划分的正则表达式，组0表示整个表达式，组1表示第一对括号括起来的，以此类推。
+Matcher对象提供一些获取组信息的方法：
+public int groupCount（）返回该匹配器的模式中的分组数目，第0组不包括在内。
+public String group（）返回前一次匹配操作（e.g. find（））的第0组的匹配结果。
+public String group （int i）返回前一次匹配操作期间指定的组号的匹配，如果匹配成功，但是指定的组没有匹配输入字符串的任何部分，则会返回null。
+public int start（int group）返回前一次匹配操作中寻找带的组的起始索引。
+public int end（int group）返回前一次匹配操作中寻找到的组的最后一个字符索引加1的值。
+Pattern标记：
+Pattern的compile（）方法还有个重载版本：Pattern Pattern.compile（String regex，int flag）
+flag（模式标记）来自下面的Pattern类中的常量：（多个flag用|或操作符组合）
+Pattern.CASE_INSENSITIVE (?i)           大小写不敏感（只有US-ASCII能进行）
+Pattern.UNICODE\_CASE (?u)             与Pattern.CASE_INSENSITIVE一起使用，大小写不敏感的匹配将按照Unicode标准相一致的方式进行
+Pattern.MULTILINE (?m)                    在多行模式下，表达式^和$还额外表示一行的开始和结束。默认没有该flag时^和$仅匹配完整字符串的开始和结束
+Pattern.COMMENTS (?x)                     空格符和以#开头直到行末的注释都会被忽略掉。
+Pattern.CANON_EQ                           匹配将考虑规范的等价性：当且仅当他们的完全规范分解相匹配时，就认为他们是匹配的
+Pattern.DOTALL (?s)                          点号匹配所有字符，包括行终结符。默认情况下，点号表达式不匹配行终结符
+Pattern.UNIX_LINES (?d)                       在.(点号) ^ $行为中，只识别行终结符\n（也就是unix的行终结符）
+可以直接在正则表达式中使用上面有括号的标记，只需要将括号中的字符插入（也要用括号括起来）到正则表达式中希望起作用的位置即可。
+最常用的是：（？ium）
+
+可以使用Integer.parseInt(String) Double.parseDouble(String) 将字符串转化为Integre和Double。
+
+### (p)1.14.5 输入
+
+BufferedReader可以将String转化为可读的流对象。
+读入行：java.io.\*; String BufferedReader.readLine()方法
+Java SE5新增的Scanner类中的nextLine nextInt nextDouble…还有next（regex）（无参数就是返回定界符分割后的字符串）用于找到下一个输入分词进行正则表达式的匹配结果（所以正则表达式中不能含有定界符）   可以轻松的从输入对象中读取行 整数 浮点数 每个基本类型（除char外）都有对应的next方法（包括BigDecimal和BigInteger）。Scanner还有hasNext方法用来判断下一个输入分词是否是所需的类型：hasNextInt hasNextDouble …还有hasNext（String regex）可以使用正则表达式来扫描，无参数则是返回是否存在下一个定界符分割后的字符串
+Scanner定界符：
+默认情况下，Scanner根据空白字符对输入进行分词。
+可以用正则表达式使用useDelimaiter（）方法指定分定界符。delimiter（）方法可以返回当前正在作为界定符使用的Pattern对象
+StringTokenizer：（已经过时了）
+在Java还未引入正则表达式（J2SE 1.4）和Scanner类（Java SE5）之前，分割字符串的唯一方法就是使用StringTokenizer。
+
+
+## (p)1.15 类型信息
+
+传统的类型转换（用（Type）进行类型转换）由RTTI确保类型转换的正确性，如果执行了一个错误的类型转换，就会抛出ClassCastException异常
+
+运行时类型信息（RTTI）使得可以的在程序运行时发现和使用类型信息。
+在运行时查询某个泛型引用所指向的对象的确切类型。
+
+### (p)1.15.1 Class对象：（所有的Class对象都属于Class类）
+
+类型信息在运行时的表示是由Class对象完成的，它包含了与类有关的信息。Java使用Class对象来执行其RTTI。每当编译了一个新类，就会产生一个Class对象（而且会被保存在一个同名的.class文件中）。
+
+JVM使用类加载器的子系统来产生Class类的对象。类加载器子系统可以包含一条类加载器链，但是一般情况下只有一个原生类加载器（加载的是来自本地盘的可信类 i.e.Java API类 等）（如果要从网络上或者其他地方加载，需要在类加载器链中挂接额外的类加载器）
+
+所有类都在对其第一次使用时多态的加载到JVM中，e.g. new创建类的对象时会调用构造器。
+
+如果类尚未加载，默认的类加载器可以根据类名查找.class文件（某个附加类加载器可能会在数据库中查找字节码），类的字节码被加载的时候，会接收验证，以确保其没有被破坏，并且不包含不良的Java代码。
+
+**获得Class对象：**
+
+Class类中的静态方法forName（String）可以根据参数（参数为全限定名（包含包名））取得Class对象的引用，如果没有这个类的对象的引用，就会加载它，然后返回Class对象的引用。如果没有指定的类的.class文件存在，就会抛出ClassNotFoundException异常。
+对于已经有了的对象，可以使用Object类中的getClass（）方法取得该对象的Class对象的引用。
+
+Class类中的方法：getName（）获得全限定名 getCanonicalName（）（JavaSE5）获得全限定名（我也不知道和getName有啥区别。。）
+getSimpleName（）产生不含包名的类名 isInterface（）判断该Class类是否是个接口 getInterfaces（）返回该Class类所包含的所有接口的Class对象，并且是以Class对象数组的形式，可以使用foreach  getSuperclass（）返回该类的直接基类  newInstance（） 尝试实现虚拟构造器（如果该类是虚拟类，就不能创建实例，就会抛出异常），返回Object引用（在没有泛型的情况下），但是这个Object引用指向该Class类对应的对象，用newInstance创建的类必须显式的带有默认的构造器 （因为newInstance不接受任何参数）
+
+### (p)1.15.2 类字面常量：（推荐使用）
+
+除了forName（）和getClass（），Java提供类字面常量更简单更安全的生成对Class对象的引用。
+e.g. <标识符>.class
+
+类字面常量可以用于普通类、接口、数组以及基本数据类型，对于基本数据类型的包装器类，可以使用里面的标准字段TYPE，TYPE是一个指向对应的基本数据类型的Class对象。
+(e.g. Integer.TYPE区别与Integer.class这是包装器类的Class对象)
+
+可以用object.getClass().isPrimitive()判断是否为基本数据类型的Class对象
+
+### (p)1.15.3 对于类的使用
+
+加载（由类加载器执行，为字节码创建一个Class对象），然后链接（验证类中的字节码，为静态域分配存储空间，解析这个类创建的对其他类的所有引用），最后初始化（执行静态初始化器和静态初始化块，如果该类具有超类，还会对其初始化）（初始化会被延迟到对静态方法（包括构造器）或非常数静态域进行首次引用时才执行）
+仅使用.class语法来获得的对类的引用不会引发初始化。如果类没有被初始化而直接通过Class类的引用来访问非final字段或方法，就会在访问非final字段或方法之前就进行链接和初始化。
+
+### (p)1.15.4 泛化的Class引用
+
+可以在Class后用<>指定更具体的泛型，强制编译器执行额外的类型检查。
+在Java SE5中Class<?>优先于Class，即使他们是等价的，因为他们都接受所有类型所以不会产生编译器错误，Class<?>突出说明你就是要选择这样一个非具体可以接收所有类型的引用。
+泛型可以使用通配符来限定为一个范围不是某一个具体的类型，
+e.g. Class<? extends Number>比Class<Integer>范围要放宽一些。
+将泛型语法用于Class对象时，newInstance（）将返回该对象的确切类型而不是Object类。
+要对getSuperclass（）返回的超类使用泛型语法，只能用通配符声明为某个类getSuperclass作用于的类的超类 e.g. Class<? Super FancyToy> up = FancyToyClass.getSuperclass();
+新的转型语法：（很少使用）如果你存储了一个Class引用，并希望以后通过这个引用来执行转型，就能有点用。
+Java SE5在Class类中新增cast（）方法，能够将参数（某对象的引用）转型为该Class引用的类型并返回其引用：
+e.g. House h =  houseClass.cast(b);（b为house的某个导出类的对象的引用，houseClass为house的Class对象的引用）
+
+### 1.15.5 instanceof关键字（二元操作符）
+
+判断引用所指向的对象（注意是对象而不是对象的引用）是不是某个特定类型的实例，返回布尔值，可用在转型之前的判断。
+e.g. objref instanceof Type（前面接的是引用名，后面是类名）（会在编译的时候试图类型转换来进行类型检测，并不具有灵活性）Type如果是泛型的化，不能是特定类型的，因为运行时根本不知道泛型信息。
+Class.isInstance（Object obj）方法（也是返回布尔值）提供了动态（更好的适应泛型）的测试对象的途径。（一般isInstance方法比instanceof操作符要用的多）判断obj对应的对象是否为该Class对应的对象的某个实例或者子类（判断在这个obj与该Class类代表的对象是否类型兼容）
+Class.isAssignableFrom(Class<?> cls) 判断ClassSub是否为参数的某个实例。判断参数（类或者接口）是否和这个Class类相同或这是是这个Class类的超类或者superinterface。
+
+### (p)1.15.6 反射：运行时的类信息
+
+RTTI只能识别出编译时就已知的类型。（必须在运行时从别的硬盘或者网络上下载的字节码中的类型信息，就不能识别）
+java.lang.reflect类库与Class类一起提供了反射的支持，该类库包含了Field Method Constructor 类，这些类的对象在JVM运行的时候创建，用来表示未知类中对应的成员。
+可以用Constructor创建新的对象，用get（）和set（）读取和修改与Field对象关联的字段，用invoke（）方法调用与Method关联的方法。
+对于RTTI来说，编译器在编译时打开和检查.class文件，对于反射机制来说，在运行时打开和检查.class文件。
+Class.forName（）生成的结果在编译时是不可知的，所以所有的方法特征签名信息都是在执行的时候被提取出来。
+
+Class类中关于反射的方法：
+Constructor<?>[]  getConstructors()    返回该Class对象表示的类的所有public构造器（构造器的权限默认是个类相同）的Constructor数组。
+Class<?>[]  getDeclaredClasses()   返回该Class对象表示的类中的所有声明的内部类或内部接口
+Field[]  getFields()返回该Class对象表示的类中的所有可访问的public字段的Field数组
+Method[] getMethods() 返回该Class对象表示的类及其基类 superinterface中的所有public的方法的Method数组。
+getClassLoader（）获得该Class对象的类加载器
+动态代理：（没看懂，也不是日常使用的工具）
+常规的代理是把要代理的接口实现通过构造器把这个实现包装进代理，并且在代理中执行这个实现中的相应方法还可以多加入一些别的操作。
+通过调用静态方法Proxy.newProxyInstance(ClassLoader loader,@NotNull Class<?>[] interfaces,@NotNull InvocationHandler h)可以创建动态代理（interfaces是你希望实现的代理要实现的接口列表 ，h是InvocationHandler接口的实例）
+
+### (p)1.15.7 空对象：
+可以创建一个Null接口，这使得instanceof可以探测空对象
+反射可以调用所有的非公共访问权限的东西。
+对于Method和Filed ，他们都可以通过他们中的方法setAccessible（Boolean）轻松的把他们设置的到权限（如果参数为true就获取权限）。
+并且使用public Object invoke（Object obj，Object… args）方法使用args指定的参数调用Method表示的底层方法（如果参数要求为空args也可以为空），obj表示该Method表示的底层方法所属的类的对象（如果这是个static方法，obj可以为null，而且如果这个static方法对应的类还没有初始化，就会在调用前先初始化）。
+如果Method表示的底层方法返回基本数据类型，会适当的执行自动包装机制，如果是基本数据类型的数组，那就会直接返回基本类型的数组，如果方法是void类型的，那么就会返回null。
+只有final域的字段不会被反射修改，不过反射修改他们的时候并不会抛出异常，只不过实际上并不会发生任何修改。
+
+RTTI有时能解决效率问题，不过没必要过早的关注效率问题，首先应该让程序运行起来。
+
+## (p)1.16 泛型
+
+泛型实现了参数化类型的概念，但是Java的泛型存在一些局限。（e.g. Java的泛型的类型参数不支持基本类型，不过有自动包装机制啊）
+泛型可以使在编程的时候暂时不指定类型，在使用这个类时，再用实际的类型替换此类型参数。由编译器来保证类型的正确性。
+元组类：
+将一组对象直接打包存储于期中的一个单一对象（就是在泛型中使用多个类型参数），这个容器对象允许读取其中元素，但是不允许向期中存放新的对象（通过把元素字段声明为final）。
+堆栈类：
+自己实现了一下。
+泛型接口：字面意思。。
+泛型方法：
+就是把返回值前面加上<Type>这样的泛型说明就行了（Type可以用在参数列表和方法体中和返回类型中）。
+只要能用泛型方法就用泛型方法，用泛型方法取代将整个类泛型化。
+static方法不能访问泛型类的类型参数，要使static方法使用泛型能力，必须使其称为泛型方法。
+在使用泛型方法时，通常不用指明参数类型，编译器会自动为我们找出具体的类型（类型参数判断）。（貌似推断不是很智能。。）
+显式的类型说明：
+有时候类型参数判断比较蠢，只能显式的说明类型：必须是方法所属的类型或者就在所属的类中使用的话可以用this再加点加尖括号中间打上类型说明再加方法名：
+e.g. New.<Person>.set()或者this.<Integer>.set()
+。。。总是真蛋疼 这样显式的说明还不一定有用。。（Java SE8）因为在编译器扫描方法调用进行方法解析的时候并不知道任何形式参数的具体信息，如果这时候参数是一个泛型方法的泛化的返回值，这个泛化的类型（假设是<T>中的T）T就会默认的被认为是Object（除非xiansh）
+可变参数与泛型方法：字面意思。。
+用于Generator的泛型方法：就是在Generator类后面加一个<T> 跟其他类一样的。。没区别
+简化元组：利用类型推断。
+可以利用泛型构造出复杂的模型出来。
+擦除（使我们不能准确的知道具体类型信息）：
+Class.getTypeParameters()将返回该Class所对应的对象的类型参数构成的TypeVariable对象数组（也就是在类的声明中尖括号中的符号 比如Class Demo<T> {}中的T）
+所以残酷的现实是在泛型代码内部，无法获取某个特定实例的实际的类型参数的信息，这些具体的类型信息都被擦除了。只能知道用作参数占位符的标识符。
+所以在比较ArrayList<Integer> 和 ArrayList<String>这两个类的Class对象的时候就会认为是相同的。
+然而C++在模版被实例化时，模版代码就能知道其模版参数的类型。
+为了解决擦除的这一问题，必须协助泛型类，给定泛型类的边界（这里Java重写了extends），告知编译器只能接收遵循这个边界的类型（也就是显示的在类型参数中使用extends关键字 e.g. <T extends Cls>，多边界：<T extends Interface1 & Interface2> 
+在泛型类型的继承中，可以使用边界将参数类型的范围逐渐缩小（只能缩小）
+迁移兼容性：
+因为泛型在Java中不是一开始就有的成分，所以擦除是不得已的折中方法。泛型类型只有在静态类型检查期间才出现，在这之后，程序中的所有泛型类型都会被擦除，e.g.List<T>会被擦除陈List，普通的类型变量在未指定边界的情况下会被擦除为Object。
+迁移兼容性就是在编写泛型代码的时候，还要往前兼容SE5之前的非泛型类库。擦除就允许了非泛型和泛型代码的共存。
+所以，无论何时，使用泛型时，对于class Foo<T> { T var;} Foo<Cat> f = new Foo<>()；这类代码时，必须提醒自己：它就是一个Object。
+用非泛型类去继承泛型类是可以的，不过在使用的时候可能就会发出警告，这时候可以在警告所在的方法前加入@SuppressWarnings("unchecked")注解忽略这一处的警告。
+
+在泛型中创建数组，用public static Object newInstance(Class<?> componentType,int length)实际上并没有拥有参数中类型的具体信息,拥有的只是typeclass对应的对象的Object数组（向上转型了），而且这个typeclass是实例化的时候提供的类型标签，所以要在前面添加一个（T[]）强制类型转换。这时候也会收到警告，使用@SuppressWarnings("unchecked")注解忽略这一处的警告。
+因为有了擦除，使用泛型中的方法返回一个泛型中的类型参数中的类的时候，编译器会隐式的插入一个（T）强制转换。（假设T就是那个参数类型）
+
+因为擦除，所以任何在运行中需要知道确切类型信息的操作都将无法工作。
+为了解决部分的问题：可以显式的传递具体的类型的Class对象（引入类型标签）。
+instanceof操作符可以换成动态的Class.isInstance（）方法 。用Class.newInstance()创建新实例。
+
+泛型数组：
+创建一个被擦除类型的新数组，然后对其转型（其实可以不用）。但是这可能会引起unchecked警告，使用@SuppressWarnings("unchecked")注解忽略这一处的警告。
+所以在泛型类内部创建泛型数组的话，不如直接创建Object[]而不要创建T[]，反正都会被擦除成Object[]，直接使用Object[]就不会忘记了这个擦除导致的运行时类型了。
+要创建特定实例对应的数组，必须向泛型类传递类型标签，然后使用（T[]）Array.newInstance（）。
+通配符：
+泛型容器不能直接向上转型，因为不能知道泛型类型有关的参数（因为泛型容器不支协变类型，而数组支持）。e.g. List<Fruit> flist = new ArrayList<Apple>();是不允许的。
+只能使用通配符在两种类型间建立向上转型关系型：List<？ extends fruit> flist = new ArrayList<Apple>();
+然而，最坑的是，add（）的参数也会变成？ extends Fruit，编译器不能了解这里需要Fruit的哪个具体类型，所以他不接受任何类型的Fruit。。。
+而contains（）和indexOf（）的参数却是Object，因此不涉及通配符，就可以接受任何类型的Fruit。。
+所以，应该使用超类型通配符：List<？ super Apple> flist = new ArrayList<Apple>() 这样就可以安全的存放Apple以及Apple的子类了，但是还是不能存放Apple的基类Fruit，因为编译器不知道是Apple的具体那个基类。
+无界通配符：LIst<?>表示使用了泛型的某种特定类型的非原生List类型。
+捕获转换：
+在方法内部，如果需要使用一个无界通配符的类型的确切类型，就会发生捕获转换。
+使用泛型的一些问题：
+任何基本类型都不能作为类型参数。不过可以借助自动包装机制（SE5）
+由于擦除的原因，一个类不能实现同一个泛型接口的两种变体，这两种变体擦除之后就会成为相同的接口。
+虽然擦除会导致类型参数的转型并不起作用，但是对于readObject这种返回必须转型的对象，就必须只用转型了，哪怕是泛型的转型。
+由于擦除的原因，重载方法不能按照类型参数来区分。
+古怪的循环泛型（GRG）：e.g. class CuriouslyRecurringGeneric extends GenericType<CuriouslyRecurringGeneric> {}创建一个继承自以这个导出类作为类型参数的泛型类型。
+这样可以产生使用导出类作为其参数和返回类型的基类。
+自限定类型（惯用法）（这不是可强制执行的，也就是可以把这种SelfBounded类作为原生类使用）：
+e.g. class SelfBounded<T extends SelfBounded<T>> { /… }
+这样可以强制在继承关系中要求使用SelfBounded时的类型参数只能是基类SelfBounded的导出类。常常用在GCG中。e.g. class A extends SelfBounded<A> {//… }
+还可以将自限定<T extends SelfBounded<T>>用于泛型方法。
+参数协变：
+自限定类型的价值在于他们可以产生协变参数类型：方法类型参数随着子类而变化。
+协变返回类型（SE5）：导出类方法可以返回比它覆盖的基类方法更具体的类型。
+使用基类方法参数的子类作为导出类方法的参数，在非自限定类型中就是重载，而在自限定类型中就是覆盖。
+动态类型安全：（感觉现在没啥用了）
+因为可以向SE5之前的代码传递泛型容器，所以可以使用java.util.Collections下的静态方法checkedCollection（） checkedList（） checkedMap（） checkedSet（） checkedSortedMap（） 和 checkedSortedSet（） 动态检查容器。
+异常：
+泛型类不能直接或者简介继承自Throwable，但是，类型参数可以继承自Throwable。
+混型：
+混合多种类，在混型中修改某些东西，将会应用于混型所应用的所有类型之上。
+C++能够轻松的实现混型，然而Java的擦除特性导致只能使用接口来产生混型效果。
+Java可以使用与接口混合（使用代理）的方式产生混型效果。
+装饰器设计模式也是一种实现混型的有局限的一种方案。
+使用动态代理创建一种跟贴近混型模型的机制：
+
+## 泛型：（@since JDK5）
+JDK7开始，可以缩短创建泛型类的实例的语法：e.g.Gen\<String> gen = new Gen\<>(args); //<>被称为菱形运算符，告诉编译器要去推断
+//感觉也就是SE5的那个自动类型判断嘛。。而且不是很智能的感觉。。辣鸡擦除特性。。
+
+类型参数只使用引用类型，不能使用基本数据类型。
+基于不同类型参数的泛型类型是不同的。
+
+泛型类相对于使用Object类型引用所有类型的对象再在调用的时候显式的通过RTTI向下转型，泛型能够自动确保类型安全，还消除了手动输入类型转换以及类型检查的需要。
+
+擦除：
+桥接方法：在字节中覆盖方法的类型擦除不能产生与超类方法相同的擦除。这种情况，会在子类中生成使用超类类型擦除的方法，并且这个方法调用由子类覆盖的那个类型擦除的方法。（这发生在字节码级别）
+模糊性错误：简直就是个坑啊。。
+擦除导致的限制：
+不能实例化类型参数。
+静态成员不能使用在类中声明的类型参数。
+不能创建参数类型或者特定参数类型作为元素的数组：e.g. new T[]; e.g. Gen\<Integer> gens[]  = new Gen\<Integer>[10];而Gen<?> gens[] = new Gen<?>[10];就是可以的,在泛型类中声明泛型引用也是可以的:T[] gens;
+泛型不能扩展Throwable.
+
+
+
+## lambda表达式(@since JDK8)
+lambda表达式本质就是一个匿名(未命名)方法.而且这个方法不能独立执行,只能用于实现由函数式接口(仅包含一个抽象画方法的接口)定义的另一个方法.因此,lambda表达式会产生一个匿名类.lambda表达式也常被称为闭包.
+函数式接口定义了lambda表达式的目标类型,lambda表达式只能用于其目标类型已被指定的上下文中.
+e.g. interface MyNumbre {
+double getValue();
+} MyNumber就是一个函数式接口,其功能由getValue()定义
+函数式接口可以指定Object定义的任何公有方法,例如equals,而不影响其作为函数式接口的状态.Object的公有方法被视为函数式接口的隐式成员,以newi函数式接口的实例会默认自动实现它们.
+lambda表达式在Java语言中引入了一个新的操作符: `->`(lambda操作符) 左侧指定了表达式需要的所有参数(如果不需要参数,则使用空的参数列表) 右侧制订了lambda体.
+e.g. () -> Math.random() * 100 e.g. (n) -> (n % 2) == 0 也可以显式的指定参数类型为int n,不过很多时候参数的类型是可以推测出来的. 如果要显式的声明参数类型,就要为所有的出声明类型
+
+当把一个lambda表达式赋给一个函数式接口(包括泛型函数式接口)引用 变量初始化 return语句 方法参数 类型转换 ?运算符 数组初始化器 lambda表达式本身 等提供了目标类型的上下文 时,就相对于为定义了lambda表达式的目标类型的上下文.
+
+为了在目标上下文中使用lambda表达式,抽象方法的类型和lambda表达式的类型必须兼容,返回值必须兼容,可能抛出的异常必须能被方法接收.
+当lambda参数只有一个的时候,可以省略掉括号: n -> (n % 2) == 0 不过还是统一都使用扩号好一点.
+
+块lambda表达式:
+lambda操作符右侧可以有一个代码块构成.不过在lambda中必须显式的使用return语句来返回值.
+
+lambda操作符右侧的返回值相当于对应的函数式接口中的成员方法的返回值类型,而整个lambda相当于一个实例化了函数式接口的实例的引用.
+
+作为参数传递lambda表达式:
+参数类型必须是lambda表达式对应的函数式接口的类型.而且这个lambda表达式太长的话看起来比较笨拙.
+
+lambda表达式可以显式的或隐式的访问this变量 访问并设置其外城作用域内定义的静态变量 实例 .但是,当lambda表达式使用其外城作用域内定义的局部变量时,称为变量捕获,在这种情况下,lambda表达式只能使用实质上的final的局部变量(也就是第一次赋值之后（而且第一次赋值不能是在lambda表达式中）,值不再发生变化的变量，虽然没有显式的指明是final的)或者就是final变量（也就是显式的声明为final的）
+
+方法引用：貌似这些方法引用都是用在方法参数中作为兼容的函数式接口的实例的引用.
+静态方法的方法引用：
+ClassName::methodName (`::`是JDK8新增的分隔符)
+只要是与目标类型兼容(方法返回值 参数 异常)的任何地方都可以使用这个方法引用
+和lambda表达式一样,ClassName::methodName方法引用的返回值就是这个函数式接口的一个实例的引用.(所以如果作为参数,那么这个参数应该是函数式接口类型的,而不是该静态方法的返回值)
+e.g. public static\<T> T max(Collection\<?extendsT> coll,Comparator<?superT> comp)中的Comparator就是一个函数式接口,可以直接用方法引用出来一个ClassName::instanceMethodName(这里的instanceMethodName正好要和Comparator函数式接口中的方法兼容)直接作为参数comp,因为方法引用与Comparator兼容.
+实例方法的方法引用:objRef::methodName
+实例方法的方法引用:
+ClassName::instanceMethodName
+
+泛型方法的方法引用: 泛型方法指定为方法引用时,类型参数放在::之后 方法名称之前,泛型类指定为方法引用时,类型参数在::之前,类名之后.
+
+构造器引用:
+Classname::new
+用于数组的构造器引用:type[]::new
+只要函数式接口中的方法和构造器兼容(参数相同 返回值就是构造器所属的类)就行
+
+预定义的函数式接口:
+JDK8中的新包java.util.function
+
 
 
 ## 类
@@ -891,18 +1427,7 @@ Thread.State getState()  (State是Thread中的一个枚举类型)
 
 线程不要创建太多,不然花费在上下文切换的CPU时间会比执行程序的实际时间更长
 
-## 枚举(Java SE5)
-枚举类型不能在方法内定义也不能实例化 不过枚举类依然是类类型枚举为类添加构造器 实例变量和方法
-public static enum-type[] values（） 
-public static enum-type valueOf(String str)
-枚举类型可以用在foreach 和switch中
-每个枚举常量都是所属的枚举类型的对象,且都是final static的:
-每个枚举常量都相当于调用了枚举类型的构造器 而且对于默认构造器枚举常量有没有括号都会调用默认构造器
-枚举类型不能实例化
-枚举类都继承自java.lang.Enmu类:
-Enum中的方法:
-final int ordinal() 返回枚举常数的序列值
-final int compareTo(enum-type e) 比较调用常数的序列值与e的序列值的大小关系,小于e就返回负值,等于就返回0,大于返回正数 调用常数必须与e是相同的枚举 (可以使用Object类中定义的equals方法 比较是否为同一枚举类的相同序列 也可以使用==比较这两个枚举引用是否相同)
+
 
 ## 自动包装器 (Java SE5) :
 每个包装器类中都有对应的typeValue方法 e.g. int intValue()
@@ -1073,70 +1598,6 @@ import static 可以用于导入包中的静态方法.比如简写版的print方
 使用-profile选项指定是否只使用了紧凑配置文件中定义的API:javac -profile profilename Programname e.g. javac -profile compact2 Test.java
 
 
-## 泛型：（@since JDK5）
-JDK7开始，可以缩短创建泛型类的实例的语法：e.g.Gen\<String> gen = new Gen\<>(args); //<>被称为菱形运算符，告诉编译器要去推断
-//感觉也就是SE5的那个自动类型判断嘛。。而且不是很智能的感觉。。辣鸡擦除特性。。
-
-类型参数只使用引用类型，不能使用基本数据类型。
-基于不同类型参数的泛型类型是不同的。
-
-泛型类相对于使用Object类型引用所有类型的对象再在调用的时候显式的通过RTTI向下转型，泛型能够自动确保类型安全，还消除了手动输入类型转换以及类型检查的需要。
-
-擦除：
-桥接方法：在字节中覆盖方法的类型擦除不能产生与超类方法相同的擦除。这种情况，会在子类中生成使用超类类型擦除的方法，并且这个方法调用由子类覆盖的那个类型擦除的方法。（这发生在字节码级别）
-模糊性错误：简直就是个坑啊。。
-擦除导致的限制：
-不能实例化类型参数。
-静态成员不能使用在类中声明的类型参数。
-不能创建参数类型或者特定参数类型作为元素的数组：e.g. new T[]; e.g. Gen\<Integer> gens[]  = new Gen\<Integer>[10];而Gen<?> gens[] = new Gen<?>[10];就是可以的,在泛型类中声明泛型引用也是可以的:T[] gens;
-泛型不能扩展Throwable.
-
-
-
-## lambda表达式(@since JDK8)
-lambda表达式本质就是一个匿名(未命名)方法.而且这个方法不能独立执行,只能用于实现由函数式接口(仅包含一个抽象画方法的接口)定义的另一个方法.因此,lambda表达式会产生一个匿名类.lambda表达式也常被称为闭包.
-函数式接口定义了lambda表达式的目标类型,lambda表达式只能用于其目标类型已被指定的上下文中.
-e.g. interface MyNumbre {
-double getValue();
-} MyNumber就是一个函数式接口,其功能由getValue()定义
-函数式接口可以指定Object定义的任何公有方法,例如equals,而不影响其作为函数式接口的状态.Object的公有方法被视为函数式接口的隐式成员,以newi函数式接口的实例会默认自动实现它们.
-lambda表达式在Java语言中引入了一个新的操作符: `->`(lambda操作符) 左侧指定了表达式需要的所有参数(如果不需要参数,则使用空的参数列表) 右侧制订了lambda体.
-e.g. () -> Math.random() * 100 e.g. (n) -> (n % 2) == 0 也可以显式的指定参数类型为int n,不过很多时候参数的类型是可以推测出来的. 如果要显式的声明参数类型,就要为所有的出声明类型
-
-当把一个lambda表达式赋给一个函数式接口(包括泛型函数式接口)引用 变量初始化 return语句 方法参数 类型转换 ?运算符 数组初始化器 lambda表达式本身 等提供了目标类型的上下文 时,就相对于为定义了lambda表达式的目标类型的上下文.
-
-为了在目标上下文中使用lambda表达式,抽象方法的类型和lambda表达式的类型必须兼容,返回值必须兼容,可能抛出的异常必须能被方法接收.
-当lambda参数只有一个的时候,可以省略掉括号: n -> (n % 2) == 0 不过还是统一都使用扩号好一点.
-
-块lambda表达式:
-lambda操作符右侧可以有一个代码块构成.不过在lambda中必须显式的使用return语句来返回值.
-
-lambda操作符右侧的返回值相当于对应的函数式接口中的成员方法的返回值类型,而整个lambda相当于一个实例化了函数式接口的实例的引用.
-
-作为参数传递lambda表达式:
-参数类型必须是lambda表达式对应的函数式接口的类型.而且这个lambda表达式太长的话看起来比较笨拙.
-
-lambda表达式可以显式的或隐式的访问this变量 访问并设置其外城作用域内定义的静态变量 实例 .但是,当lambda表达式使用其外城作用域内定义的局部变量时,称为变量捕获,在这种情况下,lambda表达式只能使用实质上的final的局部变量(也就是第一次赋值之后（而且第一次赋值不能是在lambda表达式中）,值不再发生变化的变量，虽然没有显式的指明是final的)或者就是final变量（也就是显式的声明为final的）
-
-方法引用：貌似这些方法引用都是用在方法参数中作为兼容的函数式接口的实例的引用.
-静态方法的方法引用：
-ClassName::methodName (`::`是JDK8新增的分隔符)
-只要是与目标类型兼容(方法返回值 参数 异常)的任何地方都可以使用这个方法引用
-和lambda表达式一样,ClassName::methodName方法引用的返回值就是这个函数式接口的一个实例的引用.(所以如果作为参数,那么这个参数应该是函数式接口类型的,而不是该静态方法的返回值)
-e.g. public static\<T> T max(Collection\<?extendsT> coll,Comparator<?superT> comp)中的Comparator就是一个函数式接口,可以直接用方法引用出来一个ClassName::instanceMethodName(这里的instanceMethodName正好要和Comparator函数式接口中的方法兼容)直接作为参数comp,因为方法引用与Comparator兼容.
-实例方法的方法引用:objRef::methodName
-实例方法的方法引用:
-ClassName::instanceMethodName
-
-泛型方法的方法引用: 泛型方法指定为方法引用时,类型参数放在::之后 方法名称之前,泛型类指定为方法引用时,类型参数在::之前,类名之后.
-
-构造器引用:
-Classname::new
-用于数组的构造器引用:type[]::new
-只要函数式接口中的方法和构造器兼容(参数相同 返回值就是构造器所属的类)就行
-
-预定义的函数式接口:
-JDK8中的新包java.util.function
 
 
 
@@ -2538,5 +2999,3 @@ MenuBar只有一个默认构造器, 所以一开始菜单栏为空, 在使用之
 
 Menu 封装了菜单, 菜单用MenuItem填充.派生自MenuItem
 
-
-  [1]: ./images/1500282171827.jpg
