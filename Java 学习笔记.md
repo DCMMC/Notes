@@ -731,6 +731,71 @@ e.g. void method（）｛class Inner｛｝｝
 
 内部标识符：每个类都会产生一个.class文件。内部类的class文件命名：OuterClassName$InnerClassName.class 如果内部类是匿名的那么就会简单的用数字表示InnerClassName.
 
+## (p)1.12 持有对象(容器)
+
+容器（Collections）提供了比数组更加完善的方法来保存对象，容器可自动的调整自己的尺寸。
+Java SE5新增一个注解：｛@SuppressWarnings("unchecked")｝表示只有有关“不受检查的异常”的警告信息都会被抑制。
+通过声明ArrayList<参数类型>（）这种泛型可以在编译器防止将错误类型的对象放置到容器中，参数类型可以为多个，参数类型就是类的名字。向上转型也能作用于泛型。
+Java的容器类类库分两种：Collection和Map
+Collection：（可在尖括号中接收一个引用参数作为泛型）一个独立元素的序列，Collection可以直接用foreach。List（子类：ArrayList（长于随机访问，但是在List中间插入和移除元素比较慢） LinkedList（跟更快的在List中插入和删除元素，但是随机访问慢））必须按照插入的顺序保存元素，Set（子类：HashSet TreeSet LinkedHashSet）不能有重复元素而且HashSet最快但是无顺序，TreeSet按照比较结果的升序保存对象，LinkedHashSet按照被添加的顺序保存对象，Queue（只能在容器的一段插入对象，在另一端移除对象）按照排队规则来确定产生的顺序（通常与它们被插入的顺序相同）。对于每个键，Map只接收保存一次。
+List接口在Collection的基础上添加了大量方法，是的可以在List中插入和移除元素：add(int index,Integer element)或者add（Integer e）插入对象，get(int index)访问这些对象，size()知道有多少个数据添加了进来，set（int index，Integer element）修改某一个元素，remove(Object o)方法删除某个数据，contains（Object o）确定那个List中是否有该元素，返回boolean类型，containsAll（Colllection<?> c）确实是否有c中的所有元素，indexOf(Object o)返回该对象在List中的索引编号，重载方法addAll（）可以在List中间插入新的列表，subLIst（int fromIndex，int toIndex）从List中复制出一个片段，removeAll（Collection c）移除List中和c共有的元素（基于Object.equals（）的比较），isEmpty()返回是否为空的boolean结果，clear（）清除所有的元素，toArray（）返回一个Object数组。ArrayList保存的是Object。List类是抽象的。
+Collections.sort（list）简单升序排序，Collections.shuffle(List, Random)随机打乱顺序;
+可以这样声明：List<Apple> apples = new LinkedList<Apple>(); 因为ArrayList LinkedList都是List的子类，这里向上转型了。List又继承自Collection类。
+所有的Collection都可以用foreach遍历。
+Arrays.asList()方法接收一个数组或者逗号分隔的元素列表（使用可变参数），并将其转化为List对象（不是ArrayList 是他们的基类List）。Arrays.asList方法输出的是List，但是其低沉表示是数组，因此不能调整大小，如果试图用add() delete()方法在这个List上会得到运行时错误“Unsupported Operation”。
+p.s. Arrays.asList()如果接收的所有参数都是一个基类型Super的不同子类，那么就会产生Super的List的引用，如果这时候赋值给了一个Super的基类Root的List的引用，不会再次向上转型，直接报错。除非List<Root> list = new Arrays.<Root>asList(new Sub1(),new Sub2());告诉Arrays.asList要向上转型为Root。（这叫显示参数说明）
+不过使用Collections.addAll(RootRefence，SubRefence1，SubRefence2，…)（在RootRefence的末尾插入新的列表）就可以，它可以连续向上转型很多次，因为第一个参数已经确定好了目标类型。
+Collections.addAll(Collection对象的引用，元素…)方法（注意Collections类有个s）可以接收Collection类的引用加一个数组或者逗号分隔的元素列表（使用可变参数），往Collection类中添加元素。
+容器的打印：
+数组需要使用方法Arrays.toString()来产生数组的可打印表示。而容器可以直接被println print printf这些方法打印。
+Collection：输出结果：[元素1，元素1，…，元素n]
+Map：输出结果：{键1=值1，键2=值2，…，键n=值n}
+迭代器：（iterator）
+只是使用容器，而不关心容器的类型，这样更加通用。它的工作是遍历并选择序列中的对象。迭代器通常被称为轻量级对象，创建它的代价很小，不过功能也少。
+Java的Iterator只能单向移动，使用Collection.iterator（）方法要求容器返回一个Iterator类（和容器一样，也能用尖括号指定泛型）的对象的引用。Iterator类中的方法：
+hasNext（）检查序列中是否还有下一个元素（返回boolean），next（）得到序列中的下一个元素，remove（）将迭代器最近返回（所以一般调用remove（）前先调用next（））的元素删除（可选方法）。
+迭代器统一了对容器的访问方式。
+ListIterator：ListIterator是一个更加强大的Iterator子类型，它只能用于List类的访问。ListIterator支持双向移动。
+listIterator（）方法产生一个指向List开始处的ListIterator，并且可以通过调用listIterator（n）方法创建一个一开始就指向列表索引为n的元素处的ListIterator。
+nextIndex（）返回下一个元素的序列索引，previousIndex（）方法返回最近访问的那个元素的索引（也就是nextIndex（） - 1），hasPrevious（）返回时候前面还有元素，
+set（Integer e）把最近访问的那个元素替换为e，previous（）访问上一个元素。
+
+LinkedList：LinkedList添加了可以使其用作栈、队列或双端队列的方法。
+getFirst（）和element（）都是返回列表的头（第一个元素），如果List为空，则抛出NoSuchElementException，peek（）与这两个方法稍微有点差异，在列表为空的时候返回null。
+removeFirst（）与remove（）完全一样，他们移除并返回列表的头，在列表为空的时候抛出NoSuchElementException，poll（）稍有差异，它们在列表为空的时候返回null。
+addFirst（）将某个元素插入列表的头部。
+offer（）与add（）和addLast（）相同，它们都是将某个元素插入列表的尾部。
+removeLast（）移除并返回列表的最后一个元素。
+Stack（栈）：栈通常是指后进先出（LIFO）的容器，又是栈也被称为叠加栈，因为最后压入栈的元素，第一个弹出栈。
+LinkedList具有能够直接实现栈的所有功能的方法，因此可以直接作为栈使用。
+class Stack<T> { }尖括号（泛型）告诉编译器这是一个参数化类型，其中的类型参数，即在类被使用时将会被实际类型替换的参数，就是T。这个Stack类声明：定义一个可以持有T类型对象的Stack。在类的内部的容器声明也可以使用<T>表示持有T对象。
+push（T v）即LinkedList中的addFirst（v），peek（）即LinkedList中的getFirst（），pop即LinkedList中的removeFirst（），empty（）即LinkedList中的isEmpty（）。
+Set：Set不保存重复的元素。Set最常被使用的是测试归属性，可以很容易的查询某个对象是否在某个Set中。Set（除TreeSet）具有和Collection一模一样的接口：
+add（） addAll（） remove（） contains（） containsAll（） removeAll（）
+默认TreeSet是按照字典序排序的，要想按照字母顺序（不区分大小写）排序，可以向TreeSet的构造器中传入String.CASE_INSENTIVE_ORDER比较器（比较器就是建立排序顺序的对象）。
+Map：（可在尖括号中接受两个引用参数（<键类型，值类型>）作为泛型，子类：HashMap（最快的获取元素的方式但是不按顺序） TreeMap（按照比较的结果保存键） LinkedHashMap（按照插入的顺序保存键，同时还保留了HashMap的查询速度））一组成对的“键值对”对象，允许使用键来查找值。映射表（字典）允许我们使用另一个对象来查找某个对象，它也被称为“关联数组”。用方法Map.put(key，value)插入键和值，Map.get(key)将返回与该key相关联的value，containsKey（） containsValue（）方法分别查看Map中是否存在对应的键和值，keySet（）和values（）返回油所有键组成的Set的所有value组成的List。
+Map可以很容易的扩展到多维：将其值设置为Map（或者其他容器），e.g. 要跟踪拥有多个宠物的人：Map<Person,List<Pet>>;
+Queue：队列是一种先进先出（FIFO）的容器。LinkedList可以作为用作Queue的一种实现。
+offer（）将一个元素插到队尾失败返回false，peek（）在不移除的情况下返回队头，为空时返回null，poll（）移除并返回队头，队列为空的时候返回null。
+PriorityQueue（JavaSE5）：优先级队列声明下一个弹出元素是最需要的元素（具有最高优先级的），这跟普通的Queue按照等待时间来确定下一个弹出的元素的方式不同。
+默认的排序是使用对象在对列中的自然顺序（按照ASCII（unicode）升序的顺序）。PriorityQueue确保当调用peek（） poll（） remove（）的时候，获取的元素是队列中优先级最高的元素。构造器PriorityQueue<>(int initsize，Comparator comparator)；Comparator可以用Comparator.reverseOrder()（JavaSE8放在了Comparator类里面，而SE5是放在了Collection里面）反序比较器，默认的是Comparator.naturalOrder（）比较器，这时候只能使用peek（）和poll（）方法来打印出排序后的结果，用print（）直接打印的会出错。
+Collection和Iterator：
+对于Collection类型，Collection比使用Iterator要更加简单，可以直接使用foreach。而要实现一个不是Collection的外部类时，实现Collection接口（要extends AbstractCollection<T>,这样就不能在继承别的类而需要自己实现所有要用到的方法）会很麻烦（里面的抽象方法很多而且还包括iterator（）），不如直接使用Iterator。
+这时最好的方法就是在这个外部类中加入一个iterator方法就可以了返回一个Iterator<>的匿名内部类。
+使用创建iterator方法的方式能使耦合度更加小。
+Foreach与迭代器：
+Java SE5引入了新的被称为Iterable的接口，该接口包含一个能够产生Iterator的iterator（）方法，并且Iterable接口被foreach用来在序列中移动。因此如果创建了任何实现Iterable的类，都可以用于foreach语句。（声明类的时候implements Iterable<T>，T指泛型）返回值同样也可以使用<T>作为泛型
+所有的Collection类（不包括所有的Map）都是Iterable类型的。
+p.s. 数组不是Iterable。
+System.getenv（）返回一个Map，entrySet（）产生一个由MapEntry的元素构成的Set，并且这个Set是一个Iterable，可以用foreach。
+e.g. for（Map.Entry entry : System.getenv().entrySet()）{ entry.getKey()获得键…entey.getValue()获得值 }
+适配器发惯用法：如果现在有一个Iterable类，要想添加一个或多个在foreach中使用这个类的方法。可以继承该类，在构造器中显式的调用基类的构造器（super（参数）;），然后创建一个或多个返回包含iterator方法的返回Iterable<T>类的方法。e.g. for（Collection<T> c :  Class.YourMethod）{ }
+新建一个ArrayList包装asList的返回结果能够防止改变低沉数组的顺序，e.g. List<String> list = new ArrayList<>(Arrays.asList(array));
+
+p.s. 新程序不应该使用过时的Vector Hashtable Stack。
+
+![容器分类][1]
+
 
 ## 类
 对象 对象的引用
@@ -2474,4 +2539,4 @@ MenuBar只有一个默认构造器, 所以一开始菜单栏为空, 在使用之
 Menu 封装了菜单, 菜单用MenuItem填充.派生自MenuItem
 
 
-  [1]: ./images/1500263384575.jpg
+  [1]: ./images/1500282171827.jpg
