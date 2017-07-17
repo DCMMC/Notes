@@ -341,6 +341,11 @@ e.g. class Constructor｛//构造器也是static方法，因为类是在其任�
 构造器的参数可在创建对象的时候接收相应参数。不接收任何参数的构造器叫默认构造器（无参构造器）。
 如果方法没有定义构造器，编译器会自动创建默认构造器。
 
+用this(arg-list)调用指定的构造器,使用他们有助于减少代码重复量,有助于结构化代码.
+不过this()的构造器相对于那些包含所有内联初始化代码的构造器来说,执行速度要慢一些.而且对于比较短的构造器,this()并不能节省加载时间,反而会增加在方法间转跳花费的时间.
+所以this()适合于大量初始化代码的构造器.
+> p.s. 同一个构造器中不能同时使用super() 和 this() 因为它们都位于构造器的第一条语句.
+
 ### (p)1.6.2 方法重载
 
 为了让一个类中同时存在多个不同参数类型的构造器或方法。只要有独一无二的参数列表就可以重载，即使只是参数的顺序不同（不推荐这样，会使代码难以维护）
@@ -744,6 +749,18 @@ e.g. void method（）｛class Inner｛｝｝
 
 内部标识符：每个类都会产生一个.class文件。内部类的class文件命名：OuterClassName$InnerClassName.class 如果内部类是匿名的那么就会简单的用数字表示InnerClassName.
 
+### (p)1.11.8 JDK8对接口的修改
+
+JDK8为接口新增了默认方法（在接口中为方法指定默认实现）的新功能：1.提供一种扩展接口的方法，而不破坏实现了这个接口的类的代码。2.在接口中指定本质上可选的方法，也就是如果接口的实现并没有覆盖这个接口作为占位符性质的方法，也没问题。（因为有些实现可以不需要接口中的某些方法）
+在需要提供默认实现的方法前面加上default关键字。
+不过接口还是不能使用实例变量，里面定义的所有变量都是final的。
+p.s. 类实现的优先级永远高于接口的默认实现。如果一个类要同时实现两个包含相同的方法签名的接口，编译器会报错。
+在子级接口中调用父级接口中的默认实现时，需要使用super关键字显式的调用：InterfaceName.super.methodName()
+JDK8中接口还可以定义一个或多个静态方法,可以不用实现接口或接口的实例:InterfaceName.staticMethodName();
+
+
+
+
 ## (p)1.12 持有对象(容器)
 
 **容器**（Collections）提供了比数组更加完善的方法来保存对象，容器可自动的调整自己的尺寸。
@@ -966,6 +983,12 @@ e.g. 在构造器中打开文件。不能在构造器中使用来关闭抛出异
 
 异常处理的一个重要原则：只有在你知道怎么处理异常的情况下才捕获异常。有时候异常声明带来的强制性捕获异常并非什么好事（对于大型工程来说更是如此），这会导致程序员仓促的异常编写处理程序（有时候直接用RuntimeException（某种你不知道处理的异常类型的引用）;把不知道处理的异常包装进RuntimeException//@since 1.4）。
 
+### (p)1.13.16 JDK7对新增的异常特性
+
+1.带资源的try语句 
+2.多重捕获(在一个catch子句的参数中使用|运算符把多个异常放在一起,且每个多重捕获参数都被隐式的声明为final) 
+3.更精确的重新抛出(只能抛出满足条件的异常:有关联的try代码块抛出,并没有被前面的catch子句处理,并且是参数的子类型或者超类型)
+
 
 ## (p)1.14 字符串
 
@@ -1185,36 +1208,52 @@ getClassLoader（）获得该Class对象的类加载器
 
 RTTI有时能解决效率问题，不过没必要过早的关注效率问题，首先应该让程序运行起来。
 
-## (p)1.16 泛型
+
+## (p)1.16 泛型(@since JDK5)
 
 泛型实现了参数化类型的概念，但是Java的泛型存在一些局限。（e.g. Java的泛型的类型参数不支持基本类型，不过有自动包装机制啊）
 泛型可以使在编程的时候暂时不指定类型，在使用这个类时，再用实际的类型替换此类型参数。由编译器来保证类型的正确性。
-元组类：
-将一组对象直接打包存储于期中的一个单一对象（就是在泛型中使用多个类型参数），这个容器对象允许读取其中元素，但是不允许向期中存放新的对象（通过把元素字段声明为final）。
+
+### (p)1.16.1 元组类
+
+将一组对象直接打包存储于其中的一个单一对象（就是在泛型中使用多个类型参数），这个容器对象允许读取其中元素，但是不允许向期中存放新的对象（通过把元素字段声明为final）。
+
 堆栈类：
 自己实现了一下。
 泛型接口：字面意思。。
-泛型方法：
+
+### (p)1.16.3 泛型方法
+
 就是把返回值前面加上<Type>这样的泛型说明就行了（Type可以用在参数列表和方法体中和返回类型中）。
 只要能用泛型方法就用泛型方法，用泛型方法取代将整个类泛型化。
-static方法不能访问泛型类的类型参数，要使static方法使用泛型能力，必须使其称为泛型方法。
+static方法不能访问泛型类的类型参数，要使static方法使用泛型能力，必须使其成为泛型方法。
 在使用泛型方法时，通常不用指明参数类型，编译器会自动为我们找出具体的类型（类型参数判断）。（貌似推断不是很智能。。）
-显式的类型说明：
+
+### (p)1.16.4 显式的类型说明
+
 有时候类型参数判断比较蠢，只能显式的说明类型：必须是方法所属的类型或者就在所属的类中使用的话可以用this再加点加尖括号中间打上类型说明再加方法名：
 e.g. New.<Person>.set()或者this.<Integer>.set()
-。。。总是真蛋疼 这样显式的说明还不一定有用。。（Java SE8）因为在编译器扫描方法调用进行方法解析的时候并不知道任何形式参数的具体信息，如果这时候参数是一个泛型方法的泛化的返回值，这个泛化的类型（假设是<T>中的T）T就会默认的被认为是Object（除非xiansh）
+。。。总之真蛋疼 这样显式的说明还不一定有用。。（Java SE8）因为在编译器扫描方法调用进行方法解析的时候并不知道任何形式参数的具体信息，如果这时候参数是一个泛型方法的泛化的返回值，这个泛化的类型（假设是<T>中的T）T就会默认的被认为是Object（除非显式的类型说明）
+
 可变参数与泛型方法：字面意思。。
+
 用于Generator的泛型方法：就是在Generator类后面加一个<T> 跟其他类一样的。。没区别
+
 简化元组：利用类型推断。
+
 可以利用泛型构造出复杂的模型出来。
-擦除（使我们不能准确的知道具体类型信息）：
+
+### (p)1.16.5 擦除（使我们不能准确的知道具体类型信息）
+
 Class.getTypeParameters()将返回该Class所对应的对象的类型参数构成的TypeVariable对象数组（也就是在类的声明中尖括号中的符号 比如Class Demo<T> {}中的T）
 所以残酷的现实是在泛型代码内部，无法获取某个特定实例的实际的类型参数的信息，这些具体的类型信息都被擦除了。只能知道用作参数占位符的标识符。
 所以在比较ArrayList<Integer> 和 ArrayList<String>这两个类的Class对象的时候就会认为是相同的。
 然而C++在模版被实例化时，模版代码就能知道其模版参数的类型。
 为了解决擦除的这一问题，必须协助泛型类，给定泛型类的边界（这里Java重写了extends），告知编译器只能接收遵循这个边界的类型（也就是显示的在类型参数中使用extends关键字 e.g. <T extends Cls>，多边界：<T extends Interface1 & Interface2> 
 在泛型类型的继承中，可以使用边界将参数类型的范围逐渐缩小（只能缩小）
-迁移兼容性：
+
+### (p)1.16.6 迁移兼容性
+
 因为泛型在Java中不是一开始就有的成分，所以擦除是不得已的折中方法。泛型类型只有在静态类型检查期间才出现，在这之后，程序中的所有泛型类型都会被擦除，e.g.List<T>会被擦除陈List，普通的类型变量在未指定边界的情况下会被擦除为Object。
 迁移兼容性就是在编写泛型代码的时候，还要往前兼容SE5之前的非泛型类库。擦除就允许了非泛型和泛型代码的共存。
 所以，无论何时，使用泛型时，对于class Foo<T> { T var;} Foo<Cat> f = new Foo<>()；这类代码时，必须提醒自己：它就是一个Object。
@@ -1227,20 +1266,27 @@ Class.getTypeParameters()将返回该Class所对应的对象的类型参数构�
 为了解决部分的问题：可以显式的传递具体的类型的Class对象（引入类型标签）。
 instanceof操作符可以换成动态的Class.isInstance（）方法 。用Class.newInstance()创建新实例。
 
-泛型数组：
+### (p)1.16.7 泛型数组
+
 创建一个被擦除类型的新数组，然后对其转型（其实可以不用）。但是这可能会引起unchecked警告，使用@SuppressWarnings("unchecked")注解忽略这一处的警告。
 所以在泛型类内部创建泛型数组的话，不如直接创建Object[]而不要创建T[]，反正都会被擦除成Object[]，直接使用Object[]就不会忘记了这个擦除导致的运行时类型了。
 要创建特定实例对应的数组，必须向泛型类传递类型标签，然后使用（T[]）Array.newInstance（）。
-通配符：
+
+### (p)1.16.8 通配符
+
 泛型容器不能直接向上转型，因为不能知道泛型类型有关的参数（因为泛型容器不支协变类型，而数组支持）。e.g. List<Fruit> flist = new ArrayList<Apple>();是不允许的。
 只能使用通配符在两种类型间建立向上转型关系型：List<？ extends fruit> flist = new ArrayList<Apple>();
 然而，最坑的是，add（）的参数也会变成？ extends Fruit，编译器不能了解这里需要Fruit的哪个具体类型，所以他不接受任何类型的Fruit。。。
 而contains（）和indexOf（）的参数却是Object，因此不涉及通配符，就可以接受任何类型的Fruit。。
 所以，应该使用超类型通配符：List<？ super Apple> flist = new ArrayList<Apple>() 这样就可以安全的存放Apple以及Apple的子类了，但是还是不能存放Apple的基类Fruit，因为编译器不知道是Apple的具体那个基类。
+
 无界通配符：LIst<?>表示使用了泛型的某种特定类型的非原生List类型。
-捕获转换：
+
+捕获转换:
 在方法内部，如果需要使用一个无界通配符的类型的确切类型，就会发生捕获转换。
-使用泛型的一些问题：
+
+### (p)1.16.9 使用泛型的一些问题
+
 任何基本类型都不能作为类型参数。不过可以借助自动包装机制（SE5）
 由于擦除的原因，一个类不能实现同一个泛型接口的两种变体，这两种变体擦除之后就会成为相同的接口。
 虽然擦除会导致类型参数的转型并不起作用，但是对于readObject这种返回必须转型的对象，就必须只用转型了，哪怕是泛型的转型。
@@ -1251,42 +1297,36 @@ instanceof操作符可以换成动态的Class.isInstance（）方法 。用Class
 e.g. class SelfBounded<T extends SelfBounded<T>> { /… }
 这样可以强制在继承关系中要求使用SelfBounded时的类型参数只能是基类SelfBounded的导出类。常常用在GCG中。e.g. class A extends SelfBounded<A> {//… }
 还可以将自限定<T extends SelfBounded<T>>用于泛型方法。
-参数协变：
+
+### (p)1.16.10 参数协变
+
 自限定类型的价值在于他们可以产生协变参数类型：方法类型参数随着子类而变化。
 协变返回类型（SE5）：导出类方法可以返回比它覆盖的基类方法更具体的类型。
 使用基类方法参数的子类作为导出类方法的参数，在非自限定类型中就是重载，而在自限定类型中就是覆盖。
 动态类型安全：（感觉现在没啥用了）
 因为可以向SE5之前的代码传递泛型容器，所以可以使用java.util.Collections下的静态方法checkedCollection（） checkedList（） checkedMap（） checkedSet（） checkedSortedMap（） 和 checkedSortedSet（） 动态检查容器。
+
 异常：
 泛型类不能直接或者简介继承自Throwable，但是，类型参数可以继承自Throwable。
-混型：
+
+### (p)1.16.11 混型
+
 混合多种类，在混型中修改某些东西，将会应用于混型所应用的所有类型之上。
 C++能够轻松的实现混型，然而Java的擦除特性导致只能使用接口来产生混型效果。
 Java可以使用与接口混合（使用代理）的方式产生混型效果。
 装饰器设计模式也是一种实现混型的有局限的一种方案。
 使用动态代理创建一种跟贴近混型模型的机制：
 
-## 泛型：（@since JDK5）
-JDK7开始，可以缩短创建泛型类的实例的语法：e.g.Gen\<String> gen = new Gen\<>(args); //<>被称为菱形运算符，告诉编译器要去推断
+### (p) 1.16.12 简化语法
+
+JDK7开始，可以缩短创建泛型类的实例的语法：e.g.Gen<String> gen = new Gen<>(args); //<>被称为菱形运算符，告诉编译器要去推断
 //感觉也就是SE5的那个自动类型判断嘛。。而且不是很智能的感觉。。辣鸡擦除特性。。
 
-类型参数只使用引用类型，不能使用基本数据类型。
-基于不同类型参数的泛型类型是不同的。
-
-泛型类相对于使用Object类型引用所有类型的对象再在调用的时候显式的通过RTTI向下转型，泛型能够自动确保类型安全，还消除了手动输入类型转换以及类型检查的需要。
-
-擦除：
-桥接方法：在字节中覆盖方法的类型擦除不能产生与超类方法相同的擦除。这种情况，会在子类中生成使用超类类型擦除的方法，并且这个方法调用由子类覆盖的那个类型擦除的方法。（这发生在字节码级别）
-模糊性错误：简直就是个坑啊。。
-擦除导致的限制：
-不能实例化类型参数。
-静态成员不能使用在类中声明的类型参数。
-不能创建参数类型或者特定参数类型作为元素的数组：e.g. new T[]; e.g. Gen\<Integer> gens[]  = new Gen\<Integer>[10];而Gen<?> gens[] = new Gen<?>[10];就是可以的,在泛型类中声明泛型引用也是可以的:T[] gens;
-泛型不能扩展Throwable.
 
 
 
-## lambda表达式(@since JDK8)
+## (p)1.17 lambda表达式(@since JDK8)
+
 lambda表达式本质就是一个匿名(未命名)方法.而且这个方法不能独立执行,只能用于实现由函数式接口(仅包含一个抽象画方法的接口)定义的另一个方法.因此,lambda表达式会产生一个匿名类.lambda表达式也常被称为闭包.
 函数式接口定义了lambda表达式的目标类型,lambda表达式只能用于其目标类型已被指定的上下文中.
 e.g. interface MyNumbre {
@@ -1333,48 +1373,134 @@ JDK8中的新包java.util.function
 
 
 
-## 类
-对象 对象的引用
-域（实例变量） 方法 构造器 重载（根据方法签名） this关键字
-垃圾回收
-finalize（）方法 只在对象即将被销毁时才执行，所以不能知道什么时候或者甚至会不会被调用。
-调用方法时，值调用会创建值的副本作为实参传递给形参，引用调用直接将实参的引用传递给形参。
-访问控制:public 包访问权限 protected private 
-static ： 静态方法 静态变量
-final ： final常量 final类 final参数 final类  
-显式的静态实例初始化 非静态初始化 ： 非静态示例初始化--也是在所有方法（包括构造器）之前执行，显示静态初始化只会只会在第一次访问静态数据的时候初始化，而且不论代码的先后顺序，都在非静态示例初始化之前执行。
-
-String类
-重载的+   length（） charAt（） equals（） 
-
-varargs可变长参数（SE5）：
-用…表示，而且只能放在参数列表的最后一位。
-方法重载与模糊性：
-
-super关键字 this关键字
-
-。。。。。
-跳。。。。
-。。。。。
-
-## JDK8对接口的修改：
-JDK8为接口新增了默认方法（在接口中为方法指定默认实现）的新功能：1.提供一种扩展接口的方法，而不破坏实现了这个接口的类的代码。2.在接口中指定本质上可选的方法，也就是如果接口的实现并没有覆盖这个接口作为占位符性质的方法，也没问题。（因为有些实现可以不需要接口中的某些方法）
-在需要提供默认实现的方法前面加上default关键字。
-不过接口还是不能使用实例变量，里面定义的所有变量都是final的。
-p.s. 类实现的优先级永远高于接口的默认实现。如果一个类要同时实现两个包含相同的方法签名的接口，编译器会报错。
-在子级接口中调用父级接口中的默认实现时，需要使用super关键字显式的调用：InterfaceName.super.methodName()
-JDK8中接口还可以定义一个或多个静态方法,可以不用实现接口或接口的实例:InterfaceName.staticMethodName();
-
-## 异常
-Java的内置异常(也就是未经检查的异常):有点多…不写了…
-链式异常(since 1.4):Throwable中有两个重载的构造器:Throwable(Throwable causeEXc) 和 Throwable(String msg,Throwable causeExc) //causeExc是引发当前异常的异常
-getCause() 返回引发当前异常的异常,如果不存在就返回null.
-initCause() 将causeExc和调用异常关联在一起,并返回对异常的引用.对于每个异常对象只能调用initCause方法一次.如果通过构造器设置了引发异常,那么就不能在使用initCause()方法进行设置了.这个方法主要是用于解决不支持链式调用的遗留异常类的设置问题.
-
-JDK7对新增的异常特性:1.带资源的try语句 2.多重捕获(在一个catch子句的参数中使用|运算符把多个异常放在一起,且每个多重捕获参数都被隐式的声明为final) 3.更精确的重新抛出(只能抛出满足条件的异常:有关联的try代码块抛出,并没有被前面的catch子句处理,并且是参数的子类型或者超类型)
 
 
-## 多线程编程:
+## (p)1.18 注解(元数据) (Java SE5)
+
+Java支持在源文件中风嵌入补充信息,这类信息被称为注解 e.g. @Override
+注解通过基于接口的机制创建的:
+@interface MyAnno {
+String str();
+int val();
+} 
+这里的注解中的方法更加像成员变量
+注解不能包含extends子句
+所有的注解都自动扩展了Annotation（java.lang.annotation包中）接口，该超接口重写了hashCode（） equals（） toString（） 方法 还指定了annotationType（）方法用于返回表示调用注解的Class对象
+所有类型（类 方法 域变量 参数 枚举常量）的声明都可以有与之关联的注解，注解本身也可以被注解。注解放在声明的最前面。
+使用注解：
+@MyAnno（str = "Annotation Example",val = 100）
+public static void myMeth() {}
+所以注解中的方法更加像域变量
+
+### (p)1.18.1 指定保留策略:
+保留策略决定在什么配置丢弃注解(他们被封装到java.lang.annotation.RetentionPolicy枚举中): SOURCE CLASS(p.s. 局部变量声明的注解不能存储在.class文件中) RUNTIME
+保留策略通过Java内置注解@Retention指定: @Retention(retention-policy)  retention-policy只能是上面这三个枚举常量中的一个,如果没有为注解指定保留策略,将会使用默认策略CLASS
+对Class Method Field Constructor 对象调用\<A extends Annotation> getAnnotation(Class\<A> annoType)方法(如果没找到注解 e.g.注解的保留策略不是RUNTIME 就会返回null) (要配合反射一起使用) 也可以用Annotation[] getAnnotations()获取所有Annotation
+  JDK5以来，除了getAnnotation和getAnnotations 还有AnnotatedElement接口中定义的getDeclaredAnnotations返回调用对象中存在的所有非继承类注解，isAnnotationPresent（Class <? extends Annotation> annoType）返回annoType指定的注解与调用对象相关联就返回true 否则返回false
+JDK8新增getDeclaredAnnotation和getAnnotationByType和getDeclaredAnnotation方法(后面两个方法自动使用重复注解)
+
+### (p)1.18.2 使用默认值:
+可以在成员声明后面添加default子句: e.g. @interface MyAnno { String str() default "Default";}
+
+### (p)1.18.3 标记注解: e.g. @Override
+标记注解也就是不包含任何成员,唯一的目的就是标记声明.可以用AnnotatedElement接口(Method Field Class Constructor类实现了该接口)定义的isAnnotationPresent()方法确定标记注解是否存在
+
+### (p)1.18.4 单成员注解:
+当注解中只包含一个成员,在使用注解的时候可以直接使用()设置成员的值 e.g @Retention(RetentionPolicy.RUNTIME) 就可以使用单值语法(只要没有默认值的成员只有一个的都可以用单值语法)
+只要使用单成员注解,成员的名称就**必须**是**value**
+
+### (p)1.18.5 内置注解:
+Java的内置注解中有9个用于一般用途:
+来自java.lang.annotation包的4个:
+@Retention 指定注解的保留策略 只能用于注解其他注解
+@Documented 标记接口,用于通知某个工具--注解将被文档化 只能注解其他注解
+@Target 用于指定可以应用注解的声明的类型,被设计为只能注解其他注解.它只有一个参数(必须来自ElementType):ANNOTATION_TYPE 另外一个注解 CONSTRUCTOR 构造器 FIELD 域变量 LOCAL_VARIABLE局部变量 METHOD 方法 PACKAGE 包 PARAMETER 参数 TYPE 类 接口或枚举 TYPE_PARAMETER 类型参数(JDK8) TYPE_USE 类型使用(JDK8)
+如果要指定多个值:@Target (  {ElementType.FIELD,ElementType.LOCAL_VARIABLE}) 如果不使用@Target 那么除了类型参数之类,注解可以应用于任何声明
+ @Inherited 标记注解,只能用于另外一个注解声明 而且只 影响用于类声明的注解 @Inherited会导致超类的注解被子类继承
+
+来自java.lang包的5个:
+@Override  标记注解,只能用于方法.带有它的方法必须覆盖超类中的方法
+@Deprecated 标记注解,用于指定声明是过时的,并且已经被更新的形式取代
+@FunctionalInterface (JDK8新增)标记注解 用于接口,指出被注解的接口是函数式接口.函数式接口是指仅包含一个抽象方法的接口
+@SafeVarargs 标记注解 只能用于varargs方法和final构造器,指示没发生与可变长参数相关的不安全操作.可以用于抑制"未检查不安全代码"
+@SupressWarnings 用于指定能抑制一个或多个编译器可能会报告的警告.使用字符串形式表示的名称来指示要被抑制的警告.
+
+JDK8开始 Java注解除了可以在声明处使用外,还可以用于类型注解:方法的返回类型(放在方法声明前) 方法内this的类型 强制转换 数组级别 被继承的类 throws子句 泛型 
+
+p.s. 注解数组级别(JDK8): e.g @TypeAnno String @MaxLen(10) [] @NotZeroLen [] str; @MaxLen注解了第一级类型  @NotZeroLen注解了第二级类型 @TypeAnno注解的是变量类型
+
+### (p)1.18.6 重复注解:
+JDK8新增能够在相同元素上重复引用注解的特性.
+可重复注解必须用@Repeatable进行注解.其value域指定了重复注解的容器类型（Class<?extends Annotation> value();）,也就是重复注解类型的数组.要创建重复注解,需要创建容器注解,然后将注解的类型指定为@Pepeatable注解的参数.
+为了使用getAnnotation方法访问重复注解,需要使用容器注解(就是那个用@Repeatable注解的那个单成员注解(只有一个需要重复注解的那个注解的数组作为返回值的成员方法))而不是重复注解.
+获取重复注解的另一种方式是使用JDK8添加到AnnotatedElement中的新方法:
+\<T extends Annotation> T[] getAnnotationsByType(Class\<T> annoType)和getDeclaredAnnotationByType()
+
+一些限制:注解不能继承另外一个注解 注解声明的所有方法都必须不带参数 ,注解不能被泛型化.注解方法不能指定throws子句
+
+
+## (p)1.19 I/O 
+
+基于文本的控制台IO对于实际的Java编程确实用处不大.
+流(java.io包定义的类层次中实现的 基于缓冲和基于通道的IO在java.nio及其子包中定义):
+Java程序通过流执行IO,流通过Java的IO系统链接到物理设备.所有流的行为方式都是相同的.
+ 
+字节流(@since 1.0)和字符流(@since 1.1)
+> 在最底层,所有的IO仍然是面向字节的.
+
+### (p)1.19.1 字节流
+
+字节流通过两个类层次定义:InputStream 和 OutputStream (这两个都是顶层的抽象类)
+java.io中的字节流:
+Buffered(缓冲) ByteArray(字节数组) Data(Java标准数据类型) File(文件) Filter(同于实现InputStream和OutputStream) Object(对象) Piped(管道) 
+\+ 后缀InputStream和OutputStream (Input都是读取 Output都是写入)
+
+PrintStream 包含print()和println()的输出流 PushbackInputStream (支持1字节"取消获取"输入流,这种流向输入流返回1字节) SequenceInputStream (由多个按顺序依次读取的输入流组合而成的输入流)
+
+### (p)1.19.2 字符流
+字符流通过底层的两个抽象类Reader和Writer定义.这两个抽象类处理Unicode字符流
+java.io中的字符流类:Buffered CharArray File Filter(过滤的读取或写入器) Piped(管道) String 后接Reader或Writer分别表示xx输入流(读取)或输出流(写入)
+InputStreamReader(将字节转换成字符的输入流) OutputStreamWriter(将字符转换成字节的输出流) LineNumberReader (计算行数的输入流) PushbackReader(允许字符返回至输入流的输入流)
+
+
+上面这些类全部都继承了Reader 或 Writer 或 InputStream 或 OutputStrem 中的 read和write（int byteval）（write只能写入byteval的低八位）方法
+
+Java.lang.System类中预定义了三个流变量:in out err 他们都是public static final的
+System.in是InputStream类型的对象 System.out和System.err都是PrintStream类型的对象
+BufferReader是支持缓冲的输入流:BufferedReader(Reader inputReader)
+为了获得Reader的子类InputStreamReader:InputStreamReader(InputStream inputStream) 而java.lang.in就是InputStream类的一个引用
+所以创建一个与键盘连接的BufferReader对象:BufferedRader br = new BufferedReader(new InputStreamReader(System.in));
+
+为了从BufferReader对象读取字符 使用 int read()  throws IOException 将字符作为整数值返回,如果达到流的末尾,就返回-1
+读取字符串:String readLine() throws IOexception 
+PrintWriter类:PrintWriter(OutputStream outputStream,boolean flushingOn) flushingOn为true表示每次调用print()方法 println方法时刷新输出流
+使用PrintWriter可以使实际的应用程序更容易国际化.
+
+### (p)1.19.3 读写文件
+
+FileInputStream(String fileName) throws FileNotFoundException 文件不存在的时候就会抛出
+FileOutputStream(String fileName) throws FileNotFoundException 不能打开文件或不能创建文件 就会抛出 打开输出文件时 先前存在的同名文件将被销毁
+FileNotFoundException 属于IOException的子类
+p.s. 对于存在安全管理器的情况(e.g. applet) 可能会抛出SecurityException
+
+### (p)1.19.4 关闭文件
+
+void close() throws IOException 关闭文件会释放为文件分配的系统资源 如果关闭文件失败会导致内存泄漏
+在JDK7之前 当不需要文件时显示的调用close方法(FileInoutStream和FileOutputStream中都实现了) JDK7之后可以使用带资源的try语句
+读取文件:可以使用FileInputStream中的int read() throws IOException  一个字节一个字节的读取 到达文件末尾时返回-1
+
+JDK7新增自动资源管理（ARM） :  可用于自动关闭不再使用的资源,这样就不需要显式的调用close关闭资源了
+try (resource-specification) {
+	//use the resource
+}
+resource-specification是用来声明和初始化资源的语句 而且在resource-specification中声明的资源被隐式的声明为final 可以用分号分隔多个资源声明
+p.s 至于哦那些实现了AutoCloseable接口的资源,才能使用带资源的try语句
+
+
+
+
+## (p)1.20 多线程编程
+
 在基于进程的多任务处理中,程序是调度程序能够调度的最小代码单元.
 在基于线程的多任务环境中风,最小的可调度代码单元是线程:
 进程是重量级任务,线程是轻量级任务.
@@ -1386,7 +1512,9 @@ p.s. 相同优先级的两个线程竞争CPU资源:Windows以循环方式自动�
 相同优先级的子线程共享CPU
 因为多线程为程序引入了异步行为,所以必须有强制同步的方法.
 每个对象都有自己的隐式监视器,如果调用对象的同步方法,就会自动进入对象的隐式监视器.一旦某个线程位于一个同步方法中,其他线程就不能调用同一对象的任何其他同步方法.
-### Thread类和Runnable接口:
+
+### (p)1.20.1 Thread类和Runnable接口
+
 Thread类中的方法:getName() setName() setPriority()设置优先级(优先级在MIN_PROIORITY到MAX_PRIORITY之间也就是1到10) getPriority()获取线程的优先级 isAlive() 确定线程是否仍在运行 join() 等待进程终结，否则一直运行该方法 run() 线程的入口点 static sleep() 挂起当前线程一段时间(sleep(long millis)单位ms sleep(long millis,int nanos)第二个参数为纳秒单位,挂起时间为millis+nanos) start() 通过调用线程的run()方法启动线程 static Thead currentThread()返回调用它的线程的引用 toString() 输出由线程名称 优先级 所属线程组构成的Steing[] main方法的优先级默认为5
 主线程(程序启动时自动创建):其他子线程都是从主线程中产生的,主线程必须是最后才结束执行的线程,因为它要执行各种关闭动作.
 创建线程:实现Runnable接口或者扩展Thread类
@@ -1396,7 +1524,7 @@ Thread类的其他构造器:Thread(Runnable threadOb,String threadName) 新线�
 两种方法都需要在构造其中调用start或者run方法
 如果不需要对Thread类进行修改或增强的话 推荐使用实现Runnable接口的方法来创建线程.
 
-### 线程优先级：
+### (p)1.20.2 线程优先级：
 高优先级的线程会获得更多的cpu时间，具有高优先级的线程可能会取代低优先级的线程（e.g. 从休眠或者等待IO中恢复的高优先级线程会取代低优先级的线程）
 理论上,具有相同优先级的线程应当得到相等的cpu时间,不过不同的环境上的jvm实现不一定相同,为了安全起见,具有相同优先级的线程应当是不是释放控制权.
 如果线程依赖于抢占式行为,经常会引起相同优先级的线程的不一致性.
@@ -1407,7 +1535,7 @@ Thread类的其他构造器:Thread(Runnable threadOb,String threadName) 新线�
 所有对象都有与自身关联的隐式监视器,为了进入对象的监视器,只需要调用使用synchronized关键字修饰过的方法.为了退出监视器并将对象的控制权交给下一个等待线程,监视器的拥有者只需简单得从同步方法返回.
 synchronized语句:对于不能修改源代码的没有同步方法的类（也就是没有针对多线程设计的）,可以通过把方法调用放在synchronized(objRef) { /…}中，实现同步方法。synachronized代码块确保对objRef对象的成员方法调用是会在当前线程成功进去objRef的监视器之后发生。
 
-### 线程间通信：
+### (p)1.20.3 线程间通信：
 进程间通信可以更细微级别的控制。
 为了避免轮询检测,Java提供wait() notify() notifyAll() 方法(这些方法是Object类中的final方法)进行更巧妙的线程间通信.
 wait方法通知线程放弃监视器并进入休眠,直到其他一些线程进入同一个监视器(也就是同一个对象)并调用notify() notifyAll() 方法.
@@ -1429,129 +1557,12 @@ Thread.State getState()  (State是Thread中的一个枚举类型)
 
 
 
-## 自动包装器 (Java SE5) :
-每个包装器类中都有对应的typeValue方法 e.g. int intValue()
-而且所有包装器类都有重载的接收String类作为对象的构造器,如果String没有包含有效的数值,就会抛出NumberFormatException异常
-p.s. 包装也叫装箱(封装器) 包装器类转成基本数据类型叫拆箱
-不过装箱和拆箱效率比基本数据类型低很多,不要滥用
-
-## 注解(元数据) (Java SE5):
-Java支持在源文件中风嵌入补充信息,这类信息被称为注解 e.g. @Override
-注解通过基于接口的机制创建的:
-@interface MyAnno {
-String str();
-int val();
-} 
-这里的注解中的方法更加像成员变量
-注解不能包含extends子句
-所有的注解都自动扩展了Annotation（java.lang.annotation包中）接口，该超接口重写了hashCode（） equals（） toString（） 方法 还指定了annotationType（）方法用于返回表示调用注解的Class对象
-所有类型（类 方法 域变量 参数 枚举常量）的声明都可以有与之关联的注解，注解本身也可以被注解。注解放在声明的最前面。
-使用注解：
-@MyAnno（str = "Annotation Example",val = 100）
-public static void myMeth() {}
-所以注解中的方法更加像域变量
-
-### 指定保留策略:
-保留策略决定在什么配置丢弃注解(他们被封装到java.lang.annotation.RetentionPolicy枚举中): SOURCE CLASS(p.s. 局部变量声明的注解不能存储在.class文件中) RUNTIME
-保留策略通过Java内置注解@Retention指定: @Retention(retention-policy)  retention-policy只能是上面这三个枚举常量中的一个,如果没有为注解指定保留策略,将会使用默认策略CLASS
-对Class Method Field Constructor 对象调用\<A extends Annotation> getAnnotation(Class\<A> annoType)方法(如果没找到注解 e.g.注解的保留策略不是RUNTIME 就会返回null) (要配合反射一起使用) 也可以用Annotation[] getAnnotations()获取所有Annotation
-  JDK5以来，除了getAnnotation和getAnnotations 还有AnnotatedElement接口中定义的getDeclaredAnnotations返回调用对象中存在的所有非继承类注解，isAnnotationPresent（Class <? extends Annotation> annoType）返回annoType指定的注解与调用对象相关联就返回true 否则返回false
-JDK8新增getDeclaredAnnotation和getAnnotationByType和getDeclaredAnnotation方法(后面两个方法自动使用重复注解)
-
-### 使用默认值:
-可以在成员声明后面添加default子句: e.g. @interface MyAnno { String str() default "Default";}
-
-### 标记注解: e.g. @Override
-标记注解也就是不包含任何成员,唯一的目的就是标记声明.可以用AnnotatedElement接口(Method Field Class Constructor类实现了该接口)定义的isAnnotationPresent()方法确定标记注解是否存在
-
-### 单成员注解:
-当注解中只包含一个成员,在使用注解的时候可以直接使用()设置成员的值 e.g @Retention(RetentionPolicy.RUNTIME) 就可以使用单值语法(只要没有默认值的成员只有一个的都可以用单值语法)
-只要使用单成员注解,成员的名称就**必须**是**value**
-
-### 内置注解:
-Java的内置注解中有9个用于一般用途:
-来自java.lang.annotation包的4个:
-@Retention 指定注解的保留策略 只能用于注解其他注解
-@Documented 标记接口,用于通知某个工具--注解将被文档化 只能注解其他注解
-@Target 用于指定可以应用注解的声明的类型,被设计为只能注解其他注解.它只有一个参数(必须来自ElementType):ANNOTATION_TYPE 另外一个注解 CONSTRUCTOR 构造器 FIELD 域变量 LOCAL_VARIABLE局部变量 METHOD 方法 PACKAGE 包 PARAMETER 参数 TYPE 类 接口或枚举 TYPE_PARAMETER 类型参数(JDK8) TYPE_USE 类型使用(JDK8)
-如果要指定多个值:@Target (  {ElementType.FIELD,ElementType.LOCAL_VARIABLE}) 如果不使用@Target 那么除了类型参数之类,注解可以应用于任何声明
- @Inherited 标记注解,只能用于另外一个注解声明 而且只 影响用于类声明的注解 @Inherited会导致超类的注解被子类继承
-
-来自java.lang包的5个:
-@Override  标记注解,只能用于方法.带有它的方法必须覆盖超类中的方法
-@Deprecated 标记注解,用于指定声明是过时的,并且已经被更新的形式取代
-@FunctionalInterface (JDK8新增)标记注解 用于接口,指出被注解的接口是函数式接口.函数式接口是指仅包含一个抽象方法的接口
-@SafeVarargs 标记注解 只能用于varargs方法和final构造器,指示没发生与可变长参数相关的不安全操作.可以用于抑制"未检查不安全代码"
-@SupressWarnings 用于指定能抑制一个或多个编译器可能会报告的警告.使用字符串形式表示的名称来指示要被抑制的警告.
-
-JDK8开始 Java注解除了可以在声明处使用外,还可以用于类型注解:方法的返回类型(放在方法声明前) 方法内this的类型 强制转换 数组级别 被继承的类 throws子句 泛型 
-
-p.s. 注解数组级别(JDK8): e.g @TypeAnno String @MaxLen(10) [] @NotZeroLen [] str; @MaxLen注解了第一级类型  @NotZeroLen注解了第二级类型 @TypeAnno注解的是变量类型
-
-### 重复注解:
-JDK8新增能够在相同元素上重复引用注解的特性.
-可重复注解必须用@Repeatable进行注解.其value域指定了重复注解的容器类型（Class<?extends Annotation> value();）,也就是重复注解类型的数组.要创建重复注解,需要创建容器注解,然后将注解的类型指定为@Pepeatable注解的参数.
-为了使用getAnnotation方法访问重复注解,需要使用容器注解(就是那个用@Repeatable注解的那个单成员注解(只有一个需要重复注解的那个注解的数组作为返回值的成员方法))而不是重复注解.
-获取重复注解的另一种方式是使用JDK8添加到AnnotatedElement中的新方法:
-\<T extends Annotation> T[] getAnnotationsByType(Class\<T> annoType)和getDeclaredAnnotationByType()
-
-一些限制:注解不能继承另外一个注解 注解声明的所有方法都必须不带参数 ,注解不能被泛型化.注解方法不能指定throws子句
 
 
-## I/O 
 
-基于文本的控制台IO对于实际的Java编程确实用处不大.
-流(java.io包定义的类层次中实现的 基于缓冲和基于通道的IO在java.nio及其子包中定义):
-Java程序通过流执行IO,流通过Java的IO系统链接到物理设备.所有流的行为方式都是相同的.
- 
-字节流(@since 1.0)和字符流(@since 1.1)
-> 在最底层,所有的IO仍然是面向字节的.
-
-### 字节流
-字节流通过两个类层次定义:InputStream 和 OutputStream (这两个都是顶层的抽象类)
-java.io中的字节流:
-Buffered(缓冲) ByteArray(字节数组) Data(Java标准数据类型) File(文件) Filter(同于实现InputStream和OutputStream) Object(对象) Piped(管道) 
-\+ 后缀InputStream和OutputStream (Input都是读取 Output都是写入)
-
-PrintStream 包含print()和println()的输出流 PushbackInputStream (支持1字节"取消获取"输入流,这种流向输入流返回1字节) SequenceInputStream (由多个按顺序依次读取的输入流组合而成的输入流)
-
-### 字符流
-字符流通过底层的两个抽象类Reader和Writer定义.这两个抽象类处理Unicode字符流
-java.io中的字符流类:Buffered CharArray File Filter(过滤的读取或写入器) Piped(管道) String 后接Reader或Writer分别表示xx输入流(读取)或输出流(写入)
-InputStreamReader(将字节转换成字符的输入流) OutputStreamWriter(将字符转换成字节的输出流) LineNumberReader (计算行数的输入流) PushbackReader(允许字符返回至输入流的输入流)
-
-
-上面这些类全部都继承了Reader 或 Writer 或 InputStream 或 OutputStrem 中的 read和write（int byteval）（write只能写入byteval的低八位）方法
-
-Java.lang.System类中预定义了三个流变量:in out err 他们都是public static final的
-System.in是InputStream类型的对象 System.out和System.err都是PrintStream类型的对象
-BufferReader是支持缓冲的输入流:BufferedReader(Reader inputReader)
-为了获得Reader的子类InputStreamReader:InputStreamReader(InputStream inputStream) 而java.lang.in就是InputStream类的一个引用
-所以创建一个与键盘连接的BufferReader对象:BufferedRader br = new BufferedReader(new InputStreamReader(System.in));
-
-为了从BufferReader对象读取字符 使用 int read()  throws IOException 将字符作为整数值返回,如果达到流的末尾,就返回-1
-读取字符串:String readLine() throws IOexception 
-PrintWriter类:PrintWriter(OutputStream outputStream,boolean flushingOn) flushingOn为true表示每次调用print()方法 println方法时刷新输出流
-使用PrintWriter可以使实际的应用程序更容易国际化.
-
-### 读写文件
-FileInputStream(String fileName) throws FileNotFoundException 文件不存在的时候就会抛出
-FileOutputStream(String fileName) throws FileNotFoundException 不能打开文件或不能创建文件 就会抛出 打开输出文件时 先前存在的同名文件将被销毁
-FileNotFoundException 属于IOException的子类
-p.s. 对于存在安全管理器的情况(e.g. applet) 可能会抛出SecurityException
-
-关闭文件:void close() throws IOException 关闭文件会释放为文件分配的系统资源 如果关闭文件失败会导致内存泄漏
-在JDK7之前 当不需要文件时显示的调用close方法(FileInoutStream和FileOutputStream中都实现了) JDK7之后可以使用带资源的try语句
-读取文件:可以使用FileInputStream中的int read() throws IOException  一个字节一个字节的读取 到达文件末尾时返回-1
-
-JDK7新增自动资源管理（ARM） :  可用于自动关闭不再使用的资源,这样就不需要显式的调用close关闭资源了
-try (resource-specification) {
-	//use the resource
-}
-resource-specification是用来声明和初始化资源的语句 而且在resource-specification中声明的资源被隐式的声明为final 可以用分号分隔多个资源声明
-p.s 至于哦那些实现了AutoCloseable接口的资源,才能使用带资源的try语句
 
 ## applet
+
 java.awt 抽象窗口包
 java.applet applet通过GUI框架与用户进行交互 主类需要继承自applet
 applet每次必须重新绘制输出时都会调用paint(Graphics g)方法,所以必须在主类中覆盖该方法.
@@ -1561,7 +1572,9 @@ applet每次必须重新绘制输出时都会调用paint(Graphics g)方法,所�
 
 applet程序不是从main入口处运行的,用户IO不是使用Java的IO流类完成的,而是使用GUI框架提供的接口.
 
-## `transient`和`volatile`修饰符
+## (p) 杂项
+
+### `transient`和`volatile`修饰符
 + 实例变量声明为`transien`t表明存储对象的时候实例变量的值将不需要永久保存.
 
 + `volatile`告诉编译器变量可以被程序的其他部分随意修改:在多线程程序中,有时候多个线程共享相同的变量时,处于效率方面的考虑,每个线程自身可以保存这种共享变量的私有副本.真正的变量副本(主变量副本在各个时间被更新,例如进入同步方法时)这样有时效率不高,为了确保变量的主副本总是反映自身的当前状态,可以将变量修改为volatile告诉编译器必须总是使用volatile变量的主副本(至少总是保持所有私有版本和最新的主副本一致) 此外,访问主变量的顺序必须和所有私有副本相同,以精确的顺序执行.
@@ -1571,28 +1584,24 @@ applet程序不是从main入口处运行的,用户IO不是使用Java的IO流类�
 `strictfp`: Java 2之后 浮点计算模型稍微宽松了一点(e.g. 在计算期间新模型不需要截断特定的中间值) strictfp修饰类 接口 或方法 确保采用java 1.0的浮点计算模式 修饰接口和类相当于修饰了其中的所有成员方法.
 不过这个关键字极少使用…
 
-## 本地方法
+### 本地方法
 偶尔你想调用非Java语言编写的子例程.
 Java提供了`native`关键字,用于声明本地代码方法.大部分本地代码都是用C语言编写的,将C代码集成到Java程序中的机制被称为Java本地接口(JNI).
 声明为`native`的方法没有方法体,调用含有该方法体的本地动态链接库为方法提供方法体
 使用System.loadLibrary(String filename)调用本地动态链接库(这句代码一般放在static代码块中)
 本地代码的问题:安全性问题 可移植性丢失
 
-## assert
+### assert
 assert condition; 或 assert condition:expr; expr是要传递给AssertionError构造器的值(字符串)
 断言.用于证实在测试期间遇到了某些期望的条件,如果condition为false则抛出AssertionError异常
 为了在运行时启用断言检查,必须指定-ea选项 可以用-da指定执行代码时禁用断言
 
-## 静态导入
-import static 可以用于导入包中的静态方法.比如简写版的print方法.但是不能滥用,不仅Java讲类库组织包包中的目的就是为了避免命名空间的冲突.
-
-用this(arg-list)调用指定的构造器,使用他们有助于减少代码重复量,有助于结构化代码.
-不过this()的构造器相对于那些包含所有内联初始化代码的构造器来说,执行速度要慢一些.而且对于比较短的构造器,this()并不能节省加载时间,反而会增加在方法间转跳花费的时间.
-所以this()适合于大量初始化代码的构造器.
-> p.s. 同一个构造器中不能同时使用super() 和 this() 因为它们都位于构造器的第一条语句.
 
 
-## 紧凑API配置文件:(JDK8)
+
+
+
+### 紧凑API配置文件:(JDK8)
 将API库的子集组织陈所谓的紧凑配置文件:compact1 compact2 compact3 每个配置文件以前一个配置文件为基础(e.g. compact3 包含整个compact2)
 这样的优势在于:用不到完整库的应用程序不需要下载整个库,减小了库的大小,让一些Java应用程序能够在无法支持完整Java API的设备上运行.降低了加载程序的时间.
 使用-profile选项指定是否只使用了紧凑配置文件中定义的API:javac -profile profilename Programname e.g. javac -profile compact2 Test.java
@@ -1605,6 +1614,7 @@ import static 可以用于导入包中的静态方法.比如简写版的print方
 
 
 ## 字符串类库
+
 Java中的String类操作都不会改变原字符串,只有StringBuffer和StringBuilder(效率比StringBuffer高点)能够保存可以进行修改的字符串.
 这三个类都在java.lang类库中定义.而且都是final的.都是实现了CharSequence接口.
 
@@ -1718,7 +1728,12 @@ StringBuilder (JDK5)
 
 StringBuilder不是同步的,这意味着它不是线程安全的.但是StringBuilder有更高的性能.
 
-java.lang包
+
+
+
+## java.lang包
+
+
 
 java.lang是惟一一个会被自动导入到所有程序的包
 
@@ -1784,17 +1799,20 @@ isSurrogatePair(char highCh,char lowCh) 返回是否highCh和lowCh能够构成�
 isValidCodePoint() 有效的代码点
 static int toChars(int cp,char target[],int loc) 将cp中的代码点转换成等价的char形式,将结果储存在target中,从loc开始保存.如果cp能够用单个char表示就返回1否则返回2
 
-Void类:
+### Void类
+
 Void类只有域变量TYPE,用来保存对void类型的Class引用.不能创建Void的实例.
 
-Process类:
+### Process类
+
 抽象类用来封装进程,也就是执行的程序.Process主要用作由Runtime类的exec()方法创建的对象类型或ProcessBuilder类的Start()方法创建的对象类型的超类.
 void destory() 终止进程
 Process destoryForcibly() 强制终止进程.返回对进程的引用(JDK8)
 int exitValue() 返回从子进程获得的退出代码
 int waitFor() 返回进程返回的退出代码,该方法知道调用进程终止时才会返回.
 
-Runtime类:
+### Runtime类
+
 Runtime类封装了运行时环境,不能实例化Runtime对象.不过可以调用静态的Runtime.getRuntime()方法获得对当前Runtime对象的引用.获得对当前的Runtime对象的引用就可以用一些方法来控制JVM的状态和行为了.
 applet和其他不信任的代码如果调用了Runtime类定义的任何方法,就会引起SecurityException异常.
 void addShutdownHook(Thread thrd) 将thrd注册为Java虚拟机在终止时运行的线程.
@@ -1811,7 +1829,8 @@ void traceInstructions(boolean traceOn) 根据traceOn的值打开或关闭指令
 void traceMethodCalls(boolean traceOn) 根据traceOn的值打开或关闭方法调用跟踪.
 p.s. exec可以执行其他环境的程序(e.g. 在windows上可以调用notepad)
 
-ProcessBuilder类:
+### ProcessBuilder类
+
 构造器中的args指定被执行的程序的名称和命令行参数.
 List<String> command() 返回对List对象的引用,List对象包含程序的名称和参数.对List的修改会影响调用对象.
 ProcessBuilder command(List<String> args) 将对象的名称和参数设置为由args指定的值.对List对象的 修改会影响调用对象.返回对调用对象的引用.
@@ -1835,7 +1854,8 @@ appendTo(File f) 重定向到附加文件
 file()
 type()返回ProcessBuilder.Redirect.Type枚举值
 
-System类
+### System类
+
 如果操作被安全管理器禁止,很多方法就会抛出SecurityException异常
 arraycopy()
 static String clearProperty(String which) 删除由which指定的环境变量,返回原来与which关联的值
@@ -1862,22 +1882,26 @@ setSecurityManager()
 环境属性:
 too many…
 
-Object类:
+### Object类
+
 Object clone() throws CloneNotSupportedException 创建一个新的与调用对象相同的对象
 
-Cloneable接口:
+### Cloneable接口
+
 只有实现了Cloneable接口的 类才能被clone()复制,否则抛出CloneNotSuportedException
 不过这种精确副本也有很多潜在的危险性:副本与原始对象具有完全相同的内容,所以在副本中所引用的对象的内容的修改同样会改变原始对象.
 
-Class类:
+### Class类
+
 Class类型的对象是在加载类时自动创建的.
 static Class<?> forName(String name,boolean how,ClassLoader) 返回给定全名的Class对象.如果how为true就初始化对象.
 ProtectionDomain getProtectionDomain() 返回与调用对象关联的保护域.
 
-ClassLoader类:
+### ClassLoader类
 抽象类ClassLoader定义了加载类的方式.可以创建扩展ClassLoader的子类,但是在正常情况下不需要这么做.
 
-Math类:
+### Math类
+
 double atan2(double x,double y) 返回正切值由x/y指定的角度
 double cbrt(double arg) 返回arg的立方根
 exp(double arg) e的arg次方
@@ -1911,10 +1935,12 @@ toRadians(double angle) 将度转化为弧度
 StrictMath() 
 内容和Math一模一样,不过比Math更精确(也好像就是java1.0的浮点模型),但是性能低一点
 
-Compiler类
+### Compiler类
+
 支持创建Java环境,从而将Java字节码编译成可执行代码,常规编程不使用Compiler
 
-Thread类,threadGroup类 Runnable接口
+### Thread类,threadGroup类 Runnable接口
+
 Runable接口定义了抽象方法run()作为线程的入口点
 Thread类:
 创建Thread如果没有指定线程组那个新线程和父线程将属于相同的线程组.
@@ -1941,7 +1967,8 @@ setDefaultUncaughtExceptionHandler(Thread.DefaultUncaughtExceptionHandler e)
 static void yield() 调用进程将CPU让给其他线程
 
 
-ThreadGroup类:
+### ThreadGroup类
+
 ThreadGroup(String groupName) 创建一个新组,该组将当前线程作为父线程
 int activeGroupCount() 返回调用线程为父线程的活动线程组的数量(包括子线程组)
 int enumerate(Thread group[]) 将调用线程组(包括子线程组)包含的活动线程放入group数组中
@@ -1955,7 +1982,8 @@ void uncaughtException(Thread thread,Throwable e) 当某个异常未被捕获,�
 ThreadLocal类用于创建线程局部变量,每个线程具有线程局部变量的一个副本
 InheritableThread类用于创建可以被继承的线程局部变量
 
-Package类
+### Package类
+
 getImplementationTitle() 返回调用包的标题
 getImplementationVendor() 调用包的实现程序的名称
 getImpleentationVersion() 调用包的版本号
@@ -1969,7 +1997,8 @@ isSealed(URL url) 如果调用包相对于url密封就返回true
 
 RuntimePermission类 与Java的安全机制有关
 
-Throwable类
+### Throwable类
+
 getStackTrace()返回一个堆栈帧数组
 
 SecurityManager类
@@ -1979,7 +2008,8 @@ StackTraceElement类
 StackTraceElement(String className,String methodname,String fileName,int line) 如果没有有效的行号,line会使用一个负值,并且line为-2表示这个堆栈帧引用一个本地方法
 isNativeMethod()
 
-Enum类
+### Enum类
+
 调用Enum的clone方法会抛出CloneNotSupportedException
 final int compareTo(E e) 比较同一枚举中的两个常量的顺序值,调用常量的顺序值比e小就返回负数.
 Class<E> getDeclaringClass 返回枚举常量的类型
@@ -1998,17 +2028,20 @@ compareTo(T obj)
 Appendable接口
 append方法
 
-Itreable接口
+### Itreable接口
+
 所有被用于foreach的类都要实现Iterable接口
 Iterator<T> iterator() 为调用对象包含的元素返回迭代器
 default void forEach(Consumer<? super T> action) (JDK8) 对于迭代的每一个元素,执行由action指定的代码(Consumer是JDK8新增的一个函数式接口)
 default Spliterator<T> spliterator() 返回被迭代序列的Spliterator(JDK8)
 
-Readable接口
+### Readable接口
+
 指示对象可以用作字符的源
 int read(CharBuffer buf) throws IOException 将字符读入buf中,返回读取的字符数 如果遇到EOF就返回-1
 
-AutoClaseable接口
+### AutoClaseable接口
+
 该接口对带资源的try语句提供了支持.
 该接口只定义close() 方法
 该方法关闭调用对象,释放调用对象可能占用的所有资源.在带资源的try语句的末尾会自动调用该方法.
@@ -2017,7 +2050,8 @@ Thread.UncaughtExceptionhandler接口
 该静态街头希望处理未捕获异常的类实现.
 只有一个方法:void uncaughtException(Thread thrd,Throwable exc) thrd是对生成异常的线程的引用,exc是对异常的引用.
 
-java.lang子包:
+### java.lang子包
+
 java.lang.reflect 反射相关
 java.lang.annotation Annotation接口 Elementtype枚举 RetentionPolicy枚举 
 java.lang.invoke 支持动态语言 
@@ -2025,7 +2059,11 @@ java.lang.instrument 定义了能够被用于为程序执行的各个方面添�
 java.lang.management 为JVM和执行黄金提供了管理支持
 java.lang.ref 为垃圾回收过程提供了更灵活的控制
 
-java.util包:
+
+
+## java.util包
+
+
 
 集合(容器)框架(Collections Framework) :
 集合只能存储引用,所以基本数据类型都要自动装箱成包装器类.
@@ -2035,7 +2073,8 @@ Collection(顶层接口,扩展了Iterable接口) List(扩展自Collection)  Queu
 Comparator接口用于比较两个对象 Iterator ListIterator Spliterator(用于并行处理的)接口用来枚举集合中的对象
 RandomAccsee接口表明列表支持高效随机的元素访问
 
-Collention接口:
+### Collention接口
+
 Iterator<E> iterator() 返回调用集合的一个迭代器
 void clear() 移除调用容器中的所有元素
 default Stream<E> parallelStream() 返回一个使用调用容器作为元素来源的流.该流能够支持并行操作(JDK8)
@@ -2045,20 +2084,22 @@ default Stream<E> stream() 返回一个使用调用容器作为元素来源的�
 Object[] toArray()
 <T> T[] toArray(T array[] ) 如果包含调用集合中元素的数组.数组元素是集合元素的副本.如果array的长度大于等于容器中元素的数量,超出部分的元素数组设置为null;array的长度小于容器中元素数量,就分配必须大小的新数组并返回这个新数组.
 
-List接口:
+### List接口
+
 ListIterator<E> listIterator(int index) 返回从index指定的索引位置开始将元素返回迭代器
 default void sort(Comparator<? super E> comp) 使用comp指定的比较器排序列表(JDK8)
 default void replaceAll(UnaryOperator<E> opToApply) 使用opToApply函数获得的值更新列表中的每一个元素(JDK8) (UnaryOperator是JDK8新增的一个函数式接口)
 
-Set接口:
+### Set接口
+
 如果用add()向Set添加重复的元素,add会返回false.
 
-SortedSet接口:
+### SortedSet接口:
 以升序进行排序了的.
 SortedSet<E> headSet(E end) 返回的SortedSet对象包含已排序调用组中那些小于end的元素.
 SortedSet<E> tailSet(E start) 返回的对象包含排序组中大于或等于start的元素.
 
-navigableSet接口:
+### navigableSet接口:
 E ceiling(E obj) 在对象中查找大于等于obj的最小元素,没找到就返回null
 Iterator<E> descendingIterator() 返回一个从最大元素向最小元素移动的迭代器(也就是返回一个反向迭代器)
 E floor(E obj) 小于等于的最大元素
@@ -2068,14 +2109,14 @@ lower(obj)小于obj的最小元素
 E pollFirst() 返回第一个元素(也就是最小值)并移除这个元素
 E pollLast() 返回并移除最后一个元素
 
-Queue接口
+### Queue接口
 elelment() 返回队列头部的元素,不移除该元素.队列为空就抛出NoSuchElelmentException
 boolean offer(E obj) 试图将obj添加到队列中
 E peek() 返回队列头部的元素,不移除该元素.如果队列为空就返回null
 E poll() 返回并移除头部元素,队列为空就返回null
 E remove() 移除并返回队列头部元素
 
-Deque接口
+### Deque接口
 双端队列既可以像queue一样FIFO也可以像stack一样FILO
 addLast() addFirst() 如果超出了容量就会抛出IllegalStateException
 getFirst() getLast() 返回但不移除元素,如果队列为空就抛出NoSuchElementException
@@ -2085,7 +2126,7 @@ pollFirst() pollLast() 返回并且移除元素,为空就返回null
 removeFirst() removeLast() 返回并且移除元素,为空就抛出NoSuchElelmentException
 boolean removeFirstOccurrence(Object obj) 移除第一次出现的obj对象,如果根本就没有obj就返回false
 
-容器类:
+### 容器类
 标准容器类不是同步的.
 标准容器类:AbstractCollection(实现了Collection的大部分方法) AbstractList(扩展AbstractCollection并实现List大部分方法) AbsrtractQueue(扩展AbstractCollection并实现Queue大部分方法) AbstractSequentialList(扩展AbstractList,用于顺序访问) AbstractSet(扩展AbstractCollection)
 LinkedList(扩展AbstractSequentialList,链表) ArrayList(扩展AbstractList,动态数组) 
@@ -2103,13 +2144,13 @@ trimToSize()可以将容器的容量调整为当前容纳的元素数量
 
 HashSet构造器:HashSet(int capacity, float fillRatio) fillRatio为填充率(0.0到1.0),决定哈希组被填充到什么程度就增加容量.默认为0.75
 
-EnumSet:
+### EnumSet:
 static <E extends Enum<E>> EnumSet<E> allOf(Class<E> t) 创建并返回由t指定的枚举中的元素构成的EnumSet
 static copyOf(Enum<E> e) 根据c中的元素创建EnumSet
 static complementOf(EnumSet<E> e) 创建并返回由e中未存储的元素构成 e.g. e是用一个enum{A,B,C,D}中的A创建的ENumSet,那么complementOf( e)会返回B,C,D为元素的EnumSet
 static <E extends Enum<E>> Enum<E>  of(E v, E… varargs) 创建并返回包含v和varargs这些枚举值的EnumSet
 
-迭代器:
+### 迭代器:
 迭代器是实现了Iterator或ListIterator接口(扩展了Iterator接口,允许双向遍历列表)的对象
 Iterable接口是在里面创建了Iterator对象,并且支持并发迭代.
 Iterator中的方法:
@@ -2135,7 +2176,8 @@ RandomAccess接口
 映射(Map) 不支持迭代器
 接口:Map 将唯一键映射到值 Map.Entry 描述映射中的元素(值键对) SortedMap(扩展Map接口)以升序保存键 NavigableMap(扩展SortedMap) 以处理基于最接近匹配原则的值键对索引
 
-Map接口:
+### Map接口
+
 default V compute(K k,BiFunction<? super K,? super V,? extends V> func)  调用func构造一个新值.如果func返回值不是null就把新的值替换掉k对应的旧值,如果func返回null就把原来的值键对移除并返回null(JDK8)
 default V computeIfAbsent(K k,Funtion<? super K,? extends V> func) 返回与键k关联的值.如果没有值就通过func构造一个值,并把该配对输入到映射中,返回构造的值.如果无法构造新值就返回null(JDK8)
 default V computeIfPresent(K k, BiFunction <? super K,? super V,? extends V>  func) 如果k包含在映射中就通过func构造一个新值替换掉原来的值,然后返回新值,如果func返回的值为null就从映射中删除现有的键和值,并返回null(JDK8)
@@ -2144,24 +2186,28 @@ default V getOrDefault(Object k,V defVal) 如果映射中包含与k关联的值�
 default V merge(K k,V v,BiFunction<? super K,? super V,? extends V> func) 如果k没有包含在映射中,就把k和v配对并添加到映射中并返回v.否则func基于原有的值返回一个新值,键被更新为使用这个新值.如果func返回null就从映射中删除现有的键和值并返回null(JDK8)
 default void replaceAll(BiFunction<? super K,? super V,? extends V> func) 对调用映射中的每个元素执行func用func返回的结果替换元素,如果在操作过程中删除了元素就会抛出ConcurrentModificationException(JDK8)
 
-NavigableSet接口:
+### NavigableSet接口
+
 ceilingEntry(K obj) 返回大于等于参数的最小键的条目 没有就返回null
 descendingKeySet 返回逆序形式的键的NavigableSet
 floorEntry 小于或等于参数的最大键的条目
 
-映射类:
+### 映射类:
 AbstractMap EnumMap HashMap TreeMap WeakHashMap(使用带有弱键的哈希表) IdentityHashMap(当比较文档时使用引用相等性,不用于通用目的) LinkedHashMap(扩展了HashMap类,可以按照插入或访问顺序迭代整个映射,在构造器中的Order参数设置为true就使用访问顺序否则默认使用插入顺序)
 
 LinkedHashMap中添加了removeEldestEntry 默认返回fasle而且不执行任何操作,代表保留最久的条目,如果重写为返回true就可以使LinkedHashMap移除映射中最久的条目
 
-Comparator接口:
+### Comparator接口
+
 默认Java使用自然比较器(也就是1在2前面,A在B前面那种)
 JDK8中新增default Comparator<T> reversed() 返回调用比较器的逆序版本
 static <T extends Comparator<? super T>> Comparator<T> naturalOrder()返回颠倒元素的自然顺序比较器
 static <T> Comparator<T> nullsFirst(Comparator<? super T> comp)和static <T> Comparator<T> nullsLast(Comparator<? super T> comp)分别返回认为null比任何值小和null比任何值大的比较器
 default Comparator<T> thenComparing(Comparator<? super T> thenByComp) 该方法可以返回一个比较器(组合了第一个和第二个比较器之后的比较器),在第一个比较器(也就是现在被调用的这个比较器)比较的两个对象是相同的时再调用第二个比较器比较,thenByComp指定第一次比较返回相等后调用的比较器. (JDK8)
 
-集合算法:Collentions(注意有一个s)类中的static方法:
+### 集合算法
+
+Collentions(注意有一个s)类中的static方法:
 addAll(Collection<? super T> c,T… elelments) 把elements指定的元素插入到c中.
 Queue<T> asLifoQueue(Deque<T> c) 返回一个后进先出的Queue
 int binarySearch(List<? extends T> list,T value,Comparator<? super T> c) 
@@ -2172,6 +2218,8 @@ shuffle(List<T> list,Random r) 使用r作为随机数的来源随机化list中�
 Set<T> singleton(T obj) 将单个的obj转换成Set
 Collection<T> synchronizedCollection(Collection<T> c)返回基于c的线程安全的集合.
 Collection<T> unmodifiedCollection(Collection<? extends T> c) 返回基于c的不可修改的集合
+
+### 
 
 Arrays类:提供了对数组的一些操作
 里面的static方法:
@@ -2192,7 +2240,7 @@ setAll(double array[],IntToDoubleFunction<? extends T> genVal) 为数组的所�
 parallelSetAll(double array[],IntToDoubleFunction<? extends T> genVal) (JDK8) 
 parallelPrefix(double array[],DoubleBinaryOperator func) 对数组进行修改使每个元素都包含对其前面的所有元素应用某个操作的累积结果.
 
-一些遗留的类和接口:
+### 一些遗留的类和接口:
 Enumeration接口 类似于Iterator接口
 Vector类 类似于ArrayList 实现动态数组,不过Vector是同步的.
 Stack类 已经被ArrayDeque取代
@@ -2201,13 +2249,15 @@ Hashtable类 与HashMap类似
 Properties类 Hashtable的子类 System.getProperties()方法返回的就是这个类的对象,用于保存环境值
 Properties类中的store和load方法可以方便的读取和存储文件
 
-更多的java.util工具类:
-StringTokenizer类
+## 更多的java.util工具类
+
+### StringTokenizer类
 用于解析格式化的输入，实现了Enumeration接口
 指定的定界符为空白字符（空格 制表符 换页符 换行符 回车符）也可以在构造器中指定参数delimiters 指定定界符,定界字符串中的每个字符都被认为是有效的定界符，如果delimAsToken为true就在解析字符串时将定界符作为标记返回否则不返回定界符（默认就是不返回的）
 hasMoreElements（） nextElement() 方法和hasMoreToken() 和 nextToken()类似
 
-BitSet类:
+### BitSet类
+
 特殊类型的数组:元素是布尔形式的位值(这样可以为只用01作为开关的设置节省空间嘛)
 
 Optional OptionalDouble OptionInt OptionLong 类 (JDK8) 强烈推荐使用Optional类来替代null
@@ -2225,7 +2275,8 @@ T orElseGet(Suploer<? extends T> getFunc) 如果调用对象包含值就返回�
 
 orElse就相当于ifPresent和get的综合
 
-时间和日期相关的：
+### 时间和日期相关的
+
 Date类 该类很多方法都已经不赞成使用了,很多功能已经被Calendar和DataFormater替代
 默认构造区使用当前日期和时间初始化对象,Date(long millisec) millisec表示自1970年1月1日午夜以来经历的毫秒数
 from() 和 toInstant 可以实现Instant和Date的互化.
@@ -2260,7 +2311,7 @@ abstract int getRawOffset() 返回计算当地时间需要添加到GMT的原始�
 SimpleTimeZone类
 TimeZone的一个实例子类.
 
-Locale类
+ Locale类
 用于描述地理或者文化上的 区域.
 Locale.CHINA表示中国地区的Locale对象
 static void setDedault(Locale localeObj) 将JVM使用的默认地区设置为localObj
@@ -2269,12 +2320,12 @@ final String getDisplayLanguage()
 final String getDisplayName() 这些返回人类能够阅读的字符串用于显示国家的名称 语言和地区的完整描述
 statc Locale getDefault() 获得默认地区
 
-Random类
+### Random类
 用于生成伪随机数.
 double nextGaussian() 返回下一个高斯分布随机数
 JDK8新增doubles() ints() longs()分别返回DoubleStream IntStream LongStream 
 
-Observable类
+### Observable类
 用于创建可以被程序其他部分观察的子类.但这种子类的对象发生变化时,观察者就会注意到,观察者必须实现Observer接口,但观察者注意到被观察者的某个变化时,会调用update方法
 如果被观察对象发生变化时就必须调用setChange()方法,当准备通知观察者这一变化时就必须调用notifyObservers()方法,这会导致被观察对象的update方法被调用.
 所以在notifyObservers之前一定要setChange
@@ -2303,7 +2354,7 @@ void schedule(TimerTask TTask,long wait,long repeat) TTask被安排在wait(单�
 Currency类
 封装了货币有关的信息
 
-Formatter类
+### Formatter类
 格式化输出
 void flush() 刷新格式化缓冲区,这会导致缓冲区中当前所有输出都写入目标.主要用于与文件绑定的Formatter对象
 可以用close显示的关闭Formatter对象也可以用带资源的try自动释放Formatter的资源
@@ -2316,7 +2367,7 @@ D(月/日/年) F(年-月-日) k(小时 0-23) l(小时1-12) m(月份01-13) M(分�
 使用参数索引:
 在格式说明符%后面加上n&(n表示后面的args中的第几个索引) e.g. "%3$d %1$d %2$d",10,20,30 输出为30 10 20
 
-Scanner类
+### Scanner类
 格式化输入,关闭也可以使用带资源的try语句.
 构造器可以使用Reader或Path(指定的目录下的该文件)或File或者InputStream(一般都是用System.in)或ReadableByteChannel并用String charset来指定编码方式 作为输入源
 默认的定界符是空白符 也可以使用Scanner useDelimiter(String pattern)来指定定界符(可以用InputStream )
@@ -2336,7 +2387,7 @@ getResourceBundle() 参数可以是ListResourceBundle的一个子类也可以是
 getString(String k)
 ResourceBundle有两个子类:PropertyResourceBundle和ListResourceBundle(抽象类)(需要实现protected adstract Object[][] getContents 返回一个二维数组用于表示资源的键值对,键必须是字符串)
 
-java.util中的其他使用工具类:
+### java.util中的其他使用工具类:
 Base64 用于支持Base64编码.JDK8新增Encoder和Decoder嵌套类
 DoubleSummaryStatistics 支持编译double值.可以获得平均值 最小值 最大值 记数 和 (JDK8)
 EventListenerProxy 扩展了EventListener类(事件监听器)
@@ -2352,7 +2403,7 @@ UUID 封装并管理全球唯一标识符(UUID)
 EventListner 表明类是事件监听器
 Formattable 提供格式化字符串
 
-java.util的子包:
+### java.util的子包:
 java.util.concurrent java.util.concurrent.atomic  java.util.concurrent.locks 用来支持并行编程.这些包为使用java内置的同步特性提供了高性能的替换方法.java.util.concurrent还提供了Fork/Join框架(JDK7)
 java.util.function 为lambda表达式定义了一些预定义的函数式接口
 java.util..jar 提供了读取和写入Jar文件的能力
@@ -2364,7 +2415,9 @@ java.util.stream 提供来了Java的流的API(JDK8)
 java.util.zip 提供了ZIP个GZIP格式的读写
 
 
-java.io:
+## java.io
+
+
 区分I/O流和JDK8新增的流API
 File类 (不过在新的NIO中的Path接口可以替换File的大多数功能) 
 java.io中大多数类用于操作流而File不是.File类直接处理文件和文件系统.i.e. File类没有指定如何从文件检索信息以及如何想文件中储存信息,而是描述文件本身的属性.
