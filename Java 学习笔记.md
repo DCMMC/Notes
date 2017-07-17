@@ -2419,7 +2419,9 @@ java.util.zip 提供了ZIP个GZIP格式的读写
 
 
 区分I/O流和JDK8新增的流API
-File类 (不过在新的NIO中的Path接口可以替换File的大多数功能) 
+
+### File类 (不过在新的NIO中的Path接口可以替换File的大多数功能) 
+
 java.io中大多数类用于操作流而File不是.File类直接处理文件和文件系统.i.e. File类没有指定如何从文件检索信息以及如何想文件中储存信息,而是描述文件本身的属性.
 在Windows中可用\作为路径分隔符,如果要使用Windows的路径分隔符的话,必须使用\\双斜杠(因为要转义)
 delete()
@@ -2469,7 +2471,7 @@ PushbackInputStream会使创建它的InputStream流中的mark和reset方法无�
 SequenceInputStream 类
 允许连接多个InputStream对象.
 
-PrintStream类
+### PrintStream类
 System.out就是这个类的对象
 实现了Appendable Closable Flushable接口
 构造器可以接收Writer或者OutputStream作为参数，boolean autoFlushingOn控制每次调用printfln（） printf（） format（）时是否自动刷新输出缓冲区（默认为false）
@@ -2481,7 +2483,7 @@ p.s. 如果没有可用的Console存在时,System.console()返回null,所以首�
 输入错误时会抛出IOError错误(Error的子类),而且这种情况一般是出现了灾难性的系统失败.
 readLine() 和 readPassword() 方法的参数不为空的那个重载形式只不过是输出提示的话而已(和C语言的scanf完全不一样…)
 
-串行化
+### 串行化
 将对象的 状态写入字节流的过程.(可以使用串行化保存到永久性存储区(e.g. 文件中),还可以使用反串行化来恢复这些对象)
 实现远程方法调用(RMI,Remote Method Invocation)也需要串行化.
 假如对象X和对象Y互相包含对方的对象的引用,这样的关系组形成了一个环形引用的有向图(指那些对象中包含其他对象的引用,这种关系可以构成有向图)
@@ -2506,8 +2508,9 @@ void readExternal(ObjectInput inStream) 和 void writeExternal(ObjectOutput outS
 为复杂且笨重的任务提供了清晰的抽象方案.通过组合过滤流类可以动态的构建适应数据传输需求的自定义接口.
 
 
-NIO @since 1.4 JDK7时进行了大扩展(有时也被称为NIO.2)
-NIO中的包：
+## NIO @since 1.4 JDK7时进行了大扩展(有时也被称为NIO.2)
+
+### NIO中的包：
 java.nio为NIO系统的顶级包，用于封装各种类型的缓存。(这些缓冲区包含NIO系统所操作的数据)
 java.nio.channels 支持通道,通道的本质是打开的IO连接
 java.nio.channels.spi 支持通道的服务提供者
@@ -2527,7 +2530,7 @@ isDirect()返回调用的缓冲区是否是定向的,如果是的话那就可以
 由Buffer 派生出的缓冲区类:ByteBuffer CharBuffer DoubleBuffer FloatBuffer IntBuffer LongBuffer MappedByteBuffer(是ByteBuffer 的子类,用于将文件映射到缓冲区) ShortBuffer 
 这些派生类都提供了get()或者put() 方法,使用allocate方法手动分配缓冲区,使用wrap方法在缓冲区中封装数组,使用slice()创建缓冲区的子序列
 
-通道:
+### 通道:
 java.nio.channels包中定义的.
 通道表示IO源或目标的打开的连接.通道实现了Channel接口并扩展了Closable接口.
 对支持通道的对象调用getChannel方法可以获取指定类型的通道.
@@ -2542,21 +2545,21 @@ NIO使用的另外两个实体是字符集和选择器.
 字符集定义了将字节映射为字符的方法,可以使用编码器将字符编码成字节,用解码器将字节解码成字符.这些都由java.nio.charset包中定义的类提供.
 选择器支持基于键 非锁定的多通道IO.也就是使用选择器可以通过多个通道执行IO.选择器由java.nio.channels包中定义的类支持.
 
-JDK7 对NIO的增强(尤其是对文件方面的支持)
+### JDK7 对NIO的增强(尤其是对文件方面的支持)
 新增三个新包:java.nio.file java.nio.file.attribute java.nio.file.spi
 java.nio.file:
 Path接口 继承自Watchable Iterable<Path> Comparable<Path>接口 
 resolve() 将相对路径解析为绝对路径(如果参数表示的是相对路径,就把调用Path对象指定的根路径加在参数表示的相对路径前并返回)
 boolean endsWith(path) 如果Path对象以path指定的路径结束就返回true(path为String或者Path对象)
 
-Files类
+### Files类
 提供许多操作文件的静态方法.
 
-Path接口
+### Path接口
 通过Paths(提供了了很多关于Path的静态方法)中的get方法(其中一个重载版本可以将路径名分成几个String部分)可以返回Path实例
 
 CopyOption类用于表示Files类中的copy方法中复制或移动文件时的参数
-StandardCopyOption中定义了几个值:ShandardCopyOption.COPY_ATTRIBUTES 要求复制文件的属性 StandardCopyOption.NOFLLOW_LINKS不使用符号链接 StandardCopyOption.REPLACE_EXISTING 覆盖先前存在的
+StandardCopyOption中定义了几个值:ShandardCopyOption.COPY\_ATTRIBUTES 要求复制文件的属性 StandardCopyOption.NOFLLOW\_LINKS不使用符号链接 StandardCopyOption.REPLACE_EXISTING 覆盖先前存在的
 
 FileAttriubute 文件属性接口 表示文件(夹)的属性 定义在javanio.file.attribute包中 BasicFIleAttributes为顶部接口 封装了一些所有文件系统都通用的一组属性
 BasicFileAttributes派生出DosFIleAttributes和PosixFileAttributes接口
@@ -2566,9 +2569,9 @@ FileSystem FileSystems FileStore类
 用于访问文件系统,用FilsSystems甚至可以通过newFileSystem方法获取新的文件系统.FileStore类封装了文件存储系统.
 
 LinkOption 这个表示链接文件的类型(默认都是符号链接,也可以使用Files中定义的常量域NOFOLLOW_LINKS表示阻止符号链接的LinkOPtion对象)
-OpenOption是描述打开文件方式的接口,StandardOpenOtopn是OpenOption的一个实现(一个枚举实现),其中定义了一个枚举用来表示文件选项:APPEND表示写入文件的末尾 CREATE表示文件不存在就创建文件 CREATE_NEW表示文件不存在时在创建文件 DELETE_ON_COLSE 文件被关闭时删除文件 DSYNC对文件的修改会立即写入物理文件,一般为了效率都是对文件的修改都是先进行缓冲,在需要的时候才写入文件的 READ为输入操作打开文件 SYNC对文件或者文件中元数据的修改被立即写入物理文件. WRITE 为写入操作 TRUNCATE_EXISTING 将为输出操作而打开的 之前就存在的文件的长度减少到0
+OpenOption是描述打开文件方式的接口,StandardOpenOtopn是OpenOption的一个实现(一个枚举实现),其中定义了一个枚举用来表示文件选项:APPEND表示写入文件的末尾 CREATE表示文件不存在就创建文件 CREATE\_NEW表示文件不存在时在创建文件 DELETE_ON_COLSE 文件被关闭时删除文件 DSYNC对文件的修改会立即写入物理文件,一般为了效率都是对文件的修改都是先进行缓冲,在需要的时候才写入文件的 READ为输入操作打开文件 SYNC对文件或者文件中元数据的修改被立即写入物理文件. WRITE 为写入操作 TRUNCATE_EXISTING 将为输出操作而打开的 之前就存在的文件的长度减少到0
 
-使用NIO:
+### 使用NIO:
 为基于通道的IO使用NIO
 为基于流的IO使用NIO
 为路径和文件系统操作使用NIO
@@ -2576,14 +2579,14 @@ OpenOption是描述打开文件方式的接口,StandardOpenOtopn是OpenOption的
 获取用于封装目标的Path对象(事先要判读是否存在这个文件),然后获取Channel(也就是建立目标的连接),创建Buffer用于读写(在通道中调用map()方法可以将通道映射到缓冲区))
 p.s. 往缓冲区中put东西会导致指针向后移动,使用write把缓冲区的内容写进通道之前记得rewind或者flip把指针重置到开头.
 
-使用NIO复制文件:
+### 使用NIO复制文件:
 使用Files中的copy方法
 
-基于流的IO使用NIO:
+### 基于流的IO使用NIO:
 NIO.2开始可以使用NIO打开IO流.
 使用Files中的newInputStream和newoutputStream方法可以将打开Path指定的文件到输入或输出流中.
 DirectoryStream<Path> newDirectStream获取目录流 DirectoryStream实现了Iterable<Path> 接口 所以可以使用foreach迭代(不过DirectoryStream的每个实例只能执行一次foreach循环)
-newDirectStream的一个重载版本可以指定过滤模式的String 通配符*指定匹配0个或者多个任意字符,?通配符指定匹配任意一个字符. [chars]指定匹配chars中的任意一个字符,chars中的*或?被看作常规字符而不是通配字符.还可以使用-指定范围  e.g 
+newDirectStream的一个重载版本可以指定过滤模式的String 通配符\*指定匹配0个或者多个任意字符,?通配符指定匹配任意一个字符. [chars]指定匹配chars中的任意一个字符,chars中的*或?被看作常规字符而不是通配字符.还可以使用-指定范围  e.g 
 使用Files中的Path walkFileTree(Path root,FleVisitor<? extends Path> fv) 列出目录树
 FleVisitor接口中定义的方法:(T是Path或其子类) (SimpleFileVisior简单的实现了该接口)
 postVisitDirectory(T fir,IOException exc) 在访问目录之后调用.目录被传递给dir,任何IOException异常都会被传递给exc.如果exc为null表示没有任何错误.返回结果
@@ -2592,10 +2595,16 @@ visitFile(T file,BasicFileAttributes attribs) 当访问文件时调用.
 visitFileFailed(T file,IOException exc) 当尝试访问文件失败时调用.访问失败的文件由file传递,IOException由exc传递.结果被返回
 上面的每个方法都返回FileVisitResult枚举对象:CONTINUE SKIP_SIBLINGS SKIP_SUBTREE TREMINATE
 为了遍历目录和子目录,方法应当返回CONTINUE
-对于 preVisitDirectory,为了绕过目录及其兄弟目录并阻止调用postVisitDirectory,会返回 SKIP_SIBLINGS,为了只绕过目录及其子目录,返回SKIP_SUBTREE
+对于 preVisitDirectory,为了绕过目录及其兄弟目录并阻止调用postVisitDirectory,会返回 SKIP\_SIBLINGS,为了只绕过目录及其子目录,返回SKIP_SUBTREE
 为了停止目录遍历 返回TREMINATE
 
-联网:
+
+
+
+
+## 联网
+
+
 只讨论java.net中的核心类和接口.
 支持Java联网功能的核心是套接字(又称伯克利套接字):用于识别网络上的端点.通过套接字,一台计算机可以同时为许多不同的客户端提供服务,也能为许多不同类型的信息提供服务.
 也就是使用端口完成的,端口是特定计算机上具有编号的套接字.服务器进程监听端口,直到客户端连接到端口.服务器允许同一个端口号接受多个客户端连接,不过每次会话都是唯一的.
@@ -2614,7 +2623,7 @@ Internet地址的名称叫域名 www.demo.com 表示为位于COM顶级域中,名
 Java通过扩展已经建立的流IO接口,并通过添加在网络上构建IO对象所需要的特性来支持TCP/IP.Java支持TCP和UDP协议族.
 TCP用于网络上可靠的基于流的IO,UDP为更快的,支持点对点的面向数据报的模型.
 
-InetAddress类
+#### InetAddress类
 用于封装数字IP地址及对应的域名.可以同时处理IPv4和IPv6地址.
 
 InetAddress类没有可用的构造器.需要是使用工厂方法创建InetAddress对象.
@@ -2623,7 +2632,7 @@ InetAddress类中提供了工厂方法 getLocalHost getByName getAllByName(用�
 Inet4Address和Inet6Address类(InetAddress的子类)
 一般都简单的使用InetAddress
 
-TCP/IP客户端套接字
+### TCP/IP客户端套接字
 TCP/IP套接字用于在Internet主机主机之间实现可靠的 双向的 持续的 点对点的 基于流的连接.可以使用套接字将Java的IO系统连接到其他程序,这些程序可能位于本地主机或Internet的任何其他机器上.
 p.s. applet只可以建立到主机(从该主机可以下载applet)的套接字连接.因为让通过防火墙加载的applet访问任意一台机器是危险的.
 Java中有两种TCP套接字:
@@ -2636,7 +2645,7 @@ getLocalPort() 返回绑定到调用对象的本地端口.如果没有连接就�
 isBound() 如果套接字被绑定到某个地址就返回true
 Socket还实现了AutoClosable接口,可以使用try-resource
 
-URL类
+### URL类
 现在的Internet上流行的不是上面的这些例如whois FTP之类的老式协议,而是WWW.
 Web是高层协议和文件格式的松散集合,全部统一于Web浏览器中.URL(Uniform Resource Locator 统一资源定位器) 用于定位网络上的所有资源.
 .e.g http://www.demo.com:80/index.html 第一部分是协议(e.g. HTTP FTP file等) 第二部分是主机名或IP地址(e.g. www.demo.com) 第三部分为端口号(HTTP默认的端口就是80) 第四部分是实际的路径(也就是HTTP服务器中的资源的路径,大多数的HTTP服务器会为直接引用目录资源的URL追加名为index.html之类的文件)
@@ -2647,7 +2656,7 @@ URL中没有设置端口的话,getProtocol会返回-1
 
 为了访问URL对象的实际位或内容信息,可以使用openConnection() 创建URLConnection对象
 
-URLConnextion类
+### URLConnextion类
 用于访问远程资源属性的通用类.一旦构造一个到远程服务器的连接就可以使用URLConnection对象在实际传送远程对象到本地之前,检查远程对象的属性.这些属性由HTTP协议规范提供.并且只对HTTP协议的URL对象有意义.
 getContentLength() 返回与资源关联的字节大小.如果长度不可得就返回-1
 getContentType() 返回在资源中找到的内容的类型,也就是content-type标题字段的值.如果资源不可得就返回null
@@ -2662,24 +2671,24 @@ getResponseCode 返回http响应代码 如果不能得到响应代码就返回-1
 getResponseMessage 返回与响应代码关联的响应消息
 FollowRedirects 自动重定向
 
-URI类
+### URI类
 URI(Uniform Resource Identifier 统一资源标识符) 实际上 URL是URI的一个子集.
 URI代表定位资源的一种标准方式.URL还描述了如何访问资源.
 
-cookie
+### cookie
 在java.net包中包含了帮助管理cookie的类和接口,并且可以用于创建有状态(与之对应的是无状态的)的HTTP会话.
 相关的类:CookieHandler CookieManager HttpCookie
 接口:CookiePolicy CookieStore 
 这里不展开了
 
-TCP/IP服务器套接字
+### TCP/IP服务器套接字
 ServerSocket类用于创建服务器,在发布的端口上监听与之连接的本地或远程客户端程序.
 创建ServerSocket对象时,它会在系统中注册自身,表明对客户端连接有兴趣.
 ServerSocket类的构造器反映了希望接收连接的端口号,并且(可选)反映了希望端口使用的队列长度.队列长度告诉系统:在简单的拒绝连接之前,可以保留多少个等待连接的客户端连接.默认长度是50.在不利条件下 构造器可能会抛出IOException异常.
 在多宿主机上,其中一个构造器可以接收InetAddress参数指定绑定了套接字绑定的IP地址.
 accept() 是一个等待客户端发起通信的堵塞调用,然后返回一个常规的Socket对象,该Socket对象用于与客户端进行通信.
 
-数据报
+### 数据报
 TCP/IP 作为提供序列化的 可预测的 可靠的 包形式的数据流,这些优点是有代价的:TCP为处理拥挤网络上的拥塞控制以及数据丢失的悲观预期提供了许多复杂的算法,这一定程度上降低了数据的传输效率.数据包提供了传输数据的另外一种方式.
 数据报是在两台机器之间传递的信息包.而且接收到数据报时,既不能保证数据在传输过程中没有被损坏,也不能保证发送者仍然在等待接收响应.
 Java通过在UDP协议之上实现数据报:DatagramPacket 对象是数据封装器,datagramSocket对象是用于发生和接收DatagramPacket对象的机制.
@@ -2703,9 +2712,14 @@ byte[] getData() 返回在数据报中包含的数据的字节数组.通常同�
 int getLength() 返回字节数组(由getData()返回)中包含的有效数据的长度,可能不等于整个字节数组的长度.
 setLength(int size) 将包的长度设置为size
 
-JavaFX
 
-顶层结构
+
+## JavaFX
+
+
+
+
+### 顶层结构
 
 
 高性能图形引擎:Prism
@@ -2730,11 +2744,11 @@ JavaFX的一些public APIs
 JavaFX的Graphics System为硬件图形渲染不足的时候提供高效的软件渲染.
 i.e.这两个图形加速管道(Graphics accelerateed pipelines):Prism(可以运行在硬件(DX和OpenGL)或者软件渲染器(renderers)上面,负责光栅化(rasterzation)和渲染JavaFX scenes)和Quantum Tookit(用于将Prism和Glass Windowing Toolkit捆绑在一起以支持他们的上层结构(就是上面那张图),还要管理与渲染和事件处理有关的线程规则)
 
-Glass Windowing Toolkit
+### Glass Windowing Toolkit
 JavaFX 图形栈的最底层.主要负责提供本地操作服务 (e.g. 窗口 计时器 本机操作系统有关的连接)
 管理事件队列(使用本地系统事件队列功能来管理进程使用),和JavaFX应用程序运行在一个thread中. 
 
-Threads
+### Threads
 整个JavaFX系统在给定的时间两个或者两个以上的以下的线程：
 JavaFX Application Thread 
 这是开发者使用的主线程，所有在window中还活着的scene必须从这个线程中访问。
@@ -2770,11 +2784,11 @@ JavaFX CSS提供能在不改变任何代码的情况下对用户界面应用个�
 所有的JavaFX属性名称以"-fx-"这个vendor 前缀(prefix)开头,就算是兼容标准
 HTML CSS,因为兼容的一些JavaFX值跟标准HTML CSS相比还是有轻微的改动.
 
-UI控件
+### UI控件
 在javafx.scene.control包中
 这些控件都是scene graph中的node.
 
-Layout
+### Layout
 布局容器或者窗格用于允许在scene graph上实现UI控件的灵活 动态的布局.
 Layout有关的API包括几个自动通用布局模型的容器类(container class):
 BorderPane 确定其node的位置(上下左右或者居中)
@@ -2811,7 +2825,8 @@ Lighting 模拟光源照射在给定的内容上,可以使一个平面物体更�
 所有的JavaFX App的主class实现javafx.application.Application抽象类(要实现abstract public void start(javafx.stage.Stage primaryStage))
 Application类中还有init()和stop().按照init(默认的版本是空的,主要用于执行各种初始化,不能用于创建stage和构建scene,因为init和应用程序的构造器实在主线程(也叫启动线程)上调用,而start()在JavaFX Application Thread中调用) -> start -> stop(关闭应用程序时会调用,在JavaFX Application Thread中调用)
 
-启动JavaFX App:
+### 启动JavaFX App
+
 为了运行一个独立的JavaFX App,必须调用Application类定义的public static void launch(String … args)方法
 调用launch会开始构造应用程序,之后调用init和start 知道应用程序终止,launch方法才返回.
 p.s. 对于使用javafxpackager工具(或者IDE中类似的打包工具)打包的JavaFX App不需要包含对launch的调用.包含launch为了能简化测试和调试.
@@ -2823,7 +2838,8 @@ Scene是由Node构成的分层的树.(根节点 父节点 子节点 叶节点),s
 p.s. Scene(Parent root,……..) 所有的Layout都是Parent的子类.
 一些方法:setScene(Scene myScene) 将myScene设置为该Stage的scene show()显示stage创建的窗口和屏幕
 
-布局:
+### 布局
+
 JavaFX提供了几个布局窗格,位于javafx.scene.layout包中
 Layout
 布局容器或者窗格用于允许在scene graph上实现UI控件的灵活 动态的布局.
@@ -2840,7 +2856,8 @@ AnchorPane 使dev能够创建anchor(锚)node在顶部 底部 左侧 右侧 或�
 p.s经常用rootNode.getChildren().add(Node node)将node添加到rootNode的子节点列表中.getChildren()返回ObservableList<Node>
 可以使用ObservableList中的addAll方法将多个子节点添加到scene graph中,用remove (Node node)从scene graph中删除控件.
 
-事件
+### 事件
+
 javaFX事件的基类是javafx.event包中的Event类,Event类继承了java.util.EventObject.
 Event类有几个子类:ActionEvent处理按钮产生的动作事件.
 JavaFX为时间处理实质上使用了委托事件模型方法,为处理时间,首先必须注册处理程序,作为时间的监听器.时间发生时,会调用监听器.监听器必须响应事件,然后返回.
@@ -2851,7 +2868,8 @@ Event类的其他方法允许获得时间类型 确定事件是否已被消费 �
 p.s. 使用javaFX的App还可以通过实现事件管理器来管理事件,通过调用Node类定义的addEventFilter方法可以向节点添加事件管理器.事件管理器可以消费事件从而阻止事件进一步处理.
 
 
-UI控件
+### UI控件
+
 在javafx.scene.control包中
 这些控件都是scene graph中的node.
 主要的控件:
