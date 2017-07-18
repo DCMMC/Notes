@@ -34,4 +34,9 @@ grammar_tableExtra: true
 
 # (p)1 Fundamentals
 
+## 递归(Recursion)
 
+**递归三准则:**
+
+* 递归有一个基准情形 (base case): 一个包含==return==的条件语句作为递归的第一条语句.
+* 
