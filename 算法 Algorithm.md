@@ -56,6 +56,31 @@ grammar_tableExtra: true
 由上面的引理不难递归出 gcd(a, b) = gcd(b, r1) = gcd(r1, r2) = ... = gcd(rn-1, rn) = gcd(rn, 0);
 且b > r1 > r2 > ... > rn > 0 = rn+1, 以及rn-1能够被rn整除, 所以gcd(a, b) = gcd(rn-1, rn) = rn;
 
+实现:
+``` java
+/**
+	* Ex 1.1.25 
+	* 欧几里德辗转相除求最大公约数
+	* @param p nonzero int num.
+	* @param q nonzero int num.
+	* @return gcd of p and q.
+	* @throws IllegalArgumentException p, q非0且|p| >= |q|.
+	*/
+int gcd(int p, int q) throws IllegalArgumentException {
+		//取绝对值
+		p = Math.abs(p);
+		q = Math.abs(q);
+
+		if (p < q || p == 0 || q == 0)
+			throw new IllegalArgumentException("要求: p, q非0且|p| >= |q|\n但是, 参数p = " + p + ", q = " + q);
+
+		if(p % q == 0)
+			return q;
+		else 
+			return gcd(q, p % q);
+	}
+```
+
 ## 重定向和管道
 
 % java Average < data.txt
