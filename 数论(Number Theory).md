@@ -41,3 +41,12 @@ grammar_tableExtra: true
 [Number Theory in Withman College](https://www.whitman.edu/mathematics/higher_math_online/section03.01.html)
 
 在markdown中插入 ==LaTex== 数学公式
+### 行内公式
+
+这是行内公式`!$ \Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,. $`
+
+### 块公式
+
+```mathjax!
+$$\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.$$
+```
