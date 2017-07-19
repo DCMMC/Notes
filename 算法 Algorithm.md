@@ -54,7 +54,7 @@ grammar_tableExtra: true
 证毕
 
 由上面的引理不难递归出 gcd(a, b) = gcd(b, r1) = gcd(r1, r2) = ... = gcd(rn-1, rn) = gcd(rn, 0);
-且b > r1 > r2 >
+且b > r1 > r2 > ... > rn > 0 = rn+1, 以及rn-1能够被rn整除, 所以gcd(a, b) = gcd(rn-1, rn) = rn;
 
 ## 重定向和管道
 
