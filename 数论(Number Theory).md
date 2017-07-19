@@ -35,12 +35,18 @@ grammar_tableExtra: true
 
 # 同余(Congruence)
 
-记 `!$ a \equiv b\  (mod\ n)$`
+记 `!$ a \equiv b\  (mod\ n)$` , 表示a, b同余于n.
+意思就是a b以n作为除数的余数相等.
+
+> e.g. `!$1 \equiv 8\ (mod\ 7)$`
+
+
 
 # Refence
 [Number Theory in Withman College](https://www.whitman.edu/mathematics/higher_math_online/section03.01.html)
 
 在markdown中插入 ==LaTex== 数学公式
+
 ### 行内公式
 
 这是行内公式`!$ \Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,. $`
