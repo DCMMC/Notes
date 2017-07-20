@@ -21,6 +21,10 @@ git remote add origin https://github.com/YourGithubUsername/RepositoryName.git
 git push -u origin master //上传到master branch, 期间会要求输入github的帐号和密码
 ~~~
 
+# 解决Git默认对大小写不敏感的问题
+
+
+
 # *Refence*
 
 [git命令清单](http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html)
