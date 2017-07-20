@@ -26,7 +26,9 @@ git push -u origin master //上传到master branch, 期间会要求输入github�
 配置git 使其对文件名大小写敏感
 git config core.ignorecase false
 
-# Git删除远程服务器上的文件(有时候因为大小写的问题, 远程服务器区分大小写, 本地却不区分, 导致本地根本同步不了)
+# Git删除远程服务器上的文件
+
+有时候因为大小写的问题, 远程服务器区分大小写, 本地却不区分, 导致本地根本同步不了
 
 git rm -r -n --cache SomeFileNameOrDir //加上-n只是预览要删除的内容, 并不会真的执行
 
