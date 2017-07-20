@@ -15,7 +15,7 @@ clone:
 ~~~
 git pull origin master //先用github上同步好github上的最新版本, 不然git push会失败
 git commit -a //自动添加修改,同时手动加入commit信息
-git add * //不管是有文件添加还是修改, 都是用add添加所有. 比如添加文件夹就只能用add添加, commit -a只针对修改文件
+git add * //不管是有文件添加还是修改, 都是用add添加所有. 比如添加文件夹或添加新文件就只能用add添加, commit -a只针对修改文件
 git commit -m "first commit" //为上面的add添加commit信息
 git status //查看状态
 git remote add origin https://github.com/YourGithubUsername/RepositoryName.git //可选
