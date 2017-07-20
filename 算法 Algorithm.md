@@ -34,6 +34,23 @@ grammar_tableExtra: true
 
 # (p)1 Fundamentals
 
+## 重定向和管道
+
+% java Average < data.txt
+
+相当于:
+data.txt -> standard input -> Average
+
+% java RadomSeq 100 1 2 > data.txt
+
+相当于:
+RandomSeq -> standard output -> data.txt
+
+% java RandomSeq 100 1 2 | java Average
+
+相当于:
+RandomSeq -> standard output -> standard input -> Average
+
 ## 递归(Recursion)
 
 **递归三准则:**
@@ -81,21 +98,12 @@ int gcd(int p, int q) throws IllegalArgumentException {
 	}
 ```
 
-## 重定向和管道
+## ADTs(Abstract Data Types)
 
-% java Average < data.txt
+ADT是一种能对使用者(clients)隐藏数据表示的数据类型, 并且该类型跟很多的方法实现(APIs)相关联(就跟基本数据类型(`primitive data type`)和操作符(`operators`)相关联一样).
 
-相当于:
-data.txt -> standard input -> Average
+在OOP(Object-Oriented Programming)语言中常常把ADT封装(encapsulation)在一个类(class)中.
 
-% java RadomSeq 100 1 2 > data.txt
 
-相当于:
-RandomSeq -> standard output -> data.txt
-
-% java RandomSeq 100 1 2 | java Average
-
-相当于:
-RandomSeq -> standard output -> standard input -> Average
 
 
