@@ -23,7 +23,9 @@ git push -u origin master //上传到master branch, 期间会要求输入github�
 
 # 解决Git默认对大小写不敏感的问题
 
+git config core.ignorecase false
 
+git config core.ignorecase false
 
 # *Refence*
 
