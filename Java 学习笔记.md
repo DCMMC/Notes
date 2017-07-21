@@ -89,15 +89,15 @@ Java是强类型化的语言（和C一样）。
 
 类型 | 所占空间 | 包装器类型 | 默认值(只有当变量作为类的成员(域变量)时才给定默认值,不适用于局部变量(i.e.在某个方法内))
 ------------- | ------------- | ------------ | ------------
-boolean |   -         | Boolean                              |   false
-char       |  16bits  | Character                          |    '\u0000'(null)(unicode编码)
-byte       |  8bits    |  Byte                                  |   (byte)0
-short      |  16bits  |  Short                                |   (short)0
-int          |  32bits  |  Integer                              |   0
-long       |  64bits  |  Long                                 |   0L
-float       |  32bits  | Float                                   |   0.0f
-double   |  64bits  | Double                                |   0.0d
-void       |   -          | Void
+boolean |   -         | Boolean                              |   false
+char       |  16bits  | Character                          |    '\u0000'(null)(unicode编码)
+byte       |  8bits    |  Byte                                  |   (byte)0
+short      |  16bits  |  Short                                |   (short)0
+int          |  32bits  |  Integer                              |   0
+long       |  64bits  |  Long                                 |   0L
+float       |  32bits  | Float                                   |   0.0f
+double   |  64bits  | Double                                |   0.0d
+void       |   -          | Void
 
 > p.s. Java的所有类型都是有符号的
 
@@ -108,7 +108,7 @@ p.s. JDK7新增二进制表示整数：需要加上前缀0b或者0B e.g. int x =
 
 ### (p)1.2.3 高精度数字
 
- Java提供了两种用于高精度计算的类:BigInter和BigDecimal(不是基本类型)
+ Java提供了两种用于高精度计算的类:BigInter和BigDecimal(不是基本类型)
  
 ### (p)1.2.4 字面量（literal）
 
@@ -350,7 +350,7 @@ e.g. class Constructor｛//构造器也是static方法，因为类是在其任�
 
 为了让一个类中同时存在多个不同参数类型的构造器或方法。只要有独一无二的参数列表就可以重载，即使只是参数的顺序不同（不推荐这样，会使代码难以维护）
 涉及基本类型的重载：常整数会被当作**int**，参浮点数会被当作**double**；如果传入的参数小于方法中声明的形参，则会被自动扩展转换（提升）为最接近（**最具体的（Specific）**，i.e. 继承的子类 e.g. Integer比Object更具体）的类型；如果传入的参数大于方法中声明的形参，必须在代码中强制类型转换（窄化转换），不然编译器会报错。
-方法重载的时候 char类型的参数比较特殊:如果有参数恰好接受char的方法 那个会重载为这个方法 如果没有恰好符合的 则直接提升为int
+方法重载的时候 char类型的参数比较特殊:如果有参数恰好接受char的方法 那个会重载为这个方法 如果没有恰好符合的 则直接提升为int
 
 ### (p)1.6.3 this关键字
 
@@ -483,6 +483,14 @@ package的名字一般是反顺序的Internet域名（包名不能含有关键�
 p.s. 注意为代码树的根目录添加一个环境变量。
 
 要直接使用import导入类中的静态方法，需要用 ==import static== 导入，e.g. ==import static net.mindview.util.Print.\*;== 将会导入util包下的Print类中的所有静态方法。
+
+> java在command-line下加载class的时候也是必须按照class的全限定名称加载.
+如果所在目录或者名称不完整的话, 就会提示 `找不到或无法加载主类`.
+> + 包与系统文件夹一一对应
+> + 运行class时，需要进入完整包名的第一个包所在的上一级目录，java才能将相应的class文件找出来
+> 
+> e.g. 某个要运行的类的全限定名称为 tk.dcmmc.project.Demo
+则要运行这个类必须cd到tk的上一级目录, 然后再执行 ==java tk.dcmmc.project.Demo== 才行
 
 ### (p)1.7.2 包访问权限（没有关键字 或者叫做friendly）
 
@@ -1259,7 +1267,7 @@ Class.getTypeParameters()将返回该Class所对应的对象的类型参数构�
 所以，无论何时，使用泛型时，对于class Foo<T> { T var;} Foo<Cat> f = new Foo<>()；这类代码时，必须提醒自己：它就是一个Object。
 用非泛型类去继承泛型类是可以的，不过在使用的时候可能就会发出警告，这时候可以在警告所在的方法前加入@SuppressWarnings("unchecked")注解忽略这一处的警告。
 
-在泛型中创建数组，用public static Object newInstance(Class<?> componentType,int length)实际上并没有拥有参数中类型的具体信息,拥有的只是typeclass对应的对象的Object数组（向上转型了），而且这个typeclass是实例化的时候提供的类型标签，所以要在前面添加一个（T[]）强制类型转换。这时候也会收到警告，使用@SuppressWarnings("unchecked")注解忽略这一处的警告。
+在泛型中创建数组，用public static Object newInstance(Class<?> componentType,int length)实际上并没有拥有参数中类型的具体信息,拥有的只是typeclass对应的对象的Object数组（向上转型了），而且这个typeclass是实例化的时候提供的类型标签，所以要在前面添加一个（T[]）强制类型转换。这时候也会收到警告，使用@SuppressWarnings("unchecked")注解忽略这一处的警告。
 因为有了擦除，使用泛型中的方法返回一个泛型中的类型参数中的类的时候，编译器会隐式的插入一个（T）强制转换。（假设T就是那个参数类型）
 
 因为擦除，所以任何在运行中需要知道确切类型信息的操作都将无法工作。
