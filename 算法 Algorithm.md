@@ -103,6 +103,28 @@ int gcd(int p, int q) throws IllegalArgumentException {
 ADT是一种能对使用者(clients)隐藏数据表示的数据类型, 并且该类型跟很多的方法实现(APIs)相关联(就跟基本数据类型(`primitive data type`)和操作符(`operators`)相关联一样).
 
 在OOP(Object-Oriented Programming)语言中常常把ADT封装(encapsulation)在一个类(class)中.
+用APIs的实现来描述算法和数据结构.
+
+把算法封装在ADT中, 能够在不影响client代码的同时为了提高性能更换算法.
+
+ADT用法示例: [Github-Exercise 1.2](https://github.com/DCMMC/Java/blob/master/Algorithms/tk/dcmmc/fundamentals/Exercises/DataAbstraction.java)
+
+## 背包(Bag)
+
+Bag是一种只能添加元素不能删除元素, 可以元素迭代(比如使用foreach)的ADT.
+
+## Queue (FIFO)
+
+先进先出.
+
+比如foreach的时候, 先进去的元素会被foreach先遍历到的.
+
+## Stack (LIFO)
+
+
+
+
+
 
 
 
