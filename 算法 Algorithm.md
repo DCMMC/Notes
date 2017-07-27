@@ -141,7 +141,29 @@ i.e., ( 1 + ( ( 2 + 3 ) \* ( 4 \* 5 ) ) )
 * resized-capacity array 可变大小的数组
 * Linked List 链表
 
-推荐使用SLL(Single Linked List)方式实现.
+推荐使用SLL(Single Linked List)或者DLL(DoubleLinkedList)方式实现.
+
+## 算法分析
+
+### 算法分析常用函数
+
+`!$\lfloor x \rfloor$` 向下取整, 不大于x的最大整数
+`!$\lceil x \rceil $` 向上取整, 不小于x的最小整数
+`!$\lg N$` 以2为底的对数(`!$\log _2{N}$`)
+`!$H_N$`, i.e., `!$1+\frac {1} {2}+\frac {1} {3} +...+\frac {1} {N}$` 调和级数
+
+### 算法分析常用近似函数
+
+* `!$H_N$` ~ `!$\ln N$` (证明见高数无穷级数章节)
+* `!$\sum N$` ~ `!$\frac {N^2} {2}$`
+* `!$\lg N!$` ~ `!$N\lg N$`
+* `!$(1-\frac {1} {x})^x$` ~ `!$\frac {1} {e}$` (见高数等价无穷小)
+* `!$\dbinom {N} {k} = \frac {N!} {k! (N-k)!}$`(二项式系数, i.e., N取k的组合) ~ `!$\frac {N^k} {k!}$`
+
+> **定义**:
+> g(N) ~ f(N) 即 `!$\sum_ {N \rightarrow \infty} \frac {g(N)} {f(N)} = 1$`
+
+
 
 
 
