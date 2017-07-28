@@ -219,6 +219,7 @@ JDK在intel64 bits平台上的实现是最小单位为8bytes(64bits), 也就是�
 ~~~ java
 class ObjWithOneBoolean {
 	boolean bool;
+	String refObj;
 }
 ~~~
 * Object需要8bytes的head,  head中包含了这个object的Class对象的引用, 垃圾回收的信息, ID and status flags such as whether the object is currently reachable, currently synchronization-locked etc.(不过Array的head需要12bytes)
