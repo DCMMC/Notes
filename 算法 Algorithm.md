@@ -258,5 +258,7 @@ class ObjWithInnerClass {
 
 > hotSpot为了减少padding的占用, 会适当的调节这些变量和引用在内存中的相对位置, 所以他们的内存结构中的顺序并不会和代码声明的顺序相同.
 
+> 可以通过[Java Object Layout](http://openjdk.java.net/projects/code-tools/jol/)查看内存占用详细情况
+
 [参考](http://pcpig.iteye.com/blog/1206902)
 
