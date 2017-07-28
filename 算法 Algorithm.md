@@ -138,7 +138,7 @@ i.e., ( 1 + ( ( 2 + 3 ) \* ( 4 \* 5 ) ) )
 
 上述三种ADTs(Bags Stacks Queues) 都可以使用一下三种方式实现:
 * fixed-capacity array 固定大小数组
-* resized-capacity array 可变大小的数组
+* resizing-capacity array 可变大小的数组
 * Linked List 链表
 
 推荐使用SLL(Single Linked List)或者DLL(DoubleLinkedList)方式实现.
@@ -163,7 +163,13 @@ i.e., ( 1 + ( ( 2 + 3 ) \* ( 4 \* 5 ) ) )
 > **定义**:
 > g(N) ~ f(N) 即 `!$\sum_ {N \rightarrow \infty} \frac {g(N)} {f(N)} = 1$`
 
-### 增长数量级
+计算loop的增长数量级:
+e.g.
+ThreeSum中的三重循环中
+`!$\sum_ {i=1} ^N \sum_ {j=i+1} ^N \sum_ {k=j+1} ^N 1$` ~ `!$\int_{x=1} ^N \int_{y=x} ^N \int_{z=y} ^N \mathrm {d}z \mathrm {d}y \mathrm {d}x$` ~ `!$\frac 1 6 N^3$`
+
+
+### 增长数量级(时间复杂度)
 * 常数级别 1
 * 对数级别 `!$\log N$` e.g. 二分查找
 * 线性级别 N 
@@ -174,7 +180,7 @@ i.e., ( 1 + ( ( 2 + 3 ) \* ( 4 \* 5 ) ) )
 
 ### 倍率定理
 
-如果T(N) ~ `!$aN^b\lg N$`, 那么T(2N)/T(N) ~ `!$2^b$`
+如果T(N) ~ `!$aN^b\lg N$`(幂次法则的数学模型), 那么T(2N)/T(N) ~ `!$2^b$`
 **Proof:** 
 T(2N)/T(N) = `!$a(2N)^b\lg 2N$`/`!$aN^b\lg N$`
  = `!$2^b(1+ \frac {\lg 2} {\lg N})$`
