@@ -215,7 +215,7 @@ T(2N)/T(N) = `!$a(2N)^b\lg 2N$`/`!$aN^b\lg N$`
 ### 内存开销
 
 JDK在intel64 bits平台上的实现是最小单位为8bytes(64bits), 也就是一个word.
-例如一个一下代码创建的实例对象, 需要bytes:
+例如一个一下代码创建的实例对象, 需要24bytes:
 ~~~ java
 class ObjWithOneBoolean {
 	boolean bool;
@@ -224,9 +224,39 @@ class ObjWithOneBoolean {
 ~~~
 * Object需要12bytes(64bits JDK实现, 32bits系统的JDK实现为8bytes)的head(或称overhead),  head中包含了这个object的Class对象的引用, 垃圾回收的信息, ID and status flags such as whether the object is currently reachable, currently synchronization-locked etc.(不过基本类型数组的head需要加上4bytes用来储存length)
 * 基本类型存储区域: 一个boolean需要1byte
-* 引用类型存储区域: 每个引用(pointer)大小的8bytes(64bits JDK实现).
+* 引用类型存储区域: 每个引用(pointer)大小的8bytes(64bits JDK实现, 32bits的实现就是4bytes的指针).
 * 因为64bits系统最小内存单位都是8bytes, 为了使整个对象的大小为8(32bits系统的JDK实现就需要4的倍数)的倍数bytes, 最后还需要3bytes的padding.
 
+如果有成员内部类, 因为成员内部类需要一个指向外部类的开销:
+e.g.
+~~~ java
+class ObjWithInnerClass {
+	byte b; //1byte
+	int i;//4bytes
+	boolean bool;//1byte
+	double d;//8bytes
+	Objet objref;
+	class Node { //8bytes, pointer to OuterClass
+		int item;//4bits
+		Node next;//8bytes
+	}
+}
+~~~
 
+内存结构:
+* 12bytes的overhead
+* d: 8bytes
+* i: 4bytes
+* bool: 1byte
+* b: 1byte
+* padding: 2bytes
+* objref: 8bytes
+* 用于Node指向外部的引用(extra head)
+* item: 4bytes
+* padding: 4bytes
+* next: 8bytes
 
+> hotSpot为了减少padding的占用, 会适当的调节这些变量和引用在内存中的相对位置, 所以他们的内存结构中的顺序并不会和代码声明的顺序相同.
+
+[参考](http://pcpig.iteye.com/blog/1206902)
 
