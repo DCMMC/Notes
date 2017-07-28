@@ -192,15 +192,15 @@ T(2N)/T(N) = `!$a(2N)^b\lg 2N$`/`!$aN^b\lg N$`
 > **大O记法:**
 > 如果`!$\exists c$`和`!$N_0$`, 使得对于所有`!$N > N_0$`都有`!$|f(N)| < cg(N)$`, 则称`!$f(N)$`为`!$O(g(N))$`
 
-`!$O(g(N))$`也就是`!$g(N)$`运行时间的**上限**.
+`!$O(g(N))$`也就是`!$g(N)$`为运行时间的**上限**.
 
 > **大Omega记法**
 >  如果`!$\exists c$`和`!$N_0$`, 使得对于所有`!$N > N_0$`都有`!$|f(N)| > cg(N)$`, 则称`!$f(N)$`为`!$\Omega (g(N))$`
 
-`!$\Omega (g(N))$`, 那么也就是`!$g(N)$`运行时间的**下限**.
+`!$\Omega (g(N))$`, 那么也就是`!$g(N)$`为运行时间的**下限**.
 
 > **大Theta记法**
-> 如果`!$f(N)$`即是`!$O(g(N))$`又是`!$\Omega (g(N))$`, 那么称`!$f(N)$`为`!$\Theta g(N)$`
+> 如果`!$f(N)$`即是`!$O(g(N))$`又是`!$\Omega (g(N))$`, 那么称`!$f(N)$`为`!$\Theta (g(N))$`
 
 大Theta记法用来描述算法的**最优性能**.
 
@@ -212,6 +212,9 @@ T(2N)/T(N) = `!$a(2N)^b\lg 2N$`/`!$aN^b\lg N$`
 典型的例子就是那个resizeing-Capacity array实现的Stack, 在触发resize指令的时候开销很大, 不过总的平均每操作的开销可以达到常数级别(即使在最坏的情况(worst-case)下).
 
 
+### 内存开销
 
+JDK在intel64 bits平台上的实现是最小单位为8bytes(64bits), 也就是一个word, 例如一个Object对象(引用对象), 这个对象在内存中至少需要20bytes(16bytes的overhead, 还有最后4bytes的padding).
+其中的overhead中包含了这个object的Class对象的引用, 垃圾回收的信息, 同步信息(synchronization). 然后在overhead和padding之间的内存块用来保存各种对象里面的实例变量的值.
 
 
