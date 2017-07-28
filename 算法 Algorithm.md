@@ -249,12 +249,11 @@ class ObjWithInnerClass {
 * i: 4bytes
 * bool: 1byte
 * b: 1byte
-* padding: 2bytes
 * objref: 8bytes
 * 用于Node指向外部的引用(extra head)
 * item: 4bytes
-* padding: 4bytes
 * next: 8bytes
+* padding: 6bytes
 
 > hotSpot为了减少padding的占用, 会适当的调节这些变量和引用在内存中的相对位置, 所以他们的内存结构中的顺序并不会和代码声明的顺序相同.
 
