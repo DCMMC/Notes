@@ -222,10 +222,10 @@ class ObjWithOneBoolean {
 	String refObj;
 }
 ~~~
-* Object需要16bytes(64bits JDK实现)的head,  head中包含了这个object的Class对象的引用, 垃圾回收的信息, ID and status flags such as whether the object is currently reachable, currently synchronization-locked etc.(不过基本类型数组的head需要加上4bytes用来储存length)
+* Object需要12bytes(64bits JDK实现, 32bits系统的JDK实现为8bytes)的head,  head中包含了这个object的Class对象的引用, 垃圾回收的信息, ID and status flags such as whether the object is currently reachable, currently synchronization-locked etc.(不过基本类型数组的head需要加上4bytes用来储存length)
 * 基本类型存储区域: 一个boolean需要1byte
 * 引用类型存储区域: 每个引用(pointer)大小的8bytes(64bits JDK实现).
-* 因为64bits系统最小内存单位都是8bytes, 为了使整个对象的大小为8的整数bytes, 最后还需要7bytes的padding.
+* 因为64bits系统最小内存单位都是8bytes, 为了使整个对象的大小为8的整数bytes, 最后还需要3bytes的padding.
 
 
 
