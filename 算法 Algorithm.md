@@ -264,3 +264,5 @@ class ObjWithInnerClass {
 [参考](http://pcpig.iteye.com/blog/1206902)
 [Java对象内存占用分析](https://segmentfault.com/a/1190000006933272)
 
+对于二维数组int\[5][6], 第一维度是一个存储有5个引用变量的对象, 然后为一个引用变量又指向一个存储了6个int的对象.
+
