@@ -214,7 +214,7 @@ T(2N)/T(N) = `!$a(2N)^b\lg 2N$`/`!$aN^b\lg N$`
 
 ### 内存开销
 
-JDK在intel64 bits平台上的实现(不带引用压缩的)是最小单位为8bytes(64bits), 也就是一个word.
+JDK在intel64 bits平台上的实现(不带引用/指针压缩的)是最小单位为8bytes(64bits), 也就是一个word.
 例如一个一下代码创建的实例对象, 需要24bytes:
 ~~~ java
 class ObjWithOneBoolean {
