@@ -259,7 +259,7 @@ class ObjWithInnerClass {
 
 > 可以通过[Java Object Layout](http://openjdk.java.net/projects/code-tools/jol/)查看内存占用详细情况
 
-> 还可以直接使用java.lang.Instrument.getObject
+> 还可以直接使用java.lang.Instrument.getObjectSize()查看对象占用内存大小
 
 [参考](http://pcpig.iteye.com/blog/1206902)
 
