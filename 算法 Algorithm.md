@@ -262,4 +262,5 @@ class ObjWithInnerClass {
 > 还可以直接使用java.lang.Instrument.getObjectSize()查看对象占用内存大小
 
 [参考](http://pcpig.iteye.com/blog/1206902)
+[Java对象内存占用分析](https://segmentfault.com/a/1190000006933272)
 
