@@ -214,7 +214,17 @@ T(2N)/T(N) = `!$a(2N)^b\lg 2N$`/`!$aN^b\lg N$`
 
 ### 内存开销
 
-JDK在intel64 bits平台上的实现是最小单位为8bytes(64bits), 也就是一个word, 例如一个Object对象(引用对象), 这个对象在内存中至少需要20bytes(16bytes的overhead, 还有最后4bytes的padding).
-其中的overhead中包含了这个object的Class对象的引用, 垃圾回收的信息, 同步信息(synchronization). 然后在overhead和padding之间的内存块用来保存各种对象里面的实例变量的值.
+JDK在intel64 bits平台上的实现是最小单位为8bytes(64bits), 也就是一个word.
+例如一个一下代码创建的实例对象, 需要bytes:
+~~~ java
+class ObjWithOneBoolean {
+	boolean bool;
+}
+~~~
+* Object需要8bytes的head,  head中包含了这个object的Class对象的引用, 垃圾回收的信息, ID and status flags such as whether the object is currently reachable, currently synchronization-locked etc.(不过Array的head需要12bytes)
+* 
+* 还有最后4bytes的padding
+
+
 
 
