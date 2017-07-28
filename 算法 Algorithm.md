@@ -222,8 +222,8 @@ class ObjWithOneBoolean {
 }
 ~~~
 * Object需要8bytes的head,  head中包含了这个object的Class对象的引用, 垃圾回收的信息, ID and status flags such as whether the object is currently reachable, currently synchronization-locked etc.(不过Array的head需要12bytes)
-* 
-* 还有最后4bytes的padding
+* 一个boolean需要1byte
+* 因为64bits系统最小内存单位都是8bytes, 为了使整个对象的大小为8的整数bytes, 最后还需要7bytes的padding.
 
 
 
