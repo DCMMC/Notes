@@ -793,11 +793,11 @@ List接口在Collection的基础上添加了大量方法，可以在List中插�
 ### (p)1.12.2 Collections工具库和Arrays工具库
 
 Collections.sort（list）简单升序排序，Collections.shuffle(List, Random)随机打乱顺序;
-可以这样声明：List<Apple> apples = new LinkedList<Apple>(); 因为ArrayList LinkedList都是List的子类，这里向上转型了。
+可以这样声明：List\<Apple> apples = new LinkedList\<Apple>(); 因为ArrayList LinkedList都是List的子类，这里向上转型了。
 
 Arrays.asList()方法接收一个数组或者逗号分隔的元素列表（使用可变参数），并将其转化为List对象（不是ArrayList 是他们的基类List）。Arrays.asList方法输出的是List，但是其底层表示是数组，因此不能调整大小，如果试图用add() delete()方法在这个List上会得到运行时错误“Unsupported Operation”。
 
-p.s. Arrays.asList()如果接收的所有参数都是一个基类型Super的不同子类，那么就会产生Super的List的引用，如果这时候赋值给了一个Super的基类Root的List的引用，不会再次向上转型，直接报错。除非List<Root> list = new Arrays.<Root>asList(new Sub1(),new Sub2());告诉Arrays.asList要向上转型为Root。（这叫显示参数说明）
+p.s. Arrays.asList()如果接收的所有参数都是一个基类型Super的不同子类，那么就会产生Super的List的引用，如果这时候赋值给了一个Super的基类Root的List的引用，不会再次向上转型，直接报错。除非List\<Root> list = new Arrays.\<Root>asList(new Sub1(),new Sub2());告诉Arrays.asList要向上转型为Root。（这叫显示参数说明）
 
 不过使用Collections.addAll(RootRefence，SubRefence1，SubRefence2，…)（在RootRefence的末尾插入新的列表）就可以，它可以连续向上转型很多次，因为第一个参数已经确定好了目标类型。
 Collections.addAll(Collection对象的引用，元素…)方法（注意Collections类有个s）可以接收Collection类的引用加一个数组或者逗号分隔的元素列表（使用可变参数），往Collection类中添加元素。
@@ -814,7 +814,7 @@ removeLast（）移除并返回列表的最后一个元素。
 
 栈通常是指后进先出（LIFO）的容器，又是栈也被称为叠加栈，因为最后压入栈的元素，第一个弹出栈。
 LinkedList具有能够直接实现栈的所有功能的方法，因此可以直接作为栈使用。
-class Stack<T> { }尖括号（泛型）告诉编译器这是一个参数化类型，其中的类型参数，即在类被使用时将会被实际类型替换的参数，就是T。这个Stack类声明：定义一个可以持有T类型对象的Stack。在类的内部的容器声明也可以使用<T>表示持有T对象。
+class Stack\<T> { }尖括号（泛型）告诉编译器这是一个参数化类型，其中的类型参数，即在类被使用时将会被实际类型替换的参数，就是T。这个Stack类声明：定义一个可以持有T类型对象的Stack。在类的内部的容器声明也可以使用\<T>表示持有T对象。
 push（T v）即LinkedList中的addFirst（v），peek（）即LinkedList中的getFirst（），pop即LinkedList中的removeFirst（），empty（）即LinkedList中的isEmpty（）。
 
 ### (p)1.12.6 Set
@@ -826,7 +826,7 @@ add（） addAll（） remove（） contains（） containsAll（） removeAll�
 ### (p)1.12.7 Map
 
 （可在尖括号中接受两个引用参数（<键类型，值类型>）作为泛型，子类：HashMap（最快的获取元素的方式但是不按顺序） TreeMap（按照比较的结果保存键） LinkedHashMap（按照插入的顺序保存键，同时还保留了HashMap的查询速度））一组成对的“键值对”对象，允许使用键来查找值。映射表（字典）允许我们使用另一个对象来查找某个对象，它也被称为“关联数组”。用方法Map.put(key，value)插入键和值，Map.get(key)将返回与该key相关联的value，containsKey（） containsValue（）方法分别查看Map中是否存在对应的键和值，keySet（）和values（）返回油所有键组成的Set的所有value组成的List。
-Map可以很容易的扩展到多维：将其值设置为Map（或者其他容器），e.g. 要跟踪拥有多个宠物的人：Map<Person,List<Pet>>;
+Map可以很容易的扩展到多维：将其值设置为Map（或者其他容器），e.g. 要跟踪拥有多个宠物的人：Map\<Person,List\<Pet>>;
 
 ###(p)1.12.8 Queue
 
@@ -860,24 +860,23 @@ set（Integer e）把最近访问的那个元素替换为e，previous（）访�
 
 **Collection和Iterator：**
 
-对于Collection类型，Collection比使用Iterator要更加简单，可以直接使用foreach。而要实现一个不是Collection的外部类时，实现Collection接口（要extends AbstractCollection<T>,这样就不能在继承别的类而需要自己实现所有要用到的方法）会很麻烦（里面的抽象方法很多而且还包括iterator（）），不如直接使用Iterator。
-这时最好的方法就是在这个外部类中加入一个iterator方法就可以了返回一个Iterator<>的匿名内部类。
+对于Collection类型，Collection比使用Iterator要更加简单，可以直接使用foreach。而要实现一个不是Collection的外部类时，实现Collection接口（要extends AbstractCollection\<T>,这样就不能在继承别的类而需要自己实现所有要用到的方法）会很麻烦（里面的抽象方法很多而且还包括iterator（）），不如直接使用Iterator。
+这时最好的方法就是在这个外部类中加入一个iterator方法就可以了返回一个Iterator\<>的匿名内部类。
 
 使用创建iterator方法的方式能使耦合度更加小。
 
 **Foreach与迭代器：**
 
-Java SE5引入了新的被称为Iterable的接口，该接口包含一个能够产生Iterator的iterator（）方法，并且Iterable接口被foreach用来在序列中移动。因此如果创建了任何实现Iterable的类，都可以用于foreach语句。（声明类的时候implements Iterable<T>，T指泛型）返回值同样也可以使用<T>作为泛型
+Java SE5引入了新的被称为Iterable的接口，该接口包含一个能够产生Iterator的iterator（）方法，并且Iterable接口被foreach用来在序列中移动。因此如果创建了任何实现Iterable的类，都可以用于foreach语句。（声明类的时候implements Iterable\<T>，T指泛型）返回值同样也可以使用\<T>作为泛型
 所有的Collection类（不包括所有的Map）都是Iterable类型的。
 p.s. 数组不是Iterable。
 System.getenv（）返回一个Map，entrySet（）产生一个由MapEntry的元素构成的Set，并且这个Set是一个Iterable，可以用foreach。
 e.g. for（Map.Entry entry : System.getenv().entrySet()）{ entry.getKey()获得键…entey.getValue()获得值 }
-适配器发惯用法：如果现在有一个Iterable类，要想添加一个或多个在foreach中使用这个类的方法。可以继承该类，在构造器中显式的调用基类的构造器（super（参数）;），然后创建一个或多个返回包含iterator方法的返回Iterable<T>类的方法。e.g. for（Collection<T> c :  Class.YourMethod）{ }
-新建一个ArrayList包装asList的返回结果能够防止改变低沉数组的顺序，e.g. List<String> list = new ArrayList<>(Arrays.asList(array));
+适配器发惯用法：如果现在有一个Iterable类，要想添加一个或多个在foreach中使用这个类的方法。可以继承该类，在构造器中显式的调用基类的构造器（super（参数）;），然后创建一个或多个返回包含iterator方法的返回Iterable\<T>类的方法。e.g. for（Collection\<T> c :  Class.YourMethod）{ }
+新建一个ArrayList包装asList的返回结果能够防止改变低沉数组的顺序，e.g. List\<String> list = new ArrayList\<>(Arrays.asList(array));
 
 > p.s. 新程序不应该使用过时的Vector Hashtable Stack。
 
-![容器分类][1]
 
 
 ## (p)1.13  通过异常处理错误
@@ -1017,7 +1016,7 @@ Java仅有的两个重载的操作符是+和+=，而且不允许程序员重载�
 StringBuilder中的方法：append（） delete（int from，int to）（从第from个字符后面开始删一直删到第to个字符（包括to）） insert（） replace（） substring（） reverse（）（逆序） toString（）
 
 > 无意识的递归:
-如果想创建一个toString（）方法，在重载的+后面接this想打印地址，this会发生自动类型转换，调用this.toString()方法，这就会一直递归下去知道栈溢出。需要把this改成super.toString（）。
+如果想创建一个toString（）方法，在重载的+后面接this想打印地址，this会发生自动类型转换，调用this.toString()方法，这就会一直递归下去直到栈溢出。需要把this改成super.toString（）。
 
 ### (p)1.14.2 String对象具备的一些基本方法
 
@@ -1075,7 +1074,7 @@ $ 一行的结束
 设表达式X（通常必须要用括号括起来）
 贪婪型示例：
 X?   匹配 一个或零个X
-X*  匹配零个或多个X
+X\*  匹配零个或多个X
 X+ 匹配一个或多个X
 X｛n｝ 匹配恰好n次X
 X｛n，｝ 匹配至少n次X
@@ -1172,7 +1171,7 @@ e.g. <标识符>.class
 ### (p)1.15.4 泛化的Class引用
 
 可以在Class后用<>指定更具体的泛型，强制编译器执行额外的类型检查。
-在Java SE5中Class<?>优先于Class，即使他们是等价的，因为他们都接受所有类型所以不会产生编译器错误，Class<?>突出说明你就是要选择这样一个非具体可以接收所有类型的引用。
+在Java SE5中Class<\?>优先于Class，即使他们是等价的，因为他们都接受所有类型所以不会产生编译器错误，Class<?>突出说明你就是要选择这样一个非具体可以接收所有类型的引用。
 泛型可以使用通配符来限定为一个范围不是某一个具体的类型，
 e.g. Class<? extends Number>比Class<Integer>范围要放宽一些。
 将泛型语法用于Class对象时，newInstance（）将返回该对象的确切类型而不是Object类。
@@ -1197,14 +1196,14 @@ java.lang.reflect类库与Class类一起提供了反射的支持，该类库包�
 Class.forName（）生成的结果在编译时是不可知的，所以所有的方法特征签名信息都是在执行的时候被提取出来。
 
 Class类中关于反射的方法：
-Constructor<?>[]  getConstructors()    返回该Class对象表示的类的所有public构造器（构造器的权限默认是个类相同）的Constructor数组。
-Class<?>[]  getDeclaredClasses()   返回该Class对象表示的类中的所有声明的内部类或内部接口
+Constructor\<?>[]  getConstructors()    返回该Class对象表示的类的所有public构造器（构造器的权限默认是个类相同）的Constructor数组。
+Class\<\?>[]  getDeclaredClasses()   返回该Class对象表示的类中的所有声明的内部类或内部接口
 Field[]  getFields()返回该Class对象表示的类中的所有可访问的public字段的Field数组
 Method[] getMethods() 返回该Class对象表示的类及其基类 superinterface中的所有public的方法的Method数组。
 getClassLoader（）获得该Class对象的类加载器
 动态代理：（没看懂，也不是日常使用的工具）
 常规的代理是把要代理的接口实现通过构造器把这个实现包装进代理，并且在代理中执行这个实现中的相应方法还可以多加入一些别的操作。
-通过调用静态方法Proxy.newProxyInstance(ClassLoader loader,@NotNull Class<?>[] interfaces,@NotNull InvocationHandler h)可以创建动态代理（interfaces是你希望实现的代理要实现的接口列表 ，h是InvocationHandler接口的实例）
+通过调用静态方法Proxy.newProxyInstance(ClassLoader loader,@NotNull Class\<\?>[] interfaces,@NotNull InvocationHandler h)可以创建动态代理（interfaces是你希望实现的代理要实现的接口列表 ，h是InvocationHandler接口的实例）
 
 ### (p)1.15.7 空对象：
 可以创建一个Null接口，这使得instanceof可以探测空对象
@@ -1232,7 +1231,7 @@ RTTI有时能解决效率问题，不过没必要过早的关注效率问题，�
 
 ### (p)1.16.3 泛型方法
 
-就是把返回值前面加上<Type>这样的泛型说明就行了（Type可以用在参数列表和方法体中和返回类型中）。
+就是把返回值前面加上\<Type>这样的泛型说明就行了（Type可以用在参数列表和方法体中和返回类型中）。
 只要能用泛型方法就用泛型方法，用泛型方法取代将整个类泛型化。
 static方法不能访问泛型类的类型参数，要使static方法使用泛型能力，必须使其成为泛型方法。
 在使用泛型方法时，通常不用指明参数类型，编译器会自动为我们找出具体的类型（类型参数判断）。（貌似推断不是很智能。。）
@@ -1240,7 +1239,7 @@ static方法不能访问泛型类的类型参数，要使static方法使用泛�
 ### (p)1.16.4 显式的类型说明
 
 有时候类型参数判断比较蠢，只能显式的说明类型：必须是方法所属的类型或者就在所属的类中使用的话可以用this再加点加尖括号中间打上类型说明再加方法名：
-e.g. New.<Person>.set()或者this.<Integer>.set()
+e.g. New.\<Person>.set()或者this.\<Integer>.set()
 。。。总之真蛋疼 这样显式的说明还不一定有用。。（Java SE8）因为在编译器扫描方法调用进行方法解析的时候并不知道任何形式参数的具体信息，如果这时候参数是一个泛型方法的泛化的返回值，这个泛化的类型（假设是<T>中的T）T就会默认的被认为是Object（除非显式的类型说明）
 
 可变参数与泛型方法：字面意思。。
@@ -1253,9 +1252,9 @@ e.g. New.<Person>.set()或者this.<Integer>.set()
 
 ### (p)1.16.5 擦除（使我们不能准确的知道具体类型信息）
 
-Class.getTypeParameters()将返回该Class所对应的对象的类型参数构成的TypeVariable对象数组（也就是在类的声明中尖括号中的符号 比如Class Demo<T> {}中的T）
+Class.getTypeParameters()将返回该Class所对应的对象的类型参数构成的TypeVariable对象数组（也就是在类的声明中尖括号中的符号 比如Class Deme\<T> {}中的T）
 所以残酷的现实是在泛型代码内部，无法获取某个特定实例的实际的类型参数的信息，这些具体的类型信息都被擦除了。只能知道用作参数占位符的标识符。
-所以在比较ArrayList<Integer> 和 ArrayList<String>这两个类的Class对象的时候就会认为是相同的。
+所以在比较ArrayList\<Integer> 和 ArrayList\<String>这两个类的Class对象的时候就会认为是相同的。
 然而C++在模版被实例化时，模版代码就能知道其模版参数的类型。
 为了解决擦除的这一问题，必须协助泛型类，给定泛型类的边界（这里Java重写了extends），告知编译器只能接收遵循这个边界的类型（也就是显示的在类型参数中使用extends关键字 e.g. <T extends Cls>，多边界：<T extends Interface1 & Interface2> 
 在泛型类型的继承中，可以使用边界将参数类型的范围逐渐缩小（只能缩小）
@@ -1264,10 +1263,10 @@ Class.getTypeParameters()将返回该Class所对应的对象的类型参数构�
 
 因为泛型在Java中不是一开始就有的成分，所以擦除是不得已的折中方法。泛型类型只有在静态类型检查期间才出现，在这之后，程序中的所有泛型类型都会被擦除，e.g.List<T>会被擦除陈List，普通的类型变量在未指定边界的情况下会被擦除为Object。
 迁移兼容性就是在编写泛型代码的时候，还要往前兼容SE5之前的非泛型类库。擦除就允许了非泛型和泛型代码的共存。
-所以，无论何时，使用泛型时，对于class Foo<T> { T var;} Foo<Cat> f = new Foo<>()；这类代码时，必须提醒自己：它就是一个Object。
+所以，无论何时，使用泛型时，对于class Foo\<T> { T var;} Foo\<Cat> f = new Foo\<>()；这类代码时，必须提醒自己：它就是一个Object。
 用非泛型类去继承泛型类是可以的，不过在使用的时候可能就会发出警告，这时候可以在警告所在的方法前加入@SuppressWarnings("unchecked")注解忽略这一处的警告。
 
-在泛型中创建数组，用public static Object newInstance(Class<?> componentType,int length)实际上并没有拥有参数中类型的具体信息,拥有的只是typeclass对应的对象的Object数组（向上转型了），而且这个typeclass是实例化的时候提供的类型标签，所以要在前面添加一个（T[]）强制类型转换。这时候也会收到警告，使用@SuppressWarnings("unchecked")注解忽略这一处的警告。
+在泛型中创建数组，用public static Object newInstance(Class\<\?> componentType,int length)实际上并没有拥有参数中类型的具体信息,拥有的只是typeclass对应的对象的Object数组（向上转型了），而且这个typeclass是实例化的时候提供的类型标签，所以要在前面添加一个（T[]）强制类型转换。这时候也会收到警告，使用@SuppressWarnings("unchecked")注解忽略这一处的警告。
 因为有了擦除，使用泛型中的方法返回一个泛型中的类型参数中的类的时候，编译器会隐式的插入一个（T）强制转换。（假设T就是那个参数类型）
 
 因为擦除，所以任何在运行中需要知道确切类型信息的操作都将无法工作。
@@ -1282,11 +1281,11 @@ instanceof操作符可以换成动态的Class.isInstance（）方法 。用Class
 
 ### (p)1.16.8 通配符
 
-泛型容器不能直接向上转型，因为不能知道泛型类型有关的参数（因为泛型容器不支协变类型，而数组支持）。e.g. List<Fruit> flist = new ArrayList<Apple>();是不允许的。
+泛型容器不能直接向上转型，因为不能知道泛型类型有关的参数（因为泛型容器不支协变类型，而数组支持）。e.g. List\<Fruit> flist = new ArrayList\<Apple>();是不允许的。
 只能使用通配符在两种类型间建立向上转型关系型：List<？ extends fruit> flist = new ArrayList<Apple>();
 然而，最坑的是，add（）的参数也会变成？ extends Fruit，编译器不能了解这里需要Fruit的哪个具体类型，所以他不接受任何类型的Fruit。。。
 而contains（）和indexOf（）的参数却是Object，因此不涉及通配符，就可以接受任何类型的Fruit。。
-所以，应该使用超类型通配符：List<？ super Apple> flist = new ArrayList<Apple>() 这样就可以安全的存放Apple以及Apple的子类了，但是还是不能存放Apple的基类Fruit，因为编译器不知道是Apple的具体那个基类。
+所以，应该使用超类型通配符：List\<？ super Apple> flist = new ArrayList\<Apple>() 这样就可以安全的存放Apple以及Apple的子类了，但是还是不能存放Apple的基类Fruit，因为编译器不知道是Apple的具体那个基类。
 
 无界通配符：LIst<?>表示使用了泛型的某种特定类型的非原生List类型。
 
@@ -1299,12 +1298,12 @@ instanceof操作符可以换成动态的Class.isInstance（）方法 。用Class
 由于擦除的原因，一个类不能实现同一个泛型接口的两种变体，这两种变体擦除之后就会成为相同的接口。
 虽然擦除会导致类型参数的转型并不起作用，但是对于readObject这种返回必须转型的对象，就必须只用转型了，哪怕是泛型的转型。
 由于擦除的原因，重载方法不能按照类型参数来区分。
-古怪的循环泛型（GRG）：e.g. class CuriouslyRecurringGeneric extends GenericType<CuriouslyRecurringGeneric> {}创建一个继承自以这个导出类作为类型参数的泛型类型。
+古怪的循环泛型（GRG）：e.g. class CuriouslyRecurringGeneric extends GenericType\<CuriouslyRecurringGeneric> {}创建一个继承自以这个导出类作为类型参数的泛型类型。
 这样可以产生使用导出类作为其参数和返回类型的基类。
 自限定类型（惯用法）（这不是可强制执行的，也就是可以把这种SelfBounded类作为原生类使用）：
-e.g. class SelfBounded<T extends SelfBounded<T>> { /… }
-这样可以强制在继承关系中要求使用SelfBounded时的类型参数只能是基类SelfBounded的导出类。常常用在GCG中。e.g. class A extends SelfBounded<A> {//… }
-还可以将自限定<T extends SelfBounded<T>>用于泛型方法。
+e.g. class SelfBounded\<T extends SelfBounded\<T>> { /… }
+这样可以强制在继承关系中要求使用SelfBounded时的类型参数只能是基类SelfBounded的导出类。常常用在GCG中。e.g. class A extends SelfBounded\<A> {//… }
+还可以将自限定\<T extends SelfBounded\<T>>用于泛型方法。
 
 ### (p)1.16.10 参数协变
 
