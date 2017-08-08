@@ -363,3 +363,16 @@ ShellSort大体的原理是以一系列值(increment sequence)作为h(又叫步�
 定义函数 `!$C(N)$` 表示排序一个长度为N的数组的比较次数, 显然: `!$C(0) = C(1) = 0$`, 
 而且对于 `!$N > 0$`, 在递归方法 mergeSort() 中, 有此上界:
 
+```mathjax!
+$$C(N) \leq C\left( \lfloor \frac {N} {2} \rfloor \right) + C\left( \lceil \frac {N} {2} \rceil \right) + N $$
+```
+
+最后一个N表示merge花费的最多比较次数.
+
+并且同时有此下界:
+
+```mathjax!
+$$C(N) \ge C\left( \lfloor \frac {N} {2} \rfloor \right) + C\left( \lceil \frac {N} {2} \rceil \right) + \lfloor \frac {N} {2} \rfloor $$
+```
+ `!$\lfloor \frac {N} {2} \rfloor$` 表示merge所花费的最少比较次数, 正好就是两个子序列直接合在一起(前后两部分反着合起来运算)就是完全有序的了, merge还是需要花费一半的比较次数来比较前半部分, 到了i > mid或者j > hi的时候, 就不需要比较了.
+ 
