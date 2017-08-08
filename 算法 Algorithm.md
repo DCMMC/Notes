@@ -376,3 +376,18 @@ $$C(N) \ge C\left( \lfloor \frac {N} {2} \rfloor \right) + C\left( \lceil \frac 
 ```
  `!$\lfloor \frac {N} {2} \rfloor$` 表示merge所花费的最少比较次数, 正好就是两个子序列直接合在一起(前后两部分反着合起来运算)就是完全有序的了, merge还是需要花费一半的比较次数来比较前半部分, 到了i > mid或者j > hi的时候, 就不需要比较了.
  
+ 为了方便计算, 这里假设 `!$N = 2^n , \ \therefore \lfloor \frac {N} {2} \rfloor = \lceil \frac {N} {2} \rceil = 2^{n - 1}$`
+ 
+ 于是上界:
+ `!$ C(N) = C(2^n) = 2C(2^{n - 1}) + 2^n$`
+ 
+ 左右同除以 `!$2^n$`, 得到:
+ 
+ 
+ `!$ \frac  {C(2^n)} {2^n} = \frac {C(2^{n - 1})} {2^{n - 1}} + 1$`, 这是一个等差数列, 
+ 
+ 易得: `!$\frac {C(2^n)} {2^n} = \frac {C(2^0)} {2^0} + n, \Rightarrow C(N) = C(2^n)  = n2^n = N \lg N $`
+ 
+ **所以MergeSort的平均时间复杂度为O(N logN), 空间复杂度为O(N)**
+ 
+ 
