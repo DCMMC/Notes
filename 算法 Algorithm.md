@@ -278,7 +278,31 @@ class ObjWithInnerClass {
 
 ## 排序
 
-### 选择排序
+### 选择排序(Selection Sort)
 
-### 插入排序
+平均:
+
+~ 1/2N^2的时间复杂度
+
+O(1)的空间复杂度
+
+### 插入排序(Insertion Sort)
+
+平均:
+
+~ 1/4N^2的时间复杂度
+
+O(1)的空间复杂度
+
+### 希尔排序(Shell Sort)
+
+插入排序的改进版, 也就是使用increment sequence作为h-sorting的h, h-sorting本质就是以h为间隔拆分原序列, 这样可以减少比较和交换的次数, Insertion Sort就是1-sorting(i.e., h = 1)
+
+最坏情况下:
+
+O(N^1.5) 时间复杂度
+
+O(1) 空间复杂度
+
+### 归并排序(MergeSort)
 
