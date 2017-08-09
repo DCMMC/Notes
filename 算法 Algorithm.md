@@ -368,7 +368,7 @@ Bottom-up mergesort:
 
 每一轮最多需要N次比较, 并且需要logN轮, 所以总的时间复杂度为NlogN.
 
-Bottom-up mergesort可用于全地排序LinkedList.
+Bottom-up mergesort可用于原地排序LinkedList.
 
 #### **分治思想**
 
@@ -427,6 +427,17 @@ $$C(N) \ge C\left( \lfloor \frac {N} {2} \rfloor \right) + C\left( \lceil \frac 
 > P.S. 不是说一定要每次都实现这些所有的优化, 而是我们应当注意: 不要对一个算法的初始性能下绝对的结论, 很多时候还有很多优化的空间.
 
 研究一个新问题的时候, 最好的方法是先用最简单的方法实现, 然后在这个方法成为瓶颈的时候再去重新实现一个新的算法. 实现那些仅仅带来参数因子的优化可能并不值得, 并且在每次优化之后最好一定要进行科学的实验(就像书上的练习一样).
+
+#### **Computational Complexity of MergeSort**
+
+**所有的基于比较的排序算法的比较次数的下界(low bounds)为 log(N!)~N logN**
+
+**Proof.**
+
+构造一个适用于所有compare-based sorting algorithms的**决策树(decision tree)**, 在compare-based sorting algorithms中, 树中的每一个**内部结点(internal node)**表示一次比较, 每一片**叶子(leaf)**表示完整排序后的序列.
+
+显然, 对于长度为N的序列, 叶子的个数为N!, 即有N!中排列可能.
+
 
 
  
