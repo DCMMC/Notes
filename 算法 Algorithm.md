@@ -436,7 +436,9 @@ $$C(N) \ge C\left( \lfloor \frac {N} {2} \rfloor \right) + C\left( \lceil \frac 
 
 构造一个适用于所有compare-based sorting algorithms的**决策树(decision tree)**, 在compare-based sorting algorithms中, 树中的每一个**内部结点(internal node)**表示一次比较, 每一片**叶子(leaf)**表示完整排序后的序列.
 
-显然, 对于长度为N的序列, 叶子的个数为N!, 即有N!中排列可能.
+显然, 对于长度为N的序列, 叶子的最少个数为N!, 即有N!中不同的排列可能. 否则如果少于N!, 说明有一些排列的可能会被遗漏, 不过可以多于N!, 因为有可能出现重复的叶子.
+
+
 
 
 
