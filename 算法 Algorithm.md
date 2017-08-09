@@ -446,6 +446,8 @@ $$C(N) \ge C\left( \lfloor \frac {N} {2} \rfloor \right) + C\left( \lceil \frac 
 
 所以比较次数至少为 `!$\log (N!) ~ N \log N$`次.
 
+> P.S. 如果算法会对某些特殊顺序的序列进行优化或者算法能够了解到序列的值的分布或者序列的初始顺序之类的情况, 上述下界将不再适用.
+
 
 
  
