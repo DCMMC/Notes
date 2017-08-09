@@ -444,6 +444,8 @@ $$C(N) \ge C\left( \lfloor \frac {N} {2} \rfloor \right) + C\left( \lceil \frac 
 
 综上所述, 高度为h的二叉决策树的叶子的数量在 `!$\left[ N!, \ 2^h\right]$`区间内.
 
+所以比较次数至少为 `!$\log (N!) ~ N \log N$`次.
+
 
 
  
