@@ -434,9 +434,13 @@ $$C(N) \ge C\left( \lfloor \frac {N} {2} \rfloor \right) + C\left( \lceil \frac 
 
 **Proof.**
 
-构造一个适用于所有compare-based sorting algorithms的**决策树(decision tree)**, 在compare-based sorting algorithms中, 树中的每一个**内部结点(internal node)**表示一次比较, 每一片**叶子(leaf)**表示完整排序后的序列.
+构造一个适用于所有compare-based sorting algorithms的**二叉决策树(decision tree)**, 在compare-based sorting algorithms中, 树中的每一个**内部结点(internal node)**表示一次比较, 每一片**叶子(leaf)**表示完整排序后的序列.
 
 显然, 对于长度为N的序列, 叶子的最少个数为N!, 即有N!中不同的排列可能. 否则如果少于N!, 说明有一些排列的可能会被遗漏, 不过可以多于N!, 因为有可能出现重复的叶子.
+
+从root到某一个leaf之间的路径上结点的个数即为这种情况下比较的次数, 最长的那一条路径叫做树的**高度**, 它代表最坏情况下的比较次数.
+
+又显然, 一棵高度为h的二叉树, 最多有`!$2^h$`片叶子(当且仅当为**完全二叉平衡树**的时候).
 
 
 
