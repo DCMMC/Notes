@@ -61,7 +61,7 @@ RandomSeq -> standard output -> standard input -> Average
 
 违背这三条准则会导致不正确的结果或者极低的效率.
 
-## 欧几里德算法 (Euclid's Algorithm)
+## 1. 欧几里德算法 (Euclid's Algorithm)
 
 证明:
 首先证明引理 gcd(a, b) = gcd(b, a mod b)
@@ -119,7 +119,7 @@ Bag是一种只能添加元素不能删除元素, 可以元素迭代(比如使�
 
 比如foreach的时候, 先进去的元素会被foreach先遍历到的.
 
-## Stack (LIFO)
+## 2. Stack (LIFO)
 
 后进先出.
 
@@ -278,7 +278,7 @@ class ObjWithInnerClass {
 
 ## 排序
 
-### 选择排序(Selection Sort)
+### 3. 选择排序(Selection Sort)
 
 时间复杂度不太取决于目标数组, 反正效率都不高
 
@@ -288,7 +288,7 @@ class ObjWithInnerClass {
 
 数据交换这一方面的开销小是优点, 总的效率低的缺点
 
-### 插入排序(Insertion Sort)
+### 4. 插入排序(Insertion Sort)
 
 时间复杂度比较取决于目标数组, 目标数组越接近于完全正序, 时间复杂度就越低
 
@@ -300,7 +300,7 @@ class ObjWithInnerClass {
 
 最好情况(完全正序), 比较 ~ N-1, 交换 0
 
-### 希尔排序(Shell Sort)
+### 5. 希尔排序(Shell Sort)
 
 在最糟糕的情况下时间复杂度为O(N^1.5), 一个小小的改进就能从InsertionSort的O(N^2)降低到O(N^1.5)(而且是最坏情况)
 
@@ -350,7 +350,7 @@ ShellSort大体的原理是以一系列值(increment sequence)作为h(又叫步�
 虽然使用最优的序列的时候, 在对小数组排序性能有时候可以超过 ==heapsort== 和 ==quicksort== , 不过在大量数据的时候还是慢于后两个, 不过相比于
 后两者复杂一些的实现, ==ShellSort== 只需少量代码而且对资源的消耗也比较小, 所以适合用在嵌入式系统这些比较重视资源的场景中.
 
-### 归并排序(MergeSort)
+### 6. 归并排序(MergeSort)
 
 核心是归并: 把两个已排序的子序列归并成一个已经排序的序列.
 
@@ -449,4 +449,25 @@ $$C(N) \ge C\left( \lfloor \frac {N} {2} \rfloor \right) + C\left( \lceil \frac 
 > P.S. 如果算法会对某些特殊顺序的序列进行优化或者算法能够了解到序列的值的分布或者序列的初始顺序或者有重复key之类的情况, 上述下界将不再适用.
 
 除了在最坏情况下的比较次数的下界已经是确定的了, 还有很多因素需要关注: 空间占用, 一般情况下的时间复杂度, 不基于比较的排序算法, 数组访问次数等等.
+
+### 7. Knuth(Fisher-Yates) shuffle算法
+
+原地(in-place)随机打乱一个数组, 并且是等概率的随机排列数组, 时间O(n), 空间O(1).
+
+算法实现见: tk.dcmmc.sorting.Algorithms.ArrayShuffle.java.
+
+**Proof.**
+
+要使第k(`!$1 \leq k \leq N$`)个元素被交换在第i(`!$1 \leq i \leq N$`)个元素的位置上, 即如下两种情况:
+
+* 如果k < i, 前i - 1轮交换都不可能把k交换到i的位置, 所以不用管, 然后第i轮交换一定要保证k交换到了i的位置, 也就是`!$\frac {1} {i - 1}$`的概率, 然后还要保证i + 1 ... n轮都没有把k从i的位置上被交换到其他位置. 
+* 如果i <= k, 前k - 1轮交换都不需要管, 第k轮交换一定要确保i被交换到了k的位置上, 即`!$\frac {1} {k - 1}$`, 然后还要确保k + 1...n轮交换都没有把i从k的位置上被交换到别的位置.
+
+以第二种情况为例计算其概率:
+
+```mathjax!
+$$P_{i \to k} = \frac {1} {k - 1} \cdot \frac {k - 1} {k} \cdot \frac {k} {k + 1} \cdot \cdot \cdot \frac {n - 1} {n} = \frac {1} {n}$$
+```
+
+证毕.
 
