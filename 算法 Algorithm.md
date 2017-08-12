@@ -368,6 +368,8 @@ Bottom-up mergesort:
 
 每一轮最多需要N次比较, 并且需要logN轮, 所以总的时间复杂度为NlogN.
 
+总的空间复杂度为O(logN), 因为这是一个递归程序, 并且总有logN层递归, 每一次递归的返回值都要保存在Stack中, 所以需要O(logN)的空间消耗.
+
 Bottom-up mergesort可用于原地排序LinkedList.
 
 #### **分治思想**
