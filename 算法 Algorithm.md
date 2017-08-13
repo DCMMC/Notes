@@ -61,6 +61,13 @@ RandomSeq -> standard output -> standard input -> Average
 
 违背这三条准则会导致不正确的结果或者极低的效率.
 
+## 0. 二分查找
+
+可以用for循环或者递归两种方法实现.
+
+ O(logN)的时间复杂度
+ 
+
 ## 1. 欧几里德算法 (Euclid's Algorithm)
 
 证明:
