@@ -67,6 +67,7 @@ RandomSeq -> standard output -> standard input -> Average
 
  O(logN)的时间复杂度
  
+ 源码见BasicProgModel.java
 
 ## 1. 欧几里德算法 (Euclid's Algorithm)
 
