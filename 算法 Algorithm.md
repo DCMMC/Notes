@@ -364,7 +364,7 @@ ShellSort大体的原理是以一系列值(increment sequence)作为h(又叫步�
 
 Top-down mergesort:
 
-采用递归和分治思想把一个序列不断的二分, 直到子序列只有一个数值, 这样一个数的子序列肯定是排序好的, 然后直接开始不断归并.
+采用递归和**分治思想**把一个序列不断的二分, 直到子序列只有一个数值, 这样一个数的子序列肯定是排序好的, 然后直接开始不断归并.
 
 Bottom-up mergesort:
 
@@ -481,3 +481,8 @@ $$P_{i \to k} = \frac {1} {k - 1} \cdot \frac {k - 1} {k} \cdot \frac {k} {k + 1
 
 证毕.
 
+### 8. Quicksort
+
+QuickSort也是一种**分治思想**在排序中的应用的算法. 
+
+而且QuickSort和MergeSort是相互补充的, 
