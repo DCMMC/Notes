@@ -485,5 +485,21 @@ QuickSort也是一种**分治思想**在排序中的应用的算法.
 
 而且QuickSort和MergeSort是相互补充的, 和MergeSort的递归方式有所不同, MergeSort是先折半(half)递归然后再归并(merge), QuickSort是先分区(Partition)再递归分支(不一定是折半, 取决于分区的时候找到的位置).
 
+优点: 实现比较简单, 每一轮的比较次数都是固定的N + 1, 时间复杂度和空间复杂度都相当优秀
 
+缺点: 很多小的细节容易导致严重的性能损失, 有时候甚至达到了N^2的时间复杂度
+
+算法分析:
+
+在最理想情况, 每一次j都是正好在subarray的中间位置, 也就是每次都能二分, 这样和mergesort一模一样, 时间复杂度为 ~ NlogN
+
+Quicksort平均使用 ~ 2NlogN的比较次数(以及1/6的的交换)
+
+**Prooof.**
+
+设`!$C_N$`为排序N个(分散的)items所需要的平均比较次数, 易得`!$C_0 = C_1 = 0$`, 而且对于`!$N > 1$`, 有一下递归关系:
+
+```mathjax!
+$$C_N = N + 1 + \frac {\left(C_0 + C_1 + \cdot \cdot \cdot + C_{N - 2} + C_{N - 1} \right)} {N} +  \frac {\left(C_{N - 1} + C_{N - 2} + \cdot \cdot \cdot + C_{1} + C_{0} \right)} {N}$$
+```
 
