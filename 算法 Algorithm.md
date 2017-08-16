@@ -493,7 +493,7 @@ QuickSort也是一种**分治思想**在排序中的应用的算法.
 
 在最理想情况, 每一次j都是正好在subarray的中间位置, 也就是每次都能二分, 这样和mergesort一模一样, 时间复杂度为 ~ NlogN
 
-Quicksort平均使用 ~ 2NlogN的比较次数(以及1/6的的交换)
+Quicksort平均使用 ~ 2NlogN (`!$\dot {=} 1.39N \log N$`)的比较次数(以及1/6的的交换)
 
 **Prooof.**
 
