@@ -571,3 +571,19 @@ $$N + (N - 1) + \cdot \cdot \cdot + 2 + 1 = \frac {N(N + 1)} {2}$$
 一个简单的方法是使用**3-way partitioning**, 这是由Dijkstra的**Dutch National Flag**问题推广出来的.
 
 相比于原来的2-way partitioning, 2-way partitioning把array分为三个部分: 小于 等于 大于 partition item的三个部分.
+
+**Dijkstra法:**
+
+维持两个指针**lt**和**gt**, **a[lo...lt - 1]**为**小于**partition item(简称**v**)的部分, **a[lt...i - 1]**为**等于**v的部分, **a[i...gt]**为还没有处理的元素, **a[gt + 1...hi]**为**大于**v的部分. 
+
+处理过程: 
+从i = lo开始
+
+* 如果a[i]小于v, 交换a[lt]和a[i], 然后lt++, i++
+* 如果a[i]大于v, 交换a[i]和a[gt], 然后gt--
+* 如果a[i]等于v, i++
+
+所有遇到的元素除了等于v, 都会进行交换, 所以3-way交换次数要多于2-way, 在处理重复元素比较少的时候, 会产生较大的性能损失, 直到1990s的时候有人提出了更好的实现方法(Ex 2.3.22), 使得优化版本的3-way partition Quicksort在处理包含很多重复元素的实际应用比mergesort和其他排序算法都要快很多, 甚至突破了原来在mergesort中证明过的那个下界.
+
+
+
