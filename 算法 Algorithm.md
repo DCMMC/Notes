@@ -554,4 +554,18 @@ $$N + (N - 1) + \cdot \cdot \cdot + 2 + 1 = \frac {N(N + 1)} {2}$$
 
 #### **优化**
 
+这些优化大概能带来20%~30%的性能提升.
+
+1. Cutoff to Insertion Sort (Ex 2.3.25)
+
+因为Quicksort在处理小数组的时候速度还没有InsertionSort快, 所以可以通过cutoff来把小的数组用InsertionSort来处理.
+
+2. Median-of-three partitioning (Ex 2.3.18 && Ex 2.3.19)
+
+选取subarray中间三个元素作为partition item, 这会带来些许性能提升, 而且不需要做数组边界检查了.
+
+3. Entropy-optimal sorting
+
+在实际使用中, 数组中往往会有大量的重复keys, 比如subarra中所有元素都是一样的key的时候, 并不需要再把他们给partition成更加小的subarrays了, 不过原始版本的Quicksort还是会把他们给partition, 这时候可以把linearithmic-time优化到linear-time.
+
 
