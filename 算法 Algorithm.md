@@ -284,7 +284,7 @@ class ObjWithInnerClass {
 * 制定一个比较他们性能的猜想(假说)(可以基于某些定理)
 * 进行实验来验证上述猜想
 
-## 排序
+## 排序算法
 
 ### 3. 选择排序(Selection Sort)
 
@@ -549,6 +549,8 @@ $$N + (N - 1) + \cdot \cdot \cdot + 2 + 1 = \frac {N(N + 1)} {2}$$
 
 不过值得一提的是, 发生这种情况的几率是相当小的(Ex 2.3.10), 可以安全的忽略.
 
+
+
 **In Summary**
 虽然Quicksort在一般情况下的比较次数(1.39N logN)大于mergesort()(1/2N logN ~ N logN), 不过Quicksort数据移动的次数相当少, 所以相对来说Quicksort会更加快.
 
@@ -614,3 +616,4 @@ $$\simeq N H - N$$
 > 注意当所有的keys都不相等时, H = logN(也就是`!$\forall i \in [1, N], p_i = \frac {1} {N}$`)
 
 > 当数组中含有大量的重复数值的时候, Quicksort with 3-way partitioning能够把linearithmic time优化到linear time
+
