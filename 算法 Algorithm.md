@@ -636,7 +636,7 @@ $$\simeq N H - N$$
 
 **Def. binary heap**
 
-binary heap就是一组在完全heap-ordered binary tree中的元素, 并在数组中按照层次进行存储(不存储第一个元素).
+binary heap就是一组在完全heap-ordered binary tree中的元素, 并在数组中按照层次进行存储(不存储第一个元素), 也就是从底层到顶层, 一层一层从左到右把node中的key存储在数组中(好像是前序遍历吧).
 
 e.g.
 
@@ -644,3 +644,19 @@ i     | 0 | 1 | 2 |  3 |  4 | 5 |  6 |  7 |  8 | 9 | 10 | 11
 --|--|--|--|--|--|--|--|--|--|--|--|--
 a[i] | - | T | S | R | P | N | O | A | E | I | H | G 
 
+表示:
+
+```mermaid!
+graph TD;
+
+T-->S
+T-->R
+S-->P
+S-->N
+R-->O
+R-->A
+P-->E
+P-->I
+N-->H
+N-->G
+```
