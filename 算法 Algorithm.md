@@ -617,3 +617,5 @@ $$\simeq N H - N$$
 
 > 当数组中含有大量的重复数值的时候, Quicksort with 3-way partitioning能够把linearithmic time优化到linear time
 
+### 9. Priority Queue
+
