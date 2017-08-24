@@ -631,6 +631,5 @@ $$\simeq N H - N$$
 
 **Def.**
 
-每一个node都要大于等于它的(两个) children node.
-
+每一个node都要大于等于它的(两个) children node. 同样地, 每一个node都要小于等于它的parent node. 这样便可以保证: Moving up from any node, we get a nondecreasing sequence of keys; moving down from any node, we get a nonincreasing sequences of keys.
 
