@@ -682,3 +682,17 @@ N-->G
 
 就像上述第一种情况, 有一些node的key比其父节点还大, 这时候就需要与父节点交换位置, 这时候这个node下面的两个子节点都肯定要小于等于这个node, 然后再与新位置上的父节点进行比较, 直到其父节点大于等于这个node, 或者是已经到了root了. 这个过程就像一个拥有较大的值的node游到了heap中的更高的level去了, 所以命名为swim.
 
+**Top-down reheapifying (sink)**
+
+就像上述第二种情况, 如果heap order因为有些node的key比其一个或者两个子节点的key都要小的话, 就通过不断与其较大的子节点进行交换直到两个子节点的key都要小于等于该node, 或者是已经到了heap的bottom. 这个过程就像一个拥有较小的值的node下沉了heap中的更低的level去了, 所以命名为sink.
+
+所以Priority Queue的两个操作可以这样实现:
+
+**Insert**
+
+将新的key添加在数组的最后面, 然后向上遍历heap(siwm), 进行reheapifying.
+
+**Remove the maximum**
+
+把数组第一个元素取出来, 然后把最后一个元素放到第一个元素的位置上, 然后进行sink.
+
