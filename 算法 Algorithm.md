@@ -673,8 +673,12 @@ N-->G
 
 **Pf. 可以通过数学归纳证明**
 
-**reheapifying(aka restoring heap order)的两种基本情况:**
+**heap order被破坏需要reheapifying(aka restoring heap order)的两种基本情况:**
 
 * 有一些node的优先级是递增的, 也就是子结点的优先级大于父节点的情况, 比如有一个新的node添加到了binary heap的末尾, 这时候就需要向上遍历来进行reheapifying.
 * 有一些node的优先级的递减的, 比如把一个结点替换成另外一个更加小的值之后, 这时候就需要向下遍历来进行reheapifying.
+
+**Bottom-up reheapifying (swim)**
+
+就像上述第一种情况, 有一些node的key比其父节点还大, 这时候就需要与父节点交换位置, 这时候这个node下面的两个子节点都肯定要小于等于这个node, 然后再与新位置上的父节点进行比较, 直到其父节点大于等于这个node, 或者是已经到了root了. 这个过程就像一个拥有较大的值的node游到了heap中的更高的level去了, 所以命名为swim.
 
