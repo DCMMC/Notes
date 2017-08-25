@@ -636,7 +636,7 @@ $$\simeq N H - N$$
 
 **Def. binary heap**
 
-binary heap就是一组在完全heap-ordered binary tree(也就是假设这棵tree有n level, 从 1 到 (n - 1) level都是满的)中的元素, 并在数组中按照层次进行存储(不存储第一个元素), 也就是从底层到顶层, 一层一层从左到右把node中的key存储在数组中(好像是前序遍历吧).
+binary heap就是一组在完全heap-ordered binary tree(**也就是假设这棵tree有n level, 从 1 到 (n - 1) level都是满的**)中的元素, 并在数组中按照层次进行存储(不存储第一个元素), 也就是从底层到顶层, 一层一层从左到右把node中的key存储在数组中(好像是前序遍历吧).
 
 简略理解就是: **Complete binary tree represented as array**
 
@@ -665,11 +665,11 @@ N-->G
 
 其中数组的1 ~ 1表示level 1, 2 ~ 3表示level 2, 4 ~ 7表示level 3, 8 ~ 11表示level 4.
 
-**对于完全heap-ordered binary tree(也就是假设这棵tree有n level, 从 1 到 (n - 1) level都是满的), 它对应的binary heap在数组中的表示正好有: index为k的node的父结点的index就是`!$\leftfloor \frac {k} {2} \rightfloor$`, 它的两个子结点的index分别为`!$2k$`和`!$2k + 1$`.**
+**对于完全heap-ordered binary tree(也就是假设这棵tree有n level, 从 1 到 (n - 1) level都是满的), 它对应的binary heap在数组中的表示正好有: index为k的node的父结点的index就是`!$\lfloor \frac {k} {2} \rfloor$`, 它的两个子结点的index分别为`!$2k$`和`!$2k + 1$`.**
 
 **Pf. 易证, 从略**
 
-**一颗大小为N的Complete binary tree的大小为`!$\leftfloor \lg N \rightfloor$`**
+**一颗大小为N的Complete binary tree的大小为`!$\lfloor \lg N \rfloor$`**
 
 **Pf. 可以通过数学归纳证明**
 
