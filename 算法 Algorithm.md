@@ -669,3 +669,7 @@ N-->G
 
 **Pf. 易证, 从略**
 
+**一颗大小为N的Complete binary tree的大小为`!$\leftfloor \lg N \rightfloor$`**
+
+**Pf. 可以通过数学归纳证明**
+
