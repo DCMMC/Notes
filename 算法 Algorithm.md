@@ -673,3 +673,8 @@ N-->G
 
 **Pf. 可以通过数学归纳证明**
 
+**reheapifying(aka restoring heap order)的两种基本情况:**
+
+* 有一些node的优先级是递增的, 也就是子结点的优先级大于父节点的情况, 比如有一个新的node添加到了binary heap的末尾, 这时候就需要向上遍历来进行reheapifying.
+* 有一些node的优先级的递减的, 比如把一个结点替换成另外一个更加小的值之后, 这时候就需要向下遍历来进行reheapifying.
+
