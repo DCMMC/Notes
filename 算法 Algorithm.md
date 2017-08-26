@@ -696,3 +696,27 @@ N-->G
 
 把数组第一个元素取出来, 然后把最后一个元素放到第一个元素的位置上, 然后进行sink.
 
+**在一个N-key的priority queue中, insert最多需要1 + logN次比较, remove the maximum最多需要2logN次比较**
+
+**Pf.**
+
+由前面的定理可以知道, heap-ordered Complete binary tree的高度为floor(logN), insert显然需要最多1 + logN次比较, 而remove the maximum因为每次都要先比较两个子节点找出大的还要跟要操作的node比较来判断是否需要交换, 所以remove the maximum需要最多2logN次比较.
+
+#### **Multiway heaps**
+
+很容易将heap-ordered complete binary tree推广到heap-ordered complete ternary tree(三叉树), 这样index为k那个node的父节点的index就是`!$\lfloor \frac {k + 1} {3} \rfloor$`, 它的三个子节点的index分别为 3k - 1, 3k + 1. 同样的, 很容易推广到d-ary heap(也就是d叉树), 这里有一个因为树的高度减少带来的遍历开销的减少和在一个结点的所有子节点中找到最大的那个节点的开销的增加之间的权衡, 这个权衡取决于具体实现和两种操作的使用频次的比例.
+
+**Array resizing**
+
+可以在insert()和delMax()中分别实现把数组长度加倍和使数组长度减半的代码, 就像1.3中的例子那样.
+
+**keys的不可变性**
+
+PQ在以数组为参数的构造器创建对象之后, 将会在操作PQ的时候假设目标数组并没有被客户端程序员更改, 因为要开发一个这样的机制来确保客户端程序员的更改及时同步会提高代码的复杂度并且会降低效率.
+
+**Index priority queue**
+
+在很多应用场景中，允许客户端程序员引用已经存在与Priority Queue中的元素是有必要的。
+
+
+
