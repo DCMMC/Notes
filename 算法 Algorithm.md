@@ -743,4 +743,5 @@ Floyd改进了Sortdown中过多的比较次数(使之与mergesort相近), 对某
 Flody's method:
 
 先一直跟两个children中较大的那一个交换直到到了heap的底部(也就是不考虑是否会比那个较大的要小), 然后再从sink结束的那个位置(也就是path的尽头了)往上swim, 这样就可以把sink的比较次数减半...
-这个优化只有在元素比较的时候比较耗时的情况(比如String的比较)就会提高算法效率.
+这个优化只有在元素比较的时候比较耗时的情况(比如String的比较)就会提高算法效率, 但是会造成比heapsort origin还严重的cache missed以及更多的branch mispredictions (不利于Complier的优化).
+
