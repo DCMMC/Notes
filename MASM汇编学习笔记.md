@@ -174,6 +174,15 @@ e.g. MOV AX, [BX] 等价于 MOV AX, DS:[BX]
 
 ### 5. 存储器相对寻址方式(Register relative addressing 或称直接变址寻址方式)
 
-EA为基址寄存器或变址寄存器的内容和指令中指定的位移量之和.
+EA为基址寄存器或变址寄存器的内容和指令中指定的位移量之和. i.e. EA = DISP[INDEX] 或者 EA = DISP[BASE] 等价于 EA = [INDEX + DISP] 或 EA = [BASE + DISP]
 
-e.g. MOV AX, [SI + 4] (等价于MOV AX, 4[SI], 4是偏移量(DISP), SI是INDEX, 偏移量可以不放在中括号里面, 这里用的默认段寄存器DS)
+e.g.MOV AX, 4[SI] (等价于MOV AX, [SI + 4] , 4是偏移量(DISP), SI是INDEX, 偏移量可以不放在中括号里面, 这里用的默认段寄存器DS)
+
+也可以用段跨越前缀.
+
+### 6. 基址变址寻址方式(based indexed addressing)
+
+EA是一个基址寄存器和一个变址寄存器的内容之和. i.e. EA = [BASE][INDEX] 等价于 EA = [BASE + INDEX]
+
+e.g. MOV AX, [BX][DI] (等价于MOV AX, [BX + DI])
+
