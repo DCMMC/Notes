@@ -300,4 +300,4 @@ e.g. JMP WORD PTR [BP + 4]
 
 并且要在操作数前面用 **DWORD PTR** 来说明转向地址需取双字为段讲转移指令.
 
-e.g. JMP DWORD PTR [2000H]
+e.g. JMP DWORD PTR [BX]
