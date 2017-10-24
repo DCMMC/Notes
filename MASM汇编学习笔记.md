@@ -162,6 +162,8 @@ e.g. MOV AX, ES:[2000H] 这里就是使用的附加段寄存器中的值来作�
 
 书写程序的时候, 为了方便, 可以用一个有效的标识符代表地址作为 **符号地址**(变量) , e.g. 假定 VALUE = 2000H, 则 MOV AX, VALUE(等价于MOV AX, [VALUE])就等价于 MOV AX, [2000H]
 
+相当于取得主存储器中的变量的值
+
 ### 4. 存储器间接寻址方式(Register indirect addressing)
 
 EA中只含有基址存储器内容(BASE)或变址存储器内容(INDEX)的一种成分, 可以使用段跨越前缀来去的其他段中的数据. 所以80286-不允许AX, CX, DX, SP存放EA. 
@@ -172,17 +174,27 @@ e.g. MOV AX, [BX] 等价于 MOV AX, DS:[BX]
 
 则 指令结束后 (AX) = 0A088H
 
+可用于表格处理, 改变寄存器内容就可以取出表格的下一项.
+
 ### 5. 存储器相对寻址方式(Register relative addressing 或称直接变址寻址方式)
 
 EA为基址寄存器或变址寄存器的内容和指令中指定的位移量之和. i.e. EA = DISP[INDEX] 或者 EA = DISP[BASE] 等价于 EA = [INDEX + DISP] 或 EA = [BASE + DISP]
 
 e.g.MOV AX, 4[SI] (等价于MOV AX, [SI + 4] , 4是偏移量(DISP), SI是INDEX, 偏移量可以不放在中括号里面, 这里用的默认段寄存器DS)
 
-也可以用段跨越前缀.
+可用于表格处理, 表格的首地址可设置为DISP, 利用修改基址或变址寄存器的内容来取得表格中的值.
 
 ### 6. 基址变址寻址方式(based indexed addressing)
 
 EA是一个基址寄存器和一个变址寄存器的内容之和. i.e. EA = [BASE][INDEX] 等价于 EA = [BASE + INDEX]
 
 e.g. MOV AX, [BX][DI] (等价于MOV AX, [BX + DI])
+
+同样适用于数组或表格处理, 首地址可存放在基址寄存器中, 用变址寄存器来访问数组中的各个元素, 因为BASE和INDEX都可以修改, 所以比上面那种方式更加灵活.
+
+### 7. 相对变址寻址方式(relative based indexed addressing)
+
+EA是一个基址寄存器与一个变址寄存器的内容和指令中指定的位移量之和. i.e. EA = DISP[BASE][INDEX] (等价于 DISP[BASE + INDEX] 或 [BASE + INDEX + DISP])
+
+通常用于对二维数组的寻址. DISP指向二维数组之首, BASE和INDEX分别指向一维和二维; 也可用于堆栈处理, BASE指向栈顶, DISP表示从栈顶到数组的首址, INDEX用于访问这个数组的某个元素.
 
