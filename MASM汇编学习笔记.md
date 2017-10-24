@@ -30,7 +30,7 @@ SI(source index) 源变址
 
 ## 专用寄存器
 
-IP(instruction pointer)
+IP(instruction pointer) 表示相当于CS的偏移地址, 与CS一起连用确定下一条指令的物理地址.
 
 SP
 
@@ -266,7 +266,7 @@ EA = DISP[BASE][INDEX * SCALE]
 
 这种寻址方式用来确定转移指令及CALL指令的转向地址.
 
-### 段内直接寻址(intrasegment direct addressing)
+### 1. 段内直接寻址(intrasegment direct addressing)
 
 操作数类似于数据寻址的直接寻址, 也就是有效地址EA只有一个DISP, 不过这个有效地址是相对于当前IP寄存器的内容的位移.
 
@@ -280,3 +280,6 @@ EA = DISP[BASE][INDEX * SCALE]
 
 > 这里面的EA是一个表示地址的有效数值, 也可以把[EA]用一个符号地址来代替
 
+### 2. 段内间接寻址(intrasegment indirect addressing)
+
+EA类似于数据寻址那样, 只不过是相对于
