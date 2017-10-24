@@ -125,7 +125,7 @@ i.e. logic address: [32bits selector 选择子]:[32bits offset 偏移地址]
 
 PA(Physical Address) = Segment Address(段地址) x 10H + Effective Address(段内偏移地址, EA, 又叫有效地址)
 
-而EA = BASE(基址) + (INDEX(变址, 相对于BASE的偏移量) x SCALE(比例因子, 80386+, 表示1, 2, 4, 8字节宽度)) + DISP(位移量)
+而EA = BASE(基址) + (INDEX(变址, 相对于BASE的偏移量) x SCALE(比例因子, 80386+, 表示1, 2, 4, 8字节宽度)) + DISP(位移量, 可以是0, 8, 16(80286-, 80386+则是32)bits)
 
 其中默认情况下选择的寄存器有:
 
@@ -156,4 +156,5 @@ e.g. MOV AX, ES:[2000H] 这里就是使用的附加段寄存器中的值来作�
 
 书写程序的时候, 为了方便, 可以用一个有效的标识符代表地址作为 **符号地址**(变量) , e.g. 假定 VALUE = 2000H, 则 MOV AX, VALUE(等价于MOV AX, [VALUE])就等价于 MOV AX, [2000H]
 
-### 3. 
+### 3. 存储器间接寻址方式(Register indirect addressing)
+
