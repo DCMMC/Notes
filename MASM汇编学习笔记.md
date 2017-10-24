@@ -72,7 +72,8 @@ i.e. logic address: [32bits selector 选择子]:[32bits offset 偏移地址]
 
 1. 从 **CR3** 寄存器中获得 **Page Directory** 的 base address, 也就是其中第一个条目(entry)的物理内存地址, 然后根据 **Linear Address** 的高10位(linear address的高10位指定PDE(Page Directory Entry)的index, 所以PD总共最多有2^10 = 1024个条目, 每个条目长4bytes)找到对应的 **PDE** , **PDE** 中储存了segment base address, 还有段长和粒度的有关信息.
 2. 如果 **PDE** 中的粒度为 4KB(也就是4K分页模式, 一个Page最大有4GB大小), 则该PDE中的 segment base address 就是该 linear address所在的 **Page** 的 base address, linear address中剩下的 低22bits就是相对于这个 Page的base address的offset, base address + offset 就是这个 linear address对应的 physical address;
-3. 如果 **PDE** 中的粒度为1Byte(一个Page最大有1MB大小), 则 PDE 中的 segment base address 指向 对应的 PT(Page Table) 的 physical base address, 然后 linear address的 12到21位 (也就是linear address的高10位后面的10位) 为 对应的 PTE(Page Table Entry)的index(所以PT还是最多有2^10 = 1024个条目), PTE中保存的正是linear address对应的物理地址(这个physical address可以是在内存中也可以是在swap中, 由PTE的第0位指定). 
+3. 如果 **PDE** 中的粒度为1Byte(一个Page最大有1MB大小), 则 PDE 中的 segment base address 指向 对应的 PT(Page Table) 的 physical base address, 然后 linear address的 12到21位 (也就是linear address的高10位后面的10位) 为 对应的 PTE(Page Table Entry)的index(所以PT还是最多有2^10 = 1024个条目), PTE中保存的正是linear address对应的物理地址(这个physical address可以是在内存中也可以是在swap中, 由PTE的第0位指定).
+4. 最后算上logic address中的偏移地址就可以了. 
 
 ### 参考
 
