@@ -81,7 +81,7 @@ i.e. logic address: [32bits selector 选择子]:[32bits offset 偏移地址]
 
 [Linux手册](http://www.tldp.org/LDP/khg/HyperNews/get/memory/80386mm.html)
 
-## 数据寻址方式
+## 数据寻址方式(操作数的寻址方式)
 
 指令: MOV DST, SRC
 
@@ -89,3 +89,35 @@ i.e. logic address: [32bits selector 选择子]:[32bits offset 偏移地址]
 
 ### 1. 立即寻址(Immediate addressing)
 
+**立即数** : 8bits或者16bits(80286及以下, 80386+则为32bits)
+
+立即数只能用于SRC, 毕竟这相当于常量嘛, 而且SRC必须和DST字长一致.
+
+如果立即数第一个数字为十六进制的A~F时, 前面必须加上0, 否则 AH就分不清到底是寄存器还是一个立即数.
+
+### 2. 寄存器寻址(Register addressing)
+
+操作数在寄存器中, 指令指定寄存器号.
+
+> 注意: CS不能用MOV改变, i.e. CS不能作为MOV的DST, e.g. MOV CS, AX
+
+
+
+以上两种寻址方式都是操作数都在寄存器中, 所以速度比较快, 而以下几种寻址方式都需要访问存储器来来去的操作数.
+
+20bits物理地址计算(实模式/8086/8088)
+
+PA(Physical Address) = Segment Address(段地址) + Effective Address(段内偏移地址, EA, 又叫有效地址)
+
+而EA = BASE(基址) + (INDEX(变址, 相对于BASE的偏移量) x SCALE(比例因子, 80386+, 表示1, 2, 4, 8字节宽度)) + DISP(位移量)
+
+其中默认情况下选择的寄存器有:
+
+/ | 16bits | 32bits
+-------|------|-------
+BASE| BX, BP | 任何32位通用寄存器
+INDEX | SI, DI | 除ESP之外所有32位通用寄存器
+
+当然, 还可以通过段跨越前缀来指定使用其他非默认选择的寄存器.
+
+### 3. 
