@@ -6,6 +6,28 @@ grammar_cjkRuby: true
 
 # 寄存器
 
+## 八大通用寄存器
+
+AX(accumulator) 累加器, 用于算术运算
+
+BX(base) 基址变址
+
+CX(count) 计数, 在循环(loop), 串处理, 移位等指令作为 **隐含** 的计数器(往往可以自动增加或者减少)
+
+DX(data) 数据, 一般在做双字长运算时把DX和AX结合起来存放一个双字长数, DX用来放高位字.
+
+SP(stack pointer) 堆栈指针
+
+BP(base pointer) 基址指针
+
+DI(destination index) 目的变址
+
+SI(source index) 源变址
+
+> 80386+ 中分别为 EAX, EBX, ECX, EDX, ESP, EBP, EDI, ESI
+
+>  (只有)AX, BX, CX, DX都可以分为 \*L 和 \*H 来表示高位字节和低字节
+
 # 内存寻址
 
 主存储器的存储单元大小: **1byte**
@@ -125,7 +147,7 @@ i.e. logic address: [32bits selector 选择子]:[32bits offset 偏移地址]
 
 PA(Physical Address) = Segment Address(段地址) x 10H + Effective Address(段内偏移地址, EA, 又叫有效地址)
 
-而EA = BASE(基址) + (INDEX(变址, 相对于BASE的偏移量) x SCALE(比例因子, 80386+, 表示1, 2, 4, 8字节宽度)) + DISP(位移量, 可以是0, 8, 16(80286-, 80386+则是32)bits)
+而EA = BASE(基址) + (INDEX(变址, 相对于BASE的偏移量) x SCALE(比例因子, **80386+** , 表示1, 2, 4, 8字节宽度)) + DISP(位移量, 可以是0, 8, 16(80286-, 80386+则是32)bits)
 
 其中默认情况下选择的寄存器有:
 
@@ -198,3 +220,22 @@ EA是一个基址寄存器与一个变址寄存器的内容和指令中指定的
 
 通常用于对二维数组的寻址. DISP指向二维数组之首, BASE和INDEX分别指向一维和二维; 也可用于堆栈处理, BASE指向栈顶, DISP表示从栈顶到数组的首址, INDEX用于访问这个数组的某个元素.
 
+### 8. 比例变址寻址方式
+
+EA = DISP[INDEX * SCALE] (equal to [INDEX * SCALE + DISP])
+
+对于元素大小为2, 4, 8的数组, 可以直接在INDEX给出数组元素下标, 然后指定SCALE为元素字节大小
+
+### 9. 基址比例变址寻址方式(baesd scaled indexed addressing)
+
+EA = [BASE][INDEX * SCALE]
+
+### 10. 相对基址比例变址寻址方式(relative based scaled indexed addressing)
+
+EA = DISP[BASE][INDEX * SCALE]
+
+## 与转移地址有关的寻址方式
+
+这种寻址方式用来确定转移指令及CALL指令的转向地址.
+
+### 
