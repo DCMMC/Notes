@@ -58,7 +58,7 @@ i.e. logic address: [32bits selector 选择子]:[32bits offset 偏移地址]
 
 > P.S. selector虽然是32位的, 不过只有低16位有用(行为和80286的selector一致)
 
-同样地, DTE中段起始地址为32bit(非分页模式的物理地址, 分页模式下的虚拟地址, 统称为 **线性地址(linear address)**), 短长数据宽度为20bits, 而且还可以设置段长粒度(1Byte或者4KiB, 也就是对应的最大段长为1MB或者4GiB)
+同样地, DTE中段起始地址为32bit(非分页模式的物理地址, 分页模式下的虚拟地址, 统称为 **线性地址(linear address)**), 段长数据宽度为20bits, 而且还可以设置段长粒度(1Byte或者4KiB, 也就是对应的最大段长为1MB或者4GiB)
 
 ### 分页内存寻址
 
@@ -70,7 +70,9 @@ i.e. logic address: [32bits selector 选择子]:[32bits offset 偏移地址]
 
 **paging unit** 又有两个阶段组成:
 
-1. 从 **CR3** 寄存器中获得 **Page Directory** 的 base address, 也就是其中第一个条目(entry)的地址, 
+1. 从 **CR3** 寄存器中获得 **Page Directory** 的 base address, 也就是其中第一个条目(entry)的物理内存地址, 然后根据 **Linear Address** 的高10位(linear address的高10位指定PDE(Page Directory Entry)的index, 所以PD总共最多有2^10 = 1024个条目, 每个条目长4bytes)找到对应的 **PDE** , **PDE** 中储存了segment base address, 还有段长和粒度的有关信息.
+2. 如果 **PDE** 中的粒度为 4KB(也就是4K分页模式, 一个Page最大有4GB大小), 则该PDE中的 segment base address 就是该 linear address所在的 **Page** 的 base address, linear address中剩下的 低22bits就是相对于这个 Page的base address的offset, base address + offset 就是这个 linear address对应的 physical address;
+3. 如果 **PDE** 中的粒度为1Byte,  
 
 ### 参考
 
