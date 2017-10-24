@@ -60,3 +60,5 @@ i.e. logic address: [32bits selector 选择子]:[32bits offset 偏移地址]
 
 同样地, DTE中段起始地址为32bit(非分页模式的物理地址, 分页模式下的虚拟地址), 短长数据宽度为20bits, 而且还可以设置段长粒度(1Byte或者4KiB, 也就是对应的最大段长为1MB或者4GiB)
 
+### 分页内存寻址
+
