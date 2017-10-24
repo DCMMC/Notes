@@ -40,9 +40,9 @@ bit [15....3] 为指向 descriptor table entry(描述符表的条目的序号, �
 
 首先DT(Descriptor Table)和DTE是由OS(Operate System)创建的.
 
-80286的DTE总有64bits, 其中有24bits的段起始物理地址(因为80286就是24bits的), 和16bits的段长(segment limit)(所以最大偏移量只有64KB, 这一点饱受诟病), 另外24bits在80286中并未使用到.
+80286的DTE总有64bits, 其中有24bits的段起始物理地址(因为80286就是24bits的), 和16bits的段长(segment limit, 所以最大的段长只有64KB, 这一点饱受诟病), 另外24bits在80286中并未使用到.
 
-通过 24bits段起始地址 + 16bits段内偏移地址就可以得到选择子对应的真正的物理地址了.
+通过 24bits段起始地址 + 16bits段内偏移地址(logic address中给出的offset)就可以得到选择子对应的真正的物理地址了.
 
 ## 80386+ 的IA32保护模式
 
@@ -58,4 +58,4 @@ i.e. logic address: [32bits selector 选择子]:[32bits offset 偏移地址]
 
 > P.S. selector虽然是32位的, 不过只有低16位有用(行为和80286的selector一致)
 
-同样地, DTE中段起始地址为32bit
+同样地, DTE中段起始地址为32bit(非分页模式的物理地址, 分页模式下的虚拟地址), 短长数据宽度为20bits.
