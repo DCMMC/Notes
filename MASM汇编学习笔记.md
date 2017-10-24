@@ -28,6 +28,30 @@ SI(source index) 源变址
 
 >  (只有)AX, BX, CX, DX都可以分为 \*L 和 \*H 来表示高位字节和低字节
 
+## 专用寄存器
+
+IP(instruction pointer)
+
+SP
+
+FLAGS
+
+## 段寄存器
+
+用于主存储器寻址
+
+CS
+
+DS
+
+SS
+
+ES
+
+FS
+
+GS
+
 # 内存寻址
 
 主存储器的存储单元大小: **1byte**
