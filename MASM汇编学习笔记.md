@@ -24,3 +24,18 @@ PA(物理地址, Physical Address) = 段地址(基址, 16bits) x 2^4 (10H) + 偏
 
 ### 80286 保护模式
 
+logic address: [16bits selector 选择子]:[16bits offset 偏移地址]
+
+与实模式的区别在于段寄存器中存储的不是段开头的实际的物理地址而是一个选择子.
+
+**选择子**
+
+bit [15....3] 为指向 descriptor table entry(描述符表的条目的序号, 所以描述符表中最多有 2^13 ~= 8k个条目) [2] 说明是位于GDT(全局, golbal descriptor table)还是LDT(局部, local descriptor table) [1 0] 描述请求的优先级别从00B到11B依次递减.
+
+然后CPU通过选择子中的条目的index以及第三位的说明, 并对权限进行检查(还有其他几个检查, 这里略去), 找到 DTE(Descriptor Table Entry)
+
+**DTE**
+
+首先DT(Descriptor Table)和DTE是由OS(Operate System)创建的.
+
+DTE总有64bits, 其中有24bits的段起始物理地址(因为80286就是24bits的), 和16bits的段内偏移地址(所以最大偏移量只有64KB, 这一点饱受诟病)
