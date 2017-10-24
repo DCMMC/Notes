@@ -58,11 +58,19 @@ i.e. logic address: [32bits selector 选择子]:[32bits offset 偏移地址]
 
 > P.S. selector虽然是32位的, 不过只有低16位有用(行为和80286的selector一致)
 
-同样地, DTE中段起始地址为32bit(非分页模式的物理地址, 分页模式下的虚拟地址), 短长数据宽度为20bits, 而且还可以设置段长粒度(1Byte或者4KiB, 也就是对应的最大段长为1MB或者4GiB)
+同样地, DTE中段起始地址为32bit(非分页模式的物理地址, 分页模式下的虚拟地址, 统称为 **线性地址(linear address)**), 短长数据宽度为20bits, 而且还可以设置段长粒度(1Byte或者4KiB, 也就是对应的最大段长为1MB或者4GiB)
 
 ### 分页内存寻址
 
-是否采用分页
+是否采用分页由 **PG** 指定.
+
+如果 **PG** 是1, 则为分页内存寻址模式.
+
+前面的步骤和非分页模式一模一样, 只不过非分页模式得到的linear address在分页模式只是virtual address, 还需要进一步通过 **paging unit** 进行转换成真正的物理地址.
+
+**paging unit** 又有两个阶段组成:
+
+1. 从 **CR3** 寄存器中获得 **Page Directory** 的 base address, 也就是其中第一个条目(entry)的地址, 
 
 ### 参考
 
