@@ -40,17 +40,17 @@ FLAGS
 
 用于主存储器寻址
 
-CS
+CS 代码
 
-DS
+DS 数据
 
-SS
+SS 堆栈
 
-ES
+ES 附加
 
-FS
+FS 80386+ 附加
 
-GS
+GS 80386+ 附加
 
 # 内存寻址
 
