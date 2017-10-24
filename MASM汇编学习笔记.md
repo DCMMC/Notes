@@ -66,8 +66,7 @@ i.e. logic address: [32bits selector 选择子]:[32bits offset 偏移地址]
 
 ### 参考
 
-()[https://www.csee.umbc.edu/~cpatel2/links/310/slides/chap17_lect16_paging_segmentation.pdf
-]
+(https://www.csee.umbc.edu/~cpatel2/links/310/slides/chap17_lect16_paging_segmentation.pdf)[]
 
 ()[http://www.tldp.org/LDP/khg/HyperNews/get/memory/80386mm.html
 ]
