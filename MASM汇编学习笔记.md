@@ -10,9 +10,11 @@ grammar_cjkRuby: true
 
 为了解决16位的CPU使用20位的内存地址的问题.(8086/8088)
 
-PA(物理地址, Physical Address) = 段地址(基址, 16bits) x 2^4 (10H) + 偏移地址(16bits)
+PA(物理地址, Physical Address) = 段地址(基址, 16bits) x 2^4 (10H) + 偏移地址(16bits) (最大偏移量为FFFFH也就是64k)
 
 用逻辑地址表示为 段基址:段内偏移地址 e.g.3000H:2000H
 
 ## 保护模式
+
+### 80286 保护模式
 
