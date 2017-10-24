@@ -30,7 +30,7 @@ SI(source index) 源变址
 
 ## 专用寄存器
 
-IP(instruction pointer) 表示相当于CS的偏移地址, 与CS一起连用确定下一条指令的物理地址.
+IP(instruction pointer) 表示相当于CS的 **偏移地址** , 与CS一起连用确定下一条指令的物理地址.
 
 SP
 
