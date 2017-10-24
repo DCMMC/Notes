@@ -173,3 +173,7 @@ e.g. MOV AX, [BX] 等价于 MOV AX, DS:[BX]
 则 指令结束后 (AX) = 0A088H
 
 ### 5. 存储器相对寻址方式(Register relative addressing 或称直接变址寻址方式)
+
+EA为基址寄存器或变址寄存器的内容和指令中指定的位移量之和.
+
+e.g. MOV AX, [SI + 4] (等价于MOV AX, 4[SI], 4是偏移量, 偏移量可以不放在中括号里面)
