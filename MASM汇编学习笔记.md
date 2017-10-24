@@ -138,13 +138,13 @@ i.e. logic address: [32bits selector 选择子]:[32bits offset 偏移地址]
 
 ### 参考
 
-## 80386+ 的虚拟86模式
-
-在保护模式下运行为实模式设计的代码
-
 [umbc课件](https://www.csee.umbc.edu/~cpatel2/links/310/slides/chap17_lect16_paging_segmentation.pdf)
 
 [Linux手册](http://www.tldp.org/LDP/khg/HyperNews/get/memory/80386mm.html)
+
+## 80386+ 的虚拟86模式
+
+在保护模式下运行为实模式设计的代码
 
 ## 数据寻址方式(操作数的寻址方式)
 
@@ -266,4 +266,10 @@ EA = DISP[BASE][INDEX * SCALE]
 
 这种寻址方式用来确定转移指令及CALL指令的转向地址.
 
-### 
+### 段内直接寻址(intrasegment direct addressing)
+
+操作数类似于数据寻址的直接寻址, 也就是有效地址EA只有一个DISP, 不过这个有效地址是相对于当前IP寄存器的内容的位移.
+
+适用于条件转移及无条件转移, 但是用于条件转移指令的时候, 位移量只允许8bits(80386+可以是8bits或者32bits).
+
+无条件转移指令的位移量为8bits的时候为段跳转, 位移量是32bits的时候为近跳转, 格式如下:
