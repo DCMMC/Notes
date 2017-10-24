@@ -4,7 +4,20 @@ tags: MASM,汇编,学习笔记
 grammar_cjkRuby: true
 ---
 
+# 寄存器
+
 # 内存寻址
+
+主存储器的存储单元大小: **1byte**
+
+一个地址按照使用情况, 可以表示多种大小的单元.
+
+e.g. 主存储器中 0005H ~ 00008H 中的值分别为 78H, 56H, 34H, 12H,
+
+则 (0005H) 在双字单元, 字单元, 单元中的表示的值分别为 12345678H, 5678H, 78H.
+
+低位字节存入低地址, 高位字节存入高地址.
+
 
 ## 实模式(实地址)
 
@@ -107,7 +120,7 @@ i.e. logic address: [32bits selector 选择子]:[32bits offset 偏移地址]
 
 20bits物理地址计算(实模式/8086/8088)
 
-PA(Physical Address) = Segment Address(段地址) + Effective Address(段内偏移地址, EA, 又叫有效地址)
+PA(Physical Address) = Segment Address(段地址) x 10H + Effective Address(段内偏移地址, EA, 又叫有效地址)
 
 而EA = BASE(基址) + (INDEX(变址, 相对于BASE的偏移量) x SCALE(比例因子, 80386+, 表示1, 2, 4, 8字节宽度)) + DISP(位移量)
 
@@ -118,6 +131,15 @@ PA(Physical Address) = Segment Address(段地址) + Effective Address(段内偏�
 BASE| BX, BP | 任何32位通用寄存器
 INDEX | SI, DI | 除ESP之外所有32位通用寄存器
 
-当然, 还可以通过段跨越前缀来指定使用其他非默认选择的寄存器.
+当然, 还可以通过段跨越前缀来指定使用其他非默认选择的寄存器(在后面的直接寻址方式里面有例子)
 
-### 3. 
+但是以下三种情况下不允许使用 `段跨越前缀`
+
+### 3. 直接寻址方式
+
+SRC是一个只有DISP的EA
+
+e.g. MOV AX, [2000H]
+ 
+默认的段地址用的是 `DS` 里面的, i.e. [2000H] 表示为 DS中的值 x 10H + 2000H (这里的2000H就是EA), 假设DS = 3000H, 则 [2000H]表示地址 3 2000H
+
