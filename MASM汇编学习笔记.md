@@ -83,3 +83,8 @@ i.e. logic address: [32bits selector 选择子]:[32bits offset 偏移地址]
 
 ## 数据寻址方式
 
+指令: MOV DST, SRC
+
+其中, MOV为操作码的助记符, DST和SRC为操作数, MOV为双操作数的操作码.
+
+### 
