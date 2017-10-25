@@ -394,6 +394,8 @@ XCHG OPR1, OPR2
 
 LEA DST, EA (load effective address,  有效地址送寄存器)
 
+> EA为存储器寻址中的有效地址
+
 > DST 不能是立即数或段寄存器
 
 > 对于DST和EA大小不一样的情况, 会做截取或零扩展(这种情都是80386+上的)
