@@ -362,7 +362,8 @@ POP DST
 > PUSH的操作数可以是 reg(通用寄存器) segreg(段寄存器) mem(存储器) data(立即数, **8086/8088中不允许** )
 
 > POP的操作数除了立即数之外都可以
-> 
+
+
 PUSHA/PUSHAD(push all registers) 所有寄存器进栈
 
 POPA/POPAD(pop all registers) 所有寄存器出栈
