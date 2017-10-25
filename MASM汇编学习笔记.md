@@ -392,15 +392,31 @@ XCHG OPR1, OPR2
 
 ### 地址传送指令
 
-LEA DST, EA (load effective address,  有效地址送寄存器)
+LEA REG, EA (load effective address,  有效地址送寄存器)
 
-操作: (DST) <- EA
+操作: (REG) <- EA
 
 > EA为存储器寻址中的有效地址
 
-> DST 不能是立即数或段寄存器
+> DST 不能是寄存器
 
-> 对于DST和EA大小不一样的情况, 会做截取或零扩展(这种情都是80386+上的)
+> 对于DST和EA大小不一样的情况, 会做截取(取低位)或零扩展(这种情都是80386+上的)
+
+LDS (load DS with pointer) 指针送寄存器和DS寄存器
+
+LDS REG, SRC
+
+操作: (REG) <- (SRC) then (DS) <- (SRC + 2)
+
+LES (load ES with pointer) 
+
+操作数和LDS一致
+
+操作: (REG) <- (SRC) then (ES) <- (SRC + 2)
+
+> LDS和LES的SRC必须是存储器寻址
+
+> LEA LES LDS 不影响标志位
 
 ### 累加器专用传送指令
 
