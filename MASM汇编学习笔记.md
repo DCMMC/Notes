@@ -405,7 +405,7 @@ XLAT(translate) 换码
 
 e.g.
 
-```
+``` x86asm
 codesg segment
 	mov ax, 01234H
 	
@@ -424,8 +424,27 @@ e.g. assume cs:codesg (codesg为上面的例子中的那个符号地址)
 
 在程序(段)的结尾加上以下两句指令用于程序返回:
 
-```
+``` x86asm
 mov ax 4c00H
 int 21H
+```
+
+通知编译器整个汇编程序的结束: **end** 伪指令, 一般放在源文件的最后一行.
+
+总的完整的示例:
+
+``` x86asm
+assume cs:codesg
+
+codesg segment
+	mov ax, 01234H
+	
+	; 程序返回
+	mov ax 4c00H
+	int 21H
+codesg ends
+
+; 源文件结束
+end
 ```
 
