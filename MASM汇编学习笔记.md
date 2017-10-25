@@ -371,9 +371,13 @@ POP DST
 
 PUSHA/PUSHAD(push all registers) 所有寄存器进栈
 
+PUSHA: 16bits寄存器依次进栈, 进栈次序为 AX, CX, DX, BX, SP, BP, SI, DI, then (SP) <- (SP) - 16d(十进制)
 
+PUSHAD: 32bits寄存器依次进栈, 进栈持续为EAX, ECX, EDX, EBX, ESP, EBP, ESI, EDI, then (SP) <- (SP) - 32
 
 POPA/POPAD(pop all registers) 所有寄存器出栈
+
+类似于PUSHA和PUSHD, 顺序就是进栈顺序的逆序
 
 XCHG(exchange) 交换
 
