@@ -353,10 +353,11 @@ PUSH SRC
 
 因为是后进先出, 所以SP先退2bytes(32CPU中就是4bytes), 然后在把数据放进去.
 
-
 POP(pop form the stack) 出栈
 
+POP DST
 
+操作: 16bits: (DST) <- ((SP) + 1, (SP)) then (SP) <- (SP) + 2, 32bits: (dst) <- ((ESP) + 3, (ESP) + 2, (ESP) + 1, (ESP)) then (ESP) <- (ESP) + 4
 
 PUSHA/PUSHAD(push all registers) 所有寄存器进栈
 
