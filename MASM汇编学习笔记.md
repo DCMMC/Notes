@@ -351,7 +351,12 @@ PUSH SRC
 
 操作: 16位指令: (SP) <- (SP) - 2 然后 ((SP) + 1, (SP)) <- (SRC), 32位指令: (ESP) <- (ESP) - 4 然后 ((ESP) + 3, (ESP) + 2, (ESP) + 1, (ESP)) <- (SRC)
 
+因为是后进先出, 所以SP先退2bytes(32CPU中就是4bytes), 然后在把数据放进去.
+
+
 POP(pop form the stack) 出栈
+
+
 
 PUSHA/PUSHAD(push all registers) 所有寄存器进栈
 
