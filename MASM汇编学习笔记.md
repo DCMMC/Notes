@@ -344,7 +344,7 @@ MOVSX (move with sign-extend) 带符号扩展传送
 
 
 
-MOVZX(move with zero-extend) 带零扩展传送
+MOVZX(move with zero-extend) 带零扩展传送(80386+)
 
 PUSH(push onto the stack) 进栈
 
