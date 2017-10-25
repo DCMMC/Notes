@@ -339,14 +339,11 @@ MOV DST, SRC
 > MOV指令不影响标志位
 
 
+MOVSX (move with sign-extend) 带符号扩展传送 (80386+, 本课不做要求)
 
-MOVSX (move with sign-extend) 带符号扩展传送
+MOVZX(move with zero-extend) 带零扩展传送
 
-
-
-MOVZX(move with zero-extend) 带零扩展传送(80386+)
-
-PUSH(push onto the stack) 进栈
+PUSH(push onto the stack) 进栈 
 
 POP(pop form the stack) 出栈
 
