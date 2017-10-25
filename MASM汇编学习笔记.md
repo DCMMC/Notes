@@ -4,6 +4,12 @@ tags: MASM,汇编,学习笔记
 grammar_cjkRuby: true
 ---
 
+# 笔记中有关符号的规约
+
+80286- 表示80286及以下
+
+80286+ 表示80286及以上
+
 # 寄存器
 
 ## 八大通用寄存器
@@ -359,12 +365,13 @@ POP DST
 
 操作: 16bits: (DST) <- ((SP) + 1, (SP)) then (SP) <- (SP) + 2, 32bits: (dst) <- ((ESP) + 3, (ESP) + 2, (ESP) + 1, (ESP)) then (ESP) <- (ESP) + 4
 
-> PUSH的操作数可以是 reg(通用寄存器) segreg(段寄存器) mem(存储器) data(立即数, **8086/8088中不允许** )
+> PUSH的操作数可以是 reg(通用寄存器) segreg(段寄存器) mem(存储器) data(立即数, **80286+** )
 
 > POP的操作数除了立即数之外都可以
 
-
 PUSHA/PUSHAD(push all registers) 所有寄存器进栈
+
+
 
 POPA/POPAD(pop all registers) 所有寄存器出栈
 
