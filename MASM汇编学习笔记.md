@@ -343,9 +343,13 @@ MOVSX (move with sign-extend) 带符号扩展传送 (80386+, 本课不做要求)
 
 MOVZX(move with zero-extend) 带零扩展传送
 
-MOVSX和MOVZX都要求SRC小于DST的长度, 毕竟是要扩展嘛
+> MOVSX和MOVZX都要求SRC小于DST的长度, 毕竟是要扩展嘛
 
 PUSH(push onto the stack) 进栈 
+
+PUSH SRC
+
+操作: 16位指令: (SP) <- (SP) - 2 然后 ((SP) + 1, (SP)) <- (SRC)
 
 POP(pop form the stack) 出栈
 
