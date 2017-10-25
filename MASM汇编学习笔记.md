@@ -381,4 +381,6 @@ POPA/POPAD(pop all registers) 所有寄存器出栈
 
 XCHG(exchange) 交换
 
+XCHG OPR1, OPR2
 
+两个OPR表示操作数, 并且两个操作数中必须有一个寄存器, 不允许使用段寄存器, 可使用立即数之外的其他任何寻址方式
