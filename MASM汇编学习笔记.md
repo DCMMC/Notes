@@ -388,3 +388,32 @@ XCHG OPR1, OPR2
 
 两个OPR表示操作数, 并且两个操作数中必须有一个寄存器, 不允许使用段寄存器, 可使用立即数之外的其他任何寻址方式.
 
+### 累加器专用传送指令
+
+IN(input) 输入
+
+OUT 输出
+
+XLAT(translate) 换码
+
+# 汇编代码格式
+定义一个段:
+
+用 **segment...ends**, segment和ends分别 **通知编译器** 一个程序段的开始和结束, segment和ends是成对的 **伪指令** . 
+
+并且一个程序段必须用名称来标识, i.e. 段名 segment 段名 ends
+
+e.g.
+
+```
+codesg segment
+	mov ax, 01234H
+	
+	mov ax 4c00H
+	int 21H
+codesg ends
+```
+
+其中 codesg 只是一个名称(标识).
+
+用 **assume** 某一段寄存器中的某一个用 **segment...ends** 定义的段相关联
