@@ -434,8 +434,10 @@ int 21H
 总的完整的示例:
 
 ``` x86asm
+; 说明cs与段codesg相关联, 也就是cs就是段中的第一个指令的物理内存地址
 assume cs:codesg
 
+; 定义段
 codesg segment
 	mov ax, 01234H
 	
