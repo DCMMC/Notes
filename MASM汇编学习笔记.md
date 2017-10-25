@@ -316,4 +316,18 @@ e.g. JMP DWORD PTR [BX]
 
 ## 数据传送指令
 
+数据传送指令负责把数据, 地址或立即数送到寄存器或存储单元中.
+
+又可以分为以下五种:
+
+### 通用数据传送指令
+
+MOV (move) 传送
+
+MOVSX (move with sign-extend) 带符号扩展传送
+
+MOVZX(move with zero-extend) 带零扩展传送
+
+PUSH(push onto the stack) 进栈
+
 
