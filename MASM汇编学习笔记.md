@@ -417,3 +417,15 @@ codesg ends
 其中 codesg 只是一个名称(标识).
 
 用 **assume** 某一段寄存器中的某一个用 **segment...ends** 定义的段相关联
+
+e.g. assume cs:codesg (codesg为上面的例子中的那个符号地址)
+
+程序返回:
+
+在程序(段)的结尾加上以下两句指令用于程序返回:
+
+```
+mov ax 4c00H
+int 21H
+```
+
