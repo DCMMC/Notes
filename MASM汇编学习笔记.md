@@ -212,6 +212,8 @@ e.g. MOV AX, ES:[2000H] 这里就是使用的附加段寄存器中的值来作�
 
 书写程序的时候, 为了方便, 可以用一个有效的标识符代表地址作为 **符号地址**(变量) , e.g. 假定 VALUE = 2000H, 则 MOV AX, VALUE(等价于MOV AX, [VALUE])就等价于 MOV AX, [2000H]
 
+> 符号地址默认是作为DISP当作EA对待, 也就是直接取EA中的内容, 不过可以在符号地址前面加上 **OFFSET** 属性操作符, 把符号地址代表的值作为立即数而不是DISP, e.g. MOV AX, OFFSET VALUE 这里相当于 MOV AX, 2000H
+
 相当于取得主存储器中的变量的值
 
 ### 4. 存储器间接寻址方式(Register indirect addressing)
@@ -324,10 +326,34 @@ e.g. JMP DWORD PTR [BX]
 
 MOV (move) 传送
 
+MOV DST, SRC
+
+指令操作: (DST) <- (SRC)
+
+> 立即数只允许送到通用寄存器或者存储器中, 不允许送到段寄存器中
+
+> 双操作数不能同时为存储器或者段寄存器
+
+> DST不能是CS段寄存器或者立即数
+
+> MOV指令不影响标志位
+
+
+
 MOVSX (move with sign-extend) 带符号扩展传送
+
+
 
 MOVZX(move with zero-extend) 带零扩展传送
 
 PUSH(push onto the stack) 进栈
+
+POP(pop form the stack) 出栈
+
+PUSHA/PUSHAD(push all registers) 所有寄存器进栈
+
+POPA/POPAD(pop all registers) 所有寄存器出栈
+
+XCHG(exchange) 交换
 
 
