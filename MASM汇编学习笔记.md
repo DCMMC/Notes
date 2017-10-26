@@ -452,7 +452,7 @@ CWD/CWDE(convert word to double word) 字转换为双字
 
 如果(AX)最高位是0, 则(DX) = 0H, 如果(AX)最高位是1, 则(DX) = 0FFFFH
 
-还有 CDQ (convert double word to quad word), BSWAP(byte swap)
+还有 CDQ (convert double word to quad word), BSWAP(byte swap) (这两个本课不做要求)
 
 ### 累加器专用传送指令
 
