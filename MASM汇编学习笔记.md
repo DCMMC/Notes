@@ -378,6 +378,8 @@ POP DST
 
 > CPU并不会检查栈顶是否越界, 所以一定要根据自己要用的最大栈空间安排栈的大小, 避免栈顶越界
 
+> PUSH和POP中的 SP是相对于SS的, 反正都是SP都是偏移量, SS记录是栈顶的地址
+
 PUSHA/PUSHAD(push all registers) 所有寄存器进栈
 
 PUSHA: 16bits寄存器依次进栈, 进栈次序为 AX, CX, DX, BX, SP, BP, SI, DI, then (SP) <- (SP) - 16d(十进制)
