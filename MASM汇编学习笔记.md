@@ -444,6 +444,8 @@ POPF/POPFD(pop the flags or eflags) 标志出栈
 
 CBW(convert byte to word) 字节转换为字
 
+AL的内容符号扩展到AH, 形成AX中的字. 如果(AL)最高位是0, 则(AH) = 0H, 如果(AL)最高位是1, 则(AH) = 0FFH
+
 CWD/CWDE(convert word to double word) 字转换为双字
 
 
