@@ -452,7 +452,8 @@ CWD/CWDE(convert word to double word) 字转换为双字
 
 如果(AX)最高位是0, 则(DX) = 0H, 如果(AX)最高位是1, 则(DX) = 0FFFFH
 
-还有 CDQ (convert double to quad)
+还有 CDQ (convert double word to quad word), BSWAP(byte swap)
+
 ### 累加器专用传送指令
 
 IN(input) 输入
@@ -460,6 +461,11 @@ IN(input) 输入
 OUT 输出
 
 XLAT(translate) 换码
+
+## 算术指令
+
+ADD 加法
+
 
 # 汇编代码格式
 定义一个段:
