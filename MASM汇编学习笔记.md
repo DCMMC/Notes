@@ -319,6 +319,10 @@ e.g. JMP FAR PTR 标号
 
 e.g. JMP DWORD PTR [BX]
 
+# 8086 PC工作过程简述
+
+* 8086CPU加电启动或者复位后, CS和IP会被设置为 **CS = FFFFH, IP = 0000H**, i.e., 8086PC刚启动的时候, CPU从内存 **FFFF0H**单元中读取指令执行第一条指令.
+
 # 80x86指令集
 
 80x86的指令系统可以划分为六组: 数据传送指令, 串处理指令, 算术指令, 逻辑指令, 控制转移指令, 处理机控制指令.
@@ -471,6 +475,14 @@ operate: (DST) <- (SRC) + (DST)
 **带进位** 加法(add with carry) ADC DST, SRC
 
 operate: (DST) <- (SRC) + (DST) + CF, 其中CF为进位标志(最高有效位有进位的话, 就置为1).
+
+加1(increment) INC OPR
+
+op: (OPR) <- (OPR) + 1
+
+> 以上三个命令都可作字或者字节运算(80386+为双字), 而且 **除了INC不影响CF标志外, 它们都影响条件标志位(CF进位, ZF结果为0, SF符号, OF溢出)**
+
+
 
 
 
