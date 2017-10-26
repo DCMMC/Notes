@@ -418,6 +418,25 @@ LES (load ES with pointer)
 
 > LEA LES LDS 不影响标志位
 
+类似的还有LFS(load FS with pointer), LGS(load GS with pointer), LSS(load SS with pointer)
+
+### 标志寄存器传送指令
+
+LAHF(load AH with flags) 标志送AH
+
+operate: (AH) <- (FLAGS的 **低字节** )
+
+SAHF(store AH into FLAGS) AH送标记寄存器
+
+ (FLAGS的低字节) -> (AH)
+ 
+PUSHF/PUSHFD(push the flags or eflags) 标志进栈
+
+PUSH: (SP) <- (FLAGS低位字节)
+POPF/POPFD(pop the flags or eflags) 标志出栈
+
+
+
 ### 累加器专用传送指令
 
 IN(input) 输入
