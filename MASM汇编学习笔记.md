@@ -432,7 +432,10 @@ SAHF(store AH into FLAGS) AH送标记寄存器
  
 PUSHF/PUSHFD(push the flags or eflags) 标志进栈
 
-PUSH: (SP) <- (FLAGS低位字节)
+PUSHF: (SP) <- (SP) - 2 then ((SP) + 1, (SP) <- (FLAGS)
+
+PUSHFD 看书(p57)
+
 POPF/POPFD(pop the flags or eflags) 标志出栈
 
 
