@@ -438,6 +438,15 @@ PUSHFD 看书(p57)
 
 POPF/POPFD(pop the flags or eflags) 标志出栈
 
+看书p57
+
+### 类型转换指令
+
+CBW(convert byte to word) 字节转换为字
+
+CWD/CWDE(convert word to double word) 字转换为双字
+
+
 
 
 ### 累加器专用传送指令
