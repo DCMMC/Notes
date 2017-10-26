@@ -428,7 +428,7 @@ operate: (AH) <- (FLAGS的 **低字节** )
 
 SAHF(store AH into FLAGS) AH送标记寄存器
 
- (FLAGS的低字节) -> (AH)
+ (FLAGS的 **低字节** ) -> (AH)
  
 PUSHF/PUSHFD(push the flags or eflags) 标志进栈
 
