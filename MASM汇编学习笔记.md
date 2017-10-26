@@ -464,7 +464,14 @@ XLAT(translate) 换码
 
 ## 算术指令
 
-ADD 加法
+加法 ADD DST, SRC
+
+operate: (DST) <- (SRC) + (DST)
+
+**带进位** 加法(add with carry) ADC DST, SRC
+
+operate: (DST) <- (SRC) + (DST) + CF, 其中CF为进位标志.
+
 
 
 # 汇编代码格式
