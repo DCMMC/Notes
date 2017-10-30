@@ -815,4 +815,7 @@ Reduction是在把一种设计用来实现某个目的的算法去解决另外�
 * Prim's algorithms and Dijkstra's algorithm 图论经典算法
 * Kruskal's algorithm 图论算法
 * Huffman compression
-* String-processing
+* String-processing 
+
+# 搜索
+
