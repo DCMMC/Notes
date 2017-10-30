@@ -778,4 +778,6 @@ headsort | no | yes | NlogN | 1
 > QuickSort是 O(NlogN) 而且其系数很小, 并且inner loop里面很少指令, 并且 cache 使用率好, 都是连续的读取内存.
 > 不过QuickSort不是稳定的排序方式
 
+### Java System Sorting
+
 
