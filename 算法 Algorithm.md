@@ -801,3 +801,8 @@ Reduction是在把一种设计用来实现某个目的的算法去解决另外�
 
 找出数组中第k小的数:
 
+### A brief survey of sorting applications
+
+* **Commercial computing** 
+* **Search for infomation**
+* **Opearations research(OR)** 开发和应用数学模型来进行 **problem-solving** 和 **decision-making** . 
