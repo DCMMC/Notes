@@ -809,4 +809,10 @@ Reduction是在把一种设计用来实现某个目的的算法去解决另外�
 * **Event-driven simulation** 很多科学计算跟事件模拟有关, 很多都是构建来自与对真实世界中的某一个方向的模拟的模型, 在计算机发明之前科学家只能用数学模型表示, 现在可以构建一个计算模型(Computational models), 使用优秀的算法能够大大降低计算模型的难度甚至把不能实现的给实现出来.
 * **Numercial Computations** 科学计算经常需要关注准确性( **accuracy** ), 比如求曲线积分(计算机都是用估算法)
 * **Combinatorial search** 在人工智能(Artifical intelligence)中的难点就是定义一组状态(Configurations), 由一组状态到另一组状态所需要的步骤以及每一个步骤的优先级, 一般是定义开始和结束的状态. **A\* algorithm** 就是先把开始状态放入优先队列, 然后移除最高优先级的状态, 并且将所有一步能够达到的所有状态的添加到队列(除了刚刚删去的那个状态). 
-* 
+
+本书中(间接)依赖排序算法或优先队列的算法:
+
+* Prim's algorithms and Dijkstra's algorithm 图论经典算法
+* Kruskal's algorithm 图论算法
+* Huffman compression
+* String-processing
