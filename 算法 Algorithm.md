@@ -788,4 +788,12 @@ headsort | no | yes | NlogN | 1
 
 Reduction是在把一种设计用来实现某个目的的算法去解决另外一个不是算法设计所要解决的问题的情况.
 
-有很多问题虽然不会直接用到排序, 不过
+有很多问题虽然不会直接用到排序, 不过用了排序之后, 能够极大的降低问题的难度.
+
+算法实现的一个目的就是尽可以的促进Reduction, 加大算法的应用范围.
+
+比如有以下几种情况可以用Reduction:
+
+* Duplicates 有重复Keys的情况找出数组中不同值的个数, 可以先排序然后再来计算.
+* Ranking, 比如求两组Ranking的 ***Kendall tau distance**
+* Prority-queue reductions,
