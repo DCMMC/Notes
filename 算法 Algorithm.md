@@ -756,3 +756,7 @@ process references (as pointers in C/C++) to items rather than objects themselve
 
 ### Stability 稳定性
 
+对于Items with multiple keys, 可以对不同种类的Keys采取不同的排序方法, 假设需要对一个本来按照某种Key排序好的数组, 重新按照另外一种Key来排序, 如果采用的排序算法是Stability的, 则排序之后, 对于相同的值的Key的Items, 还是按照原来那种Key排序好的顺序, 这样就对于这两种Key都保持的有序; 如果排序算法是unstability的, 就会产生按照现在这种Key相等的那些Item按照原来那种Key是无序的.
+
+不过可以通过一些技巧(trick)来把所有的排序算法都变成 stable behavior. (Ex 2.5.18, 原理应该就是对那些Values相等的Item按照原来那种排序方式再排序一遍)
+
