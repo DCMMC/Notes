@@ -785,3 +785,4 @@ headsort | no | yes | NlogN | 1
 差不多的思路就是: 针对基本类型, 因为基本类型不会存在 Items with multiple Keys的情况, 所以不用考虑稳定性, 而对于引用类型, 会使用mergesort等稳定的排序算法.
 
 ### Reduction 
+
