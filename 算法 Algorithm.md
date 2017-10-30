@@ -805,4 +805,4 @@ Reduction是在把一种设计用来实现某个目的的算法去解决另外�
 
 * **Commercial computing** 
 * **Search for infomation**
-* **Opearations research(OR)** 开发和应用数学模型来进行 **problem-solving** 和 **decision-making** . 
+* **Opearations research(OR)** 开发和应用数学模型来进行 **problem-solving** 和 **decision-making** . 比如计算机领域比较火热的N-P问题.
