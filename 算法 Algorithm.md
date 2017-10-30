@@ -780,4 +780,4 @@ headsort | no | yes | NlogN | 1
 
 ### Java System Sorting
 
-
+现在的JDK实现(JDK8)已经更换为了 TimeSort(一种混合排序, 能够针对不用分布的数组有针对的采取最优的排序算法)
