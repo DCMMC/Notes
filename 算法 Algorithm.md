@@ -750,3 +750,6 @@ Flody's method:
 ### Pointer Sorting
 
 process references (as pointers in C/C++) to items rather than objects themselves. 
+
+* 键值只读性, 对于引用(指针)排序, 如果排序完成之后客户端更改了object里面的值, 这样的话就会破坏顺序性.
+* 
