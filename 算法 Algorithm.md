@@ -760,3 +760,19 @@ process references (as pointers in C/C++) to items rather than objects themselve
 
 不过可以通过一些技巧(trick)来把所有的排序算法都变成 stable behavior. (Ex 2.5.18, 原理应该就是对那些Values相等的Item按照原来那种排序方式再排序一遍)
 
+不过如果稳定性是基本要求的话, 还是直接用 stable的排序算法更加好.
+
+**几种常见排序算法的比较**
+
+algorithms | stable? | in place? | running time | extra space
+----|-----|-----|------|------|------
+selection sort | no | yes | N^2 | 1
+insertion sort | yes | yes | N ~ N^2 | 1
+shellsort | no | yes | N logN ~ N^(6/5) ? | 1
+quicksort | no | yes | NlogN | lgN
+3-way quicksort | no | yes | N ~ NlogN | lgN
+mergesort | yes | no | N logN | N
+headsort | no | yes | NlogN | 1
+
+> Quicksort 是最快的 general-purpose sort:
+> QuickSort是 O(NlogN) 而且其系数很小, 并且inner loop里面很少指令, 并且 cache 使用率好, 都是连续的读取内存.
