@@ -284,9 +284,9 @@ class ObjWithInnerClass {
 * 制定一个比较他们性能的猜想(假说)(可以基于某些定理)
 * 进行实验来验证上述猜想
 
-## 排序算法
+# 排序算法
 
-### 3. 选择排序(Selection Sort)
+## 3. 选择排序(Selection Sort)
 
 时间复杂度不太取决于目标数组, 反正效率都不高
 
@@ -296,7 +296,7 @@ class ObjWithInnerClass {
 
 数据交换这一方面的开销小是优点, 总的效率低的缺点
 
-### 4. 插入排序(Insertion Sort)
+## 4. 插入排序(Insertion Sort)
 
 时间复杂度比较取决于目标数组, 目标数组越接近于完全正序, 时间复杂度就越低
 
@@ -308,7 +308,7 @@ class ObjWithInnerClass {
 
 最好情况(完全正序), 比较 ~ N-1, 交换 0
 
-### 5. 希尔排序(Shell Sort)
+## 5. 希尔排序(Shell Sort)
 
 在最糟糕的情况下时间复杂度为O(N^1.5), 一个小小的改进就能从InsertionSort的O(N^2)降低到O(N^1.5)(而且是最坏情况)
 
@@ -358,7 +358,7 @@ ShellSort大体的原理是以一系列值(increment sequence)作为h(又叫步�
 虽然使用最优的序列的时候, 在对小数组排序性能有时候可以超过 ==heapsort== 和 ==quicksort== , 不过在大量数据的时候还是慢于后两个, 不过相比于
 后两者复杂一些的实现, ==ShellSort== 只需少量代码而且对资源的消耗也比较小, 所以适合用在嵌入式系统这些比较重视资源的场景中.
 
-### 6. 归并排序(MergeSort)
+## 6. 归并排序(MergeSort)
 
 核心是归并: 把两个已排序的子序列归并成一个已经排序的序列.
 
@@ -378,7 +378,7 @@ Bottom-up mergesort:
 
 Bottom-up mergesort可用于原地排序LinkedList.
 
-#### **分治思想**
+### **分治思想**
 
 把一个复杂的问题不断分成很多小的子问题, 首先解决这些子问题, 然后用这些子问题的结果去结果整个问题. 分治思想常常涉及到递归. 
 
@@ -426,7 +426,7 @@ $$C(N) \ge C\left( \lfloor \frac {N} {2} \rfloor \right) + C\left( \lceil \frac 
  
  **所以MergeSort的平均时间复杂度为O(N logN), 空间复杂度为O(N)**
  
- #### **优化**
+ ### **优化**
  
  * 对于较小的子序列, 使用InsertionSort会比默认的merge更加的高效(能够提高10%-15%),  see Exercise 2.2.23.
  * 在merge()中添加对a[mid] <= a[mid + 1]的情况的校验, 如果a[mid] <= a[mid + 1], 那么就不进行归并, 这样能够在处理完全有序的序列时达到线性时间复杂度, see Exercise 2.2.8
@@ -436,7 +436,7 @@ $$C(N) \ge C\left( \lfloor \frac {N} {2} \rfloor \right) + C\left( \lceil \frac 
 
 研究一个新问题的时候, 最好的方法是先用最简单的方法实现, 然后在这个方法成为瓶颈的时候再去重新实现一个新的算法. 实现那些仅仅带来参数因子的优化可能并不值得, 并且在每次优化之后最好一定要进行科学的实验(就像书上的练习一样).
 
-#### **Computational Complexity of MergeSort**
+### **Computational Complexity of MergeSort**
 
 **所有的基于比较的排序算法的在最坏情况下的比较次数的下界(low bounds)为 log(N!)~N logN(see P185 Stirling's approximation: log(N!) = log1 + log2 + ... + logN ~ NlogN)**
 
@@ -458,7 +458,7 @@ $$C(N) \ge C\left( \lfloor \frac {N} {2} \rfloor \right) + C\left( \lceil \frac 
 
 除了在最坏情况下的比较次数的下界已经是确定的了, 还有很多因素需要关注: 空间占用, 一般情况下的时间复杂度, 不基于比较的排序算法, 数组访问次数等等.
 
-### 7. Knuth(Fisher-Yates) shuffle算法
+## 7. Knuth(Fisher-Yates) shuffle算法
 
 原地(in-place)随机打乱一个数组, 并且是等概率的随机排列数组, 时间O(n), 空间O(1).
 
@@ -479,7 +479,7 @@ $$P_{i \to k} = \frac {1} {k - 1} \cdot \frac {k - 1} {k} \cdot \frac {k} {k + 1
 
 证毕.
 
-### 8. Quicksort
+## 8. Quicksort
 
 QuickSort也是一种**分治思想**在排序中的应用的算法. 
 
@@ -554,7 +554,7 @@ $$N + (N - 1) + \cdot \cdot \cdot + 2 + 1 = \frac {N(N + 1)} {2}$$
 **In Summary**
 虽然Quicksort在一般情况下的比较次数(1.39N logN)大于mergesort()(1/2N logN ~ N logN), 不过Quicksort数据移动的次数相当少, 所以相对来说Quicksort会更加快.
 
-#### **优化**
+### **优化**
 
 这些优化大概能带来20%~30%的性能提升.
 
@@ -617,9 +617,9 @@ $$\simeq N H - N$$
 
 > 当数组中含有大量的重复数值的时候, Quicksort with 3-way partitioning能够把linearithmic time优化到linear time
 
-### 9. Priority Queue
+## 9. Priority Queue
 
-#### **基本实现**
+### **基本实现**
 
 思路:
 
@@ -702,7 +702,7 @@ N-->G
 
 由前面的定理可以知道, heap-ordered Complete binary tree的高度为floor(logN), insert显然需要最多1 + logN次比较, 而remove the maximum因为每次都要先比较两个子节点找出大的还要跟要操作的node比较来判断是否需要交换, 所以remove the maximum需要最多2logN次比较.
 
-#### **Multiway heaps**
+### **Multiway heaps**
 
 很容易将heap-ordered complete binary tree推广到heap-ordered complete ternary tree(三叉树), 这样index为k那个node的父节点的index就是`!$\lfloor \frac {k + 1} {3} \rfloor$`, 它的三个子节点的index分别为 3k - 1, 3k + 1. 同样的, 很容易推广到d-ary heap(也就是d叉树), 这里有一个因为树的高度减少带来的遍历开销的减少和在一个结点的所有子节点中找到最大的那个节点的开销的增加之间的权衡, 这个权衡取决于具体实现和两种操作的使用频次的比例.
 
@@ -718,7 +718,7 @@ PQ在以数组为参数的构造器创建对象之后, 将会在操作PQ的时�
 
 在很多应用场景中，允许客户端程序员引用已经存在与Priority Queue中的元素是有必要的。
 
-#### **Heap Sort**
+### **Heap Sort**
 
 用binary heap这一数据结构并使用 `sink()` 和 `swim()` 来实现的快速排序算法, 其特点是空间消耗特少(O(1)), 因为是原地排序, 时间消耗也很优秀(O(N logN))
 
@@ -745,3 +745,8 @@ Flody's method:
 先一直跟两个children中较大的那一个交换直到到了heap的底部(也就是不考虑是否会比那个较大的要小), 然后再从sink结束的那个位置(也就是path的尽头了)往上swim, 这样就可以把sink的比较次数减半...
 这个优化只有在元素比较的时候比较耗时的情况(比如String的比较)就会提高算法效率, 但是会造成比heapsort origin还严重的cache missed以及更多的branch mispredictions (不利于Complier的优化).
 
+## Applications
+
+### Pointer Sorting
+
+process references (as pointers in C/C++) to items rather than objects themselves. 
