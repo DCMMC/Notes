@@ -776,3 +776,4 @@ headsort | no | yes | NlogN | 1
 
 > Quicksort 是最快的 general-purpose sort:
 > QuickSort是 O(NlogN) 而且其系数很小, 并且inner loop里面很少指令, 并且 cache 使用率好, 都是连续的读取内存.
+
