@@ -751,5 +751,8 @@ Flody's method:
 
 process references (as pointers in C/C++) to items rather than objects themselves. 
 
-* 键值只读性, 对于引用(指针)排序, 如果排序完成之后客户端更改了object里面的值, 这样的话就会破坏顺序性.
-* 
+* 键值只读性, 对于引用(指针)排序, 如果排序完成之后客户端更改了object里面的值, 这样的话就会破坏顺序性. 所以像 ==String==, ==Integer==, ==File== 这些类都是值不变( **Immutable** )的.
+* 交换的开销比较小, 因为是引用, 只需要把指针交换, 而不是把对象整体给交换, 所以开销是比较小的
+
+### Stability 稳定性
+
