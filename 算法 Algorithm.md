@@ -807,4 +807,5 @@ Reduction是在把一种设计用来实现某个目的的算法去解决另外�
 * **Search for infomation**
 * **Opearations research(OR)** 开发和应用数学模型来进行 **problem-solving** 和 **decision-making** . 比如计算机领域比较火热的N-P问题. 比如m个processors和n个jobs的分配文件是一个NP-complete问题, 找不到通用最优解.
 * **Event-driven simulation** 很多科学计算跟事件模拟有关, 很多都是构建来自与对真实世界中的某一个方向的模拟的模型, 在计算机发明之前科学家只能用数学模型表示, 现在可以构建一个计算模型(Computational models), 使用优秀的算法能够大大降低计算模型的难度甚至把不能实现的给实现出来.
-* **Numercial Computations** 
+* **Numercial Computations** 科学计算经常需要关注准确性( **accuracy** ), 比如求曲线积分(计算机都是用估算法)
+* 
