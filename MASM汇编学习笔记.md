@@ -544,3 +544,13 @@ codesg ends
 end
 ```
 
+## 程序编译链接
+
+### 编译
+
+```
+masm [filename]
+```
+
+其中filename可以省略asm后缀
+
