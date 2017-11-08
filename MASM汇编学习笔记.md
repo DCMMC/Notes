@@ -577,6 +577,8 @@ link [filename]
 * 用 `d` 查看内存中的内容, 可以用 `d段地址：偏移地址`
 * 用 `e 起始地址 数据 数据 数据 ……` 改变内存中的值, 起始地址是 `段地址：偏移地址` 形式.
 * 用 `a 地址` 以汇编指令形式向内存中指令, 不过不能用地址变量.
+* 用 `q`退出debug程序
+* 用 `g offset0 offset1` 来指定程序从 `CS:offset0` 运行到 `CS:offset1`.
 
 
 可以通过 `debug [execuable file with suffix]` 来调试程序。
