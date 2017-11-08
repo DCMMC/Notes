@@ -578,6 +578,6 @@ link [filename]
 * 用 `a 地址` 以汇编指令形式向内存中指令, 不过不能用地址变量.
 
 
-
+可以通过 `debug [execuable file with suffix]` 来调试程序。
 
 
