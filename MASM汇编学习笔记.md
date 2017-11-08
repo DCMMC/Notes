@@ -580,7 +580,6 @@ link [filename]
 * 用 `q`退出debug程序
 * 用 `g =offset0 offset1` 来指定程序从 `CS:offset0` 运行到 `CS:offset1`.
 
-
 可以通过 `debug [execuable file with suffix]` 来调试程序。
 
 
