@@ -546,11 +546,21 @@ end
 
 ## 程序编译链接
 
-### 编译
+### 编译(build)
 
 ```
 masm [filename]
 ```
 
-其中filename可以省略asm后缀
+其中filename可以省略asm后缀, e.g. MASM EXAMPLE.ASM或者 MASM EXAMPLE都行.
+
+将会进入一个提示导出文件名的交互界面, 如果都只想使用默认文件名的话, 可以使用 `masm [filename];` , 也就是添加一个 `;` 在后面, 相当于后面的提示都是默认输入回车.
+
+### 链接(link)
+
+```
+link [filename]
+```
+
+其中filename可以省 `obj` 后缀, e.g. MASM EXAMPLE.OBJ或者 MASM EXAMPLE都行.
 
