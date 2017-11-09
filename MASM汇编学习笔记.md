@@ -183,6 +183,8 @@ PA(Physical Address) = Segment Address(段地址) x 10H + Effective Address(段�
 
 而EA = BASE(基址) + (INDEX(变址, 相对于BASE的偏移量) x SCALE(比例因子, **80386+** , 表示1, 2, 4, 8字节宽度)) + DISP(位移量, 可以是0, 8, 16(80286-, 80386+则是32)bits)
 
+> 一般汇编中EA可以用 **标号(符号地址)表示**
+> 
 其中默认情况下选择的寄存器有:
 
 EA的成分 | 16bits | 32bits
@@ -278,8 +280,6 @@ EA = DISP[BASE][INDEX * SCALE]
 ### 1. 段内直接寻址(intrasegment direct addressing)
 
 操作数类似于数据寻址的直接寻址, 也就是有效地址EA只有一个DISP, 而且这个有效地址是 **相对于** IP寄存器中的内容, 也就是 **EA = 转向有效地址 - 当前IP中的内容** .
-
-> 一般汇编中EA可以用 **标号(符号地址)表示**
 
 适用于条件转移及无条件转移, 但是用于条件转移指令的时候, 位移量只允许8bits(80386+可以是8bits或者32bits).
 
