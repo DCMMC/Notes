@@ -596,7 +596,7 @@ link [filename]
 
 表示预留位置, 不初始化里面的值.
 
-e.g. ARRAY DB ?,?
+e.g. ARRAY DB ?,?,?
 
 ## 复制数据
 
