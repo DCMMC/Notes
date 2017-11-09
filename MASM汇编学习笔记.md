@@ -287,7 +287,7 @@ EA = DISP[BASE][INDEX * SCALE]
 
 16bits(32bits)近跳转: JMP NEAR PTR [EA] (操作数前面加NEAR PTR操作符)
 
-8bits短跳转: JMP SHORT [EA] (操作数前面加SHORT操作符)
+8bits短跳转: JMP SHORT 标号 (操作数前面加SHORT操作符)
 
 > 这里面的EA是一个表示地址的有效数值, 也可以把[EA]用一个符号地址来代替
 
