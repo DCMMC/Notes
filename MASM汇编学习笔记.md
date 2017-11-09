@@ -582,6 +582,9 @@ link [filename]
 
 可以通过 `debug [execuable file with suffix]` 来调试程序。
 
-# MASM 符号变量
+# MASM 数据定义
 
+```
+[符号变量名] [助记符] [操作数1,.....]
+```
 
