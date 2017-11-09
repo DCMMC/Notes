@@ -582,4 +582,6 @@ link [filename]
 
 可以通过 `debug [execuable file with suffix]` 来调试程序。
 
+# MASM 符号变量
+
 
