@@ -184,7 +184,7 @@ PA(Physical Address) = Segment Address(段地址) x 10H + Effective Address(段�
 而EA = BASE(基址) + (INDEX(变址, 相对于BASE的偏移量) x SCALE(比例因子, **80386+** , 表示1, 2, 4, 8字节宽度)) + DISP(位移量, 可以是0, 8, 16(80286-, 80386+则是32)bits)
 
 > 一般汇编中EA可以用 **标号(符号地址)表示**
-> 
+
 其中默认情况下选择的寄存器有:
 
 EA的成分 | 16bits | 32bits
