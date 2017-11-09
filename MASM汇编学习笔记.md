@@ -582,7 +582,7 @@ link [filename]
 
 可以通过 `debug [execuable file with suffix]` 来调试程序。
 
-# MASM 数据定义
+# MASM 数据定义(伪操作, 也就是其实不是CPU指令, 只是在编译之前存在)
 
 ## 符号变量(符号地址)
 
@@ -634,4 +634,4 @@ e.g. DATA EQU 7
 ORG
 ```
 
-使下一个字节的地址称为常数表达式的值
+使下一个字节的地址称为常数表达式的值.
