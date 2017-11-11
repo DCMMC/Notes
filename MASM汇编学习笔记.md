@@ -405,6 +405,10 @@ LEA REG, EA (load effective address,  有效地址送寄存器)
 
 > 对于REG和EA大小不一样的情况, 会做截取(取低位)或零扩展(这种情都是80386+上的)
 
+e.g. LEA DX, ARRAY 
+
+e.g. LEA DX, [0005H]
+
 LDS (load DS with pointer) 指针送寄存器和DS寄存器
 
 LDS REG, SRC
