@@ -403,8 +403,6 @@ LEA REG, EA (load effective address,  有效地址送寄存器)
 
 > EA为存储器寻址中的有效地址
 
-> DST 不能是寄存器
-
 > 对于DST和EA大小不一样的情况, 会做截取(取低位)或零扩展(这种情都是80386+上的)
 
 LDS (load DS with pointer) 指针送寄存器和DS寄存器
