@@ -285,7 +285,7 @@ EA = DISP[BASE][INDEX * SCALE]
 
 无条件转移指令的位移量为8bits的时候为短跳转, 位移量是16bits(80286-, 80386+为32bits)的时候为近跳转, 格式如下:
 
-16bits(32bits)近跳转: JMP NEAR PTR [EA] (操作数前面加NEAR PTR操作符)
+16bits(32bits)近跳转: JMP NEAR PTR 标号 (操作数前面加NEAR PTR操作符)
 
 8bits短跳转: JMP SHORT 标号 (操作数前面加SHORT操作符)
 
