@@ -407,7 +407,7 @@ LEA REG, EA (load effective address,  有效地址送寄存器)
 
 e.g. LEA DX, ARRAY 
 
-e.g. LEA DX, [0005H]
+e.g. LEA DX, [0005H] 其实就是等价与 MOV DX, 0005H 不过LEA的操作数是EA(更多的是一个符号地址, 是直接取的内存中的值, 如果直接MOV DX, ARRAY或者说MOV DX, [0005H]就错了)
 
 LDS (load DS with pointer) 指针送寄存器和DS寄存器
 
