@@ -504,7 +504,13 @@ op: (OPR) <- (OPR) + 1
 ### DIV 无符号除
 
 ```x86asm?linenums
+; 被除数在AX里面
+; 格式:
+; DIV r/m
 
+;DIV r/m8	Unsigned divide AX by r/m8, with result stored in AL = Quotient, AH = Remainder.
+
+;DIV r/m16	Unsigned divide DX:AX by r/m16, with result stored in AX = Quotient, DX = Remainder.
 ```
 
 # 汇编代码格式
