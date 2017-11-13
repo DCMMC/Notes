@@ -504,7 +504,7 @@ op: (OPR) <- (OPR) + 1
 ### DIV 无符号除
 
 ```x86asm?linenums
-; 被除数在AX里面
+; 被除数在AX(DX:AX)里面
 ; 格式:
 ; DIV r/m
 
