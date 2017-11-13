@@ -471,11 +471,11 @@ XLAT(translate) 换码
 
 ## 算术指令
 
-加法 ADD DST, SRC
+### 加法 ADD DST, SRC
 
 operate: (DST) <- (SRC) + (DST)
 
-**带进位** 加法(add with carry) ADC DST, SRC
+### **带进位** 加法(add with carry) ADC DST, SRC
 
 operate: (DST) <- (SRC) + (DST) + CF, 其中CF为进位标志(最高有效位有进位的话, 就置为1).
 
