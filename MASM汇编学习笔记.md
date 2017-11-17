@@ -507,7 +507,9 @@ op: (OPR) <- (OPR) + 1
 
 ### IMUL 有符号乘
 
+```x86asm?linenums
 
+```
 
 ### DIV 无符号除
 
