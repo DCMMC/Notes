@@ -533,10 +533,10 @@ op: (OPR) <- (OPR) + 1
 
 > 如果SRC是imm的话, 会进行适当符号扩展以适应DST
 
-### DEC 减1
+### DEC OPR  减1
 
 ```x86asm?linenums
-; 减去1并且不会影响CF标志位
+; 把OPR减去1并且不会影响CF标志位
 ```
 
 ### MUL 无符号乘
