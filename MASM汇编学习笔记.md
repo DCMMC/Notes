@@ -536,7 +536,7 @@ op: (OPR) <- (OPR) + 1
 ### DEC 减1
 
 ```x86asm?linenums
-
+; 减去1并且不会影响CF标志位
 ```
 
 ### MUL 无符号乘
