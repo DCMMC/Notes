@@ -306,8 +306,6 @@ EA类似于数据寻址那样, 只不过这个有效地址用来 **取代** IP�
 
 e.g. JMP WORD PTR [BP + 4]
 
-> **!!!!!!!PTR属性操作符不能作用于直接寻址!!!!!!**
-
 > 这种寻址方式以及下面两种段间寻址方式都不能用于条件转移指令
 
 ### 3. 段间直接寻址(intersegment direct addressing)
@@ -689,6 +687,8 @@ e.g. **ARRAY DW 123H, 256** (没有H后缀的表示十进制)
 
 > 对于存储器寻址中含有符号地址的情况 例如 ARRAY[SI] 就相当于 [ARRAY][SI], 编译器( **in my case, MASM5** ) 会直接报错: **cannot address with segment register**, 这时候可以使用 **OFFSET ARRAY[SI] 也就是 [OFFSET ARRAY + SI]** 这种写法, 也可以在前面强制加入段前缀: e.g. DS: ARRAY[SI] (等价 DS: [ARRAY][SI], 也就是等价 DS: [ARRAY + SI],还可以.
 
+> **!!!!!!!PTR属性操作符不能作用于直接寻址!!!!!!**
+> 
 ## **?** 占位符
 
 表示预留位置, 不初始化里面的值.
