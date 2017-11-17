@@ -525,7 +525,13 @@ op: (OPR) <- (OPR) + 1
 ; 影响标志位: The OF, SF, ZF, AF, PF, and CF flags are set according to the result.
 ```
 
+> 无符号数借位时, CF = 1
+
+> 
+> OF 说明有符号数的溢出
+
 > 注意: 如果两个操作符是r或者m的话, 长度要一直, 并且不能同时为m
+
 > 如果SRC是imm的话, 会进行适当符号扩展以适应DST
 
 ### MUL 无符号乘
