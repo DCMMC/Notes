@@ -513,10 +513,12 @@ op: (OPR) <- (OPR) + 1
 ; op: (DST) = (DST) - (SRC)
 
 ; SUB r8/r16/m8/m16   r8/r16/m8/m16/imm8/imm16
+
+; 影响标志位: The OF, SF, ZF, AF, PF, and CF flags are set according to the result.
 ```
 
 > 注意: 如果两个操作符是r或者m的话, 长度要一直, 并且不能同时为m
-> 如果SRC是imm的话, 会进行适当符号扩展
+> 如果SRC是imm的话, 会进行适当符号扩展以适应DST
 
 ### MUL 无符号乘
 
