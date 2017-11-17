@@ -494,6 +494,12 @@ op: (OPR) <- (OPR) + 1
 
 ---
 
+### 减法 SUB
+
+```x86asm?linenums
+
+```
+
 ### MUL 无符号乘
 
 ```x86asm?linenums
