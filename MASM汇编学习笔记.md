@@ -511,8 +511,9 @@ op: (OPR) <- (OPR) + 1
 ; 一个操作数的情况的基本操作与MUL一致, 只不过操作数 乘积都是有符号数
 
 ;两个操作数: IMUL r16,r/m16	word register = word register * r/m word.
+; 	IMUL r16,imm8	word register = word register * sign-extended immediate byte.
 
-; 三个操作数:IMUL r16,r/m16,imm8	word register = r/m16 * sign-extended immediate byte.
+; 三个操作数: IMUL r16,r/m16,imm8	word register = r/m16 * sign-extended immediate byte.
 ```
 
 ### DIV 无符号除
