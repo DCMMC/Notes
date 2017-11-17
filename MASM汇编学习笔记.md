@@ -481,7 +481,7 @@ operate: (DST) <- (SRC) + (DST)
 
 operate: (DST) <- (SRC) + (DST) + CF, 其中CF为进位标志(最高有效位有进位的话, 就置为1).
 
-加1(increment) INC OPR
+### 加1(increment) INC OPR
 
 op: (OPR) <- (OPR) + 1
 
