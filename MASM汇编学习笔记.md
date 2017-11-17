@@ -493,6 +493,8 @@ XLAT(translate) 换码
 
 ```
 
+> 影响标志位: The OF, SF, ZF, AF, CF, and PF flags are set according to the result.
+
 ---
 
 ### **带进位** 加法(add with carry) ADC DST, SRC
