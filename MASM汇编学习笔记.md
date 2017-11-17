@@ -513,6 +513,8 @@ op: (OPR) <- (OPR) + 1
 ;DIV r/m16	Unsigned divide DX:AX by r/m16, with result stored in AX = Quotient, DX = Remainder.
 ```
 
+> 注意: 因为商都是被除数的长度的一半, 所以如果 被除数的高8位(高16位, i.e. DX)的绝对值如果大于除数, 就会引起商溢出, 直接触发 
+
 ### IDIV 有符号除
 
 ```x86asm?linenums
