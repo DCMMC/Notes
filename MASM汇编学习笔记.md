@@ -504,7 +504,7 @@ op: (OPR) <- (OPR) + 1
 ### DIV 无符号除
 
 ```x86asm?linenums
-; 被除数在AX(DX:AX)里面
+; 被除数在AX(或者DX:AX)里面
 ; 格式:
 ; DIV r/m
 
@@ -514,6 +514,10 @@ op: (OPR) <- (OPR) + 1
 ```
 
 ### IDIV 有符号除
+
+```x86asm?linenums
+; 基本操作与DIV一致, 只不过操作数 商 余数都是有符号数
+```
 
 # 汇编代码格式
 定义一个段:
