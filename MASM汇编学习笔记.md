@@ -513,6 +513,8 @@ op: (OPR) <- (OPR) + 1
 ;DIV r/m16	Unsigned divide DX:AX by r/m16, with result stored in AX = Quotient, DX = Remainder.
 ```
 
+### IDIV 有符号除
+
 # 汇编代码格式
 定义一个段:
 
