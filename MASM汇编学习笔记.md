@@ -10,6 +10,18 @@ grammar_cjkRuby: true
 
 80286+ 表示80286及以上
 
+r8: 8 bits register
+
+r16: 16bits register
+
+m8: 8 bits unit memory
+
+m16: 16 bits unit memory
+
+imm8: 8 bits immediate
+
+imm16: 16 bits Immediate
+
 # 寄存器
 
 ## 八大通用寄存器
@@ -497,7 +509,10 @@ op: (OPR) <- (OPR) + 1
 ### 减法 SUB
 
 ```x86asm?linenums
+; SUB DST, SRC
+; op: (DST) = (DST) - (SRC)
 
+; SUB r8/r16 r8/r16/imm8/imm16
 ```
 
 ### MUL 无符号乘
