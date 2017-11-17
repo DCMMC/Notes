@@ -485,7 +485,13 @@ XLAT(translate) 换码
 
 ### 加法 ADD DST, SRC
 
-operate: (DST) <- (SRC) + (DST)
+```x86asm?linenums
+
+; operate: (DST) <- (SRC) + (DST)
+
+; ADD r8/r16/m8/m16   r8/r16/m8/m16/imm8/imm16
+
+```
 
 ---
 
