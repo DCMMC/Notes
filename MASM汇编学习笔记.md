@@ -533,6 +533,12 @@ op: (OPR) <- (OPR) + 1
 
 > 如果SRC是imm的话, 会进行适当符号扩展以适应DST
 
+### DEC 减1
+
+```x86asm?linenums
+
+```
+
 ### MUL 无符号乘
 
 ```x86asm?linenums
@@ -688,7 +694,7 @@ e.g. **ARRAY DW 123H, 256** (没有H后缀的表示十进制)
 > 对于存储器寻址中含有符号地址的情况 例如 ARRAY[SI] 就相当于 [ARRAY][SI], 编译器( **in my case, MASM5** ) 会直接报错: **cannot address with segment register**, 这时候可以使用 **OFFSET ARRAY[SI] 也就是 [OFFSET ARRAY + SI]** 这种写法, 也可以在前面强制加入段前缀: e.g. DS: ARRAY[SI] (等价 DS: [ARRAY][SI], 也就是等价 DS: [ARRAY + SI],还可以.
 
 > **!!!!!!!PTR属性操作符不能作用于直接寻址!!!!!!**
-> 
+
 ## **?** 占位符
 
 表示预留位置, 不初始化里面的值.
