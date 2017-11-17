@@ -481,6 +481,10 @@ operate: (DST) <- (SRC) + (DST)
 
 operate: (DST) <- (SRC) + (DST) + CF, 其中CF为进位标志(最高有效位有进位的话, 就置为1).
 
+CF的状态取决于上一个(加法)运算.
+
+通常情况下ADC是紧接着ADD后面, 用于 multiply word addition
+
 ### 加1(increment) INC OPR
 
 op: (OPR) <- (OPR) + 1
@@ -500,6 +504,10 @@ op: (OPR) <- (OPR) + 1
 ;如果参数是 r8/m8,   将把  AL 做乘数, 结果放在 AX
 ;如果参数是 r16/m16, 将把  AX 做乘数, 结果放在 DX:AX
 ```
+
+### IMUL 有符号乘
+
+
 
 ### DIV 无符号除
 
