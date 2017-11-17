@@ -680,7 +680,7 @@ e.g. **ARRAY DW 123H, 256** (没有H后缀的表示十进制)
 
 > 符号地址本身就是代表所在地址中的值, 所以 [ARRAY] 跟 ARRAY的意义是 **一样** 的
 
-> 对于存储器寻址中含有符号地址的情况 例如 ARRAY[SI] 就相当于 [ARRAY][SI], 编译器( **in my case, MASM5** ) 会直接报错: **cannot address with segment register**, 这时候需要在前面强制加入段前缀: e.g. DS: ARRAY[SI] (等价 DS: [ARRAY][SI], 也就是等价 DS: [ARRAY + SI],还可以使用 **OFFSET ARRAY[SI] 也就是 [OFFSET ARRAY + SI]** 这种写法.
+> 对于存储器寻址中含有符号地址的情况 例如 ARRAY[SI] 就相当于 [ARRAY][SI], 编译器( **in my case, MASM5** ) 会直接报错: **cannot address with segment register**, 这时候可以使用 **OFFSET ARRAY[SI] 也就是 [OFFSET ARRAY + SI]** 这种写法, 也可以在前面强制加入段前缀: e.g. DS: ARRAY[SI] (等价 DS: [ARRAY][SI], 也就是等价 DS: [ARRAY + SI],还可以.
 
 ## **?** 占位符
 
