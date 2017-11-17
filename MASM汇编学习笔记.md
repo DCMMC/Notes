@@ -18,7 +18,7 @@ m8: 8 bits unit memory
 
 m16: 16 bits unit memory
 
-imm8: 8 bits immediate
+imm8: 8 bits immediate(立即数)
 
 imm16: 16 bits Immediate
 
@@ -512,8 +512,11 @@ op: (OPR) <- (OPR) + 1
 ; SUB DST, SRC
 ; op: (DST) = (DST) - (SRC)
 
-; SUB r8/r16 r8/r16/imm8/imm16
+; SUB r8/r16/m8/m16   r8/r16/m8/m16/imm8/imm16
 ```
+
+> 注意: 如果两个操作符是r或者m的话, 长度要一直, 并且不能同时为m
+> 如果SRC是imm的话, 会进行适当符号扩展
 
 ### MUL 无符号乘
 
