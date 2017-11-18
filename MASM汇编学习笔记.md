@@ -535,6 +535,12 @@ op: (OPR) <- (OPR) + 1
 
 > 如果SRC是imm的话, 会进行适当符号扩展以适应DST
 
+### **带借位** 减法 SBB
+
+```x86asm?linenums
+
+```
+
 ### DEC OPR  减1
 
 ```x86asm?linenums
