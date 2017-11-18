@@ -538,7 +538,9 @@ op: (OPR) <- (OPR) + 1
 ### **带借位** 减法 SBB
 
 ```x86asm?linenums
+; op: Destination = Destination - (Source + CF)
 
+;
 ```
 
 ### DEC OPR  减1
