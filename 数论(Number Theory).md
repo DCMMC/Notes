@@ -76,3 +76,9 @@ grammar_tableExtra: true
 ```mathjax!
 $$\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt\,.$$
 ```
+
+```mathjax!
+$$\int_0^\pi ( 1 - \sin^2 \theta) d \theta =  \int_0^\pi 1 d \theta - \int_0^\pi \sin^3 \theta d \theta $$
+$$ = \pi + \int_0^\pi \sin^2 \theta d \cos \theta$$
+$$ = \pi + \int_0^\pi ( 1 - \cos^2 \theta) d \cos \theta$$
+```
