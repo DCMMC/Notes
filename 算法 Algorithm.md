@@ -155,7 +155,8 @@ i.e., ( 1 + ( ( 2 + 3 ) \* ( 4 \* 5 ) ) )
 > ![共享栈][1]
 
 > 数组实现的队列还有一种 **循环队列** 的实现:
-> 将顺序队列构造为一个假想的环形结构
+> 将顺序队列构造为一个假想的环形结构, 开辟一个一维数组给循环队列, 然后维护一个 capacity, front 和 rear来记录队列容量, 队列头和尾的 offset.
+> dequeue和enqueue分别相当于 (front + 1) % capacity 和 (rear + 1) % capacity.
 
 推荐使用SLL(Single Linked List)或者DLL(DoubleLinkedList)方式实现.
 
