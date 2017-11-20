@@ -149,6 +149,10 @@ i.e., ( 1 + ( ( 2 + 3 ) \* ( 4 \* 5 ) ) )
 * resizing-capacity array 可变大小的数组
 * Linked List 链表
 
+> 其中数组实现的栈还有一种 **共享栈** 的实现:
+> 让多个栈共用一个预分配的较大的存储空间, 利用栈的动态性使他们的存储空间互补.
+> e.g. 双向共享栈: 在一个一维数组空间中维护一个lefttop和righttop分别作为两个栈的栈顶, 并且lefttop向右, righttop向左, 知道相遇就代表着栈满.
+
 推荐使用SLL(Single Linked List)或者DLL(DoubleLinkedList)方式实现.
 
 ## 算法分析
