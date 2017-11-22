@@ -900,6 +900,14 @@ Pf.
 
 Def. **完全二叉树** : 对于深度为 k 的二叉树, 其除去第 k 层外的结点组成的子树为满二叉树, 并且第 k 层的结点是从左到右铺满的.
 
+Pf. 
+
+由性质2得:
+
+`!$2^{k - 1} - 1 < n \leq 2^k - 1 \Rightarrow 2^{k - 1} \leq n < 2^k \Rightarrow k - 1 \leq \log_2 {n} < k$`
+
+又因为 k 为整数, 所以 `!$k = \lfloor \log_2 n \rfloor + 1$`
+
 
 
   [1]: ./images/1511146063858.jpg
