@@ -680,11 +680,11 @@ N-->G
 
 其中数组的1 ~ 1表示level 1, 2 ~ 3表示level 2, 4 ~ 7表示level 3, 8 ~ 11表示level 4.
 
-**对于完全heap-ordered binary tree(也就是假设这棵tree有n level, 从 1 到 (n - 1) level都是满的), 它对应的binary heap在数组中的表示正好有: index为k的node的父结点的index就是`!$\lfloor \frac {k} {2} \rfloor$`, 它的两个子结点的index分别为`!$2k$`和`!$2k + 1$`.**
+**对于完全heap-ordered binary tree(也就是假设这棵tree有n level, 从 1 到 (n - 1) level都是满的, 第 n 个 level 也是从左到右依次排满的), 它对应的binary heap在数组中的表示正好有: index为k的node的父结点的index就是`!$\lfloor \frac {k} {2} \rfloor$`, 它的两个子结点的index分别为`!$2k$`和`!$2k + 1$`.**
 
 **Pf. 易证, 从略**
 
-**一颗大小为N的Complete binary tree的大小为`!$\lfloor \lg N \rfloor$`**
+**一颗大小为N的Complete binary tree的大小为`!$\lfloor \log_2 N \rfloor + 1$`**
 
 **Pf. 可以通过数学归纳证明**
 
@@ -884,6 +884,8 @@ Pf.
 
 `!$ \sum_{i = 1}^{k} 2^{i - 1} = 2^k - 1$`
 
+Def. 对于深度为 `!$k$` 结点数为 `!$2^k - 1$` 的树成为满二叉树.
+ 
 **3. 对任何一颗二叉树 T, 都存在 `!$n_0 = n_2 + 1$`, 其中 `!$n_i$` 代表树中度为 `!$i$` 的结点个数.**
 
 Pf.
@@ -893,6 +895,12 @@ Pf.
 然后又因为除了根节点之外, 其他所有结点都是由其父节点映射出来的, 所以有 `!$n = n_1 + 2n_2 + 1$`, (式中1代表根节点).
 
 所以联立这两个公式可得:  `!$n_0 = n_2 + 1$`
+
+4. 具有 `!$n$` 个结点的完全二叉树的深度为 `!$\lfloor \log_2 {n} \rfloor + 1$`
+
+Def. **完全二叉树** : 对于深度为 k 的二叉树, 其除去第 k 层外的结点组成的子树为满二叉树, 并且第 k 层的结点是从左到右铺满的.
+
+
 
   [1]: ./images/1511146063858.jpg
 
