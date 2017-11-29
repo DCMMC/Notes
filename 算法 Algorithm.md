@@ -1048,7 +1048,7 @@ P, L, R 分别表示父节点, 左子结点, 右子结点.
 如果树的每一个叶结点都有权重, 所有叶结点的路径长度之和被称为 **树的带权路径长度(Weighted Path Length, appr. WPL)**.
 
 ```mathjax!
-$$WPL = $$
+$$WPL = \sum_{k = 1}^{n} w_k l_k$$
 ```
 
 **Huffman树就是带权路径长度最小的二叉树, Huffman树又被称为最优二叉树.**
