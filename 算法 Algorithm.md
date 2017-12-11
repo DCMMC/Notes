@@ -1039,7 +1039,11 @@ P, L, R 分别表示父节点, 左子结点, 右子结点.
 
 总结点个数为 `!$m + n$` ,  所以左右链域个数为 `!$n_{left} = n_{left\_empty} + n_{left\_not\_empty}= m + n, n_{right} = n_{right\_empty} + n_{right\_not\_empty} = m + n$`
 
+森林有 `!$n$` 个非终端结点说明森林有 `!$n$` 个结点有孩子, 也就是二叉树中的 `!$n_{left\_not\_empty} = n$`
 
+且除了根节点, 每一个结点都有链域与之对应, i.e., `!$n_{left\_not\_empty} + n_{right\_not\_empty} = m + n - 1$`
+
+带入上面两个式子, 得到 `!$n_{left\_empty} = m, n_{left_empty} + n_{right\_empty} = m + n + 1 \Rightarrow n_{right\_empty} = n + 1$`
 
 
 
