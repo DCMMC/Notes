@@ -1109,7 +1109,7 @@ Huffman树没有度为1的结点, 只有度为2和度为0的结点, 其中度为
 
 **路径(Path)** 
 
-一个顶点序列 `!$w_1, w_2, ... , w_n$` 使得 `!\forall $(w_i, w_{i + 1} \in E, 1 \leq i < N)$`, 路径的 **长(Length)** 为该路径上的 **边数 (N - 1)**. 如果是有向图, 所有的边都必须相同的方向.
+一个顶点序列 `!$w_1, w_2, ... , w_n$` 使得 `!$\forall w_i, w_{i + 1} \in E, 1 \leq i < N$` , 路径的 **长(Length)** 为该路径上的 **边数 (N - 1)**. 如果是有向图, 所有的边都必须相同的方向.
 
 第一个顶点和最后一个顶点相同的路径称为 **回路** 或 **环(Cycle)** ( **Cycle的要求是边的长度大于等于1, 而如果是v指向v的路径称为loop, 一般讨论的图都是没有loop的, 所有术语的定义均以英文为准, 中文翻译有点不自洽** )
 
@@ -1131,7 +1131,7 @@ Huffman树没有度为1的结点, 只有度为2和度为0的结点, 其中度为
 
 > n个顶点的无向连通图的边至少为 `!$n$`
 
-**子图(Sub Graph)** 如果 `!$\exists G_1(V_1, E_1), G(V, E), if\ V_1 \subseteq V, E_1 \subseteq E$`, 则称 `!$G_1$` 为 `!$G$` 的子图.
+**子图(Sub Graph)** 如果 `!$\exists G_1(V_1, E_1), G(V, E), if\ V_1 \subseteq V, E_1 \subseteq E$` , 则称 `!$G_1$` 为 `!$G$` 的子图.
 
 **连通分量(Connected Component)** 无向图中的极大连通子图
 
@@ -1151,7 +1151,18 @@ Huffman树没有度为1的结点, 只有度为2和度为0的结点, 其中度为
 
 ### 邻接矩阵
 
+若图G是一个具有n个顶点的无权图, G可以用一个 `!$n \times n$`的矩阵A表示, 并且对于矩阵A有:
 
+```mathjax!
+$$\begin{align} A\[i, j\] = \begin{cases}1, if <v_i, v_j> \in E \\ 2 otherwise \end{cases}\end{align}$$
+
+$$\begin{equation}    A[i, j] =
+ \begin{cases}
+    1  &  \text{if $<v_i, v_j> \in E$}  \\
+    0 & \text{otherwise}
+ \end{cases}                \end{equation}$$
+
+```
 
 ## 有关算法
 
