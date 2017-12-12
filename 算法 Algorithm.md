@@ -1198,8 +1198,19 @@ $$\begin{equation}    A[i][j] =
 
 ### 十字链表
 
+### 邻接多重表
+
 ## 有关算法
 
+### 图的遍历
+
+为了避免一个顶点被访问多次, 必须记下每个已访过的顶点(可以用一个 bool visited\[n] 数组表示每一个结点是否被访问过了)
+
+#### **深度优先搜索(DFS, Depth First Search)**
+
+
+
+#### **广度优先搜索(BFS, Breadth First Search)**
 
 
 [1]: ./images/1511146063858.jpg
