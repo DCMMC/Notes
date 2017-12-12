@@ -1154,13 +1154,11 @@ Huffman树没有度为1的结点, 只有度为2和度为0的结点, 其中度为
 若图G是一个具有n个顶点的无权图, G可以用一个 `!$n \times n$`的矩阵A表示, 并且对于矩阵A有:
 
 ```mathjax!
-$$\begin{align} A\[i, j\] = \begin{cases}1, if <v_i, v_j> \in E \\ 2 otherwise \end{cases}\end{align}$$
-
 $$\begin{equation}    A[i, j] =
  \begin{cases}
-    1  &  \text{if $<v_i, v_j> \in E$}  \\
+    1  &  \text{if} \ < v_i , v_j> \ \in E \\
     0 & \text{otherwise}
- \end{cases}                \end{equation}$$
+ \end{cases}  \end{equation}$$
 
 ```
 
