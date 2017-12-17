@@ -1251,16 +1251,16 @@ init:
 `!$U = \left \{ v_0  \right \}, T = \left \{ \emptyset \right \}$`
 
 // `!$\Theta (n)$` in time
-init(closedge) // 以 `!$v_0$` 为对象对 closegde 初始化, 也就是 closegde\[i\] 中为 如果与 `!$v_0$` 相关联, 就为 { `!$v_{i + 1}$`, cost(`!$v_0, v_{i + 1}$`)} 否则为 {null, 0}
+init(closedge) // 以 `!$v_0$` 为对象对 closegde 初始化, 也就是 closegde\[i\] 中为 如果与 `!$v_0$` 相关联, 就为 { `!$v_{i + 1}$`, cost(`!$v_0, v_{i + 1}$`)} 否则为 {null, INT_MAX}
 
 for (循环次数就是 图G的元素个数) { // `!$\Theta (n)$` in time, 因为每一次循环, 都会使 `!$U$` 添加一个元素, 并且更新 closedge
 	k = min(closedge) // 找到closedge中记录的与 `!$U$` 中元素的权值最小的那个元素, `!$O (n) , \Omega (1)$` in time
 
 //把k放入 `!$U$`, 并且 将closedge中对应元素清空为 {null, 0}
 
-//update closedge
+//update closedge, `!$\Theta (n)$`
 	foreach (G) {
-		
+		如果closedge 中该位置为 {{null, INT_MAX} 并且 当前位置对应的顶点在 `!$V - U$` 中并且与 k 顶点连通 或者 与k的边的权重小于原来的, 就更新. 这样能保证每一个顶点添加到 `!$U$` 之后, closedge更新之后能够反映每个 `!$V - U$` 的顶点与 `!$U$` 中顶点相连的边中权重最小的顶点.
 	}
 }
 
