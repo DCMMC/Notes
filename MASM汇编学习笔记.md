@@ -645,11 +645,15 @@ OP: (DST) <= (DST)  `!$\mathbin{\oplus}$`  (SRC)
 
 TEST OPR1, OPR2 测试指令
 
-OP: (OPR1) `!$\lor$` (OPR2)
+OP: (OPR1) `!$\lor$` (OPR2) (和 OR 类似, 只不过不会把值放回第一个操作数)
 
 > SRC 和 DST 不能同时为 存储器寻址
 
 > DST 不能是立即数
+
+> 除了 NOT 不影响任何标志位之外, 其他四个都会影响标志位: 把 CF 和 OF 设置为0, AF 无定义, SF, ZF和PF按照运算结果设置
+
+
 
 # 汇编代码格式
 定义一个段:
