@@ -675,7 +675,7 @@ OP: (OPR1) `!$\land$` (OPR2) (和 OR 类似, 只不过不会把值放回第一�
 
 SHL OPR, CNT (shift logical left) 逻辑左移
 
-将OPR的值设置为它的二进制位向左移动 CNT 位的结果, 并且将最后一个超出边界范围的值记录在CF中
+将OPR的值设置为它的二进制位向左移动 CNT 位的结果, 并且将最后一个超出边界范围的值记录在CF中, 所有的低位补0
 
 SAL (shift arithmetic left) 算术左移
 
@@ -689,8 +689,11 @@ SAR (shift arithmetic right)
 
 将OPR的值设置为它的二进制位向右移动CNT位, 并且所有高位用原来OPR的最高位的值来补齐, 右边最后一个超出边界的位放入CF中.
 
-ROL (rotate left) 循环右移
+ROL (rotate left) 循环左移
 
+和SHL类似, 不过会把左移溢出的位循环放入低位
+
+ROR (rotate right) 循环右移
 
 > 8086中, CNT只能是1(立即数)或者CL寄存器, 其他机型则可以为1到31的立即数或者CL
 
