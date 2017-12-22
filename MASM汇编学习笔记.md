@@ -80,7 +80,21 @@ IP(instruction pointer) 表示相当于CS的 **偏移地址** , 与CS一起连�
 
 SP
 
-FLAGS
+### FLAGS 标志寄存器
+
+OF (overflow flag) 溢出标志, 溢出时设置为1
+
+SF (sign flag) 符号标志, 结果为负的时候置为1
+
+ZF (zero flag) 零标志, 运算结果为 0 的时候为1
+
+CF (carry flag) 进位标志, 最高有效位有进位的时候置为1(具体看执行什么运算)
+
+AF (auxiliary carry flag) 辅助进位标志, 记录运算时第3位(半个字节)产生的进位值
+
+PF (parity flag) 奇偶标志, **当结果操作数中1的个数为偶数的时候为1**
+
+> **0既是奇数又是偶数, 不过对于PF, 如果1的个数为0, PF = 1, 这里把0当作偶数**
 
 ## 段寄存器
 
@@ -645,15 +659,13 @@ OP: (DST) <= (DST)  `!$\mathbin{\oplus}$`  (SRC)
 
 TEST OPR1, OPR2 测试指令
 
-OP: (OPR1) `!$\lor$` (OPR2) (和 OR 类似, 只不过不会把值放回第一个操作数)
+OP: (OPR1) `!$\land$` (OPR2) (和 OR 类似, 只不过不会把值放回第一个操作数)
 
 > SRC 和 DST 不能同时为 存储器寻址
 
 > DST 不能是立即数
 
 > 除了 NOT 不影响任何标志位之外, 其他四个都会影响标志位: 把 CF 和 OF 设置为0, AF 无定义, SF, ZF和PF按照运算结果设置
-
-
 
 # 汇编代码格式
 定义一个段:
