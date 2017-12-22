@@ -695,6 +695,16 @@ ROL (rotate left) 循环左移
 
 ROR (rotate right) 循环右移
 
+和SHR类似, 不过是用低位溢出的去补齐高位空缺的
+
+RCL (rotate left through carry) 带进位循环左移
+
+类似于COL, 不过最后溢出的位还在CF中, 溢出的位还没循环到最低位的时候, 低位用0补
+
+RCR (rotate right with carry) 带进位循环右移
+
+类似于ROR, 不过最后溢出的位还在CF中, 溢出的位还没有循环到最高位的时候, 低位用0补
+
 > 8086中, CNT只能是1(立即数)或者CL寄存器, 其他机型则可以为1到31的立即数或者CL
 
 > 上述指令中, OPR为除了立即数之外的任何寻址方式
