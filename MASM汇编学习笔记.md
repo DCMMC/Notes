@@ -669,6 +669,28 @@ OP: (OPR1) `!$\land$` (OPR2) (和 OR 类似, 只不过不会把值放回第一�
 
 > 若要判断数的某位是否是1, 可以先求反, 然后在TEST一个特定位上是1其他位上都是0的数, 如果ZF = 1则说明该位上是1.
 
+> XOR 常常用来对某位求反
+
+### 移位指令
+
+SHL OPR, CNT (shift logical left) 逻辑左移
+
+将OPR的值设置为它的二进制位向左移动 CNT 位的结果, 并且将最后一个超出边界范围的值记录在CF中
+
+SAL (shift arithmetic left) 算术左移
+
+与 SHL 一样
+
+SHR (shift logical right) 逻辑右移
+
+将OPR的值设置为它的二进制位向右移动CNT位, 并且高位用0补齐, 右边最后一个超出边界的位放入CF中.
+
+SAR (shift arithmetic right)
+
+将OPR的值设置为它的二进制位向右移动CNT位, 并且高位用原来OPR的最高位来补齐, 右边最后一个超出边界的位放入CF中.
+
+> 8086中, CNT只能是1(立即数)或者CL寄存器, 其他机型则可以为1到31的立即数或者CL
+
 # 汇编代码格式
 定义一个段:
 
