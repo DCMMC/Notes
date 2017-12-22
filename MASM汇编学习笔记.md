@@ -2,6 +2,34 @@
 title: MASM汇编学习笔记
 tags: MASM,汇编,学习笔记
 grammar_cjkRuby: true
+grammar_abbr: true
+grammar_table: true
+grammar_defList: true
+grammar_emoji: true
+grammar_footnote: true
+grammar_ins: true
+grammar_mark: true
+grammar_sub: true
+grammar_sup: true
+grammar_checkbox: true
+grammar_mathjax: true
+grammar_flow: true
+grammar_sequence: true
+grammar_plot: true
+grammar_code: true
+grammar_highlight: true
+grammar_html: true
+grammar_linkify: true
+grammar_typographer: true
+grammar_video: true
+grammar_audio: true
+grammar_attachment: true
+grammar_mermaid: true
+grammar_classy: true
+grammar_cjkEmphasis: true
+grammar_center: true
+grammar_align: true
+grammar_tableExtra: true
 ---
 
 # 笔记中有关符号的规约
@@ -595,7 +623,33 @@ op: (OPR) <- (OPR) + 1
 
 ## 逻辑指令
 
+### 逻辑运算指令
 
+AND DST, SRC 逻辑与
+
+OP: (DST) <= (DST) ^ (SRC)
+
+OR DST, SRC 逻辑或
+
+OP: (DST) <= (DST) v (SRC)
+
+NOT OPR 逻辑非
+
+OP: (OPR) <= !(OPR)
+
+> NOT 不允许使用立即数
+
+XOR DST, SRC 异或
+
+OP: (DST) <= (DST)  `!$\mathbin{\oplus}$`  (SRC)
+
+TEST OPR1, OPR2 测试指令
+
+OP: (OPR1) `!$\lor$` (OPR2)
+
+> SRC 和 DST 不能同时为 存储器寻址
+
+> DST 不能是立即数
 
 # 汇编代码格式
 定义一个段:
