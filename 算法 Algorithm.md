@@ -832,7 +832,13 @@ Reduction是在把一种设计用来实现某个目的的算法去解决另外�
 * Huffman compression
 * String-processing 
 
-# 搜索
+# 查找
+
+**平均查找长度 (Average Search Length, ASL)**
+
+```mathjax!
+$$$$
+```
 
 # 树（Tree）
 
