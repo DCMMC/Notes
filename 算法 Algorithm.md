@@ -845,7 +845,7 @@ $$\text{ASL} = \sum_{i = 1}^n P_i C_i$$
 **顺序查找的ASL**
 
 ```mathjax!
-$$\text{ASL} = \frac{1}{n}\sum_{i = 1}^{n} {n - i + 1} = \frac{1}{n}\frac{n(n+1)}{2} = \frac{n + 1} {2}$$
+$$\text{ASL} = \frac{1}{n}\sum_{i = 1}^{n} {(n - i + 1)} = \frac{1}{n}\frac{n(n+1)}{2} = \frac{n + 1} {2}$$
 ```
 
 # 树（Tree）
