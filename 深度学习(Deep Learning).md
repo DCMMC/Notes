@@ -1,6 +1,6 @@
 ---
 title: 深度学习(Deep Learning) 
-tags: 数论,笔记
+tags: 深度学习, AI, DL, ML,笔记
 grammar_abbr: true
 grammar_table: true
 grammar_defList: true
