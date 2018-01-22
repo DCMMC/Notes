@@ -71,6 +71,13 @@ grammar_tableExtra: true
 
 因为并不总是清楚是计算图的深度还是概率模型图的深度哪一个更加有意义, 所以架构的深度没有单一的正确值. 相比传统的机器学习, 深度学习研究的模型涉及更多的(计算机)学到的函数或学到的概念的组合.
 
+![Figure 1.4][4]
+
+上图表示了 AI 领域不同 AI 训练方法之间的关系.
+
+![Figure 1.5][5]
+
+上图表示了AI 各个训练方法之间的高层次原理, 阴影的方框表示能够从数据中自主学习的部件, 表示学习中输入到各种特征(features)之间的箭头表示了各种表示(representation)之间的转换.
 
 
 # (p) Part 1 Applied Math and Machine Learning Basis
@@ -79,3 +86,5 @@ grammar_tableExtra: true
   [1]: ./images/1516606697255.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
+  [4]: ./images/1516624370367.jpg
+  [5]: ./images/1516624435832.jpg
