@@ -93,8 +93,15 @@ grammar_tableExtra: true
 
 ## Linear Algebra 线性代数
 
+> 如果已经熟悉线性代数, 可以跳过本章, 推荐 *The Matrix Cookbook(Petersen and Pedersen, 2006)* 来回顾一些重要公式.
+> 本章只涉及深度学习需要重要的线性代数知识, 建议参考阅读 *Shilov(1977)* 来全面学习线性代数.
 
+> 线性代数是连续数学, 非离散数学
 
+### Scalars(标量), Vectors(向量), Matrices(矩阵) 和 Tensors(张量)
+
+* **Scalars:** 就是一个单独的数, 标量一般用小写字母, 斜体表示, 并且一般会指明数的类型, e.g., `!$s \in \mathbb{R}$`
+* **Vectors:** 
 
   [1]: ./images/1516606697255.jpg
   [2]: ./images/1516613842738.jpg
