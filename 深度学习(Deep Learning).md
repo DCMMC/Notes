@@ -81,7 +81,17 @@ grammar_tableExtra: true
 
 本书分为三个部分, 第一部分介绍一些基本的数学方法和机器学期概念, 第二部分介绍最成熟的深度学习算法, 这些技术基本上得到了解决, 第三部分讨论一些广泛的被认为是深度学习未来研究的重点的具有展望性的想法.
 
+![Figure 1.6][6]
+
+上图描述了本书的高层结构, 其中箭头表示先后依赖关系.
+
+## DL 的历史趋势
+
+> 略
+
 # (p) Part 1 Applied Math and Machine Learning Basis
+
+
 
 
   [1]: ./images/1516606697255.jpg
@@ -89,3 +99,4 @@ grammar_tableExtra: true
   [3]: ./images/1516621710096.jpg
   [4]: ./images/1516624370367.jpg
   [5]: ./images/1516624435832.jpg
+  [6]: ./images/1516624998426.jpg
