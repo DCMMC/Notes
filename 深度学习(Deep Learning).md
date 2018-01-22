@@ -100,8 +100,19 @@ grammar_tableExtra: true
 
 ### Scalars(标量), Vectors(向量), Matrices(矩阵) 和 Tensors(张量)
 
-* **Scalars:** 就是一个单独的数, 标量一般用小写字母, 斜体表示, 并且一般会指明数的类型, e.g., `!$s \in \mathbb{R}$`
-* **Vectors:** 
+*  标量一般用小写字母, 斜体表示, 并且一般会指明数的类型, e.g., `!$s \in \mathbb{R}$`
+
+* 通常向量用小写粗体, 其中的元素写成小写斜体, 如果向量有 `!$n$` 个元素, 并且所有元素都属于 `!$\mathbb{R}$` , 那么该向量属于实数集 `!$\mathbb{R}$` 的 n 次 **笛卡尔乘积(Cartesian product)** 构成的集合, 记作(denote) `!$\mathbb{R}^{n}$`
+
+* 如果要明确表示向量中的元素, 将元素排列成一个方括号包围的纵列
+
+```mathjax!
+\begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix}
+```
+
+> `!$x_i$` 是小写斜体, Markdown 里面的内置 `!$\LaTeX $` 公式我不知道怎么打小写斜体.
+
+
 
   [1]: ./images/1516606697255.jpg
   [2]: ./images/1516613842738.jpg
