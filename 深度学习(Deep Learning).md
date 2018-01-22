@@ -33,6 +33,9 @@ grammar_tableExtra: true
 ---
 # Notations
 
+# Intro
 
+在现在人工智能(Artificial Intelligence, *abbr.* AI)领域主要需要解决的是那些对人类来说很直观的(Intuitively, 也就是更难形式化(formally)描述的)问题.
 
 # (p) Part 1 Applied Math and Machine Learning Basis
+
