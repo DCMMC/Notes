@@ -272,6 +272,28 @@ $$\lVert A \rVert _F = \sqrt{\sum_{i, j} A_{i, j}^2}$$
 
 **方阵 `!$A$`** 的特征向量是一个非零向量使得 `!$Av = \lambda v$`. 其中 `!$\lambda$` 是一个标量, 也就是特征向量 `!$v$` 对应的特征值.  
 
+> 还可以使用左特征值向量(left eigenvector), `!$v^\top A = \lambda v^\top$`, 但是我们一般使用右特征向量(right eigenvector). 
+
+如果 `!$v$` 是`!$A$` 的特征向量, 则对于 `!$sv, s \in \mathbb{R}, s \ne 0$`(s 是标量) 都是`!$A$` 的特征向量, 并且他们对应相同的特征值. 
+
+如果 `!$A$` 有 `!$n$` 个线性无关的特征向量 `!$\left\{ v^{(1)}, v^{(2)}, \cdots, v^{(n)} \right\}$` , 和对应的特征值 `!$\left\{ \lambda_1, \lambda_2, \cdots, \lambda_n \right\}$`, 用特征向量按列组成矩阵 `!$V = [v^{(1)}, v^{(2)}, \cdots, v^{(n)}]$`, 用对应的特征值组成向量 `!$\lambda = [\lambda_1, \lambda_2, \cdots, \lambda_n ]$`. 则 `!$A$` 的 **特征分解** 可以记作
+
+```mathjax!
+$$A = V diag(\lambda) V^{-1}$$
+```
+
+> 不是所有的矩阵都能被分解为特征向量和特征值, 有时候分解是存在的不过是被分解成 **复数(complex)** 而不是实数. 在本书中通常只需要分解一些简单的矩阵.
+
+所有的 **实对称矩阵(real symmetric matrix)** 都可以被分解成 **实特征向量(real-valued eigenvectors)** 和 **实特征值(real-valued eigenvalues)** .
+
+`!$A = Q \Lambda Q^{\top}$`
+
+其中 `!$Q$` 是由 `!$A$` 的特征向量组成的 **对阵矩阵** , `!$\Lambda$` 是对角矩阵, 并且 `!$\Lambda_{i, i}$` 是 特征向量 `!$Q_{:, i}$` 对应的特征值. 我们可以将 `!$A$` 看作是沿方向 `!$v^{(i)}$` 延展`!$\lambda_i$` 倍的空间.
+
+![Figure 1.3][8]
+
+
+
   [1]: ./images/1516606697255.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
@@ -279,3 +301,4 @@ $$\lVert A \rVert _F = \sqrt{\sum_{i, j} A_{i, j}^2}$$
   [5]: ./images/1516624435832.jpg
   [6]: ./images/1516624998426.jpg
   [7]: ./images/1516685167266.jpg
+  [8]: ./images/1516697795762.jpg
