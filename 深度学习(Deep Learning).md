@@ -91,14 +91,14 @@ grammar_tableExtra: true
 
 # (p) Part 1 Applied Math and Machine Learning Basis
 
-## Linear Algebra 线性代数
+## (p) 1.1 Linear Algebra 线性代数
 
 > 如果已经熟悉线性代数, 可以跳过本章, 推荐 *The Matrix Cookbook(Petersen and Pedersen, 2006)* 来回顾一些重要公式.
 > 本章只涉及深度学习需要重要的线性代数知识, 建议参考阅读 *Shilov(1977)* 来全面学习线性代数.
 
 > 线性代数是连续数学, 非离散数学
 
-### Scalars(标量), Vectors(向量), Matrices(矩阵) 和 Tensors(张量)
+### (p) 1.1.1 Scalars(标量), Vectors(向量), Matrices(矩阵) 和 Tensors(张量)
 
 *  标量一般用小写字母, 斜体表示, 并且一般会指明数的类型, e.g., `!$s \in \mathbb{R}$`
 
@@ -114,7 +114,59 @@ grammar_tableExtra: true
 
 * 要取向量 `!$x$`的部分元素作为一个集合, 例如下标 1, 3, 6 的元素, 可以定义 `!$S = \{ 1, 3, 6\}$`, 则这个集合表示为 `!$x_S$`. 用符号`!$-$` 表示集合的补集的索引, 例如 `!$x_{-1}$` 表示向量 `!$x$` 中除 `!$x_1$` 之外的所有元素, 同理 `!$x_{-S}$`.
 
-* 矩阵通常用大写粗体表示, m行n列并且所有元素都是实数域的矩阵 `!$A$` 可记作 `!$A \in \mathbb{R}^{m \times n}$`, 对于矩阵元素下标, 可以使用 `!$:$` 通配符, 
+* 矩阵通常用大写粗斜体表示, m行n列并且所有元素都是实数域的矩阵 `!$A$` 可记作 `!$A \in \mathbb{R}^{m \times n}$`, 对于矩阵元素下标, 可以使用 `!$:$` 通配符, 例如 `!$A_{i,:}$` 表示矩阵第 `!$i$` 行的元素. 里面的元素用大写非粗体.
+
+> `!$f(A)_{i,j}$` 表示函数 `!$f$` 应用在 **A** 上输出的矩阵的索引元素.
+
+* 张量(Tensors) 就是超过两维的数组, 用大写正粗体字母表示.
+
+矩阵的 **转置(transpose)**, 相当于绕着 **主对角线(main diagonal)** 的镜像, 表示为
+
+```mathjax!
+$$\left(A^{\top}\right)_{i,j} = A_{j, i}$$
+```
+向量就相当于只有一列的矩阵的转置, 有时候就用这种形式表示向量, e.g. `!$[1,2,3]^{\top}$`.	标量的转置就等于其本身.
+
+矩阵的加减就是把矩阵中的每一个元素进行对应的运算产生一个新的矩阵.
+
+在深度学习中, 我们还会使用一种惯用记号, 允许矩阵和向量相加, `!$C = A + b$` 表示 `!$C_{i,j} = A_{i, j} + b_j$`, 换言之, 矩阵的每一行和向量的转置相加, 这种隐式的复制到很多位置的方式, 被称为 **广播(broadcasting)** .
+
+矩阵的乘法:
+
+```mathjax!
+$$C = AB$$
+
+$$C_{i, j} = \sum_{k} A_{i, k}B_{k, j}$$
+```
+
+> 所以矩阵的标准乘积不是相同位置上元素的乘积(区别于矩阵的加减), 不过矩阵相同位置上的乘积叫做 **元素对应乘积(element-wise product)** 或 **Hadamard 乘积**, 记作 `!$A \bigodot B$`
+
+两个相同维数(dimensionality)的向量的 **点乘(dot product)** 可以看做矩阵乘积 `!x \cdot y = $x^{\top}y$`.
+
+矩阵的乘法服从分配律(distributive)和结合律(associative):
+
+```mathjax!
+$$A(B + C) = AB + AC$$
+$$A(BC) = (AB)C$$
+```
+
+> 注意, 矩阵乘法运算 `!$AB$` 和 `!$BA$` 是不同的, 不符合交换律, 不过向量的点乘符合交换律, `!$x \cdot y = y \cdot x = x^{\top} y = y^{\top} x$`.
+
+```mathjax!
+$$(AB)^{\top} = B^\top A^\top$$
+```
+
+矩阵方程式
+
+```mathjax!
+$$Ax = b$$
+$$A \in \mathbb{R}^{m \times n}, b \in \mathbb{R}^m, x \in \mathbb{R}^n is a vector of unknown variables.$$
+$$\Leftrightarrow$$
+$$A_{1, :} = b_1$$
+$$A_{2, :} = b_2$$
+$$:$$
+$$A_{m, :} = b_m$$
+```
 
   [1]: ./images/1516606697255.jpg
   [2]: ./images/1516613842738.jpg
