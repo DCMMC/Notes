@@ -131,7 +131,7 @@ $$\left(A^{\top}\right)_{i,j} = A_{j, i}$$
 
 在深度学习中, 我们还会使用一种惯用记号, 允许矩阵和向量相加, `!$C = A + b$` 表示 `!$C_{i,j} = A_{i, j} + b_j$`, 换言之, 矩阵的每一行和向量的转置相加, 这种隐式的复制到很多位置的方式, 被称为 **广播(broadcasting)** .
 
-矩阵的乘法:
+### (p) 1.1.2 矩阵的乘法
 
 ```mathjax!
 $$C = AB$$
@@ -141,7 +141,7 @@ $$C_{i, j} = \sum_{k} A_{i, k}B_{k, j}$$
 
 > 所以矩阵的标准乘积不是相同位置上元素的乘积(区别于矩阵的加减), 不过矩阵相同位置上的乘积叫做 **元素对应乘积(element-wise product)** 或 **Hadamard 乘积**, 记作 `!$A \bigodot B$`
 
-两个相同维数(dimensionality)的向量的 **点乘(dot product)** 可以看做矩阵乘积 `!x \cdot y = $x^{\top}y$`.
+两个相同维数(dimensionality)的向量的 **点乘(dot product)** 可以看做矩阵乘积 `!$x \cdot y = x^{\top}y$`.
 
 矩阵的乘法服从分配律(distributive)和结合律(associative):
 
@@ -160,13 +160,41 @@ $$(AB)^{\top} = B^\top A^\top$$
 
 ```mathjax!
 $$Ax = b$$
-$$A \in \mathbb{R}^{m \times n}, b \in \mathbb{R}^m, x \in \mathbb{R}^n is a vector of unknown variables.$$
+$$A \in \mathbb{R}^{m \times n}, b \in \mathbb{R}^m, x \in \mathbb{R}^n \text{ is a vector of unknown variables.}$$
 $$\Leftrightarrow$$
-$$A_{1, :} = b_1$$
-$$A_{2, :} = b_2$$
-$$:$$
-$$A_{m, :} = b_m$$
+$$A_{1, :} x = b_1$$
+$$A_{2, :} x = b_2$$
+$$\vdots$$
+$$A_{m, :} x = b_m$$
 ```
+
+### (p) 1.1.3 单位矩阵(Identity Matrices)和逆矩阵(Inverse Matrices)
+
+**单位矩阵定义**
+
+```mathjax!
+$$I_n \in \mathbb{R}^{n \times n}, \forall x \in \mathbb{R}^n, I_n x = x$$
+```
+
+所以单位矩阵就是主对角线的元素都是1, 其他都是0 的矩阵, 例如
+
+```mathjax!
+$$I_3 = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}$$
+```
+
+矩阵 `!$A$` 的逆矩阵记作 `!$A^{-1}$`, 并且有 `!$A^{-1} A = I_n$`
+
+所以对于矩阵方程 `!$Ax = b$` 的解是 `!$x = A^{-1} b$`, 所以这取决于能否找到 `!$A^{-1}$`. 不过用逆矩阵求解矩阵方程主要是一个理论工具, 实际上在软件中使用的不多, 因为在数字计算机中逆矩阵只能表现出有限的精度, 有效使用向量 `!$b$` 的算法能够获得更精确的 `!$x$` .
+
+### (p) 1.1.4 线性相关(Linear Dependence)和生成子空间(Span)
+
+矩阵方程组的解只有 无解, 一个解, 无穷多解 三种.
+
+将矩阵 `!$A \in \mathbb{R}^{m \times n}$` 按列拆分为 `!$n$` 个列向量(被称为生成空间的 **原点(origin)** ), 则 `!$A x = \sum_i x_i A_{:,i}$`. 其中 `!$$x_i` 是标量. `!$ \sum_i x_i A_{:,i}$$` 就称为 **线性组合(linear combination)** . 一组向量的 **生成子空间(Span)** 就是通过不同的系数(`!$x$` 向量), 所能线性组合出来的所有矩阵(相对于生成空间中的其他所能到达的点)的集合. 这个生成子空间被称为 `!$A$` 的列空间(column space) 或 `!$A$` 的值域(range).
+
+确定方程组是否有解就是确定 `!$b$` 是否在 `!$A$` 的生成子空间中.
+
+为了使 `!$\forall b \in \mathbb{R}^m$`,  `!$Ax = b$` 都有解, 则 `!$A$` 的列(生成)空间构成整个 `!$\mathbb{R}^m$`
 
   [1]: ./images/1516606697255.jpg
   [2]: ./images/1516613842738.jpg
