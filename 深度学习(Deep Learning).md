@@ -386,14 +386,21 @@ PCA 由我们选择的解码函数定义, 为了使解码简单. 我们使用矩
 为了明确如何根据输入点 `!$x$` 生成最优编码点(optimal code point) `!$c^*$`, 我们通过找到 `!$x$` 和 `!$g(c^*)$` 的最小(欧几里德)距离(为了简化计算, 我们使用平方 `!$L^2$` 范数):
 
 ```mathjax!
-$$c^* = \arg\min_c \lVert x - g(c) \rVert _2^2$$
-$$ =  \arg\min_c (x - g(c))^\top (x - g(c)) (\text{ by the definition of } L^2 \text{ norm.})$$
-$$ = \arg\min_c [ x^\top x - x^\top g(c)  - g(c)^\top x + g(c)^\top g(c) ] \text{ (distributive  property)}$$
-$$ =  \arg\min_c [ x^\top x - 2 x^\top g(c) + g(c)^\top g(c) ] \text{ (`cause } x^\top g(c) \text{ is scalar, and its transpose is itself.)}$$
-$$ =  \arg\min_c [ - 2 x^\top g(c) + g(c)^\top g(c) ] \text{ (omit } x^\top x \text{ because it does not depend on } c \text{ )}$$
-$$ = \arg\min_c [ - 2 x^\top D c + c^\top D^\top Dc ] \text{ (substitude } g(c) = D c \text{ )}$$
-$$ = \arg \min_c [ -2 x^\top D c + c^\top I_l c ] \text{ ( } D \text{ is orthogonal matrix )}$$
-$$ = \arg \min_c [ -2 x^\top D c + c^\top c ] $$
+$$
+\begin{equation}
+\begin{split}
+c^*& = \arg\min_c \lVert x - g(c) \rVert _2^2 \\
+& =  \arg\min_c (x - g(c))^\top (x - g(c)) (\text{ by the definition of } L^2 \text{ norm.}) \\
+& = \arg\min_c [ x^\top x - x^\top g(c)  - g(c)^\top x + g(c)^\top g(c) ] \text{ (distributive  property)} \\
+& =  \arg\min_c [ x^\top x - 2 x^\top g(c) + g(c)^\top g(c) ] \text{ (`cause } x^\top g(c) \text{ is scalar, and its transpose is itself.)} \\
+& =  \arg\min_c [ - 2 x^\top g(c) + g(c)^\top g(c) ] \text{ (omit } x^\top x \text{ because it does not depend on } c \text{ )} \\
+& = \arg\min_c [ - 2 x^\top D c + c^\top D^\top Dc ] \text{ (substitude } g(c) = D c \text{ )} \\
+& = \arg \min_c [ -2 x^\top D c + c^\top I_l c ] \text{ ( } D \text{ is orthogonal matrix )} \\
+& = \arg \min_c [ -2 x^\top D c + c^\top c ] \\
+\end{split}
+\nonumber
+\end{equation}
+$$
 ```
 通过 **向量微积分(vector calculus, see Section 1.3.3)** 求解这个最优化问题: 
 
@@ -435,14 +442,20 @@ $$d^* = \arg \min_d \lVert X - Xdd^\top \rVert _F^2 \text{, } d^{\top} d = 1$$
 > 其中 `!$Xdd^\top$` 中的 `!$d^\top$` 是因为原来的 `!$x^{(i)}$` 都作为了 `!$X$` 的列向量, 原来后面的 `!$d$` 是将 `!$x^{(i)}d$` 转化成向量(i.e., 相当于`!$\mathbb{R}^{n \times 1}$`),  而这里的 `!$d^\top$` 是将其转化为 `!$\mathbb{R}^{1 \times n}$` 作为矩阵的列向量.
 
 ```mathjax!
-$$\arg \min_d  \lVert X - Xdd^\top \rVert _F^2$$
-$$ = \arg \min_d Tr\left(\left( X - Xdd^\top \right)^\top \left( X - X dd^\top \right) \right)$$
-$$ = \arg \min_d [Tr(X^\top X ) - Tr(X^\top X d d^\top) - Tr(dd^\top X^\top X) + Tr(dd^\top X^\top X d d^\top)] $$
-$$ = \arg \min_d [  - Tr(X^\top X d d^\top) - Tr(dd^\top X^\top X) + Tr(dd^\top X^\top X d d^\top) ] \text{ , remove terms not involving } d$$
-$$ = \arg \min_d [ -2 Tr(X^\top X d d^\top ) +  Tr(X^\top X d d^\top dd^\top ) ] \text{, cycling the order of martices inside trace has same trace }$$
-$$ = \arg \min_d [ -2 Tr(X^\top X d d^\top) + Tr(X^\top X d d^\top)] \text{, d^\top d = 1}$$
-$$ = \arg \min -Tr(X^\top X d d^\top)$$
-$$ = \arg \max  Tr( d^\top X^\top X d)$$
+$$
+\begin{equation}
+\begin{split}
+\arg \min_d  \lVert X - Xdd^\top \rVert _F^2 &= \arg \min_d Tr\left(\left( X - Xdd^\top \right)^\top \left( X - X dd^\top \right) \right)\\
+& = \arg \min_d [Tr(X^\top X ) - Tr(X^\top X d d^\top) - Tr(dd^\top X^\top X) + Tr(dd^\top X^\top X d d^\top)] \\
+& = \arg \min_d [  - Tr(X^\top X d d^\top) - Tr(dd^\top X^\top X) + Tr(dd^\top X^\top X d d^\top) ] \text{ , remove terms not involving } d\\
+& = \arg \min_d [ -2 Tr(X^\top X d d^\top ) +  Tr(X^\top X d d^\top dd^\top ) ] \text{, cycling the order of martices inside trace has same trace }\\
+& = \arg \min_d [ -2 Tr(X^\top X d d^\top) + Tr(X^\top X d d^\top)] \text{, d^\top d = 1}\\
+& = \arg \min -Tr(X^\top X d d^\top) \\
+& = \arg \max  Tr( d^\top X^\top X d) 
+\end{split}
+\nonumber
+\end{equation}
+$$
 ```
 
 **所以, `!$d$` 就是 `!$X^\top X$` 对应的最大的特征值对应的特征向量, 当 `!$l >1$` 时, `!$D$` 由 `!$X^\top X$` 前 `!$l$` 大的特征值对应的特征向量构成(可以用数学归纳法证明, 可作为练习).**
@@ -455,6 +468,8 @@ $$ = \arg \max  Tr( d^\top X^\top X d)$$
 
 > 推荐阅读 **Jaynes(2003)**
 
+### (p) 1.2.1
+
 不确定性的三大来源:
 
 * 被建模系统的 **内在随机性(inherent stochasticity)**
@@ -464,7 +479,22 @@ $$ = \arg \max  Tr( d^\top X^\top X d)$$
 很多情况下, 使用简单但是不确定的规则比复杂而确定(deterministic)的规则更加实用.
 
 早期的概率论是用来分析事件的频率, 并且这类事件都是可以(趋近于无限)重复发生的. 而如果是一个医生给一个病人看病并且告诉病人他有 40% 的概率患流感, 因为病人不能被复制, 所以这不是一个可重复事件. 在这种情况, 我们使用概率来表示 **信念度(degree of belief)**, 其中 1 表示病人肯定患有流感, 0 表示病人肯定没有患流感, 前者直接与时间发生的比率(rate)相关, 被称为 **频率派概率(frequentist probability)**, 而后者
-涉及到 **确定度水平(qualitative levels of certainty)**, 被称为 **贝叶斯概率(Bayesian probability)**.
+涉及到 **确定度水平(qualitative levels of certainty)**, 被称为 **贝叶斯概率(Bayesian probability)**. 如果要列出一些关于不确定性(uncertainty)的常识推理(common sense reasons)中我们希望要有的性质(property), 要满足这些性质的唯一方法就是将贝叶斯概率的行为和概率派概率完全等同. 
+
+概率论提供了一套形式化的规则, 用来在给定一些命题(proposition)的似然(likelihood)后, 计算其他命题为真的似然.
+
+### (p) 1.2.2 随机变量(Random Variables)
+
+**随机变量** 就是能够随机的取不同值的变量. 随机变量可以使 **离散的(discrete)** 或者是 **连续的(continuous)**, 离散随机变量有有限或可数的无限个状态(states, 不一定是数值), 而连续随机变量与实数值相关.
+
+> 随机变量和可能的取值都用小写无格式字母表示
+
+### (p) 1.2.3 概率分布(Probability Distributions)
+
+**概率分布** 描述变量的值怎么样从它们的各种状态中选取(具体的方法取决于是离散随机变量还是连续随机变量).
+
+离散随机变量的概率分布(probability distribution)被称为 **概率质量函数(probability mass function, *abbr.*, PML, 有些国内教材翻译为概率分布律)**, 一般用大写字母 *P* 表示, 一般用变量的标识来区分不同的概率质量函数而不是通过函数名称来区分, 例如 *P*(x) 和 *P*(y) 一般来说就表示不同的概率质量函数. 
+
 
 
 
