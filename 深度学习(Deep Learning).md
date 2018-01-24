@@ -449,7 +449,7 @@ $$
 & = \arg \min_d [Tr(X^\top X ) - Tr(X^\top X d d^\top) - Tr(dd^\top X^\top X) + Tr(dd^\top X^\top X d d^\top)] \\
 & = \arg \min_d [  - Tr(X^\top X d d^\top) - Tr(dd^\top X^\top X) + Tr(dd^\top X^\top X d d^\top) ] \text{ , remove terms not involving } d\\
 & = \arg \min_d [ -2 Tr(X^\top X d d^\top ) +  Tr(X^\top X d d^\top dd^\top ) ] \text{, cycling the order of martices inside trace has same trace }\\
-& = \arg \min_d [ -2 Tr(X^\top X d d^\top) + Tr(X^\top X d d^\top)] \text{, d^\top d = 1}\\
+& = \arg \min_d [ -2 Tr(X^\top X d d^\top) + Tr(X^\top X d d^\top)] \text{, } d^\top d = 1\\
 & = \arg \min -Tr(X^\top X d d^\top) \\
 & = \arg \max  Tr( d^\top X^\top X d) 
 \end{split}
