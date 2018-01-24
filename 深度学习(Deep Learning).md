@@ -351,7 +351,7 @@ $$A^+ = V D^+ U^\top$$
 矩阵的迹:
 
 ```mathjax!
-Tr(A) = \sum_i A_{i, i}
+$$Tr(A) = \sum_i A_{i, i}$$
 ```
 有些矩阵运算如果不使用求和公式, 会很难描述, 而通过矩阵乘法和迹运算能够很清楚的表示. 例如, 迹运算提供了另一种描述 Frobenius 范数的方式:
 
@@ -373,8 +373,35 @@ $$\lVert A \rVert _F = \sqrt{Tr(AA^\top)}$$
 
 方阵 `!$A$` 的行列式通常表示为 `!$\text{det}(A)$`, 是一个将方阵映射到实数的函数, 也就是说行列数是一个值. 并且方阵的行列式就是其特征值的乘积. 行列式的绝对值可以用来衡量矩阵参与矩阵乘法之后空间扩了或缩小了多少. 如果行列式为 0 , 则说明空间沿着至少一维完全收缩了, 使其丢失了所有体积(volume); 如果行列式为 1, 则说明这个转换保持体积不变(volume-preserving)
 
-### (p) 1.1.12 实例: 主成份分析(Principal Components Analysis)
+### (p) 1.1.12 实例: 主成份分析(Principal Components Analysis, *abbr.*, CPA)
 
+假设在 `!$\mathbb{R}^n$` 空间中有 `!$m$` 个点 `!$\{ x^{(1)}, \cdots, x^{(m)}\}$` , 我们需要对它们进行有损压缩(用更少的内存空间但是(尽可能少得)损失精度得保存这些点). 
+
+一种方式是降维(lower-dimensional), 对于每个 `!$x^{(i)} \in \mathbb{R}$`, 都存在一个对应的 **编码向量(corresponding code vector)** `!$c^{(i)} \in \mathbb{R}^l, l < n$` . 即有一个编码函数和一个解码函数使得 `!$f(x) = c, x \approx g(f(x))$` .
+
+PCA 由我们选择的解码函数定义, 为了使解码简单. 我们使用矩阵乘法来将编码向量映射回原向量, `!$g(c) = Dc, D \in  \mathbb{R}^{n \times l}$`. 为了编码程序简单, PCA 限制 `!$D$` 的所有列都是互相正交的(不过 `!$D$` 仍然不是正交矩阵除非 `!$n = l$`). 但是仍然会有多种解, 因为如果我们放大 `!$D_{:, i}$`, 则对应的 `!$c_i$` 则会缩小, 为了使这个问题只有一个唯一解, 我们限制 `!$D$` 的每一列向量都有单位范数. 
+
+为了明确如何根据输入点 `!$x$` 生成最优编码点(optimal code point) `!$c^*$`, 我们通过找到 `!$x$` 和 `!$g(c^*)$` 的最小(欧几里德)距离(为了简化计算, 我们使用平方 `!$L^2$` 范数):
+
+```mathjax!
+$$c^* = \arg\min_c \lVert x - g(c) \rVert _2^2$$
+$$ =  \arg\min_c (x - g(c))^\top (x - g(c)) (\text{ by the definition of } L^2 \text{ norm.})$$
+$$ = \arg\min_c [ x^\top x - x^\top g(c)  - g(c)^\top x + g(c)^\top g(c) ] \text{ (distributive  property)}$$
+$$ =  \arg\min_c [ x^\top x - 2 x^\top g(c) + g(c)^\top g(c) ] \text{ (`cause } x^\top g(c) \text{ is scalar, and its transpose is itself.)}$$
+$$ =  \arg\min_c [ - 2 x^\top g(c) + g(c)^\top g(c) ] \text{ (omit } x^\top x \text{ because it does not depend on } c \text{ )}$$
+$$ = \arg\min_c [ - 2 x^\top D c + c^\top D^\top Dc ] \text{ (substitude } g(c) = D c \text{ )}$$
+$$ = \arg \min_c [ -2 x^\top D c + c^\top I_l c ] \text{ ( } D \text{ is orthogonal matrix )}$$
+$$ = \arg \min_c [ -2 x^\top D c + c^\top c ] $$
+```
+通过 **向量微积分(vector calculus)** 求解这个最优化问题: 
+
+```mathjax!
+$$\nabla_c ( -2x^\top D c + c^\top c) = 0$$
+$$ -2 D^\top x + 2c = 0$$
+$$ c = D^\top x$$
+```
+
+所以编码函数就是: `!$f(x) = D^\top x$` (这是一个很高效的算法, 因为我们只需要进行一个矩阵向量运算) . 而 PCA 解码函数就是 `!$r(x) = g(f(x)) = DD^\top x$`
 
 
   [1]: ./images/1516606697255.jpg
