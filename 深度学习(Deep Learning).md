@@ -363,9 +363,11 @@ $$\lVert A \rVert _F = \sqrt{Tr(AA^\top)}$$
 
 多个矩阵相乘形成得到的方阵的迹, 就算其中的矩阵位置交换, 也是同样成立的: `!$Tr(ABC) = Tr(CAB) = Tr(BCA)$`
 
+而且显然有 `!$Tr(A - B) = Tr(A) - Tr(B)$`, 因为矩阵的加减运算就是对应的每个元素的算术运算.
+
 更一般的可以表述成: `!$Tr\left( \prod_{i = 1}^n F^{(i)} \right) = Tr\left( F^{(n)} \prod_{i = 1}^{n - 1} F^{(i)} \right)$`
 
-就算交换位置后相乘形成的方阵的形状变化了, 迹还是不变: `!$Tr(AB) = Tr(BA), \text{ for } A \in \mathbb{R}^{m \times n}, B \in \mathbb{R}^{n \times m}$`.
+就算 **循环交换** 位置后相乘形成的方阵的形状变化了, 迹还是不变: `!$Tr(AB) = Tr(BA), \text{ for } A \in \mathbb{R}^{m \times n}, B \in \mathbb{R}^{n \times m}$`.
 
 还有一个有用的事实就是对于标量 `!$a = Tr(a)$`.
 
@@ -393,7 +395,7 @@ $$ = \arg\min_c [ - 2 x^\top D c + c^\top D^\top Dc ] \text{ (substitude } g(c) 
 $$ = \arg \min_c [ -2 x^\top D c + c^\top I_l c ] \text{ ( } D \text{ is orthogonal matrix )}$$
 $$ = \arg \min_c [ -2 x^\top D c + c^\top c ] $$
 ```
-通过 **向量微积分(vector calculus)** 求解这个最优化问题: 
+通过 **向量微积分(vector calculus, see Section 1.3.3)** 求解这个最优化问题: 
 
 ```mathjax!
 $$\nabla_c ( -2x^\top D c + c^\top c) = 0$$
@@ -401,7 +403,58 @@ $$ -2 D^\top x + 2c = 0$$
 $$ c = D^\top x$$
 ```
 
-所以编码函数就是: `!$f(x) = D^\top x$` (这是一个很高效的算法, 因为我们只需要进行一个矩阵向量运算) . 而 PCA 解码函数就是 `!$r(x) = g(f(x)) = DD^\top x$`
+所以编码函数就是: `!$f(x) = D^\top x$` (这是一个很高效的算法, 因为我们只需要进行一个矩阵向量运算) . 而 PCA 解码函数就是 `!$r(x) = g(f(x)) = DD^\top x$`.
+
+同样的, 我们通过 **Frobenius 范数** (因为我们要用这一个 `!$D$` 来编码所有的点(向量))来衡量所有维数和所有点上的误差矩阵的大小: 
+
+```mathjax!
+$$D^* = \arg \min_D \sqrt{ \sum_{i,j} \left( x_j^{i} - r(x^{(i)})_j \right)}, D^\top D = I_l$$
+```
+
+> `!$x^{(i)}$` 是向量, `!$x_j$` 是向量中的一个元素
+
+> `!$ D^\top D = I_l$` 是因为 `!$D$` 的列向量之间互相标准正交.
+
+首先我们考虑 `!$l = 1$` 的情况, 把 `!$D$` 置换为 `!$d$`, 可以将上式简化为平方 `!$L^2$` 范数:
+
+```mathjax!
+$$d^* = \arg \min_d  \sum_i  \lVert x^{(i)} - dd^\top x^{(i)} \rVert_2^2 \text{ , } \lVert d \rVert _2 = 1$$
+```
+又因为 `!$d^\top x^{(i)}$` 是一个标量并且标量的转置就是他本身( **这种调整位置的技巧是很有用的** )
+
+```mathjax!
+$$d^* = \arg \min_d \sum_i \lVert x^{(i)} - x^{(i) \top} d d \rVert_2^2  \text{ , } \lVert d \rVert _2 = 1$$
+```
+
+对于所有的 `!$x^{(i)}$`, 我们可以按列把它们堆叠在一起作为矩阵进行运算, 这样能紧凑符号. 令 `!$X \in \mathbb{R}^{m \times n} \text{, as for } X_{i, :} = x^{(i) \top}$` , 我们可能将上式表述为** 平方Frobenius 范数**形式:
+
+```mathjax!
+$$d^* = \arg \min_d \lVert X - Xdd^\top \rVert _F^2 \text{, } d^{\top} d = 1$$
+```
+
+> 其中 `!$Xdd^\top$` 中的 `!$d^\top$` 是因为原来的 `!$x^{(i)}$` 都作为了 `!$X$` 的列向量, 原来后面的 `!$d$` 是将 `!$x^{(i)}d$` 转化成向量(i.e., 相当于`!$\mathbb{R}^{n \times 1}$`),  而这里的 `!$d^\top$` 是将其转化为 `!$\mathbb{R}^{1 \times n}$` 作为矩阵的列向量.
+
+```mathjax!
+$$\arg \min_d  \lVert X - Xdd^\top \rVert _F^2$$
+$$ = \arg \min_d Tr\left(\left( X - Xdd^\top \right)^\top \left( X - X dd^\top \right) \right)$$
+$$ = \arg \min_d [Tr(X^\top X ) - Tr(X^\top X d d^\top) - Tr(dd^\top X^\top X) + Tr(dd^\top X^\top X d d^\top)] $$
+$$ = \arg \min_d [  - Tr(X^\top X d d^\top) - Tr(dd^\top X^\top X) + Tr(dd^\top X^\top X d d^\top) ] \text{ , remove terms not involving } d$$
+$$ = \arg \min_d [ -2 Tr(X^\top X d d^\top ) +  Tr(X^\top X d d^\top dd^\top ) ] \text{, cycling the order of martices inside trace has same trace }$$
+$$ = \arg \min_d [ -2 Tr(X^\top X d d^\top) + Tr(X^\top X d d^\top)] \text{, d^\top d = 1}$$
+$$ = \arg \min -Tr(X^\top X d d^\top)$$
+$$ = \arg \max  Tr( d^\top X^\top X d)$$
+```
+
+**所以, `!$d$` 就是 `!$X^\top X$` 对应的最大的特征值对应的特征向量, 当 `!$l >1$` 时, `!$D$` 由 `!$X^\top X$` 前 `!$l$` 大的特征值对应的特征向量构成(可以用数学归纳法证明, 可作为练习).**
+
+## (p) 1.2 概率论和信息论(Probability and Infomation Theory)
+
+> 概率论在人工智能上的应用主要是教我们如何设计算法用来计算或者估算概率论导出的表达式, 还有就是用概率论知识还理论化分析 AI 系统的行为.
+
+> 概率论能够使我们作出不确定声明以及在不确定性存在情况下的推理, 而信息论使我们能够量化在概率分布中的不确定总量. 
+
+> 推荐阅读 **Jaynes(2003)**
+
 
 
   [1]: ./images/1516606697255.jpg
