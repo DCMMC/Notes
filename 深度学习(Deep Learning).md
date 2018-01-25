@@ -595,7 +595,7 @@ $$\mathtt{Var}_\mathtt{x} (\mathtt{x}) = \phi (1 - \phi)$$
 
 > Multinoulli 分布是 **多项式分布(multinormial distribution)** 的一个特殊情况, 很多书上直接使用 **多项式分布** 来指代 **Multinoulli 分布** .
 
-又称 **范畴分布(categorical distribution)**, 是 有 k (有限的) 个不同状态的单值离散变量(single discrete variable)的分布.  由参数 向量 `!$p \in [0, 1]^{k - 1}$` 控制, `!$p_i$` 表示第 i 个状态的概率, 而最后一个(也就是 第 k 个)状态的概率是 1 `!$ - 1^\top p$`, 并且限制 `!$1^\top p \le $` 1 .
+又称 **范畴分布(categorical distribution)**, 是 有 k (有限的) 个不同状态的单值离散变量(single discrete variable)的分布.  由参数 向量 `!$p \in [0, 1]^{k - 1}$` 控制, `!$p_i$` 表示第 i 个状态的概率, 而最后一个(也就是 第 k 个)状态的概率是 `!$1 - \boldsymbol{1}^\top p$`, 并且限制 `!$\boldsymbol{1}^\top p \le 1$` .
 
 > Multiboulli 分布经常用来表示对象分类的分布, 所以我们一般不会假定第一个状态的数值为 1 之类的(也就是状态不一定有数值), 所以我们也就一般不会去求它们的期望或者方差.
 
@@ -615,10 +615,33 @@ $$\mathcal{N} (x; \mu, \sigma^2) = \sqrt{\frac{1}{2 \pi \sigma^2}} \exp{\left( -
 ```mathjax!
 $$\mathcal{N}(x; \mu, \beta^{-1}) = \sqrt{\frac{\beta}{2\pi}} \exp \left( -\frac{1} {2} \beta (x - \mu)^2 \right)$$
 ```
-正态分布可以推广到 `!$\mathbb{R}^n$` 空间, 被称为 **多维正态分布(multivariate normal distribution)**:
+正态分布可以推广到 `!$\mathbb{R}^n$` 空间, 被称为 **多维正态分布(multivariate normal distribution)** :
 
 ```mathjax!
-$$\mathcal{N} ()$$
+$$\mathcal{N} (\boldsymbol{x}; \boldsymbol{\mu}, \boldsymbol{\Sigma}) = \sqrt{\frac{1}{(2 \pi)^n \det (\boldsymbol\Sigma)}} \exp \left( - \frac{1} {2} (\boldsymbol{x} - \boldsymbol{\mu})^\top \boldsymbol{\Sigma}^{-1}(\boldsymbol{x} - \boldsymbol{\mu}) \right)$$
+```
+> 参数是 `!$\boldsymbol{\Sigma}$` 一个 **正定对称矩阵(positive definite symmetric matrix)**, 是分布的协方差矩阵; 参数 `!$\boldsymbol{\mu}$` 依然是分布的均值, 不过现在是一个向量.
+
+同样的, 对于单一变量情况, 我们可以使用 **精度矩阵(precision matrix) `!$\boldsymbol{\beta}$`** 代替 `!$\boldsymbol{\Sigma}$`:
+
+```mathjax!
+$$\mathcal{N} (\boldsymbol{x}; \boldsymbol{\mu}, \boldsymbol{\beta}^{-1}) = \sqrt{\frac{\det \boldsymbol{\beta} } {(2 \pi)^n}} \exp \left( - \frac{1} {2} (\boldsymbol{x} - \boldsymbol{\mu})^\top \boldsymbol{\beta} (\boldsymbol{x} - \boldsymbol{\mu}) \right)$$
+```
+我们经常把协方差矩阵固定为一个对角矩阵(diagonal matrix). 一个更简单的版本就是 **各向同性(isotropic)高斯分布**, 它的协方差是一个标量(scalar)乘以一个单位阵(identity matrix).
+
+**指数(Exponential)分布和 Laplace 分布**
+
+在深度学习中, 我们经常需要一个在 `!$x = 0$` 出取得边界点(sharp point)的分布 -- 指数分布: `!$p(x; \lambda) = \lambda \boldsymbol{1}_{x \ge 0} \exp (-\lambda x)$`
+
+指数分布使用函数 `!$\boldsymbol{1}_{x \ge 0}$` 来指示所有 `!$x < 0$` 的情况的概率为 0. 
+
+一个相关的能够允许我们自定义概率质量的边界点在任意位置的分布为 **Laplace distribution**: `!$\mathtt{Laplcae}(x; \mu, \gamma) = \frac{1} {2 \gamma} \exp (-\frac{|x-\mu|}{\gamma})$`
+
+**Dirac 分布和经验(Empirical)分布**
+
+有时候我们想把所有概率分布中的质量向某一个点靠拢, 我们可以使用 **Dirac delta 函数**: `!$p(x) = \delta (x - \mu)$` , 其中 `!$\delta$` 函数当参数不为0时值都为 0, 但是它的积分是 1, `!$\delta$` 函数不像普通函数一样,每一个 `!$x$` 都有一个对应的数组值输出, 它是一个 **广义函数(generalized function, 按照积分性质定义的对象)** .
+
+
 
 
   [1]: ./images/1516877903228.jpg
