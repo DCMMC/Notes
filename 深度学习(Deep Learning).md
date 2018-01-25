@@ -657,6 +657,8 @@ Dirac 分布经常作为 **经验分布(empirical distribution)** 的一个组�
 
 一个强大且常见的就是 **高斯混合模型**, 它的组件 `!$p(\mathtt{x} | c = i)$` 是高斯分布, 每一个组件都有他们单独的均值参数 `!$\boldsymbol{\mu}^{(i)}$` 和单独的协方差参数 `!$\boldsymbol{\Sigma}^{(i)}$`, 为了方便, 可以添加约束, 组件之间可以共享同一个协方差 `!$\boldsymbol{\Sigma}^{(i)} =  \boldsymbol{\Sigma} \forall i$`, 而且跟单独的高斯分布一样, 可以限制每一个组件的协方差矩阵是对角的(diagonal)或者是各向同性的(isotropic). 
 
+除了协方差和均值之外, 高斯混合每个组件`!$i$` 的参数还指定了 **先验概率(prior probability)** `!$\alpha_i = P(c = i)$` , "先验(prior)" 一词表明了在观察到 `!$\mathtt{x}$` 之前传递给模型关于 `!$c$` 的信念(belief), 作为对比 `!$P(c | \boldsymbol{x})$` 是 **后验概率(posterior probability)** 因为它是在观察到 `!$\mathtt{x}$` 之后才计算. 高斯混合模型是概率密度的 **万能近似器(universal approximator)**, 任何平滑的概率密度都可以用具有足够多组件的高斯混合模型以任意精度去逼近(还是有非零的误差).
+
 
 
   [1]: ./images/1516877903228.jpg
