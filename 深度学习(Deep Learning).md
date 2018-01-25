@@ -493,12 +493,95 @@ $$
 
 **概率分布** 描述变量的值怎么样从它们的各种状态中选取(具体的方法取决于是离散随机变量还是连续随机变量).
 
-离散随机变量的概率分布(probability distribution)被称为 **概率质量函数(probability mass function, *abbr.*, PML, 有些国内教材翻译为概率分布律)**, 一般用大写字母 *P* 表示, 一般用变量的标识来区分不同的概率质量函数而不是通过函数名称来区分, 例如 *P*(x) 和 *P*(y) 一般来说就表示不同的概率质量函数. 
+离散随机变量的概率分布(probability distribution)被称为 **概率质量函数(probability mass function, *abbr.*, PML, 有些国内教材翻译为概率分布律)**, 一般用大写字母 *P* 表示, 一般用变量的标识来区分不同的概率质量函数而不是通过函数名称来区分, 例如 *P*(x) 和 *P*(y) 一般来说就表示不同的概率质量函数. 还可以简记作 x ~ *P*(x) , 对于 x 的某个状态值 `!$x_1$`, 我们可以用 *P*(`!$x_1$`) 或 *P*(x = `!$x_1$`) 表示这个状态的概率值. 对于有多个随机变量的概率分布 , 叫做 **联合概率分布(joint probability distribution)**, 例如 *P*(x = *x*, y = *y*) 或 *P*(*x*, *y*).
+
+关于 x 的PMF *P*(x) 必须满足以下几个条件:
+
+* *P* 的定义域必须包含 x 的所有可能的状态
+* `!$\forall x_i \in x,\ 0 \le P(x_i) \le 1$`
+* `!$\sum_{x_i \in x} P(x_i) = 1$` 我们把这一条性质称为 **归一化(nornalized)** 的
+
+连续随机变量的概率分布被称为 **概率密度函数(probability density function, *abbr.*, PDF)**, 如果函数是 *p* 关于 x 的PDF, 则必须满足以下三个条件:
+
+* *p*的定义域是 x 所有状态的集合.
+* `!$\forall x \in \mathtt{x}, p(x) \ge 0$`, 注意这里不要求 `!$p(x) \le 0$`
+* `!$\int{p(x)}\mathrm{d}x = 1$`
+
+PDF 没有直接给定某个状态的概率, 而是给出了落在面积为 `!$\sigma x$` 的无限小(infinitesimal)区域的概率是 `!$p(x) \sigma x$`. 我们可以通过对 PDF 求积分(integrate)来获得点集的概率质量. 对于单变量(univariate) PDF , x 在区间 \[a, b] 的概率为 `!$\int_{[a, b] p(x) \mathrm{d} x}$`.
+
+例如概率在实数区间 \[*a*, *b*] ( *a* < *b*) 上均匀分布(uniform distribution), 考虑函数 *u*(*x*; *a*, *b*), ";" 表示以什么作为函数(parametrized by),  *x* 是函数的自变量(argument), 而 *a* 和 *b* 是函数的参数(parameters), 并且对于所有 `!$x \notin [a, b], u(x; a, b) = 0$`, 而对于所有 `!$x \in [a, b], u(x; a, b) = \frac{1}{b - a}$`, 可记作 x ~ *U*(a, b). 
+
+### (p) 1.2.4 边缘概率(Marginal Probability)
+
+有时候我们想求的一组变量中的一个子集的(联合)概率分布, 例如对于离散型概率分布 *P*(x, y), 我们应用求和法则(sum rule) `!$\forall x_i \in x, P(x = x_i) = \sum_{y_j} P(x = x_i, y = y_j)$`, 而对于连续型概率分布 `!$p(x) = \int p(x, y) \mathrm{d} y$`.
+
+### (p) 1.2.5 条件概率(Conditional Probability)
+
+条件概率是某个时间在给定其他事件发生时出现的概率:
+
+```mathjax!
+$$P(y = y_i | x = x_j) = \frac{P(y = y_i, x = x_j)} {P(x = x_j)}$$
+```
+> 注意区分条件概率和在从事某个动作之后会发生什么(这被称为 **干预查询(intervention query, 属于因果模型(cause modeling)的范畴, 本书不介绍)** )
+
+### (p) 1.2.6 条件概率的链式法则(chain rule, *aka.*, 乘性法则(product rule))
+
+任何多随机变量联合概率分布都可以变成只有一个随机变量的条件概率分布:
+
+```mathjax!
+$$P(x^{(1)}, \cdots, x^{n}) = P(x^{(1)}) \prod_{i = 2}^n P(x^{(i)} | x^{(1)}, \cdots, x^{(i - 1)})$$
+```
+### (p) 1.2.7 独立性(independence) 和条件独立性(conditional independence)
+
+如果 `!$\forall x \in \mathtt{x}, y \in \mathtt{y}, p(\mathtt{x} = x, \mathtt{y} = y) = p(\mathtt{x} = x) \times p(\mathtt {y} = y)$`, 则称随机变量 x 和随机变量 y 是 **相互独立的(independent)**, **简记作 x `!$\perp$` y** .
+
+如果 `!$\forall x \in \mathtt{x}, y \in \mathtt{y}, z \in \mathtt{z}, p(\mathtt{x} = x, \mathtt{y} = y | \mathtt{z} = z) = p(\mathtt{x} = x | \mathtt{z} = z) \times p(\mathtt{y} = y | \mathtt{z} = z)$`, 则称 x 和 y 是 **条件独立的** , **简记作 x `!$\perp$` y | z** .
+
+### (p) 1.2.8 期望(Expectation), 方差(Variance) 和 协方差(Covariance)
+
+函数 `!$f(x)$` 对于概率分布 `!$P(x)$` 的 **期望(expectation)** 或 **期望值(expected value)** 是指, 当 x 由 *P* 产生, *f* 作用于 *x* 时, `!$f(x)$` 的平均值. 
+
+对于离散型随机变量:
+
+```mathjax!	
+$$\mathbb{E}_{x ~ P} [f(x)] = \sum_x P(x) f(x)$$
+```
+
+对于连续型随机变量:
+
+```mathjax!
+$$\mathbb{E}_{x ~ p} [f(x)] = \int_x p(x) f(x)$$
+```
+ 
+> 我们可以将   `!$mathbb{E}_{x ~ P}$` 简写为 `!$\mathbb{E}_x[f(x)]$` 或 `!$\mathbb{E}[f(x)]$`, 并且我们默认方括号是对 **所有随机变量** 的平均, 无歧义的时候可以省略方括号.
+
+期望是线性的: `!$\mathbb{E}_x [ \alpha f(x) + \beta g(x)] = \alpha \mathbb{E}_x[f(x)] + \beta \mathbb{E}_x [f(x)]$`.
+
+**方差(variance)** 衡量关于 x 的函数的值和我们对于 x 按照它的概率分布进行采样之间有多大的差距:
+
+```mathjax!
+$$\mathtt{Var} (f(x)) = \mathbb{E} [(f(x) - \mathbb{E}(f(x)))^2]$$
+```
+
+方差的平方根就是 **标准差(standard deviation)** .
+
+**协方差(covariance)** 从某种意义上给出了两个变量线性相关性的强度和这些变量的尺度(scale):
+
+```mathjax!
+$$\mathtt{Cov}(f(x), g(y)) = \mathbb{E}[(f(x) - \mathbb{E}[f(x)]) (g(y) - \mathbb{E}[g(y)])]$$
+```
+
+协方差的绝对值很大意味着变量值变化很大并且和距离他们各自的均值(期望值)很远. 如果协方差为正, 那么这两个变量同时都倾向于取到相对较大的值. 如果协方差为正, 那么其中有一个变量倾向于取得一个相对较大的值而另外一个变量倾向于取得一个相对较小的值. 其他的衡量方法例如 **相关性(correlation)** 将每一个变量的贡献归一化(normize) , 为了只衡量变量的相关性而不受各个变量尺度大小的影响.
+
+如果两个变量的协方差不为 0 那么两个变量肯定是相关的, 如果两个变量的协方差为 0 , 则它们一定没有线性关系, 但是它们仍然可能有相关性. 例如从区间 \[-1, 1] 上的均匀分布中采样出一个实数 x , 然后对随机变量 s 进行采样, s以 0.5 的概率为 1, 否则为 -1 , 我们可以令 y = sx 来生成一个随机变量, 显然 y 和 x 相关, 但是 Cov(x, y) = 0 .
+
+随机向量 `!$x \in \mathbb{R}^n$` 的 **协方差矩阵(covariance matrix)** 是一个 `!$n \times n$` 矩阵, 并且 `!$\mathtt{Cov} (\mathtt{x})_{i, j} = \mathtt{Cov}(x_{i}, x_{j})$`, 协方差矩阵的对角线元素就是方差: `!$\mathtt{Cov}(x_i, x_i) = \mathtt{Var}(x_i)$` .
+
+### (p) 1.2.9 常见概率分布
 
 
 
-
-  [1]: ./images/1516606697255.jpg
+  [1]: ./imaes/1516606697255.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
   [4]: ./images/1516624370367.jpg
