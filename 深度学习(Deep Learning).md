@@ -601,6 +601,11 @@ $$\mathtt{Var}_\mathtt{x} (\mathtt{x}) = \phi (1 - \phi)$$
 
 Bernoulli 分布和 Mulinoulli 分布都足以用来描述他们领域内的任意分布, 这是因为它们是对那些能够很容易的枚举(enumerate)所有状态的离散型随机变量, 如果是处理连续型随机变量, 因为它们的状态都是不可数的(无限的), 所以像这种只有很少数量的参数的分布函数在处理连续型随机变量的时候必须对随机变量的分布加以严格的限制.
 
+**高斯分布(Gaussian distribution)**
+
+实数上最常用的分布就是 **正态分布(normal distribution)**, 或称 **高斯分布(Gaussian distribution)** .
+
+
 
   [1]: ./images/1516877903228.jpg
   [2]: ./images/1516613842738.jpg
