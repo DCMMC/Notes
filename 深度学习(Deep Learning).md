@@ -639,8 +639,23 @@ $$\mathcal{N} (\boldsymbol{x}; \boldsymbol{\mu}, \boldsymbol{\beta}^{-1}) = \sqr
 
 **Dirac 分布和经验(Empirical)分布**
 
-有时候我们想把所有概率分布中的质量向某一个点靠拢, 我们可以使用 **Dirac delta 函数**: `!$p(x) = \delta (x - \mu)$` , 其中 `!$\delta$` 函数当参数不为0时值都为 0, 但是它的积分是 1, `!$\delta$` 函数不像普通函数一样,每一个 `!$x$` 都有一个对应的数组值输出, 它是一个 **广义函数(generalized function, 按照积分性质定义的对象)** .
+有时候我们想把所有概率分布中的质量向某一个点靠拢, 我们可以使用 **Dirac delta 函数**: `!$p(x) = \delta (x - \mu)$` , 其中 `!$\delta$` 函数当参数不为0时值都为 0, 但是它的积分是 1, `!$\delta$` 函数不像普通函数一样,每一个 `!$x$` 都有一个对应的数组值输出, 它是一个 **广义函数(generalized function, 按照积分性质定义的对象)**, 我们可以将 Dirac delta 函数理解为一系列在 `!$\mu$` 之外的值越来越小的函数的极限点.
 
+所以 Dirc 分布就是一个在 `!$\mu$` 处有无限窄又无限高的峰值的分布函数.
+
+Dirac 分布经常作为 **经验分布(empirical distribution)** 的一个组成部分: `!$\hat{p}(\boldsymbol{x}) = \frac {1} {m} \sum_{i=1}^{m} \delta (\boldsymbol{x} - \boldsymbol{x}^{(i)})$` 将概率质量 `!$\frac{1} {m}$` 放在 m 个点 `!$\boldsymbol{x}^{(1)}, \cdots, \boldsymbol{x}^{(m)}$` 上. 
+
+> Dirac delta 函数只是在经验分布作用在连续型随机变量的时候需要用到, 对于离散型随机变量, 经验分布可以被定义成一个 Multinoulli 分布, 并且每个输出值的概率就是该值在训练集合(training set)中的 **经验频率(empirical frequency)** .
+
+当我们在训练集上训练模型时, 我们可以认为从这个训练集上得到的经验分布指明了我们采样来源的分布, 还有就是它是训练数据的似然最大的那个概率密度函数.
+
+**混合分布(Mixtures of Distribution)**
+
+混合分布由一些组件(component)分布构成, 每次试验, 样本是由哪个组件产生的取决于从一个 Multinoulli 分布中采样的结果: `!$P(x) = \sum_i P(c = i) P(x | c = i)$`, 其中 `!$P(c)$` 是对各组件的一个 Multinoulli 分布.
+
+前面的实数上的经验分布就是一个混合分布. 混合模型的思想将会在后面的学习中用到, 例如这里的 `!$c$` 就相当于一个 **潜变量(latent variable, See Chapter 16)** .
+
+一个强大且常见的就是 **高斯混合模型**, 它的组件 `!$p(\mathtt{x} | c = i)$` 是高斯分布, 每一个组件都有他们单独的均值参数 `!$\boldsymbol{\mu}^{(i)}$` 和单独的协方差参数 `!$\boldsymbol{\Sigma}^{(i)}$`, 为了方便, 可以添加约束, 组件之间可以共享同一个协方差 `!$\boldsymbol{\Sigma}^{(i)} =  \boldsymbol{\Sigma} \forall i$`, 而且跟单独的高斯分布一样, 可以限制每一个组件的协方差矩阵是对角的(diagonal)或者是各向同性的(isotropic). 
 
 
 
