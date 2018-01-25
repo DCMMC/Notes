@@ -610,7 +610,15 @@ $$\mathcal{N} (x; \mu, \sigma^2) = \sqrt{\frac{1}{2 \pi \sigma^2}} \exp{\left( -
 ```
 > 参数 `!$\mu \in \mathbb{R}$` 控制中间峰值的坐标, 并且是分布的均值 `!$\mathbb{E}[\mathtt{x}] = \mu$`, `$\sigma \in (0, \infty)$`, 标准差为 `!$\sigma$`, 方差为 `!$\sigma^2$` .
 
-因为我们对正态分布函数求值的时候, 需要对 `!$\sigma$` 平方然后求倒数, 所以我们可以简化为 
+因为我们对正态分布函数求值的时候, 需要对 `!$\sigma$` 平方然后求倒数, 所以我们可以简化为用 `!$\beta^{-1}$` 代替 `!$\sigma^2$`, `!$\beta$` 控制精度(precision)或者说分布的方差的倒数:
+
+```mathjax!
+$$\mathcal{N}(x; \mu, \beta^{-1}) = \sqrt{\frac{\beta}{2\pi}} \exp \left( -\frac{1} {2} \beta (x - \mu)^2 \right)$$
+```
+正态分布可以推广到 `!$\mathbb{R}^n$` 空间, 被称为 **多维正态分布(multivariate normal distribution)**:
+
+```mathjax!
+$$\mathcal{N} ()$$
 
 
   [1]: ./images/1516877903228.jpg
