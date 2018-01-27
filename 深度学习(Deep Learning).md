@@ -661,7 +661,81 @@ Dirac 分布经常作为 **经验分布(empirical distribution)** 的一个组�
 
 ### (p) 1.2.10 常用函数的一些有用性质(property)
 
+** logistic sigmod 函数**
 
+```mathjax!
+$$\sigma (x) = \frac{1} {1 + \exp (-x)}$$
+```
+
+logistic sigmod 函数经常用来生成 Bernoulli 分布中的参数 `!$\phi$`, 因为它的值域是 `!$(0, 1)$` .
+
+![Figure 3.3][9]
+
+> 当自变量的绝对值特别大的时候, 函数值趋于 **饱和(saturate)**, 也就是对输入值的变化变得不敏感.
+
+**softplus 函数**
+
+```mathjax!
+$$\zeta (x) = \log(1 + \exp (x))$$
+```
+
+softplus 函数经常用来生成正态分布的 `!$\beta$` 或 `!$\sigma$`, 因为它的值域是 `!$(0, \infty)$`.  softplus 名字的由来是它差不多就是一个 **softened** 版本的 `!$x^+ = \max (0, x)$` (**正部函数(positive part function))** .
+
+![Figure 3.4][10]
+
+以下为一些有用的最好记住的函数性质:
+
+```mathjax!
+$$
+\begin{equation}
+\sigma (x) = \frac{\exp (x)} {\exp (x) + \exp (0)}
+\end{equation}
+$$
+$$
+\begin{equation}
+\frac {\mathrm{d}} {\mathrm{d}x} \sigma (x) = \sigma(x) (1 - \sigma(x))
+\end{equation}
+$$
+$$
+\begin{equation}
+1 - \sigma(x) = \sigma(-x)
+\end{equation}
+$$
+$$
+\begin{equation}
+\log \sigma(x) = - \zeta(-x)
+\end{equation}
+$$
+$$
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} \zeta(x) = \sigma(x)
+\end{equation}
+$$
+$$
+\begin{equation}
+\forall x \in (0,1), \sigma^{-1}(x) = \log (\frac{x}{1-x})
+\end{equation}
+$$
+$$
+\begin{equation}
+\forall x > 0, \zeta^{-1}(x) = \log (\exp (x) - 1)
+\end{equation}
+$$
+$$
+\begin{equation}
+\zeta(x) = \int_{-\infty}^{x} \sigma(y)\mathrm(d)y
+\end{equation}
+$$
+$$
+\begin{equation}
+\zeta(x) - \zeta(-x) = x
+\end{equation}
+$$
+```
+
+> 函数 `!$\sigma^{-1}(x)$` 在统计学中被称为 **分对数(logit)**, 但是在机器学习中很少用到.
+
+> 最后一条性质为函数名提供了正当理由, 因为就像正部函数(`!$x^+$`) 和 负部函数 `!$x^-$` 之间的关系 `!$x^+ - x^- = x$`
 
   [1]: ./images/1516877903228.jpg
   [2]: ./images/1516613842738.jpg
@@ -671,3 +745,5 @@ Dirac 分布经常作为 **经验分布(empirical distribution)** 的一个组�
   [6]: ./images/1516624998426.jpg
   [7]: ./images/1516685167266.jpg
   [8]: ./images/1516697795762.jpg
+  [9]: ./images/1517034158757.jpg
+  [10]: ./images/1517036009925.jpg
