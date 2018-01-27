@@ -751,7 +751,26 @@ $$P(x | y) = \frac{P(x)P(y | x)}{P(y)}$$
 
 > 对连续型变量及其 PDF 需要用数学的一个分支 -- **测度论(measure theory)** 来扩展概率论. 测度论超出了本书的范围, 不过这里可以简要的说明一下测度论要解决的问题.
 
-我们知道连续型向量值(随机变量) `!$\mathtt{x}$` 落在某个集合 `!$\mathbb{S}$` 中的概率是 `!$p(x)$` 对集合 `!$\mathbb{S}$` 积分(integral) 得到的. 但是某些 `!$\mathbb{S}$` 的选择可能会引起悖论(paradox). 例如, 构造两个集合 `!$\mathbb{S}_1$` 和 `!$\mathbb{S}_2$` 使得 `!$p(x \in \mathbb{S}_1) + p(x \in \mathbb{S}_2) > 1 \text{ , and } \mathbb{S}_1 \cap \mathbb{S}_2 = \emptyset$` 是有可能的. 这样的集合通常是使用了大量的实数的无限精度(infinite precision)来构造的, 例如构造 **分形集合(fractal-shaped sets)** 或通过由由理数(rational numbers)构成的集合的变换(transform)来定义的集合(Banach-Tarski 定理(theorem)给出了这类集合的一个有趣的例子). 
+我们知道连续型向量值(随机变量) `!$\mathtt{x}$` 落在某个集合 `!$\mathbb{S}$` 中的概率是 `!$p(x)$` 对集合 `!$\mathbb{S}$` 积分(integral) 得到的. 但是某些 `!$\mathbb{S}$` 的选择可能会引起悖论(paradox). 例如, 构造两个集合 `!$\mathbb{S}_1$` 和 `!$\mathbb{S}_2$` 使得 `!$p(x \in \mathbb{S}_1) + p(x \in \mathbb{S}_2) > 1 \text{ , and } \mathbb{S}_1 \cap \mathbb{S}_2 = \emptyset$` 是有可能的. 这样的集合通常是使用了大量的实数的无限精度(infinite precision)来构造的, 例如构造 **分形集合(fractal-shaped sets)** 或通过由由理数(rational numbers)构成的集合的变换(transform)来定义的集合(Banach-Tarski 定理(theorem)给出了这类集合的一个有趣的例子). 测度论的一个重要贡献就是提供了一些集合的特征使得我们在计算概率的时候不会遇到悖论. 在本书中, 我们只会对一些简单的集合进行积分, 所以测度论相关知识不会被考虑.
+
+测度论对描述那些在 `!$\mathbb{R}^n$` 上大部分点适用而在少数几个边界情况(corner case)下不适用的定理很有用. 测度论为描述那些微小(negligibly small)的点集(set of points)提供了严格(rigorous)的方式, 这样的集合被称为 **零测度(measure zero)**. 我们可以认为零测度集在我们的度量空间中不占用空间, 例如在 `!$\mathbb{R}^2$` 空间中, 一条线有零测度, 被填充的多边形就是有正测度(positive measure). 有限个数的零测度集的并仍然是零测度的(所以所有的有理数构成的集合测度为零).
+
+另一个在测度论中的术语是 **几乎处处(almost everywhere)**, 一个几乎处处成立的性质(property)在除了一个零测度集之外的空间上成立, 因为这些例外占有微小(negligibly amount)的空间, 所以它们在很多应用上都可以被忽略. 许多在所有离散值上成立的概率论结果对于连续型值来说几乎处处成立.
+
+连续型变量的另外一个技术细节涉及到处理那些互相之间有确定(deterministic)函数关系的连续型随机变量. 假定有两个连续型随机变量 `!$\mathtt{x}$` 和 `!$\mathtt{y}$`, 并且有 `!$y = g(x)$`, `!$g$` 是一个可逆的, 连续可微(continous, differentiable)的函数(transformation). 但是 `!$p_y(y) = p_x(g^{-1}(y))$` 是错误的. 例如, 标量随机变量 x 和 y, 并且有 `!$y = \frac{x} {2}, x \sim U(0,1) $` . 假设 `!$p_y(y) = p_x(2y)$`, 也就是 `!$p_y(y)$` 在除了 `!$[0, \frac{1}{2}]$` 之外都是 0, 也就是 `!$\int p_y(y) \mathrm{d}y = \frac{1} {2}$`, 这跟概率分布的定义相矛盾. 这是因为没有考虑由 `!$g$` 造成的空间变形(distortion), 回忆落在一个无穷小面积 `!$\delta x$` 上的概率为 `!$p(x) \delta x$`, 如果 `!$g$` 能扩展(expand)或收缩(contract)空间, 在 `!$x$` 空间内的包围这 `!$x$` 的无穷小体积(volume)在 `!$y$` 空间中可能会有不同的体积. 为了纠正这一问题, 我们需要保持性质 `!$|p_y(g(x))\mathrm{d}y| = |p_x(x)\mathrm{d}x|$`, 所以有:
+
+```mathjax!
+$$p_y(y) = p_x(g^{-1}(y)) \left |\frac{\partial x} {\partial y} \right|$$
+$$p_x(x) = p_y(g(x)) \left| \frac {\partial g(x)} {\partial x} \right|$$
+```
+
+对于更高维度, 微分运算(derivative)扩展为 **Jacobian 矩阵(`!$J_{i,j} = \frac {\partial x_i} {\partial y_i}$`)** 的行列数(determinant), 所以对于实数值向量 `!$x$` 和 `!$y$`,  有
+
+```mathjax!
+$$p_x(x) = p_y(g(x)) \left| \det \left( \frac{\partial g(x)}{\partial x} \right) \right|$$
+```
+
+### (p) 1.2.13 信息论 (Information Theory)
 
 
 
