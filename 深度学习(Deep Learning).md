@@ -849,8 +849,31 @@ KL 散度最重要的特征是它是非负的(nonnegative). KL 散度为 0 当�
 
 另外一种就是 **上溢(Overflow)** , 上溢发生在很大的数字被近似为 `!$\infty$` 或 `!$-\infty$` . 进一步的操作就会使它变成 NaN .
 
-一个例子就是 `softmax` 函数, `softmax` 函数经常用于预测 Multinoulli 分布相关的概率 : `!$\text{softmax}(x)_i = \frac{\exp (x_i)} {\sum_{j=1}{n}\exp (x_j)}$` .  如果 `!$\forall x_i = c$`, 则 `!$\text{softmax}(x) = \frac{1}{n}$`, 但是如果 `!$c$` 是一个足够大的负数, 就会导致它的对数下溢, 这样就会使得 `softmax` 函数的分母为 0, 或者 `!$c$` 是足够大的正数, 就会导致上溢, 这样的行为是未定义的. 可以通过令 `!$\text{softmax})(z) \text{, while } z = x - \max_i x_i$` , 这样对于分子, 不可能会超过 1, 对于分母, 至少有一个 1, 并且其他都不会大于 1. 不过这仍然可能会导致分子下溢为 0, 如果对此时的 `softmax` 函数值进行取对数, 将会导致 `!$\log 0$` . 所以我们必须实现一个单独的函数, 并以 **数值稳定(numerically stable)** 的方式计算 `!$\log \text{softmax}$`
+一个例子就是 `softmax` 函数, `softmax` 函数经常用于预测 Multinoulli 分布相关的概率 : `!$\text{softmax}(x)_i = \frac{\exp (x_i)} {\sum_{j=1}{n}\exp (x_j)}$` .  如果 `!$\forall x_i = c$`, 则 `!$\text{softmax}(x) = \frac{1}{n}$`, 但是如果 `!$c$` 是一个足够大的负数, 就会导致它的对数下溢, 这样就会使得 `softmax` 函数的分母为 0, 或者 `!$c$` 是足够大的正数, 就会导致上溢, 这样的行为是未定义的. 可以通过令 `!$\text{softmax})(z) \text{, while } z = x - \max_i x_i$` , 这样对于分子, 不可能会超过 1, 对于分母, 至少有一个 1, 并且其他都不会大于 1. 不过这仍然可能会导致分子下溢为 0, 如果对此时的 `softmax` 函数值进行取对数, 将会导致 `!$\log 0$` . 所以我们必须实现一个单独的函数, 并以 **数值稳定(numerically stable)** 的方式计算 `!$\log \text{softmax}$`.
 
+本书中的大部分算法都没有显式的考虑数值计算的细节, 低级库的作者应该在实现深度学习算法的时候把数值问题考虑在心中. **Theano** 就是这样的一个软件包, 自动检测并且稳定深度学习中许多常见的数值不稳定的表达式. 
+
+### (p) 1.3.2 病态条件(Poor Conditioning)
+
+条件(Conditioning) 表征当函数的输入的细小变化会导致函数值的改变的快慢程度. 在科学计算中, 细小的输入变化可能因为舍入误差造成输出值的很大改变. 
+
+考虑函数 `!$f(x) = \boldsymbol{A}^{-1} x$` , 当  `!$\boldsymbol{A} \in \mathbb{R}^{n \times n}$`  有特征值分解, 则它的 **条件数(condition number)** 是 `!$\max_{i,j}\left| \frac{\lambda_i} {\lambda_j}\right|$`. 当这个数很大的时候, 矩阵求逆对输入的误差特别敏感, 这种敏感性是矩阵的固有属性, 而不是在矩阵求逆过程中因为舍入误差造成的. 即使我们在乘以完全正确的矩阵, 病态条件的矩阵也会放大预先存在的误差. 在实践中, 该错误会与求逆过程本身的数值误差进一步复合(compound).
+
+### (p) 1.3.3 基于梯度的优化方法(Gradient-based optimization)
+
+大部分深度学习算法都涉及某种形式的优化. 优化是指改变 `!$x$` 来使 `!$f(x)$` 的值最大或最小化. 最大化 `!$f(x)$` 可以由最小化 `!$-f(x)$`来完成. 我们要最大化或最小化的函数称为 **目标函数(objective function)** 或 **准则(criterion)**, 当我们最小化它时, 我们也把它称为 **代价函数(cost function)**, **损失函数(loss function)** 或 **误差函数(error function)** (本书中将会交替使用这些术语, 不过在有些机器学习文献中会赋予这些名称特殊的意义). 我们经常用上标(superscript) `!$*$` 号来表示最大化或最小化函数的值. 例如 `!$x^* = \arg \min f(x)$` .
+
+对于足够小的 `!$\epsilon \text{, } f(x - \epsilon \mathtt{sgn}(f'(x)) < f(x)$`. 所以我们可以通过把 `!$x$` 向导数(derivative) 相反的方向移动一小步来使函数值减小. 这种技术称为 **梯度下降(gradient descent)**. 导数为 0 的点被称为 **临界点(critical point)** 或 **驻点(stationary point)** . 
+
+![Figure 4.2][15]
+
+> 最右边那种情况称为 **鞍点(saddle point)** .
+
+**全局最小点(global minimum)** 可以有一个或多个. 在深度学习的背景下, 我们要优化的函数可能会含有许多不是最优的局部最小点, 或者是鞍点, 这样会使得优化变得很困难(尤其是多维情况下), 因此我们寻找使 `!$f$` 非常小的点, 但不一定是全局最小的点. 
+
+![Figure 4.3][16]
+
+在多维情况下, 使用 **偏导数(partial derivative)** 和 **梯度(gradient)**, 临界点就是梯度的所有元素都为 0 的点. 
 
 
   [1]: ./images/1516877903228.jpg
@@ -867,3 +890,5 @@ KL 散度最重要的特征是它是非负的(nonnegative). KL 散度为 0 当�
   [12]: ./images/1517134589413.jpg
   [13]: ./images/1517209835378.jpg
   [14]: ./images/1517211421206.jpg
+  [15]: ./images/1517301723997.jpg
+  [16]: ./images/1517302544553.jpg
