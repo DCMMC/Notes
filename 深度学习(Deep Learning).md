@@ -849,7 +849,7 @@ KL 散度最重要的特征是它是非负的(nonnegative). KL 散度为 0 当�
 
 另外一种就是 **上溢(Overflow)** , 上溢发生在很大的数字被近似为 `!$\infty$` 或 `!$-\infty$` . 进一步的操作就会使它变成 NaN .
 
-一个例子就是 `softmax` 函数, `softmax` 函数经常用于预测 Multinoulli 分布相关的概率 : `!$\text{softmax}(x)_i = \frac{\exp (x_i)} {\sum_{j=1}{n}\exp (x_j)}$` .  如果 `!$\forall x_i = c$`, 则 `!$\text{softmax}(x) = \frac{1}{n}$`, 但是如果 `!$c$` 是一个足够大的负数, 就会导致它的对数下溢, 这样就会使得 `softmax` 函数的分母为 0, 或者 `!$c$` 是足够大的正数, 就会导致上溢, 这样的行为是未定义的. 可以通过令 `!$\text{softmax})(z) \text{, while } z = x - \max_i x_i$` , 这样对于分子, 不可能会超过 1, 对于分母, 至少有一个 1, 并且其他都不会大于 1.
+一个例子就是 `softmax` 函数, `softmax` 函数经常用于预测 Multinoulli 分布相关的概率 : `!$\text{softmax}(x)_i = \frac{\exp (x_i)} {\sum_{j=1}{n}\exp (x_j)}$` .  如果 `!$\forall x_i = c$`, 则 `!$\text{softmax}(x) = \frac{1}{n}$`, 但是如果 `!$c$` 是一个足够大的负数, 就会导致它的对数下溢, 这样就会使得 `softmax` 函数的分母为 0, 或者 `!$c$` 是足够大的正数, 就会导致上溢, 这样的行为是未定义的. 可以通过令 `!$\text{softmax})(z) \text{, while } z = x - \max_i x_i$` , 这样对于分子, 不可能会超过 1, 对于分母, 至少有一个 1, 并且其他都不会大于 1. 不过这仍然可能会导致分子下溢为 0, 如果对此时的 `softmax` 函数值进行取对数, 将会导致 `!$\log 0$` . 所以我们必须实现一个单独的函数, 并以 **数值稳定(numerically stable)** 的方式计算 `!$\log \text{softmax}$`
 
 
 
