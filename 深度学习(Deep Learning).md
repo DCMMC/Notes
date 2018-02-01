@@ -905,7 +905,22 @@ $\boldsymbol{H}(f)(\boldsymbol{x})_{i,j} = \frac{\partial^2}{\partial x_i \parti
 
 可以用二阶导判断临界点是(局部)极大值点还是极小值点, 这被称为 **二阶导测试(second derivative test)**. 一维情况是高中学过的, 对于多维情况, 也就是 `!$\nabla_\boldsymbol{x} f(\boldsymbol{x}) = 0$` 的时候, 如果 Hessian 矩阵在临界点是正定(positive definite), 该临界点就是极小值点(因为方向二阶导数在任意方向都是正数), 如果是负定的, 该临界点就是极大值点, 如果 Hessian 矩阵既有正特征值又有负特征值, 则这个临界点就是鞍点(saddle point, 相比于单变量情况, 多维情况给鞍点的判断带来了点积极证据, 也就是说该临界点在某个横断面(cross section)上是局部最小而在另外一个横断面上是局部最大点), 而如果是所有非零特征值是同号的并且有零特征值, 那么该临界点我们依然我无法判断是鞍点还是平坦区域(flat region)的一部分.
 
-在多维情况下, 每一个点都有很多个(方向)二阶导数. Hessian 矩阵的条件数(condition number)很差(poor)的时候, 说明在某些方向导数变化很快而其他地方却特别慢. 梯度下降法并不知道这种改变, 所以就不知道它应该在导数长期为负的方向优先探索. 这样使得去找步长 `!$\epsilon$` 变得困难, 因为步长要足够小避免直接冲过(overshoot)极小值点, 但是步长很小又意味着在其他曲率较小的方向会进展得很不明显. 我们可以使用Hessian 矩阵提供的信息来指导搜寻. 其中最简单的方法就是 **牛顿法(Newton's method)** , 牛顿法基于二阶泰勒展开 `!$f(\boldsymbol{x}) \approx f(\boldsymbol{x}^{(0)}) + (\boldsymbol{x} - \boldsymbol{x}^{(0)})^\top \boldsymbol{g} + \frac{1}{2} (\boldsymbol{x} - \boldsymbol{x}^{(0)})^\top \boldsymbol{H} (\boldsymbol{x} - \boldsymbol{x}^{(0)})$`
+在多维情况下, 每一个点都有很多个(方向)二阶导数. Hessian 矩阵的条件数(condition number)很差(poor)的时候, 说明在某些方向导数变化很快而其他地方却特别慢. 梯度下降法并不知道这种改变, 所以就不知道它应该在导数长期为负的方向优先探索. 这样使得去找步长 `!$\epsilon$` 变得困难, 因为步长要足够小避免直接冲过(overshoot)极小值点, 但是步长很小又意味着在其他曲率较小的方向会进展得很不明显. 
+
+我们可以使用Hessian 矩阵提供的信息来指导搜寻. 其中最简单的方法就是 **牛顿法(Newton's method)** , 牛顿法基于二阶泰勒展开 `!$f(\boldsymbol{x}) \approx f(\boldsymbol{x}^{(0)}) + (\boldsymbol{x} - \boldsymbol{x}^{(0)})^\top \nabla_\boldsymbol{x}f(\boldsymbol{x}^{(0)}) + \frac{1}{2} (\boldsymbol{x} - \boldsymbol{x}^{(0)})^\top \boldsymbol{H}(f) (\boldsymbol{x} - \boldsymbol{x}^{(0)})$`, 求导后得到临界点 `!$\boldsymbol{x}^* = \boldsymbol{x}^{(0)} - \boldsymbol{H}(f)(\boldsymbol{x}^{(0)})^{-1}\nabla_{\boldsymbol{x}}f(\boldsymbol{x}^{(0)})$`, 如果还函数是 **正定二次函数(positive definite quadratic function)**, 那么直接通过上次计算一次就可以得出 `!$x^*$`, 如果函数局部可以近似为正定二次函数, 可以通过多次迭代更新计算上式(毕竟这牛顿法还得基于一个定点 `!$\boldsymbol{x}^{(0)}$` , 这个顶点需要迭代更新, 并且这样迭代的更新近似函数和跳到近似函数的最小点可以比梯度下降更快得到达临界点). 牛顿法在靠近极小值点(也就是盖点的 Hessian 为负定矩阵)才是有用的性质, 如果是靠近鞍点, 那就是一个危险的性质(而梯度下降不会有这样的危险, 除非梯度就是指向鞍点的). 
+
+仅使用梯度的方法(例如梯度下降)被称为 **一阶优化算法(first-order optimazation algorithms)**, 像牛顿法这样利用 Hessian 矩阵的方法就被称为 **二阶优化算法(second-order optimazation algorithms)**. 
+
+书上使用的这些优化方法可以应用在很大范围的函数, 但是几乎都没有保证(适用于所有), 因为书中设计到的函数族相当复杂. 在深度学习的背景下, 可以通过限制函数为 **Lipschitz 连续(continous)** 或有 其导数是Lipschitz连续的来提供一些保证. Lipschitz 连续函数指的是变化速度 **以Lipschitz 常数(constant) `!$\mathcal{L}$` 为界** :
+
+```mathjax!
+$$\forall \boldsymbol{x}, \forall \boldsymbol{y}, |f(\boldsymbol{x}) - f(\boldsymbol{y})| \le \mathcal{L} \lVert \boldsymbol{x} - \boldsymbol{y} \rVert_2$$
+```
+这个性质为量化 "微小的输入改变将会带来微小的输出的改变" 提供保证(guarantee), 并且这是一个很弱(weak) 的约束(constraint), 深度学习中很多优化问题都可以通过略微的修改变得 Lipschitz 连续 . 最成功的特定优化领域或许就是 **凸优化(convex optimazation)**, 凸优化可以通过附加更强约束来提供更多的保证, 凸优化只适用于凸函数(Hessian 矩阵在处处都是半正定的), 因为这些函数没有鞍点并且所有极小值点都是全局最小值点(global minima), 但是深度学习遇到的大部分问题很难表示为凸优化的形式, 所以凸优化只是作为一些深度学习算法的子程序(subroutine), 不过凸优化中的分析思路对深度学习算法的收敛性(convergence)非常有用. 一般来说, 深度学习背景下凸优化的重要性大大降低, 更多的信息参考 *Boyd and Vandenberghe(2004)* 或 *Rockafellar(1997)* .
+
+### (p) 1.3.4 约束优化(Constrained Optimization)
+
+
 
   [1]: ./images/1516877903228.jpg
   [2]: ./images/1516613842738.jpg
