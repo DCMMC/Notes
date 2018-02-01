@@ -884,6 +884,18 @@ KL 散度最重要的特征是它是非负的(nonnegative). KL 散度为 0 当�
 
 对于定义域和值域都是多维向量的情况, 包含所有偏导数的矩阵为 **Jacobian 矩阵**: `!$\boldsymbol{f}: \mathcal{R}^m \rightarrow \mathcal{R}^n, \boldsymbol{J} \in \mathcal{R}^{n \times m}, J_{i, j} = \frac{\partial}{\partial x_j} f(\boldsymbol{x})_i$` . 
 
+我们可以认为 **二阶导(second derivative)** 作为 **曲率(curvature)** 的衡量. 
+
+![Figure 4.4][17]
+
+对于二阶导数, 我们可以使用 **Hessian 矩阵**: 
+
+```mathjax!
+$\boldsymbol{H}(f)(\boldsymbol{x})_{i,j} = \frac{\partial^2}{\partial x_i \partial x_j} f(\boldsymbol{x})$
+```
+
+虽然二阶导是处处连续的, 求导(微分)操作是可交换的, 所以 `!$\frac{\partial^2}{\partial x_i \partial x_j} f(\boldsymbol{x}) = \frac{\partial^2}{\partial x_j \partial x_i} f(\boldsymbol{x})$`
+, 也就是说 Hessian 矩阵是对阵阵, `!$H_{i,j} = H_{j,i}$`, 在深度学习的背景下, 我们遇到的大部分函数都在几乎处处有 对称 Hessian 矩阵. 因为 Hessian 矩阵是实对称阵, 所以我们可以把它分解成一组实特征值(eigenvalue)和一组特征向量(eigenvector)的正交基(orthogonal basis). 对于 `!$d^\top Hd$`, `!$d$` 为 `!$H$` 的特征向量, 并且`!$H$` 对应的特征值就是特征向量 `!$d$` 方向上的单位向量对应的方向导数. 对于其他方向 `!$d$` , 二阶方向导数就是所有特征值的加权(权重都在 0 ~ 1, 并且与 `!$d$` 夹角越小, 权重越大)平均.  我们在点 `!$\boldsymbol{x}^{(0)}$` 处作近似二阶泰勒级数(second-order Taylor series): `!$f(\boldsymbol{x}) \approx f(\boldsymbol{x}^{(0)}) + (\boldsymbol{x} - \boldsymbol{x}^{(0)})^\top \boldsymbol{g} + \frac{1}{2} (\boldsymbol{x} - \boldsymbol{x}^{(0)})^\top \boldsymbol{H}$`
 
 
   [1]: ./images/1516877903228.jpg
@@ -902,3 +914,4 @@ KL 散度最重要的特征是它是非负的(nonnegative). KL 散度为 0 当�
   [14]: ./images/1517211421206.jpg
   [15]: ./images/1517301723997.jpg
   [16]: ./images/1517302544553.jpg
+  [17]: ./images/1517399058008.jpg
