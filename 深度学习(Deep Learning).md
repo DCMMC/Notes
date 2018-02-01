@@ -895,7 +895,8 @@ $\boldsymbol{H}(f)(\boldsymbol{x})_{i,j} = \frac{\partial^2}{\partial x_i \parti
 ```
 
 虽然二阶导是处处连续的, 求导(微分)操作是可交换的, 所以 `!$\frac{\partial^2}{\partial x_i \partial x_j} f(\boldsymbol{x}) = \frac{\partial^2}{\partial x_j \partial x_i} f(\boldsymbol{x})$`
-, 也就是说 Hessian 矩阵是对阵阵, `!$H_{i,j} = H_{j,i}$`, 在深度学习的背景下, 我们遇到的大部分函数都在几乎处处有 对称 Hessian 矩阵. 因为 Hessian 矩阵是实对称阵, 所以我们可以把它分解成一组实特征值(eigenvalue)和一组特征向量(eigenvector)的正交基(orthogonal basis). 对于 `!$d^\top Hd$`, `!$d$` 为 `!$H$` 的特征向量, 并且`!$H$` 对应的特征值就是特征向量 `!$d$` 方向上的单位向量对应的方向导数. 对于其他方向 `!$d$` , 二阶方向导数就是所有特征值的加权(权重都在 0 ~ 1, 并且与 `!$d$` 夹角越小, 权重越大)平均.  我们在点 `!$\boldsymbol{x}^{(0)}$` 处作近似二阶泰勒级数(second-order Taylor series): `!$f(\boldsymbol{x}) \approx f(\boldsymbol{x}^{(0)}) + (\boldsymbol{x} - \boldsymbol{x}^{(0)})^\top \boldsymbol{g} + \frac{1}{2} (\boldsymbol{x} - \boldsymbol{x}^{(0)})^\top \boldsymbol{H}$`
+, 也就是说 Hessian 矩阵是对阵阵, `!$H_{i,j} = H_{j,i}$`, 在深度学习的背景下, 我们遇到的大部分函数都在几乎处处有 对称 Hessian 矩阵. 因为 Hessian 矩阵是实对称阵, 所以我们可以把它分解成一组实特征值(eigenvalue)和一组特征向量(eigenvector)的正交基(orthogonal basis). 对于 `!$d^\top Hd$`, `!$d$` 为 `!$H$` 的特征向量, 并且`!$H$` 对应的特征值就是特征向量 `!$d$` 方向上的单位向量对应的方向导数. 对于其他方向 `!$d$` , 二阶方向导数就是所有特征值的加权(权重都在 0 ~ 1, 并且与 `!$d$` 夹角越小, 权重越大)平均.  我们在点 `!$\boldsymbol{x}^{(0)}$` 处作近似二阶泰勒级数(second-order Taylor series): `!$f(\boldsymbol{x}) \approx f(\boldsymbol{x}^{(0)}) + (\boldsymbol{x} - \boldsymbol{x}^{(0)})^\top \boldsymbol{g} + \frac{1}{2} (\boldsymbol{x} - \boldsymbol{x}^{(0)})^\top \boldsymbol{H}$`, 其中 `!$g$` 是梯度, `!$H$` 是 `!$x^P{(0)}$` 处的 Hessian 矩阵. 如果我们使用学习率 `!$\epsilon$`, 也就是令 `!$\boldsymbol{x} = \boldsymbol{x}^{(0)} - \epsilon \boldsymbol{g}$`, 则  `!$f\left(\boldsymbol{x}^{(0)} - \epsilon \boldsymbol{g}\right) \approx f\left(\boldsymbol{x}^{(0)}\right) - \epsilon \boldsymbol{g}^\top \boldsymbol{g} + \frac{1}{2} \epsilon^2 \boldsymbol^\top Hg$`
+
 
 
   [1]: ./images/1516877903228.jpg
