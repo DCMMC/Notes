@@ -957,6 +957,9 @@ $$\forall \boldsymbol{x}, \forall \boldsymbol{y}, |f(\boldsymbol{x}) - f(\boldsy
 
 求得 Lagrangian 的导数并找到零点, `!$\boldsymbol{x} = (\boldsymbol{A}^\top \boldsymbol{A} + 2\alpha \boldsymbol{I})^{-1} \boldsymbol{A}^\top \boldsymbol{b}$`(矩阵求逆需要用到 Moore-Penrose 伪逆), 其中 `!\alpha$` 的量纲的选取必须使其满足约束, 观察 `!$\frac{\partial}{\partial \alpha} L(\boldsymbol{x}, \alpha) = \boldsymbol{x}^\top \boldsymbol{x} - 1 \le 0$` 恒成立, 所以我们只需要一直增大 `!$\alpha$`, 并且`!$\boldsymbol{x}$`满足其约束条件就行. 
 
+## (p) 1.4 机器学习基础
+
+
   [1]: ./images/1516877903228.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
