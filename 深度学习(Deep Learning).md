@@ -920,7 +920,42 @@ $$\forall \boldsymbol{x}, \forall \boldsymbol{y}, |f(\boldsymbol{x}) - f(\boldsy
 
 ### (p) 1.3.4 约束优化(Constrained Optimization)
 
+有时候我们只想从 `!$\boldsymbol{x}$` 的某些集合 `!$\mathbb{S}$` (也就是说定义域的子集) 中寻找最大和最小值, 这被称为 **约束优化(constrained optimization)** , 集合 `!$\mathbb{S}$` 中的点被称为 **可行(feasible)点** . 例如我们想找某种意义上小的点, 我们可以加以范数约束如 `!$\lVert x \rVert_2 \le 1$` .
 
+一个简单的方案就是修改梯度下降使得将约束考虑在内. 如果我们使用很小的常数步长 `!$\epsilon$` , 我们可以先梯度下降, 然后将结果映射(project)回 `!$\mathbb{S}$` . 如果我们使用线搜索, 我们只搜索生成的 `!$\boldsymbol{x}$` 为可行点的 `!$\epsilon$` . 如果可以的话, 在梯度下降或线搜索之前, 把梯度映射到可行域(feasible region)会更高效.
+
+一个更加复杂的方案就是转化成一个解和原问题一模一样的无约束的优化问题, 例如求 `!$\text{minize } f(\boldsymbol{x}) , \boldsymbol{x} \in \mathbb{R}^2, \lVert \boldsymbol{x} \rVert_2  \equiv 1$`, 可以转化为 `!$g(\theta) = f([\cos \theta, \sin \theta]^\top)$`, 这样对于 `!$\theta$` 来说没有约束. 这种方案需要对每种情况都单独设计一个转换. 
+
+**KKT 方法(The Karush-Kuhn-Tucker approach, Lagrange 乘子法的推广形式)** 提供了约束优化的一般解决方案. 
+
+新函数: **广义(generalized) Lagrangian** 或 **广义 Lagrange 函数** . 首先定义 `!$\mathbb{S}$` 为 `!$m$` 个函数 `!$g^{(i)}$`  组成的等式( **等式约束(equality constraints)** )和 `!$n$` 个函数 `!$h^{(i)}$` 组成的不等式( **不等式约束(inequality constraints)** )构成的集合 `!$\mathbb{S} = \left\{\boldsymbol{x} | \forall i, g^{(i)}(\boldsymbol{x}) = 0, \forall j, h^{(j)} \le 0\right\} $`, 并且对于每个约束, 有变量 `!$\lambda_i, \alpha_i$` (这些被称为 KKT 乘子(multiplier)), 所以广义 Lagrangian 定义为: `!$L(\boldsymbol{x}, \boldsymbol{\lambda}, \boldsymbol{\alpha}) = f(\boldsymbol{x}) + \sum_i \lambda_i g^{(i)}(\boldsymbol{x}) + \sum_j \alpha_j h^{(j)}(\boldsymbol{x})$`. 我们现在就可以将约束优化转化为无约束优化: `!$\min_\boldsymbol{x} \max _\boldsymbol{\lambda} \max_{\boldsymbol{\alpha}, \boldsymbol{\alpha} \ge 0} L(\boldsymbol{x, \lambda, \alpha}) \Leftrightarrow \min_{\boldsymbol{x} \in \mathbb{S}} f(\boldsymbol{x})$`. 这是因为满足约束条件的时候 `!$\max _\boldsymbol{\lambda} \max_{\boldsymbol{\alpha}, \boldsymbol{\alpha} \ge 0} L(\boldsymbol{x, \lambda, \alpha}) = f(\boldsymbol{x})$`, 当不满足约束条件的时候, `!$\max _\boldsymbol{\lambda} \max_{\boldsymbol{\alpha}, \boldsymbol{\alpha} \ge 0} L(\boldsymbol{x, \lambda, \alpha}) = \infty$`.
+
+为了在约束条件下求最大值, 可以应用 `!$\min_\boldsymbol{x} \max _\boldsymbol{\lambda} \max_{\boldsymbol{\alpha}, \boldsymbol{\alpha} \ge 0} -L(\boldsymbol{x, \lambda, \alpha})$` ( Lagrangian 相反值的最小值) 或者 `!$\max\boldsymbol{x} \max _\boldsymbol{\lambda} \max_{\boldsymbol{\alpha}, \boldsymbol{\alpha} \ge 0} L(\boldsymbol{x, \lambda, \alpha})$`.
+
+**////////////////////////////// 这些性质都不知道怎么来的 //////////////////////////////**
+
+等式约束对应变量 `!$\lambda_i$` 的符号不重要, 可以随意选择. 对于不等式约束, 如果 `!$h^{(i)}(\boldsymbol{x}^*) = 0$`, 则称该约束是 **活跃的(active)**, 如果不等式约束不是活跃的, 则去除这一个约束的优化问题的解(solution)跟原问题的解至少有一个相同的局部解(local solution), 一个不活跃的约束可能会排除其他的一些解 . 例如, 含有一整块平坦的相等代价区域都是全局最优点(globally optimal points)的凸问题(convex problem)中这块区域可能会会因为这些约束(constraints)被消除掉, 或者在非凸问题中, 收敛时不活跃的约束可能会排除掉更好的局部驻点(local stationary points). 不过无论不活跃的约束是否被包含, 收敛时找到的点都是驻点(stationary point). 这是因为不活跃的 `!$h^{(i)}$`有负值, 然后 `!$\min_{\boldsymbol{x}} \max_{\boldsymbol{\lambda}} \max_{\boldsymbol{\alpha}, \boldsymbol{\alpha} \ge 0} L(\boldsymbol{x}, \boldsymbol{\lambda}, \boldsymbol{\alpha})$` 会有`!$\alpha_i = 0$`, 因此我们可以观察到该解中, 有 `!$\boldsymbol{\alpha} \bigodot \boldsymbol{h}(\boldsymbol{x}) = \boldsymbol{0}$`, 换句话说, 对于所有 `!$i$`, 我们知道在该解中至少有一个约束 `!$\alpha_i \ge 0$` 或 `!$h^{(i)}(\boldsymbol{x}) \le 0$`是活跃的. 直观的说, 我们可以说这个解是由不等式强加的边界，我们必须通过对应的 KKT 乘子影响 `!$\boldsymbol{x}$` 的解，或者不等式对解没有影响，我们则归零 KKT 乘子。
+
+有一些描述约束优化问题的最优点的性质, 被称为 Karush-Kuhn-Tucker (KKT) 条件(conditions) (Karush, 1939; Kuhn and Tucker, 1951). 这些是确定一个点是最优点的必要条件(necessary conditions)而不一定是充分条件(sufficient conditions): 
+
+* 广义 Lagrangian 的梯度为 0
+* 所有关于 `!$\boldsymbol{x}$` 和 KKT 乘子的约束都满足
+* 不等式约束显示的‘‘互补松弛性’’(complementary slackness):  `!$\boldsymbol{\alpha} \bigodot \boldsymbol{h}(\boldsymbol{x}) = \boldsymbol{0}$`
+
+### (p) 1.3.5 例子: 线性最小二乘(Squares)
+
+如果我们要找到 `!$f(\boldsymbol{x}) = \frac{1}{2} \lVert \boldsymbol{Ax} - \boldsymbol{b} \rVert_2^2$` 的最小值. 虽然线性代数能够高效的解决该问题, 但是我们可以使用基于梯度的优化方法来解决这个问题. 
+
+求梯度, `!$\nabla_\boldsymbol{x}f(\boldsymbol{x}) = \boldsymbol{A}^\top (\boldsymbol{Ax} - \boldsymbol{b}) = \boldsymbol{A}^\top \boldsymbol{Ax} - \boldsymbol{A}^\top \boldsymbol{x}$` .
+
+![Figure 4.5][18]
+
+如图, 可以使用梯度下降算法, 又因为这是一个二次函数, 所以我们还可以使用牛顿法来一步达到最优点.
+
+现在我们添加约束 `!$\boldsymbol{x}^\top \boldsymbol{x} \le 1$`, 我们定义 Lagrangian : `!$L(\boldsymbol{x}, \alpha) = f(\boldsymbol{x}) + \alpha(\boldsymbol{x}^\top \boldsymbol{x} - 1)$`
+于是我们可以通过 `!$\min_{\boldsymbol{x}} \max_{\alpha, \alpha \ge 0} L(\boldsymbol{x}, \alpha)$` 来找到最小值点. 
+
+求得 Lagrangian 的导数并找到零点, `!$\boldsymbol{x} = (\boldsymbol{A}^\top \boldsymbol{A} + 2\alpha \boldsymbol{I})^{-1} \boldsymbol{A}^\top \boldsymbol{b}$`(矩阵求逆需要用到 Moore-Penrose 伪逆), 其中 `!\alpha$` 的量纲的选取必须使其满足约束, 观察 `!$\frac{\partial}{\partial \alpha} L(\boldsymbol{x}, \alpha) = \boldsymbol{x}^\top \boldsymbol{x} - 1 \le 0$` 恒成立, 所以我们只需要一直增大 `!$\alpha$`, 并且`!$\boldsymbol{x}$`满足其约束条件就行. 
 
   [1]: ./images/1516877903228.jpg
   [2]: ./images/1516613842738.jpg
@@ -939,3 +974,4 @@ $$\forall \boldsymbol{x}, \forall \boldsymbol{y}, |f(\boldsymbol{x}) - f(\boldsy
   [15]: ./images/1517301723997.jpg
   [16]: ./images/1517302544553.jpg
   [17]: ./images/1517399058008.jpg
+  [18]: ./images/1517580400888.jpg
