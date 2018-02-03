@@ -957,8 +957,13 @@ $$\forall \boldsymbol{x}, \forall \boldsymbol{y}, |f(\boldsymbol{x}) - f(\boldsy
 
 求得 Lagrangian 的导数并找到零点, `!$\boldsymbol{x} = (\boldsymbol{A}^\top \boldsymbol{A} + 2\alpha \boldsymbol{I})^{-1} \boldsymbol{A}^\top \boldsymbol{b}$`(矩阵求逆需要用到 Moore-Penrose 伪逆), 其中 `!\alpha$` 的量纲的选取必须使其满足约束, 观察 `!$\frac{\partial}{\partial \alpha} L(\boldsymbol{x}, \alpha) = \boldsymbol{x}^\top \boldsymbol{x} - 1 \le 0$` 恒成立, 所以我们只需要一直增大 `!$\alpha$`, 并且`!$\boldsymbol{x}$`满足其约束条件就行. 
 
-## (p) 1.4 机器学习基础
+## (p) 1.4 机器学习基础(Machine Learning Basics)
 
+本章介绍本书其余部分涉及到的机器学习的最重要原理. 
+
+> 对于新手, 推荐阅读 **Murphy (2012)** or **Bishop(2006)**
+
+大部分机器学习算法需要设置 **超参数(hyperparameters, 必须在算法外设定)**, 机器学习是一种应用统计学, 用计算机来统计地估计复杂函数而不太关注这些函数提供的置信空间(confidence intervals), 并且有两个核心方法来统计: 频率派估计(frequentist estimator)和贝叶斯推断(Bayesian inference). 大部分机器学习算法可以划分为两类: **监督学习(supervised learning)** 和 **无监督学习(unsupervised learning)** . 大部分深度学习算法都是基于一个叫做 **随机梯度下降(stochastic gradient descent)** 的优化算法. 我们将介绍如何如何将各种算法组件(优化算法, 代价航函数(cost function), 模型, 数据集(dataset))来构建机器学习算法.
 
   [1]: ./images/1516877903228.jpg
   [2]: ./images/1516613842738.jpg
