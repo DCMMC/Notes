@@ -965,6 +965,14 @@ $$\forall \boldsymbol{x}, \forall \boldsymbol{y}, |f(\boldsymbol{x}) - f(\boldsy
 
 大部分机器学习算法需要设置 **超参数(hyperparameters, 必须在算法外设定)**, 机器学习是一种应用统计学, 用计算机来统计地估计复杂函数而不太关注这些函数提供的置信空间(confidence intervals), 并且有两个核心方法来统计: 频率派估计(frequentist estimator)和贝叶斯推断(Bayesian inference). 大部分机器学习算法可以划分为两类: **监督学习(supervised learning)** 和 **无监督学习(unsupervised learning)** . 大部分深度学习算法都是基于一个叫做 **随机梯度下降(stochastic gradient descent)** 的优化算法. 我们将介绍如何如何将各种算法组件(优化算法, 代价航函数(cost function), 模型, 数据集(dataset))来构建机器学习算法.
 
+### (p) 1.4.1 学习算法
+
+ Mitchell (1997) 提供了一个简洁的学习算法的定义: **对于某任务 T 和性能度量 P , 一个计算机程序能够从经验 E 中学习是指, 通过经验 E 改进后, 它在任务 T 上由性能度量 P 衡量的性能有所提升.** E, T, P 的种类相当广泛, 所以我们不会形式化得定义它们, 我们给出一些直观的描述和例子:
+ 
+ **任务 T**
+ 
+ 
+
   [1]: ./images/1516877903228.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
