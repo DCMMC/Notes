@@ -971,7 +971,23 @@ $$\forall \boldsymbol{x}, \forall \boldsymbol{y}, |f(\boldsymbol{x}) - f(\boldsy
  
  **任务 T**
  
+ 学习过程本身不是任务, 学习是实现任务的手段. 例如, 要让机器人行走, 行走就是任务. 机器学习任务定义为机器学习系统如何处理 **样本(example, 样本就是一些特征(features)的集合, 通常表示为向量 `!$x \in \mathbb{R}^n$` 表示 `!$n$` 个特征 )** . 能用机器学习解决的任务主要有以下几类:
  
+ * **分类(Classfication)** : 将输入分类为 `!$k$` 类(有可能还带有概率), `!$f: \mathbb{R}^n \rightarrow \{ 1, \ldots, k\}, y = f(\boldsymbol{x})$`, 返回一个数值码(numeric code) `!$y$` . 例如物体识别(object recognition), 人脸识别.
+ * **Classiﬁcation with missing inputs**: 如果输入中有些内容被缺失, 我们的学习算法就需要一组函数来处理有不同缺失情况的子集. 我们可以通过学习所有相关变量的概率分布, 然后通过边缘化( marginalizing)缺失变量来解决分类任务.`!$n$` 个输入变量需要 `!$2^n$` 个不同的分类函数来应对每种可能的缺失情况, 但是计算机程序只需要学习一个描述联合概率分布的函数.
+ * **回归(Regression)**: 对给定输入输出预测数值. `!$f: \mathbb{R}^n \rightarrow \mathbb{R}$`. 例如预测证劵未来价格, 预测投保人的索赔金额.
+ * **转录(Transcription)**: 将非结构化的数据转化成离散文本形式, 例如光学字符识别和语音识别.
+ * **机器翻译(machine translation)**
+ * **结构化输出(structured output)** : 输出为各个元素有关联的向量. 结构化输出与许多机器学习任务(例如上面提到的机器翻译和转录)相关联, 例如将自然语言按照语法解析为为语句树. 还有一个例子就是像素级分割.
+ * **异常检测(Anomaly detection)** : 从一堆事件或物体中筛选出异常或非典型的. 例如信用卡欺诈识别.
+ * **合成和采样(Sythesis and sampling)** : 用机器学习来生成和训练样本类似的新样本. 例如游戏中大型物体或风景的纹理, 以及语音合成.
+ * **缺失值填补(Imputation of missing values)** : 算法为输入中确实的条目预测值. 
+ * **去噪(denoising)** : 算法的输入是 **干净样本(clean example)** `!$\boldsymbol{x} \in \mathbb{R}^n$` 通过未知损坏过程后得到的 **损坏样本(corruption example)** `!$\tilde{\boldsymbol{x}} \in \mathbb{R}^n$` , 算法通过损坏样本预测干净样本, 或者更一般的预测条件概率分布 `!$p(\boldsymbol{x} | \boldsymbol{\tilde{\boldsymbol{x}}})$` .
+* **密度估计(density estimation)** 或 **概率质量函数估计(probability mass function estimation)** : 算法学习函数 `!$p_{\text{model}}(\boldsymbol{x}): \mathbb{R}^n \rightarrow \mathbb{R}$`, 其中 `!$p$` 可以解释为样本采样空间的概率密度函数(如果是连续型)或概率质量函数(如果是离散型). 上面提到的任务大多只需要至少能隐式地捕获(capture)概率分布的结构, 而密度估计必须显式地捕获该分布. 例如, 我们可以将密度估计的结果用于缺失值填补任务. (但实际情况是密度估计不能解决所有这类问题).
+
+**性能度量(Performance Measure) P**
+
+
 
   [1]: ./images/1516877903228.jpg
   [2]: ./images/1516613842738.jpg
