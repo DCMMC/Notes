@@ -987,7 +987,7 @@ $$\forall \boldsymbol{x}, \forall \boldsymbol{y}, |f(\boldsymbol{x}) - f(\boldsy
 
 **性能度量(Performance Measure) P**
 
-
+对于分类, 缺失输入的分类和转录, *P* 往往是衡量模型的 **准确率(accuracy)** . 
 
   [1]: ./images/1516877903228.jpg
   [2]: ./images/1516613842738.jpg
