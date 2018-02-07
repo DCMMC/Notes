@@ -493,7 +493,7 @@ $$
 
 **概率分布** 描述变量的值怎么样从它们的各种状态中选取(具体的方法取决于是离散随机变量还是连续随机变量).
 
-离散随机变量的概率分布(probability distribution)被称为 **概率质量函数(probability mass function, *abbr.*, PML, 有些国内教材翻译为概率分布律)**, 一般用大写字母 *P* 表示, 一般用变量的标识来区分不同的概率质量函数而不是通过函数名称来区分, 例如 *P*(x) 和 *P*(y) 一般来说就表示不同的概率质量函数. 还可以简记作 x ~ *P*(x) , 对于 x 的某个状态值 `!$x_1$`, 我们可以用 *P*(`!$x_1$`) 或 *P*(x = `!$x_1$`) 表示这个状态的概率值. 对于有多个随机变量的概率分布 , 叫做 **联合概率分布(joint probability distribution)**, 例如 *P*(x = *x*, y = *y*) 或 *P*(*x*, *y*).
+离散随机变量的概率分布(probability distribution)被称为 **概率质量函数(probability mass function, *abbr.*, PML, 有些国内教材翻译为概率分布律)**, 一般用大写字母 *P* 表示, 一般用变量的标识来区分不同的概率质量函数而不是通过函数名称来区分, 例如 *P*(x) 和 *P*(y) 一般来说就表示不同的概率质量函数. 还可以简记作 x ~ *P*(x) , 对于 x 的某个状态值 `!$x_1$`, 我们可以用 *P*(`!$x_1$`) 或 *P*(x = `!$x_1$`) 表示这个状态的概率值. 对于有多个随机变量的概率分布 , 叫做 **联合概率分布(joint probability distribution)**, 例如 *P*(x = *x*, y = *y*) 或 *P*(*x*, *y*) (或记作 `!$P(x \cap y)$`或 `!$P(xy)$`).
 
 关于 x 的PMF *P*(x) 必须满足以下几个条件:
 
@@ -635,7 +635,7 @@ $$\mathcal{N} (\boldsymbol{x}; \boldsymbol{\mu}, \boldsymbol{\beta}^{-1}) = \sqr
 
 指数分布使用函数 `!$\boldsymbol{1}_{x \ge 0}$` 来指示所有 `!$x < 0$` 的情况的概率为 0. 
 
-一个相关的能够允许我们自定义概率质量的边界点在任意位置的分布为 **Laplace distribution**: `!$\mathtt{Laplcae}(x; \mu, \gamma) = \frac{1} {2 \gamma} \exp (-\frac{|x-\mu|}{\gamma})$`
+一个相关的能够允许我们自定义概率质量的边界点在任意位置的分布为 **Laplace distribution**: `!$\mathtt{Laplace}(x; \mu, \gamma) = \frac{1} {2 \gamma} \exp (-\frac{|x-\mu|}{\gamma})$`
 
 **Dirac 分布和经验(Empirical)分布**
 
@@ -740,10 +740,10 @@ $$
 ### (p) 1.2.11 贝叶斯规则(Bayes' Rule)
 
 ```mathjax!
-$$P(x | y) = \frac{P(x)P(y | x)}{P(y)}$$
+$$P(x | y) = \frac{P(x, y)}{P(y)} = \frac{P(x)P(y | x)}{P(y)}$$
 ```
 
-> 可以用  `!$P(y) = \sum_x P(y | x) P(x)$` 来求的 `!$P(y)$`, 所以我们并不需要事先知道 `!$P(y)$` 的信息.
+> 可以用  `!$P(y) = \sum_{x_i} P(y | x_i) P(x_i)$` 来求的 `!$P(y)$`, 所以我们并不需要事先知道 `!$P(y)$` 的信息.
 
 > 贝叶斯规则可以由条件概率的定义直接推导出来
 
@@ -999,6 +999,14 @@ $$\forall \boldsymbol{x}, \forall \boldsymbol{y}, |f(\boldsymbol{x}) - f(\boldsy
 
 * 无监督学习从数据集中学习这个数据集上有用的结构性质. 在深度学习的背景下, 学习生成数据集的整个概率分布(例如密度统计着这种显式的, 或者合成, 去噪这些隐式的). 还有些其他类型的, 例如 **聚类(clustering)** , 将数据集中的所有样本按照相似的放在一起来分成若干个集群.
 * 监督学习也是从包含很多特征的数据集中学习, 不过每个样本都有一个与之关联的 **标签(label)** 或 **目标(target)** . 例如, 监督学习通过研究 Iris 数据集, 学习如果通过测量信息来将样本划分为三个品种.
+
+粗略得说, 无监督学习从一些随机向量 `!$\boldsymbol{\mathtt{x}}$` 中观察并隐式或显式的学习概率分布 `!$p(\boldsymbol{\mathtt{x}})$` , 或这个概率分布的有趣的性质, 而监督学习从一些随机向量`!$\boldsymbol{\mathtt{x}}$` 和与之关联的值或向量 `!$\boldsymbol{\mathtt{y}}$`观察学习来预测 `!$\boldsymbol{\mathtt{y}}$` (也就是估计 `!$p(\boldsymbol{\mathtt{y}} | \boldsymbol{\mathtt{x}})$` ). 监督学习和无监督学习并非形式化定义的术语, 所以他们之间的界限往往也比较模糊, 我们知道条件概率的链式法则 `!$p(\boldsymbol{\mathtt{x}} \in \mathbb{R}^n) = \prod_{i = 1}^n p(x_i | x_1, \ldots, x_{i - 1})$`, 所以我们可以把模型 `!$p(\boldsymbol{\mathtt{x}})$`的无监督学习转化为 `!$n$` 个监督学习. 又由贝叶斯法则 `!$p(y | \boldsymbol{\mathtt{x}}) = \frac{p(\boldsymbol{\mathtt{x}}, y')} {\sum_{y'}p(\boldsymbol{\mathtt{x}}, y')}$` , 可以把监督学习转化为无监督学习. 
+
+一般的, 回归, 分类, 结构化输出问题被称为监督学习, 密度估计被称为无监督学习. 还有其他一些变种学习范例, 例如 **半监督学习(semi-supervised)** , 一些样本包含监督目标而另外一些不包含. 而在 **多实例学习(multi-instance learning)** 中, 一个包含若干样本的集合(称为包(bag))只是被标记为包含还是没有包含某一类的样本, 而这个集合中的样本本身没有做任何标记. 有些学习算法并不是只从固定的数据集中学习, **强化学习(reinfocement learning)** 会和环境交互, 也就是说学习系统和它的训练过程之间还有反馈回路(feedback loop), 利用深度学习方法的强化学习称为 **深度强化学习(deep learning approach to reinfocement learning)** , 强化学习不在本书范围内. 
+
+一种常见的表示数据集的方式是使用 **设计矩阵(design matrix)** , 一个设计矩阵中每一行代表一个样本, 而每一列则代表不同的特征. 但是, 设计矩阵中的每一个向量都必须是相同的大小, 这在某些情况下是不可能的, 例如如果有一堆不同高度宽度的照片的集合, 肯定不能用相同大小的向量来表示所有的照片, 我们之后会介绍怎么处理这样的 **异构数据(heterogeneous data)** , 并且在这种情况下我们使用集合表示 `!${\boldsymbol{x}^{(1)}, \ldots, \boldsymbol{x}^{(m)}}$`, 其中任意两个向量 `!$\boldsymbol{x}^{(i)}$` 和 `!$\boldsymbol{x}^{(j)}$` 不一定是相同的大小.  对于监督学习中每个样本的标签或目标, 我们可以使用一个数值码(numeric code)来表示(例如对于照片分类器, 0表示照片里面有人, 1表示有车, ...), 并且将这些数值码存在一个向量中, 例如 `!$\boldsymbol{y}$`, 并且 `!$y_i$` 表示第 `!$i$` 个样本的标签, 不过有时候标签不止一个数值, 例如声音识别. 
+
+**例子: 线性回归(linear regression)**
 
 
 
