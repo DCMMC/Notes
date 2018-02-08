@@ -314,7 +314,7 @@ $$A = V diag(\lambda) V^{-1}$$
 ```mathjax!
 $$A = U D V^\top$$
 ```
-如果 `!$A$` 是一个 `!$m \times n$` 矩阵, 则 `!$U$` 是 `!$m \times m$` 矩阵, `!$D$` 是 `!$m \times n$` 矩阵, `!$V$` 是 `!$n \times n$` 矩阵, 其中 `!$U$` 和 `!$V$` 都是正交矩阵, `!$D$` 是一个对角矩阵, 但不一定是方阵.
+如果 `!$A$` 是一个 `!$m \times n$` 矩阵, 则 `!$U$` 是 `!$m \times m$` 矩阵, `!$D$` 是 `!$m \times n$` 矩阵, `!$V$` 是 `!$n \times n$` 矩阵, 其中 `!$U$` 和 `!$V$` 都是正交矩阵(酉矩阵(unitary matrix)的特例), `!$D$` 是一个对角矩阵, 但不一定是方阵.
 
 对角矩阵 `!$D$` 的对角线上的值被称为 `!$A$` 的 **奇异值(singular values)** , `!$U$` 和 `!$V$` 的列向量分别称为 **左奇异向量(left-singular vectors)** 和 **右奇异向量(right-singular vectors)**.
 
@@ -460,6 +460,10 @@ $$
 ```
 
 **所以, `!$d$` 就是 `!$X^\top X$` 对应的最大的特征值对应的特征向量, 当 `!$l >1$` 时, `!$D$` 由 `!$X^\top X$` 前 `!$l$` 大的特征值对应的特征向量构成(可以用数学归纳法证明, 可作为练习).**
+
+### (p) 1.1.13 矩阵微分
+
+# TODO
 
 ## (p) 1.2 概率论和信息论(Probability and Infomation Theory)
 
