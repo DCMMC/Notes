@@ -1008,9 +1008,27 @@ $$\forall \boldsymbol{x}, \forall \boldsymbol{y}, |f(\boldsymbol{x}) - f(\boldsy
 
 **例子: 线性回归(linear regression)**
 
+`!$\hat{y} = \boldsymbol{w}^\top \boldsymbol{x}$`, 其中 `!$\boldsymbol{x} \in \mathbb{R}^n$` 为输入, `!$\boldsymbol{w} \in \mathbb{R}^n$` 称为 **参数(parameters)**, 我们可以把它理解为一个决定每一个特征 `!$x_i$` 影响预测值的能力的权重(weight)的集合, `!$y \in \mathbb{R}$` 为模型预测的值. 
+
+所以在这里, T 就是用 `!$\hat{y} = \boldsymbol{w}^\top \boldsymbol{x}$` 来从输入 `!$\boldsymbol{x}$` 预测 `!$y$` . 对于性能测试 P, 我们可以用一个含有 `!$m$` 个输入样本的设计矩阵 `!$\boldsymbol{X}^{(\text{test})}$` 作为测试集(该测试集不能用来训练), 对于这些测试样本, 我们需要提前准确对应的正确的 `!$y$` 的向量`!$\boldsymbol{y}^{(\text{test})}$` . 一种度量性能的方式就是计算测试集的 **均方误差(mean squared error)**: `!$\text{MSE}_{\text{test}} = \frac{1}{m} \sum_i(\hat{\boldsymbol{y}}^{(\text{test}))} - \boldsymbol{y}^{(\text{test})})_i^2 = \frac{1}{m} \lVert \hat{\boldsymbol{y}}^{(\text{test})} - \boldsymbol{y}^{(\text{test})}\rVert_2^2$`(越小越好, 也就是平方欧几里德距离除以 `!$m$` ).
+
+为了构建一个机器学习算法, 我们需要算法能够通过观察训练集 `!$(\boldsymbol{X}^{(\text{train})}, \boldsymbol{y}^{(\text{train})})$` 获得经验来改善权重集 `!$\boldsymbol{w}$` 使得减小 `!$\text{MSE}_{\text{train}}$`. 我们可以简单的找到 `!$\text{MSE}_{\text{train}}$` 关于 `!$\boldsymbol{w}$` 梯度为 0 的地方就是它的极值点, 
+
+```mathjax!
+$$\nabla_{\boldsymbol{w}} \text{MSE}_{\text{train}} = 0$$
+$$\Rightarrow \nabla_{\boldsymbol{w}} \frac{1}{m} \lVert \hat{\boldsymbol{y}}^{(\text{train})} - \boldsymbol{y}^{(\text{train})} \rVert_2^2 = 0$$
+$$\Rightarrow \nabla_{\boldsymbol{w}} \frac{1}{m} \lVert \boldsymbol{X}^{(\text{train})} \boldsymbol{w} - \boldsymbol{y}^{(\text{train})} \rVert_2^2 = 0$$
+$$\Rightarrow \nabla_{\boldsymbol{w}} (\boldsymbol{X}^{(\text{train})} \boldsymbol{w} - \boldsymbol{y}^{(\text{train})} )^\top (\boldsymbol{X}^{(\text{train})} \boldsymbol{w} - \boldsymbol{y}^{(\text{train})} )$$
+$$\Rightarrow \boldsymbol{w} = \left( \boldsymbol{X}^{(\text{train})\top} \boldsymbol{X}^{(\text{train})}\right)^{-1} \boldsymbol{X}^{(\text{train})\top} \boldsymbol{y}^{(\text{train})} $$
+```
+
+通过上式给出的解的系统方程被称为 **正规方程(normal equations)**, 线性回归通过添加一个额外的 **偏差(偏置)参数(bais parameter)** `!$b$` 可以用来解决更加复杂一点的模型: `!$\hat{y} = \boldsymbol{w}^\top \boldsymbol{x} + b$`(这样的一个映射叫做 **仿射函数(affine function)**, 本书后面提到仿射函数时会频繁地使用线性这个术语). 
+
+### (p) 1.4.2 容量(Capacity), 过拟合(Overfitting) 和欠拟合(Underfitting)
 
 
-  [1]: ./images/1516877903228.jpg
+
+  [1]: ./im ages/1516877903228.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
   [4]: ./images/1516624370367.jpg
