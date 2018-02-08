@@ -1022,7 +1022,7 @@ $$\forall \boldsymbol{x}, \forall \boldsymbol{y}, |f(\boldsymbol{x}) - f(\boldsy
 $$\nabla_{\boldsymbol{w}} \text{MSE}_{\text{train}} = 0$$
 $$\Rightarrow \nabla_{\boldsymbol{w}} \frac{1}{m} \lVert \hat{\boldsymbol{y}}^{(\text{train})} - \boldsymbol{y}^{(\text{train})} \rVert_2^2 = 0$$
 $$\Rightarrow \nabla_{\boldsymbol{w}} \frac{1}{m} \lVert \boldsymbol{X}^{(\text{train})} \boldsymbol{w} - \boldsymbol{y}^{(\text{train})} \rVert_2^2 = 0$$
-$$\Rightarrow \nabla_{\boldsymbol{w}} (\boldsymbol{X}^{(\text{train})} \boldsymbol{w} - \boldsymbol{y}^{(\text{train})} )^\top (\boldsymbol{X}^{(\text{train})} \boldsymbol{w} - \boldsymbol{y}^{(\text{train})} )$$
+$$\Rightarrow \nabla_{\boldsymbol{w}} (\boldsymbol{X}^{(\text{train})} \boldsymbol{w} - \boldsymbol{y}^{(\text{train})} )^\top (\boldsymbol{X}^{(\text{train})} \boldsymbol{w} - \boldsymbol{y}^{(\text{train})} ) = 0$$
 $$\Rightarrow \boldsymbol{w} = \left( \boldsymbol{X}^{(\text{train})\top} \boldsymbol{X}^{(\text{train})}\right)^{-1} \boldsymbol{X}^{(\text{train})\top} \boldsymbol{y}^{(\text{train})} $$
 ```
 
@@ -1030,7 +1030,9 @@ $$\Rightarrow \boldsymbol{w} = \left( \boldsymbol{X}^{(\text{train})\top} \bolds
 
 ### (p) 1.4.2 容量(Capacity), 过拟合(Overfitting) 和欠拟合(Underfitting)
 
+机器学习算法最核心的挑战就是要在新的, 以前从未见过的数据集中表现良好, 这种能力被称为 **泛化(generalization)** . 在训练的时候, 我们希望降低 **训练误差(training error)**(也就是一个优化问题), 同样我们还希望 **泛化误差(generalization error)** 或 **测试误差(test error)** 也能很低, 泛化误差被定义为新输入的误差期望(期望的计算基于不同的可能的输入, 并且这些输入来自于系统在现实中遇到的分布).   一般的, 我们用测试集上的性能度量来估计泛化误差.
 
+例如在线性回归上, 我们实际上需要关注的是测试误差: `!$\frac{1}{m} \lVert \boldsymbol{X}^{(\text{test})} \boldsymbol{w} - \boldsymbol{y}^{(\text{test})}\rVert_2^2$`. 但是当我们只能看到训练集的时候怎么影响测试集上的性能? **统计学习理论(statistical learning theory)** 给出了一些答案. 我们必须知道训练集和测试集中的元素是怎么收集的, 也就是我们可以实现做出一些假设, 这样我们才可能去解决上述问题. 训练集和测试集从数据集中按照概率分布生成这一过程称为 **数据生成过程(data-generating process)**, 我们作出以下假设(称为 **独立同分布假设(i.i.d. assumption))**: 训练集和测试集中的样本都是相互独立的, 训练集和测试集具有 **相同的分布**, 并且该分布称为 **数据生成分布(data-generating distribution)**, 记作 `!$p_{\text{data}}$` .  
 
   [1]: ./im ages/1516877903228.jpg
   [2]: ./images/1516613842738.jpg
