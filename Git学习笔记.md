@@ -51,5 +51,7 @@ git push origin master //同步, 也就是发送删除命令
 
 [Java.gitignore](https://github.com/github/gitignore/blob/master/Java.gitignore)
 
+[Git 简明指南](http://rogerdudler.github.io/git-guide/index.zh.html)
+
 > Github 上用第三方服务来显示数学公式: 
 > ![](http://latex.codecogs.com/gif.latex?\\frac{1}{1+sin(x)})
