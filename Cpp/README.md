@@ -8,4 +8,7 @@ Arch Linux 上的 Visual Studio Code, 记得安装 C/C++ 插件, 酌情更改 `.
 
 ## 目录 Index
 
+* [variables](./Variables.cpp)
+* [StringVectorArray](./StringVectorArray.cpp)
+
 ### 引用 References
