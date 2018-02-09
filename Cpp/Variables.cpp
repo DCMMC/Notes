@@ -355,7 +355,7 @@ int main(void) {
 	// inner scope i
 	for (int i = 0; i < 10; i++)
 		sum += i;
-
+	
 	// create alias of i
 	int &refVal = i;
 	// refVal2 is bound to the object which refVal is bound, i.e., to i
