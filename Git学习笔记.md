@@ -41,7 +41,7 @@ git push origin master //同步, 也就是发送删除命令
 
 # Gitignore
 
-不想被git给Check in到github的文件.
+不想被git给Check in到github的文件. 可以将忽略规则保存在项目根目录的 `.gitignore` 文件中. 具体参考 [gitignore](https://github.com/github/gitignore)
 
 # *Refence*
 
