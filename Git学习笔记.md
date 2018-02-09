@@ -43,8 +43,6 @@ git push origin master //同步, 也就是发送删除命令
 
 不想被git给Check in到github的文件.
 
-
-
 # *Refence*
 
 [git命令清单](http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html)
@@ -52,3 +50,6 @@ git push origin master //同步, 也就是发送删除命令
 [Ignoring files](https://help.github.com/articles/ignoring-files/)
 
 [Java.gitignore](https://github.com/github/gitignore/blob/master/Java.gitignore)
+
+> Github 上用第三方服务来显示数学公式: 
+> ![](http://latex.codecogs.com/gif.latex?\\frac{1}{1+sin(x)})
