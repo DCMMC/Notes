@@ -1,0 +1,88 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "java",
+			"name": "java Debug (Launch)",
+			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"console": "integratedTerminal",
+			"stopOnEntry": false,
+			"mainClass": "",
+			"args": "",
+			"classPaths":[
+				".:./lib/mariadb-java-client-2.2.1.jar:./lib/xlsx-streamer-1.2.0.jar:./lib/poi-3.17.jar:",
+				"./lib/log4j-1.2.17.jar:./lib/junit-4.12.jarjunit-4.12.jar:./lib/commons-logging-1.2.jar:",
+				"./lib/commons-collections4-4.1.jar:./lib/commons-codec-1.10.jar:./lib/slf4j-api-1.7.25.jar",
+				":./lib/slf4j-jdk14-1.7.25.jar:./lib/poi-ooxml-3.17.jar:./lib/curvesapi-1.04.jar:./lib/xmlbeans-2.6.0.jar",
+				":./lib/poi-excelant-3.17.jar:./lib/poi-ooxml-schemas-3.17.jar:./lib/poi-scratchpad-3.17.jar",
+				":./lib/commons-codec-1.9.jar:./lib/jsoup-1.10.3.jar:./lib/commons-httpclient-3.1.jar"
+			]
+		},
+		{
+			"name": "C++ Launch",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceRoot}/${fileBasenameNoExtension}.out",
+			"args": [],
+			"stopAtEntry": false,
+			"cwd": "${workspaceRoot}",
+			"environment": [],
+			"externalConsole": true,
+			"preLaunchTask": "build",
+			"linux": {
+				"MIMode": "gdb",
+				"setupCommands": [
+					{
+						"description": "Enable pretty-printing for gdb",
+						"text": "-enable-pretty-printing",
+						"ignoreFailures": true
+					}
+				]
+			},
+			"osx": {
+				"MIMode": "lldb"
+			},
+			"windows": {
+				"MIMode": "gdb",
+				"setupCommands": [
+					{
+						"description": "Enable pretty-printing for gdb",
+						"text": "-enable-pretty-printing",
+						"ignoreFailures": true
+					}
+				]
+			}
+		},
+		{
+			"name": "C++ Attach",
+			"type": "cppdbg",
+			"request": "attach",
+			"program": "${workspaceRoot}/${fileBasenameNoExtension}.out",
+			"processId": "${command:pickProcess}",
+			"linux": {
+				"MIMode": "gdb",
+				"setupCommands": [
+					{
+						"description": "Enable pretty-printing for gdb",
+						"text": "-enable-pretty-printing",
+						"ignoreFailures": true
+					}
+				]
+			},
+			"osx": {
+				"MIMode": "lldb"
+			},
+			"windows": {
+				"MIMode": "gdb",
+				"setupCommands": [
+					{
+						"description": "Enable pretty-printing for gdb",
+						"text": "-enable-pretty-printing",
+						"ignoreFailures": true
+					}
+				]
+			}
+		}
+	]
+}
