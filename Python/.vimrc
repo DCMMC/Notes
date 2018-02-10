@@ -6,7 +6,7 @@ python3 powerline_setup()
 python3 del powerline_setup
 
 " 参考: https://www.jianshu.com/p/bc19b91354ef
-" vim 版本必须 >= 8.0, 并且 +pyhthon
+" vim 版本必须 >= 8.0, 并且 +python
 
 " 配色
 set background=dark
@@ -61,10 +61,21 @@ Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'tpope/vim-fugitive'
 " 异步 shell 执行
 Plugin 'skywind3000/asyncrun.vim'
+"=== vim-trailing-whitespace将代码行最后无效的空格标红 ===
+Plugin 'bronson/vim-trailing-whitespace'
+"=== markdown编辑插件 ===
+Plugin 'plasticboy/vim-markdown'
+let g:vim_markdown_folding_disabled=1
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
+
+" 我修改过上面这个插件, 因为我只想 python 文件
+" 标示行末不必要的空格, 所以改了下 g:extra_whitespace_ignored_filetypes
+" 变成 g:extra_whitespace_filetypes
+let g:extra_whitespace_filetypes = ['python']
+
 
 " 分割方向
 " :sv <filename> 纵向分割打开
@@ -80,7 +91,9 @@ nnoremap <C-H> <C-W><C-H>
 set foldmethod=indent
 set foldlevel=99
 " 空格快捷键代码折叠
+" press space to fold/unfold code
 nnoremap <space> za
+vnoremap <space> zf
 " 希望看到折叠代码的文档字符串
 let g:SimpylFold_docstring_preview=1
 
@@ -122,8 +135,16 @@ if 'VIRTUAL_ENV' in os.environ:
   execfile(activate_this, dict(__file__=activate_this))
 EOF
 
-" 异步语法检查
+" ale 异步语法检查
 " 语法高亮
+" 让 ale 对 py 文件使用 flake8
+" 记得 sudo pip install flake8
+let g:ale_linters = { 'python': ['flake8'], }
+" Auto-check file for errors on write:
+let g:PyFlakeOnWrite = 1
+" let g:flake8_show_in_gutter = 1
+" 错误表示在整行而不是侧边
+let g:flake8_show_in_file = 1
 let python_highlight_all=1
 syntax on
 
@@ -136,7 +157,7 @@ let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 set nu
 
 " Python 代码格式化
-" 需要 sudo pip install yapf 
+" 需要 sudo pip install yapf
 autocmd FileType python nnoremap <LocalLeader>= :0,$!yapf(" --style pep8")<CR>
 
 " 一键执行

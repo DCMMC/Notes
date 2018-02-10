@@ -10,7 +10,7 @@ Vim(配置过的, [配置文件](./.vimrc)) + Python3
 
 ## 目录 Index
 
-
+[介绍和 Python3 基础](./IntroBasic.py)
 
 ## 参考 Reference
 

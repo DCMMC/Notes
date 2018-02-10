@@ -3,18 +3,25 @@
 
 # 上述两行注释放在源码顶部分别用于指定 *nix 环境能够直接把源程序当做脚本来调用, 以及限定该文件编码
 
-# 介绍: 
+# 介绍:
 # 主流 Python 解释器是 CPython(用 C 开发的), 同样也有 JVM 上的 Jython 和 JIT技术的 PyPy. 学习过程中一般使用
 # IPython(基于 CPython, 不过交互性更好, 可以在交互界面查看更多的信息)
 # 在 Ipython 下, 使用 %lsmagic 查看所有解释器有关的 magic 命令(有点像 Linux 命令), 例如
-# %whos 查看当前变量空间, %reset -f 重置变量空间. 
+# %whos 查看当前变量空间, %reset -f 重置变量空间.
 # 并且在函数后面加一个 '?' , 可以查看该函数的帮助, '??'查看函数源代码, '_'
 # 表示上个 cell (上个执行的代码)的输出结果, '!' 开头调用系统命令
 
 # 单行注释
 
 # array
-from numpy import *
+from numpy import array
+
+# 一个有趣的图形化的例子
+# 需要 sudo pip install -i https://pypi.tuna.tsinghua.edu.cn/simple matplotlib
+# 然后 sudo pacman -S tk, 安装 matplotlib
+import matplotlib.pyplot as plot
+plot.plot(range(20), range(20))
+plot.show()
 
 ##########################################
 # 这里主要讲一些内置类型和其中的一些方法 #
@@ -34,7 +41,7 @@ integerVar = 0x50ffffffffffffffffffffffffffffffffffffffffffffffffffff
 # 浮点数(float), 可采用科学计数法, 并且有一定精度范围
 # 不过有一点需要注意, 默认浮点数都是转化为精度内最靠近的二进制浮点数, 难免会误差, 最典型的例子就是
 # 0.1+0.2, 可以使用 round()来近似并得到正确十进制数值, 并且print也会自动修正这个误差
-floatVar = 3.141592653589793238001100110011001100110011001100110011001100110011010e-3
+floatVar = 3.1415926535897932380011001100110011001100110011001e-3
 print('float 有精度范围:', floatVar)
 # int 和 float 可以用构造方法来从字符串来构造数值类型
 
@@ -48,21 +55,29 @@ print('float 有精度范围:', floatVar)
 
 # 布尔值(bool), py 大小写敏感
 boolVar = True
-# 元组(tuple), 元组可以嵌套, 可以省略小括号
+# 元组(tuple), 元组可以嵌套, 可以省略小括号, 但是如果只有1个或0个元素, ()不能省略, 并且只有1个元素
+# 的时候, 为了避免歧义, 必须在括号里面加上一个逗号!
+# 元组经常作为 C 风格 format 的参数, 在 dict 中作为 key. 使用构造器可以从 list 构造一个 tuple
 tupleVar = 1, 'str', (1, 3, 4), ['demo', 2]
+tupleVar = (1, )
 # 复数(complex), 其中 J 或 j 表示虚部 `!$i$`
 complexVar = 1 + 2J
 
 # 非基本类型但是是内置类型, 对这些导出类型的赋值, 都是拷贝引用, 也就是改变对象会影响所有指向该对象
 # 的变量, 也就是说他们是可变的(muatble)
-# 列表(list), 中括号括起来, 中括号不能省略
+# 列表(list), 中括号括起来, 中括号不能省略, 有序集, 可以相当于数组
 listVar = [1, 1.2, 'hello']
-# 字典(dict)
-dictVar = {'dog': 5, 'pig': 8}
+# 字典(dict), dict 的 key 必须是 Immutable 对象, 并且 key 不能重复, 重复的 key 只会更新老 key 的
+# value
+dictVar = {'dog': 5,'dog':2, 'pig': 8} # nopa F601
+# 集合(set), 集合中只有 key, 没有 value, 并且 key 必须是 Immutable 对象, dict 和 set 应该都是用的
+# 哈希表, 所以 key 也不能重复
+setVar = {1, 2, '4'}
+# set 和 dict 都会打乱加入时的顺序(进而会按照 key 有序的存放)
 # 特殊值: None(类型为NoneType), 表示空值
 noneVar = None
 
-# 这些内置类型除了可以使用字面量直接赋值之外, 也可以使用 [typename]([value]) 来赋值
+# 这些内置类型除了可以使用字面量直接赋值之外, 也可以使用 [typename]([value])来赋值
 listVar = list([dictVar, boolVar])
 
 # 非内置类型
@@ -72,14 +87,18 @@ arrayVar = array([1, 2, 3])
 # py 中只有变量, 没有真正的常量, 约定完全大写的变量为常量
 PI = 3.14159265359
 
+# 对于有迭代器的类型, 还可以使用负数下标表示倒数第几个元素, 例如 a[-1] 表示倒数第 1 个元素
+print(arrayVar[-1])
+
 # 基本类型操作
-# 数值类型的 + - * % 和 C-family 和 Java 没啥区别, 不过整数之间的 / 返回的是浮点数, 而 //(地板除, 
+# 数值类型的 + - * % 和 C-family 和 Java 没啥区别, 不过整数之间的 / 返回的是浮点数, 而 //(地板除,
 # floor divide)则会将结果截尾整, 还有这些操作加上 = 号的原地(in-place)计算, 例如 var += 1, 但
-# 是如果 // 有一个 Operand 是浮点数, 那么结果是浮点数(小数部分为0). 
+# 是如果 // 有一个 Operand 是浮点数, 那么结果是浮点数(小数部分为0).
 # 浮点型也能使用 % 取余
+# py 没有对数值的 ++ --操作
 
 # 布尔操作: and, or, not
-# 赋值语句类似于 Java, 对于基本类型, 是直接复制值, 而对于非基本类型, 是复制引用. 
+# 赋值语句类似于 Java, 对于基本类型, 是直接复制值, 而对于非基本类型, 是复制引用
 # ** 运算是幂运算, 例如 a ** b 表示数学上的 `!$a^b$`
 
 # 创建的比较运算有 <, >, <=, >=, ==, !=, 并且 py 还支持链式比较
@@ -88,8 +107,8 @@ var = 1 <= var < 5
 
 # str 有很多内置函数(方法): split, replace, upper, lower, join(str_sequence) (用该str对象存储的
 # 的字符串来将序列 str_sequence(必须是 iterable 的变量) 中的一个一个元素连接起来, len计算字符个数,
-# 还有去除两头的空格 strip(类似于 java 的trim), 去除左边的空格 lstrip 和 去除右边的空格 rstrip 
-# 这些方法. 
+# 还有去除两头的空格 strip(类似于 java 的trim), 去除左边的空格 lstrip 和 去除右边的空格 rstrip
+# 这些方法.
 # 将任意变量转化为 str: str(var) 和 repr(var) 如果其中参数是数值类型不会进行二进制转十进制误差修正
 # 还可以使用hex, oct, bin这些方法, 将整数类型转化为按照不同进制字符串
 
@@ -98,14 +117,42 @@ var = 1 <= var < 5
 # str 默认编码为 unicode, 不过存储在文件中我们经常需要转化为 bytes 数组, 用 'b' 前缀可以限制字符串
 # 中每个字符都是一个 byte(也就是ASCII编码)
 # 同样可是使用 str中的 encode('编码类型') 方法来编码成 bytes, 使用 decode('编码类型')来从 bytes中
-# 解码 
+# 解码
 '小李'.encode('utf-8').decode('utf-8')
 
 # 格式化字符串
-# 可以使用 C 风格格式化, 不过是 '等格式化字符串' % (替换内容) 的形式
-# 例如
-print('%s 学 py  %d ' % ('kevin', 3))
-# 还可以使用
+# 可以使用 C 风格格式化, 不过是 '等格式化字符串' % 替换内容的元组 的形式, 占位符有 s,d,f, 不管什
+# 么时候 %s 总有用, 例如
+'%s 学 py  %.1f 1%%' % ('kevin', 3.6)
+# 还可以使用 str 的format 方法, 用占位符 {0}, {1}, ...
+'Hello, {0}, 成绩提升了 {1:.1f}%'.format('小明', 17.125)
+
+
+# list 中的方法: pop(index = len - 1) 删除列表中指定index元素(默认删除最后一个)并返回, 要改变列表
+# 中某一个元素, 直接通过索引获取然后赋值就可以了, 也可以用全局方法 del var[index]
+# list 还可以分片, var[lower:upper:step], step 默认为1(可以省略最后一个 :step), 也就是连续的元素,
+# upper 为exclusive, lower 为inclusive, 当 step 为1时, 默认 lower为0, upper 为 n,
+# 而step 为负时, 默认lower 为 -1, upper 为 -len(var)-1, 分片相当于该片段的引用, 对分片直接
+# 修改相当于原对象, 还可以直接将该分片用其他相等长度的 list 取代, 删除代码片可用 del 方法
+'hello'[-1::-2]
+# list 还有 + 连接两个列表(类似于成员方法 append), 以及 * [integer number] 将列表重复多少次的操作
+print(listVar * 3)
+# list的成员方法 count 可以用来记数参数在 list 中的出现次数, 成员方法 index 返回 参数 在list 中的
+# 序号, 不存在就抛出异常, 成员方法 insert(index), 成员方法 remove(var) 移除元素 var, 不存在就
+# 抛异常, 还有成员方法 sort 和 reverse
+# py 有 列表推导式(List comprehensive), 就是在[] 中使用 for in 语法
+listVar = [str(char) for char in 'hello']
+
+# 对于 list, dict, set 这些, 都可以用 in 和 not in 来判断元素是否存在
+
+# 对于 dict, 可以用索引[[key]] 来访问和修改 value, 还可以用 [key] in [dict] 来返回 dict 中是否存在
+# 该 key 的 bool 类型, 同样可以使用 dict 内置方法 get(key, NoneValue = None) 来访问 key 对应的
+# value, 如果不存在就返回 NoneValue 指定的值, 默认为 None, 内置方法 [value] pop(key) 可以删除该
+# 值键对, 成员方法 values 和 keys 分别返回所有 value 和 key 的 list, items 则返回值键对组成的二元
+# 组的 list
+
+# set 可以用 add 成员方法来添加, 可以重复添加, 但是没有效果, 成员方法 remove(key) 删除指定 key,
+# 还可以使用 & 和 | 将两个集合求并和交之后的新集合, 差 - , 对称差 ^ (交减去并)操作.
 
 # 查看一个变量当前所属类型中所有成员函数的方法: dir
 
@@ -113,9 +160,8 @@ print('%s 学 py  %d ' % ('kevin', 3))
 # 多参数之间的逗号输出时变为空格
 print('100 + 50 =', 100 + 50)
 
-# 输入函数 input(), 读行(包括回车), 返回一个类型(不包括回车)
-print('input sth: ')
-sth = input()
+# 输入函数 input([提示信息]), 读行(包括回车), 返回一个 str 类型(不包括回车)
+sth = input("prompt: input sth: ")
 print('input is', sth)
 
 
@@ -124,8 +170,21 @@ print('input is', sth)
 # py 用缩进来处理代码块, 当一条语句以 ':' 结尾, 下面的语句按照缩进作为代码块
 # 虽然 py 有点格式要求, 但是仍然是格式自由的语言
 # 例如
-if (integerVar >= 0):
+if (integerVar > 0):
     print('integerVar >= 0')
     print('next line')
-else:
+# 条件还可以像 C 一样, 非零数值、非空字符串、非空list等都可以相当于 True
+elif integerVar:
     print('integerVar < 0')
+else:
+    print('integerVar == 0')
+
+# 列表循环, for [temp var] in [listvar] 语句
+for s in listVar:
+    print(s)
+
+while s:
+    print(s)
+    s = 0
+
+# break 和 continue 同 C-family/Java
