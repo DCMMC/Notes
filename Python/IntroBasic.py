@@ -3,6 +3,10 @@
 
 # 上述两行注释放在源码顶部分别用于指定 *nix 环境能够直接把源程序当做脚本来调用, 以及限定该文件编码
 
+###########################
+# Python3 简介和基础      #
+###########################
+
 # 介绍:
 # 主流 Python 解释器是 CPython(用 C 开发的), 同样也有 JVM 上的 Jython 和 JIT技术的 PyPy. 学习过程中一般使用
 # IPython(基于 CPython, 不过交互性更好, 可以在交互界面查看更多的信息)
@@ -12,6 +16,10 @@
 # 表示上个 cell (上个执行的代码)的输出结果, '!' 开头调用系统命令
 
 # 单行注释
+# py 语法其实没有多行注释, 不过可以使用下面这种作为多行注释, 尤其是 function doc
+"""
+多行注释
+"""
 
 # array
 from numpy import array
@@ -67,6 +75,9 @@ complexVar = 1 + 2J
 # 的变量, 也就是说他们是可变的(muatble)
 # 列表(list), 中括号括起来, 中括号不能省略, 有序集, 可以相当于数组
 listVar = [1, 1.2, 'hello']
+# list 可以从 range 中生成, range表示范围的一种类型, 第一个参数默认缺省为0, 例如 range(5) 等价
+# range(0,5), list(range(0,5)) 将会生成从 0 到 5 的整数序列
+
 # 字典(dict), dict 的 key 必须是 Immutable 对象, 并且 key 不能重复, 重复的 key 只会更新老 key 的
 # value
 dictVar = {'dog': 5,'dog':2, 'pig': 8} # nopa F601
@@ -80,6 +91,11 @@ noneVar = None
 # 这些内置类型除了可以使用字面量直接赋值之外, 也可以使用 [typename]([value])来赋值
 listVar = list([dictVar, boolVar])
 
+# 除了上述直接有字面量提供的内置类型, py 还有一些其他内置类型, 如 range 存储整数范围,
+# 还有 frozenset 类似于 set , 不过是像 tuple 的 set, 因为里面的元素一经创建就不能添加删除
+# 注意: python3 的 range 类似于 python2 的 xrange, 也就是说 py3 的 range 不是 list, 只是
+# 存储的 lower 和 upper 和 step, 只在用的时候才计算, 不会在创建的时候创建所有的元素
+
 # 非内置类型
 # Numpy 数组, 一种自定义类型(Object Oriented Classes)
 arrayVar = array([1, 2, 3])
@@ -90,7 +106,24 @@ PI = 3.14159265359
 # 对于有迭代器的类型, 还可以使用负数下标表示倒数第几个元素, 例如 a[-1] 表示倒数第 1 个元素
 print(arrayVar[-1])
 
-# 基本类型操作
+##########################
+# Python 的赋值机制      #
+##########################
+# python 的所有变量都是对象的引用
+# 可以用 id(var) 来查看变量的 id (类似于地址)
+# 还可以用 is 关键字查看两个变量是否指向同一个对象
+a = 500
+b = a
+print('a is b', a is b)
+# 对于很小的 int, str 之类的, 还有像 Java 的String 一样有常量池, 也就是两个变量就算不是有复制关系
+# 也有可能指向同一对象
+x = 5
+y = 5
+print('id(x) == id(y)', id(x) == id(y))
+
+######################
+# 基本类型操作       #
+######################
 # 数值类型的 + - * % 和 C-family 和 Java 没啥区别, 不过整数之间的 / 返回的是浮点数, 而 //(地板除,
 # floor divide)则会将结果截尾整, 还有这些操作加上 = 号的原地(in-place)计算, 例如 var += 1, 但
 # 是如果 // 有一个 Operand 是浮点数, 那么结果是浮点数(小数部分为0).
@@ -141,7 +174,18 @@ print(listVar * 3)
 # 序号, 不存在就抛出异常, 成员方法 insert(index), 成员方法 remove(var) 移除元素 var, 不存在就
 # 抛异常, 还有成员方法 sort 和 reverse
 # py 有 列表推导式(List comprehensive), 就是在[] 中使用 for in 语法
-listVar = [str(char) for char in 'hello']
+listVar = [str(char) + ',' for char in 'hello']
+# 列表推导式可以带条件,用 for in if, 并且也可以用来
+# 推导创建 dict, set 这些
+dictVar = {x: x**2 for x in [-2, 0, 1, 3] if x >= 0}
+print('dictVar', dictVar)
+# 可以直接把函数中的 iterable 参数直接用列表推导式代替
+# 这样还可以减少一次中间产生临时列表变量的浪费
+# 性能比较:
+# x = range(100000)
+# %timeit total = sum([i**2 for i in x])
+# %timeit total = sum(i**2 for i in x)
+# 然而我发现性能没有差距... 说明 py3 的优化很不错
 
 # 对于 list, dict, set 这些, 都可以用 in 和 not in 来判断元素是否存在
 
@@ -149,16 +193,26 @@ listVar = [str(char) for char in 'hello']
 # 该 key 的 bool 类型, 同样可以使用 dict 内置方法 get(key, NoneValue = None) 来访问 key 对应的
 # value, 如果不存在就返回 NoneValue 指定的值, 默认为 None, 内置方法 [value] pop(key) 可以删除该
 # 值键对, 成员方法 values 和 keys 分别返回所有 value 和 key 的 list, items 则返回值键对组成的二元
-# 组的 list
+# 组的 list. 虽然可以通过索引直接更改单个 value, 但是有时候我们需要更改多个,
+# 这时候可以用成员方法 update(new_dict) 来更新多个和添加多个(new_dict中可以用原dict没有的key)
 
 # set 可以用 add 成员方法来添加, 可以重复添加, 但是没有效果, 成员方法 remove(key) 删除指定 key,
 # 还可以使用 & 和 | 将两个集合求并和交之后的新集合, 差 - , 对称差 ^ (交减去并)操作.
+# 集合之间的包含关系: a.issuperset(b) 等价 a >= b 判断 b 是否是 a 的子集, 同样的
+# a.issubset(b) 或 a <= b 判断 a 是否是 b 的子集, 用 a < b 判断 a 是否是 b 的真子集
+# discard 成员方法类似于remove, 只不过在元素不存在的时候不会报错, 还有
+# a.difference_update(b) 从 a 去除掉所有属于 b 的元素
 
-# 查看一个变量当前所属类型中所有成员函数的方法: dir
+###########################################################################
+# 查看一个变量当前所属类型中所有成员函数的方法: dir #
+###########################################################################
 
 # 输出函数 print(), 并且最后会输出一个回车
 # 多参数之间的逗号输出时变为空格
 print('100 + 50 =', 100 + 50)
+# 上面这个是 py3 风格的 print, py2 的 print 形式跟 py 3 有点不一样,
+# 没有括号, 并且参数跟函数名之间空格隔开:
+# print a, b
 
 # 输入函数 input([提示信息]), 读行(包括回车), 返回一个 str 类型(不包括回车)
 sth = input("prompt: input sth: ")

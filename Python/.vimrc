@@ -1,4 +1,4 @@
-"Powerline Theme
+" Powerline Theme
 set laststatus=2
 set t_Co=256
 python3 from powerline.vim import setup as powerline_setup
@@ -25,7 +25,7 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 " alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+" call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
@@ -35,6 +35,11 @@ Plugin 'gmarik/Vundle.vim'
 
 " 配色
 Bundle 'Solarized'
+" 格式化注释
+" FIXME: 必须设置为一个 tab 四个空格
+Plugin 'DCMMC/caw.vim'
+" Plugin 'tyru/caw.vim'
+" Plugin 'scrooloose/nerdcommenter'
 " 缩进指示线
 Plugin 'Yggdroot/indentLine'
 " 自动补全括号
@@ -46,7 +51,7 @@ Plugin 'Vimjas/vim-python-pep8-indent'
 " Plugin 'vim-scripts/indentpython.vim'
 " 自动补全
 " 还需要安装某些依赖, arch下vim-youcompleteme-git
-" ArchLinux 需要yaourt -S vim-youcompleteme-gi && cd ~/.vim/bundle/YouCompleteMe && ./install.sh
+" ArchLinux 需要yaourt -S vim-youcompleteme-gi && cd ~/.vim/bundle/YouCompleteMe && ./install.sh --all
 Bundle 'Valloric/YouCompleteMe'
 " python 补全
 " 需要 sudo pacman -Sy vim-jedi
@@ -99,20 +104,15 @@ let g:SimpylFold_docstring_preview=1
 
 " Python PEP8风格缩进
 " 编写python代码时会使#(注释)自动回退到行首
-set smartindent
-"au BufNewFile,BufRead *.py
-"\ set tabstop=4
-"\ set softtabstop=4
-"\ set shiftwidth=4
-"\ set textwidth=79
-"\ set expandtab
-"\ set autoindent
-"\ set fileformat=unix
+" au bufnewfile,bufread *.py, *.java
+" \ set tabstop=4 |
+" \ set softtabstop=4 |
+" \ set shiftwidth=4
 
 " web开发缩进
 au BufNewFile,BufRead *.js, *.html, *.css
-\ set tabstop=2
-\ set softtabstop=2
+\ set tabstop=2 |
+\ set softtabstop=2 |
 \ set shiftwidth=2
 
 " 标示不必要的空白字符
