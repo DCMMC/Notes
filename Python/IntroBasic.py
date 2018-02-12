@@ -76,7 +76,7 @@ complexVar = 1 + 2J
 # 列表(list), 中括号括起来, 中括号不能省略, 有序集, 可以相当于数组
 listVar = [1, 1.2, 'hello']
 # list 可以从 range 中生成, range表示范围的一种类型, 第一个参数默认缺省为0, 例如 range(5) 等价
-# range(0,5), list(range(0,5)) 将会生成从 0 到 5 的整数序列
+# range(0,5), list(range(0,5)) 将会生成从 0 到 5(不包括5) 的整数序列
 
 # 字典(dict), dict 的 key 必须是 Immutable 对象, 并且 key 不能重复, 重复的 key 只会更新老 key 的
 # value
@@ -173,19 +173,6 @@ print(listVar * 3)
 # list的成员方法 count 可以用来记数参数在 list 中的出现次数, 成员方法 index 返回 参数 在list 中的
 # 序号, 不存在就抛出异常, 成员方法 insert(index), 成员方法 remove(var) 移除元素 var, 不存在就
 # 抛异常, 还有成员方法 sort 和 reverse
-# py 有 列表推导式(List comprehensive), 就是在[] 中使用 for in 语法
-listVar = [str(char) + ',' for char in 'hello']
-# 列表推导式可以带条件,用 for in if, 并且也可以用来
-# 推导创建 dict, set 这些
-dictVar = {x: x**2 for x in [-2, 0, 1, 3] if x >= 0}
-print('dictVar', dictVar)
-# 可以直接把函数中的 iterable 参数直接用列表推导式代替
-# 这样还可以减少一次中间产生临时列表变量的浪费
-# 性能比较:
-# x = range(100000)
-# %timeit total = sum([i**2 for i in x])
-# %timeit total = sum(i**2 for i in x)
-# 然而我发现性能没有差距... 说明 py3 的优化很不错
 
 # 对于 list, dict, set 这些, 都可以用 in 和 not in 来判断元素是否存在
 
@@ -203,8 +190,14 @@ print('dictVar', dictVar)
 # discard 成员方法类似于remove, 只不过在元素不存在的时候不会报错, 还有
 # a.difference_update(b) 从 a 去除掉所有属于 b 的元素
 
+# tuple 有一个特别有趣的操作: tuple 与 tuple 之间的复制
+# tuple1  = tuple2 会将 tuple2 中对应元素赋值给 tuple1 中对应的变量(注意是变量, 不能赋值到字面量
+# literal)
+# 例如:
+x, y = 1, 2
+
 ###########################################################################
-# 查看一个变量当前所属类型中所有成员函数的方法: dir #
+# 查看一个变量当前所属类型中所有成员函数的方法: dir                       #
 ###########################################################################
 
 # 输出函数 print(), 并且最后会输出一个回车
@@ -236,6 +229,34 @@ else:
 # 列表循环, for [temp var] in [listvar] 语句
 for s in listVar:
     print(s)
+
+# for in 必须是作用在可迭代的类型, 所有可迭代类型有一个公共基类: collections.Iterable
+# (需要导入 collections包), 可以用 isinstance 判断是否是可迭代类型
+# 对于 dict 类型的迭代, 可以使用 for keyVar,valueVar in dictVar 的形式
+# 还有一点就是 for in 类似于 java/cpp 的 for each, 但是我们有时候同样需要带索引(下标)的 for
+# , 这时候我们可以使用 py 内置函数 enumerate(Iterable), 返回 index:value 的 enumrate(dict) 类型
+
+# 列表推导式(List comprehensive), 就是在[] 中使用 for in 语法
+listVar = [str(char) + ',' for char in 'hello']
+# 这些列表推导式其实就是 for 循环的一种变式, 所以甚至可以用多重 for 循环
+# 列表推导式可以带条件,用 for in if, 并且也可以用来
+# 推导创建 dict, set 这些
+dictVar = {x: x**2 for x in [-2, 0, 1, 3] if x >= 0}
+print('dictVar', dictVar)
+# 可以直接把函数中的 iterable 参数直接用列表推导式代替
+# 这样还可以减少一次中间产生临时列表变量的浪费
+# 性能比较:
+# x = range(100000)
+# %timeit total = sum([i**2 for i in x])
+# %timeit total = sum(i**2 for i in x)
+# 然而我发现性能没有差距... 说明 py3 的优化很不错
+
+# 生成器(generator)
+# 和 List comprehensive 类似, 也就是在 () 中使用 for in 语法
+# generator 也是一种 Iterable 类型, 但是 generator 有一个显著特点, 就是其元素是在迭代它的时候, 边
+# 迭代边计算生成的(这被成为惰性计算(lazy evaluation)), 这无穷数列带来了可能. 访问 generator
+# 对象当前 index 的下一个元素使用内置函数 next(generatorVar) 就可以了.
+# generator 就是 Iterator(Iterator 有是 Iterable 的之类) 的子类
 
 while s:
     print(s)
