@@ -12,17 +12,22 @@ Vim(配置过的, [配置文件](./.vimrc)) + Python3
 
 > 基本语法和内置库
 
-[介绍和 Python3 基础](./Int
-roBasic.py)
+[介绍和 Python3 基础](./IntroBasic.py)
+
 [函数和类](./FuncClass.py)
+
 [模块, 异常和IO](./ModuleExceptionIO.py)
+
 [GUI, 网络和线程](./GUINetworkThread.py)
+
 [Web, 数据库和email](./WebDatabaseEmail.py)
 
 > 数学和数据处理库
 
 [Numpy](./Numpy.py)
+
 [Scipy](./Scipy.py)
+
 [Matplotlib](./Matplotlib.py)
 
 > 机器学习库

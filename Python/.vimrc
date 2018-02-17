@@ -36,6 +36,9 @@ Plugin 'gmarik/Vundle.vim'
 " 配色
 Bundle 'Solarized'
 " 格式化注释
+" gcb 为 box circled comment
+" gcc 为普通注释
+" gcu 为撤回注释, 然而垃圾的很, 就是 normal 下的 u
 " FIXME: 必须设置为一个 tab 四个空格
 Plugin 'DCMMC/caw.vim'
 " Plugin 'tyru/caw.vim'
@@ -48,19 +51,22 @@ Plugin 'jiangmiao/auto-pairs'
 Plugin 'tmhedberg/SimpylFold'
 " Python 自动缩进
 Plugin 'Vimjas/vim-python-pep8-indent'
+" mypy vim 扩展
+Plugin 'Integralist/vim-mypy'
 " Plugin 'vim-scripts/indentpython.vim'
 " 自动补全
 " 还需要安装某些依赖, arch下vim-youcompleteme-git
 " ArchLinux 需要yaourt -S vim-youcompleteme-gi && cd ~/.vim/bundle/YouCompleteMe && ./install.sh --all
 Bundle 'Valloric/YouCompleteMe'
-" python 补全
-" 需要 sudo pacman -Sy vim-jedi
-Plugin 'davidhalter/jedi-vim'
 " 语法检查
 Plugin 'w0rp/ale'
+" shell in vim
+" 安装之后需要手动 cd ~/.vim/bundle/vimproc.vim && make
+Plugin 'Shougo/vimproc.vim'
+Plugin 'Shougo/vimshell.vim'
 " 文件树形结构
 Plugin 'scrooloose/nerdtree'
-" tab键查看文件树形结构
+" 查看文件树形结构
 Plugin 'jistr/vim-nerdtree-tabs'
 " 集成 git
 Plugin 'tpope/vim-fugitive'
@@ -68,9 +74,35 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'skywind3000/asyncrun.vim'
 "=== vim-trailing-whitespace将代码行最后无效的空格标红 ===
 Plugin 'bronson/vim-trailing-whitespace'
-"=== markdown编辑插件 ===
-Plugin 'plasticboy/vim-markdown'
-let g:vim_markdown_folding_disabled=1
+" 实时 md 渲染预览
+Plugin 'iamcco/mathjax-support-for-mkdp'
+Plugin 'iamcco/markdown-preview.vim'
+let g:mkdp_path_to_chrome="google-chrome-unstable"
+let g:mkdp_auto_close=0
+nmap <F7> <Plug>MarkdownPreview
+nmap <F8> <Plug>StopMarkdownPreview
+" 更优雅的 buffer 管理
+Plugin 'fholgado/minibufexpl.vim'
+
+" 简要命令指南: 'MBEOpen' 打开管理器, ':bun'将当前 buffer 的窗口最小化, ':bw' 关闭当前 buffer 和窗口
+" ':b[num]' 打开指定 num 的 buffer 为当前窗口, 注意如果当前只有一个窗口, 但是有多个 buffer, 这时候
+" ':q' 会退出 vim, 所以需要用 ':bw' 来关闭
+" 如果对当前窗口大小不满意, ':vertical resize+num' 宽度+[num]行,
+" ':resize+num', 高度
+
+""""""""""""""""""""""""""""""  
+" miniBufexplorer Config  
+""""""""""""""""""""""""""""""  
+" let g:miniBufExplMapWindowNavArrows = 1  
+" let g:miniBufExplMapWindowNavVim = 1  
+" let g:miniBufExplMapCTabSwitchWindows = 1  
+" let g:miniBufExplMapCTabSwitchBufs = 1   
+" let g:miniBufExplModSelTarget = 1  
+  
+" 解决FileExplorer窗口变小问题  
+" let g:miniBufExplForceSyntaxEnable = 1  
+" let g:miniBufExplorerMoreThanOne=2  
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -124,6 +156,7 @@ set encoding=utf-8
 " 自动补全微调
 let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+let g:ycm_complete_in_strings = 1
 
 " 支持Virtualenv虚拟环境
 py << EOF
@@ -151,7 +184,7 @@ syntax on
 " 在终端 vim 中默认打开tabs
 let g:nerdtree_tabs_open_on_console_startup=1
 " 隐藏文件树形结构中的 .pyc
-let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
+let NERDTreeIgnore=['\.pyc$', '\~$', '__pycache__'] "ignore files in NERDTree
 
 " 显示行号
 set nu
@@ -176,3 +209,6 @@ func! CompileRun()
         exec "! time python %"
     endif
 endfunc
+
+" 用 ,. 组合键代替 Esc
+inoremap ,. <esc>
