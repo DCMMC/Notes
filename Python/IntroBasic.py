@@ -37,6 +37,7 @@ plot.show()
 
 # Python 是弱类型OOP语言, 解释器会自动寻找最适合的类型, 但其实仍然是有类型的, py 的数据类型:
 # 可以用 type([var]) 来获取当前该变量的类型, 模块 types 中包含了更多的关于类型的信息
+# type 用于类型名时返回 type, 用于实例对象的时候才返回具体类型.
 # 函数名和类型名都可以作为变量名, 这是极其危险的行为, 尽量避免, 但是关键字作为变量名会报错
 # int = 1
 
@@ -162,7 +163,7 @@ var = 1 <= var < 5
 
 
 # list 中的方法: pop(index = len - 1) 删除列表中指定index元素(默认删除最后一个)并返回, 要改变列表
-# 中某一个元素, 直接通过索引获取然后赋值就可以了, 也可以用全局方法 del var[index]
+# 中某一个元素, 直接通过索引获取然后赋值就可以了, 也可以用全局方法 del var[index or slice]
 # list 还可以分片, var[lower:upper:step], step 默认为1(可以省略最后一个 :step), 也就是连续的元素,
 # upper 为exclusive, lower 为inclusive, 当 step 为1时, 默认 lower为0, upper 为 n,
 # 而step 为负时, 默认lower 为 -1, upper 为 -len(var)-1, 分片相当于该片段的引用, 对分片直接

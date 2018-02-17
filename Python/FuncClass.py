@@ -19,6 +19,9 @@ import datetime
 # 导入fucntools 并使用别名 fc
 import functools as fc
 import sys
+# @since 3.5
+from typing import TypeVar, Iterable, Tuple
+from enum import Enum, unique
 
 # py 的函数模型类似于 cpp, 最后几个参数可以有缺省值
 # 函数名一般遵循 cpp 的全小写风格
@@ -373,7 +376,9 @@ print(int_2('10000'), fn_int_2('10000'))
 
 # 类 my_string 继承自 object(公共基类)
 # py 和 cpp 类似, 允许多根继承, 也就是括号里面
-# 可以有多个类型
+# 可以有多个类型(多继承), 如果同时实现了不同的接口，那么，
+# 最后使用的方法以继承的顺序为准，放在前面的优先继承
+# 这种找寻方法内容的顺序可以通过该类的 __mro__ 属性或者 mro() 方法来查看
 # 继承的子类 用父类来 isinstance 判断为真
 # 类名后面的括号可省, 缺省下为 object
 class my_string(object):
@@ -440,10 +445,14 @@ class my_string(object):
         以达到可以无限制添加属性的目的.
         __slots__ 在类层面上通过为每个变量名创建描述子(descriptor)来实现的, 所以类属性不能由于
         __slots__ 定义的实例变量设置默认值(也就是在类中成员属性), 不然类属性会覆写描述子分配.
+        __getitem__ 用于重载 [] 用下标取元素
         """
         return self.__class__.__name__ + '(__content' \
             '=\'' + self.__content + '\')'
 
+    # Inner Class 可以当做类属性
+    # 例如在最外面创建该类的实例对象的
+    # 时候, my_string.InnerBase()
     class InnerBase(object):
         __slots__ = 'foo', 'bar'
 
@@ -479,6 +488,24 @@ class my_string(object):
             self.__index = 0
             raise StopIteration
 
+    def __getitem__(self, index):
+        # override operator []
+        if isinstance(index, int):
+            return self.__content[index]
+        if isinstance(index, slice):
+            # 也有可能是切片类型!
+            # start = index.start
+            # stop = index.stop
+            #     if start is None:
+            #         # 切片的默认值其实是 None
+            #
+            # slice 类型有 start stop 和 step 属性, 默认值为 None
+            # 这里直接调用 str 的__getitem__
+            # 处理切片还是有点麻烦的
+            return self.__content[index]
+        # 下标类型错误
+        raise TypeError
+
     def func(self):
         # 类中的叫方法, 全局的叫函数
         # 因为方法还能访问实例对象中的属性(数据)
@@ -500,7 +527,7 @@ class my_string(object):
 
     def __private_func():
         # 类中 __ 开头的变量(属性/数据)和方法(也算是变量)
-        # 是私有的, python 明显限制外部环境对类中私有方法和
+        # 是私有的, python 限制外部环境对类中私有方法和
         # 私有变量的调用, 这种没有 self 参数的方法可以视为
         # 静态方法
         print('private func in my_string')
@@ -546,6 +573,34 @@ class my_string(object):
         # 有没有实例调用这个函数, 该函数都不依赖类的对象中的任何属性
         # 刚好跟这种情况反过来了.
         print('the input is:', x)
+
+    @staticmethod
+    def type_hints_static_func(name: str) -> str:
+        # PEP484
+        # @since 3.5
+        # type hints(类型标记, 所以依然不是强制性的, 不过对于函数)
+        # https://www.python.org/dev/peps/pep-0484/
+        # 可以辅助进行类型注解
+        # [var]: [type] 或 [func name] -> [type]:
+        # 信息保存在函数中的 __annotations__ 中(这个特性叫类型注解(since 3.0))
+        # 甚至可以用 type alias, 例如
+        # E = int
+        # 还可以用 typing 模块中的 TypeVar 创建专门用于
+        # 做静态类型检查的类型, 这样就能使用 type hints 和
+        # TypeVar 来达到泛型(generic type)和泛型函数(generic function)的目的
+        # TypeVar 中还把所有内置类型都加了泛型的功能进去(并且那第一个字母改成大写
+        # 用来区分, 例如 List)
+        T = TypeVar('T', int, float, complex)
+        Vector = Iterable[Tuple[T, T]]
+
+        def dilate(v: Vector[T], scale: T) -> Vector[T]:
+            return ((x * scale, y * scale) for x, y in v)
+
+        dilate(list([(1, 2), (3, 4)]), 2.5)
+        # 然而 py 解释器本身完全不会做任何检查
+        # 需要额外的例如 mypy 之类的工具
+        dilate([('s', 'b'), ], 'num')
+        return 'Hello ' + name
 
     @property
     def content(self):
@@ -605,13 +660,15 @@ try:
     s.content = 100
 except ValueError as v:
     print(v)
+s.type_hints_static_func('Bob')
+# s.type_hints_static_func(1)
 # 下面的语句是非法的, 因为 __ 开头的是私有的
 # 不过 py 还是没有强制隐藏, 某个 py 的解释器上的实现是把该
 # 私有函数改名为 _[class name][private function or var name]
 # 这取决于解释器具体实现, 反正别想干这种事, 不过这 py 的权限管理
 # 确实有点鸡肋, 很多都不是强制性的, 完全取决于惯例约束
 # s.__private_func()
-# _my_string__private_func()
+my_string._my_string__private_func()
 
 # class 中的一些特殊属性
 # 默认的 print(s) 相当于 print(str(s))
@@ -627,3 +684,193 @@ print([x for x in s])
 # py 可以通过在类声明的时候在类名后面用括号来继承一个或多个类,
 # 但是因为 py 是动态类型语言, 所以不需要严格的通过继承来表示
 # 某个类是另外一个类的子类, 只需要与某个类有相同的成员方法
+
+
+class Leaf(object):
+    # super, 调用超类(父类)方法
+    def __init__(self, color="green"):
+        self.color = color
+
+    def fall(self):
+        print("Splat!")
+
+
+class MapleLeaf(Leaf):
+    def change_color(self):
+        if self.color == "green":
+            self.color = "red"
+
+    def fall(self):
+        self.change_color()
+        super(MapleLeaf, self).fall()
+
+
+mleaf = MapleLeaf()
+print(mleaf.color)
+mleaf.fall()
+print(mleaf.color)
+
+# 枚举
+Month = Enum('Month', ('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul',
+                       'Aug', 'Sep', 'Oct', 'Nov', 'Dec'))
+# 可以通过Month.Jan 之类的来引用一个变量
+Month.Jan
+# 还可以直接遍历所有成员, value属性默认赋
+# 给成员 int, 并且从 1 开始
+for name, member in Month.__members__.items():
+    print(name, '=>', member, ',', member.value)
+# 我们也可以创建自定义 enum
+# unique 装饰器用于检查没有重复值
+
+
+@unique
+class WeekDay(Enum):
+    r"""
+    >>> day1 = Weekday.Mon
+    >>> print(day1)
+    Weekday.Mon
+    >>> print(Weekday.Tue)
+    Weekday.Tue
+    >>> print(Weekday['Tue'])
+    Weekday.Tue
+    >>> print(Weekday.Tue.value)
+    2
+    >>> print(day1 == Weekday.Mon)
+    True
+    >>> print(day1 == Weekday.Tue)
+    False
+    >>> print(Weekday(1))
+    Weekday.Mon
+    >>> print(day1 == Weekday(1))
+    True
+    >>> Weekday(7)
+    Traceback (most recent call last):
+      ...
+    ValueError: 7 is not a valid Weekday
+    >>> for name, member in Weekday.__members__.items():
+    ...     print(name, '=>', member)
+    ...
+    Sun => Weekday.Sun
+    Mon => Weekday.Mon
+    Tue => Weekday.Tue
+    Wed => Weekday.Wed
+    Thu => Weekday.Thu
+    Fri => Weekday.Fri
+    Sat => Weekday.Sat
+    """
+    Sun = 0.0  # Sun的value被设定为0.0
+    Mon = 1.0
+    Tue = 2.0
+    Wed = 3.0
+    Thu = 4.0
+    Fri = 5.0
+    Sat = 6.0
+
+# 因为 py 是动态语言, 所以我们还可以使用
+# type 动态得创建类
+
+
+def fn(self, name='world'):
+    print('hello, %s' % name)
+
+
+# 这是一个 class type
+# 三个参数分别为 类名, 继承的基类的 tuple, 函数列表的 dict
+Hello = type('Hello', (object,), dict(hello=fn))
+Hello().hello()
+print(type(Hello))
+print(type(Hello()))
+
+####################
+# 元类 metaclass   #
+####################
+# 按照默认习惯，metaclass的类名总是以Metaclass结尾，
+# 以便清楚地表示这是一个metaclass
+# https://stackoverflow.com/questions/100003/what-are-metaclasses-in-python
+# py 的 class 有点奇特, 其实 class 本身又是
+# 一个对象(在内存中), class 就是自己能够创建出实例
+# 的一种对象(所以 class 在内存中以 "ObjectCreator"
+# 为名称创建)
+# 因为 class 也是对象, 所以你能将它赋值给其他变量,
+# 复制它, 在其中添加属性, 可以作为参数传递给函数
+# 比如 Hello 是一个 type, 但是我们可以轻松的添加一个属性
+Hello.fn = lambda self: print('fn')
+Hello().fn()
+# 元类就是用来控制类的创建的一种类型
+# 也就是一个对象的 class 的 class 就是 metaclass
+# py 的内置类型大多是用 type 这个 meteclass 创建的
+# 我们可以通过指定 class 的 __metaclass__ 属性来
+# 指定其元类, __metaclass__ 的值默认就是 type
+# 并且 __metaclass__ 不会被继承
+# 对于控制 class 的创建, 我们还可以定义 __new__ (
+# 在 __init__ 之前执行, 返回一个 type 的子类, 一般
+# 都是用 type(name, bases, attrs) 来返回)
+print(Hello.__class__.__class__)
+
+
+class MyMetaClass(type):
+    def __new__(meta, name, bases, dct):
+        print('-----------------------------------')
+        print("Allocating memory for class", name)
+        print(meta)  # 元类
+        print(bases)  # 基类
+        print(dct)  # 属性的 dict
+        # 例如我要把目标类里面的所有非特殊属性改名为大写
+        uppercase_attr = {}
+        for name, val in dct.items():
+            if not name.startswith('__'):
+                uppercase_attr[name.upper()] = val
+            else:
+                uppercase_attr[name] = val
+        # 返回一个 class type
+        return super(MyMetaClass, meta).__new__(meta, name, bases,
+                                                uppercase_attr)
+
+    def __init__(cls, name, bases, dct):
+        print('-----------------------------------')
+        print("Initializing class", name)
+        print(cls)  # 已经创建好的 class (因为类型也是一个 object)
+        print(bases)  # 基类
+        print(dct)  # attributes
+        super(MyMetaClass, cls).__init__(name, bases, dct)
+
+
+# 定义元类, 用关键字 metaclass 指定元类
+# metaclass 可以是任何 callable(函数, 类...)
+class MyKlass(my_string, metaclass=MyMetaClass):
+    def foo(self, param):
+        pass
+
+    barattr = 2
+
+
+print(hasattr(MyKlass, 'barattr'))
+# Out: False
+print(hasattr(MyKlass, 'BARATTR'))
+# Out: True
+
+f = MyKlass()
+print(f.BARATTR)
+# Out: 2
+
+##########################################
+# 元类很少使用, 一般是在创建             #
+# API 的时候, 例如 Django                #
+##########################################
+# 还有一个元类的典型例子就是 ORM(
+# Object Relational Mapping 对象关系映射)
+# 就是把关系数据库的一行映射为一个对象，也就是
+# 一个类对应一个表，这样，写代码更简单，
+# 不用直接操作SQL语句。
+# https://github.com/michaelliao/learn-python3/blob/master/samples/oop_advance/orm.py
+
+
+# py 没有 Java-style 的 abstract class 或 interface
+# 不过可以用 NotImplementedError 实现类似的东西
+class AbstractClass(object):
+    r"""
+    Some description that tells you it's abstract,
+    often listing the methods you're expected to supply.
+    """
+    def aMethod(self):
+        raise NotImplementedError("Should have implemented this")
