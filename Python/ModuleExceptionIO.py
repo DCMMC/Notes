@@ -31,6 +31,13 @@ import ast
 import logging
 import unittest
 import doctest
+from io import StringIO, BytesIO
+import sys
+import os
+# 高级文件操作
+import shutil
+# 序列化
+import pickle
 
 tk.dcmmc.hello.test()
 hello.test()
@@ -93,10 +100,167 @@ print(b)  # noqa F821
 # 常用模块和示例        #
 #########################
 
+##############
+# sys 模块   #
+##############
+
+# sys.argv 返回该程序接受到的命令行参数的列表
+# sys.exc_info() 显示最近的异常的信息
+try:
+    x = 1 / 0
+except Exception:
+    print(sys.exc_info())
+
+# 标准输入输出流
+# sys.stdin
+# sys.stdout
+# sys.stderr
+# 这三个都跟文件类似, 有 write 和 read 这些方法
+
+# 退出 sys.exit(status), 通过抛出 SystemExit 异常
+# 来退出
+
+# sys.platform 表示当前平台, linux/darwin/win
+# sys.version 和 sys.version_info 返回 Python版本信息
+# 的 str 和 tuple
+
+#############
+# os 模块   #
+#############
+# 注意 py 有一些库中的成员在不同系统下不一样
+# 例如 os.uname 在 win 下就没有
+
+# os.name 返回操作系统类型 posix/nt
+# os.name sys.platform 和 platform.system() 的区别:
+# 分别是检查当前是否有特定系统用的模块来确定系统,
+# 在 python 库的编译阶段就已经通过配置文件确定好系统了,
+# 在运行阶段通过运行一系列其他函数来确定系统
+
+# os.uname() 返回操作系统详细信息
+# os.environ 记录当前环境变量的 dict
+
+# 操作文件和目录的函数一部分放在os模块中，一部分放在os.path模块中
+# 查看当前路径的绝对路径, 说实话, 这 abspath 有点蠢,
+# 就是把这个相对路径和当前目录的绝对路径 join 再一起...
+print('当前路径的绝对路径:', os.path.abspath('.'))
+# 把两个目录拼接在一起, 不要直接用 + 拼接, 因为
+# join能够对于不同系统采用不同的 dir seperator
+print(os.path.join('/tmp', 'testDir'))
+# 同样的道理, 拆分路径可以用 os.path.split()
+# os.path.splitext() 可以直接得到扩展名
+# os.path.isdir() 和 os.path.isfile() 顾名思义
+# os.path 主要是提供一些判断或者读入
+# 而 os 是调用系统 api 对底层进行真正写入
+
+# 创建一个目录
+if os.path.exists('/tmp/testDir'):
+    # 删除一个目录
+    os.rmdir('/tmp/testDir')
+os.mkdir('/tmp/testDir')
+# 删除一个目录
+os.rmdir('/tmp/testDir')
+with open('/tmp/testFile', 'w'):
+    pass
+# 文件重命名
+os.rename('/tmp/testFile', '/tmp/test.txt')
+# 列出所有文件
+# 就是返回一个 str 的 list, 并是不什么 file 对象
+# 这点有点蠢
+print(os.listdir('/tmp'))
+# os 在 *nix 下还有 chmod chown 之类的操作
+
+# 但是 os 竟然没有复制操作, 原因是复制文件并非由操作系统提供的系统调用
+# 理论上我们可以通过文件读写来进行复制, 不过有点麻烦
+# shutil 模块提供了 copyfile() 和其他用于解压和复制文件的实用方法
+if os.path.exists('/tmp/test2.txt'):
+    os.remove('/tmp/test2.txt')
+shutil.copyfile('/tmp/test.txt', '/tmp/test2.txt')
+
+# 获取所有文件扩展名为 txt 的文件
+print([x for x in os.listdir('/tmp') if os.path.isfile(os.path.join('/tmp', x))
+       and os.path.splitext(os.path.join('/tmp', x))[1] == '.txt'])
+
 #############
 # IO 读写   #
 #############
+# 同步 IO
+# CPU 会一直等待直到 IO 读写结束
 
+# 打开文件, 只读
+# mode 类似于 C:
+# b: binary
+# r: read(default)
+# t: text(default)
+# w: truncating the file and write(先把文件内容清除再写入)
+# a: append(如果文件存在, 就从文件最末尾处开始增量写入)
+# x: create a new file and open if for writing
+# open() 还可以指定关键字参数 encoding 和 errors 表示遇到编码错误
+# 后怎么处理, 一般是直接忽略 'ignore'
+with open('./ModuleExceptionIO.py', 'rt', encoding='utf-8',
+          errors='ignore') as f:
+    # 只读一行
+    # 也可以用 read() 读取所有内容
+    # 如果不能确定文件大小，反复调用read(size)比较保险
+    print(f.readline())
+    # 调用readlines()一次读取所有内容并按行返回list
+    # for line in f.readlines():
+    # 去掉空白字符再打印
+    # print(line.strip())
+# 写入
+with open('./test.txt', 'a') as f:
+    f.write('test file\n')
+
+# 像open()函数返回的这种有个read()方法的对象，在Python中统称为file-like Object
+# 例如内存中的字节流, 网络流...
+# py 有一个好处就是不需要继承特定类, 只需要有 read() 就行
+
+# 在内存中读写 string 和 bytes: StringIO, BytesIO
+print('##############################')
+strF = StringIO('Hello\nWorld')
+# 移动到 end of stream
+strF.seek(0, 2)
+strF.write('\nPython')
+# 注意上面 write 之后文件指针到了最后面
+# 用 seed(0) 将指针移到最前面
+strF.seek(0)
+# 写入和读取都跟文件一样
+while True:
+    line = strF.readline()
+    if line == '':
+        break
+    print(line, end='')
+print()
+strF.close()
+
+with BytesIO() as f:
+    f.write('中文'.encode('utf-8'))
+    print(f.getvalue())
+
+# 序列化(pickling) 和 反序列化(unpickling)
+# 类似于 Java 中的 serialization
+# py 的 pickle 模块提供了序列化的支持
+# pickle.dumps() 方法把任意对象序列化成一个 bytes,
+# 还可以用 pickle.dump() 序列化到 file, 第二个参数指定
+# 写入文件
+d = dict(name='Bob', age=20, score=88)
+bs = bytes(pickle.dumps(d))
+print(bs)
+del d
+# 用 pickle.loads() 和 pickle.load() 分别从 bytes 和 file-like object
+# 中反序列化, 返回一个对象
+d = pickle.loads(bs)
+print(d)
+
+# web 开发经常会遇到在多种编程语言之间传递对象, 我们一般
+# 把对象序列化为 JSON 或 XML, JSON 不仅可阅读性好而且
+# 比 XML 更快
+# py 的内置库 json 提供了对 JSON 的支持
+# json 中的 loads load dump dumps 跟 pickle 行为很相似
+# 并且 JSON 规定编码为 utf-8, JSON 的格式也跟 py 的
+# 字面量很像
+# 不过自定义类默认都不支持 json 序列化, 因为 json 就是封装了
+# 一些基本类型的字面量, 不过我们可以通过在 dump 方法中
+# 指定包装函数来把我们的类转化成 json 支持的类型
 
 ##########
 # 异常   #
@@ -197,12 +361,12 @@ class TestDict(unittest.TestCase):
     def test_keyerror(self):
         d = Dict()
         with self.assertRaises(KeyError):
-            value = d['empty']
+            d['empty']
 
     def test_attrerror(self):
         d = Dict()
         with self.assertRaises(AttributeError):
-            value = d.empty
+            d.empty
 
     def setUp(self):
         """
