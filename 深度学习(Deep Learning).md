@@ -1062,7 +1062,7 @@ $$\Rightarrow \boldsymbol{w} = \left( \boldsymbol{X}^{(\text{train})\top} \bolds
 
 **没有免费的午餐定理(No Free Lunch Theorem)**
 
-考虑所有可能的数据生成分布并平均下来, 所有的分类算法在事先没有观察过的数据输入上都有相同的错误率. (因为就算是在某种分布下最优的模型, 在其他分布下就会得到更糟的结果, 差不多抵掉了). 
+考虑所有可能的数据生成分布并平均下来, 所有的分类算法在事先没有观察过的数据输入上都有相同的错误率. (因为就算是在某种分布下最优的模型, 在其他分布下就会得到更糟的结果, 差不多抵掉了).  也就是说没有适用于所有任意分布的"大一统"的最优学习算法.
 
 但是现实生活中, 一般我们都会对可能的概率分布做一下假设(限制), 所以机器学习的主要目的不是研究出一个适用于所有情况(分布) 的学习算法, 而是仅仅关注于真实世界某一个特定问题(所以要给学习算法限定一个 **偏好(perference)** ), 找出一个近视的表现良好的分布.
 
@@ -1085,6 +1085,10 @@ $$J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omeg
 表达偏好要比直接删减假设空间中的函数更加一般地控制模型的容量, 例如删去一个成员函数相当于对这个函数表达无限大的一个偏好(使其权重边的无限小)
 
 显式或隐式得对模型表达偏好的方法统称为 **正则化** .
+
+> *Regularization is any modiﬁcation we make to alearning algorithm that is intended to reduce its generalization error but not itstraining error.*
+
+
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
