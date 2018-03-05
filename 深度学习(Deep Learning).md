@@ -1070,15 +1070,21 @@ $$\Rightarrow \boldsymbol{w} = \left( \boldsymbol{X}^{(\text{train})\top} \bolds
 
 模型的效果取决于假设空间中的函数数量(也就是模型的表示容量)以及这些函数的具体形式.
 
-对于线性回归, 我们可以添加对权重 `!$\boldsymbol{\omega}$` 的 **偏好** :
+对于线性回归, 我们可以添加对权重 `!$\boldsymbol{\omega}$` 的 **偏好**, 这种方法叫做 **权重衰减(weight decay)**  :
 
 ```mathjax!
-J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omega}^\top \boldsymbol{\omega}
+$$J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omega}^\top \boldsymbol{\omega}$$
 ```
 
-> 其中 `!$\lambda$` 就是对权重的偏好, `!$\lambda = 0$` 表示对权重没有偏好, 对于取 `!$J(\boldsymbol{\omega})$` 最小值, `!$\lambda$` 越大表示偏好范数越小的权重(也就是权重中包含更少的特征).
+> 其中 `!$\lambda$`(提前设定好的) 就是对权重的偏好, `!$\lambda = 0$` 表示对权重没有偏好, 对于取 `!$J(\boldsymbol{\omega})$` 最小值, `!$\lambda$` 越大表示偏好范数越小的权重(也就是权重中包含更少的特征).
 
+![Figure 5.5][21]
 
+> 上图是一个 9-维多项式回归的例子, `!$\lambda$` 就能用来控制过拟合和欠拟合(曲线的导数/梯度).
+
+表达偏好要比直接删减假设空间中的函数更加一般地控制模型的容量, 例如删去一个成员函数相当于对这个函数表达无限大的一个偏好(使其权重边的无限小)
+
+显式或隐式得对模型表达偏好的方法统称为 **正则化** .
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
@@ -1100,3 +1106,4 @@ J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omega}
   [18]: ./images/1517580400888.jpg
   [19]: ./images/1518084054593.jpg
   [20]: ./images/1520217653005.jpg
+  [21]: ./images/1520248674777.jpg
