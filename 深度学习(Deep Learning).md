@@ -1078,6 +1078,8 @@ $$J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omeg
 
 > 其中 `!$\lambda$`(提前设定好的) 就是对权重的偏好, `!$\lambda = 0$` 表示对权重没有偏好, 对于取 `!$J(\boldsymbol{\omega})$` 最小值, `!$\lambda$` 越大表示偏好范数越小的权重(也就是权重中包含更少的特征).
 
+跟一般的说, 正则化一个学习函数的模型时, 我们可以给代价函数(也就是上例中的 `!$J(\boldsymbol{\omega})$` ) 加上一个被称为 **正则化项(regularizer)** 的惩罚(penalty), 上例中的正则化项就是 `!$\boldsymbol{\omega}^\top \boldsymbol{\omega}$`
+
 ![Figure 5.5][21]
 
 > 上图是一个 9-维多项式回归的例子, `!$\lambda$` 就能用来控制过拟合和欠拟合(曲线的导数/梯度).
@@ -1088,7 +1090,7 @@ $$J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omeg
 
 > *Regularization is any modiﬁcation we make to alearning algorithm that is intended to reduce its generalization error but not itstraining error.*
 
-
+就如没有免费的午餐定理所述, 同样一般来说也没有最优的正则化形式.
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
