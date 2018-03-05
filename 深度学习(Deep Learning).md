@@ -1070,6 +1070,8 @@ $$\Rightarrow \boldsymbol{w} = \left( \boldsymbol{X}^{(\text{train})\top} \bolds
 
 模型的效果取决于假设空间中的函数数量(也就是模型的表示容量)以及这些函数的具体形式.
 
+
+
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
