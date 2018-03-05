@@ -1090,7 +1090,7 @@ $$J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omeg
 
 > *Regularization is any modiﬁcation we make to alearning algorithm that is intended to reduce its generalization error but not itstraining error.*
 
-就如没有免费的午餐定理所述, 同样一般来说也没有最优的正则化形式.
+就如没有免费的午餐定理所述, 同样一般来说也没有最优的正则化形式. 深度学习的哲学(尤其是本书中)就是能够通过一个非常通用的(general-purpose)正则化形式来解决大部分的任务.
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
