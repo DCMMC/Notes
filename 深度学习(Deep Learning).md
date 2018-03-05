@@ -1094,6 +1094,8 @@ $$J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omeg
 
 ### (p) 1.4.3 超参数(Hyperparameters)和验证集(Validation Sets)
 
+
+
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
