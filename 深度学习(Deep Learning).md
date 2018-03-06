@@ -1102,6 +1102,10 @@ $$J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omeg
 
 > 实际中, 有时候测试集有点陈旧了, 而且里面包含的所有情况多差不多被学术界给研究透了, 我们就可能会得到一个看起来特别乐观的结果估计, 这不能反映真实性能. 反正要注意用更新更全面的测试集.
 
+**交叉验证(cross-validation)**
+
+
+
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
