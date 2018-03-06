@@ -43,6 +43,10 @@ git push origin master //同步, 也就是发送删除命令
 
 不想被git给Check in到github的文件. 可以将忽略规则保存在项目根目录的 `.gitignore` 文件中. 具体参考 [gitignore](https://github.com/github/gitignore)
 
+## 转到特定的 commit
+
+git reset --hard $SHA1
+
 # *Refence*
 
 [git命令清单](http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html)
