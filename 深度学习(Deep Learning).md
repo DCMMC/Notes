@@ -1114,7 +1114,7 @@ $$J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omeg
 
 > `!$\boldsymbol{z}^{(i)}$` 在监督学习中是 `!$(\boldsymbol{x}^{(i)}, y^{(i)})$`, 在无监督学习中是 `!$\boldsymbol{x}^{(i)}$`
 
-### (p) 1.4.4 估计(Estimators), 偏差(Bias) 和 反差(Variance)
+### (p) 1.4.4 估计(Estimators), 偏差(Bias) 和 方差(Variance)
 
 
 
