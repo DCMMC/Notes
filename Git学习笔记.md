@@ -9,7 +9,7 @@ grammar_cjkRuby: true
 
 clone:
 
-> git clone  https://github.com/YourGithubUsername/RepositoryName.git
+> git clone \[-b master]  https://github.com/YourGithubUsername/RepositoryName.git
 
 上传:
 ~~~
