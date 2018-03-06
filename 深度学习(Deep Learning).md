@@ -1104,7 +1104,9 @@ $$J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omeg
 
 **交叉验证(cross-validation)**
 
+如果验证集过小, 将会有问题, 因为这会造成在平均测试集误差的统计不确定性.
 
+当样本过小的时候, 我们可以在原始数据上随机采样和分离出不同数据集来重复训练和测试. 最常见的手段是 **k-折(k-fold) 交叉验证**
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
