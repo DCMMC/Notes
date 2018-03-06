@@ -1110,6 +1110,10 @@ $$J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omeg
 
 > 上述 k-fold 方法带来的一个问题是不存在平均误差的方差的无偏估计(unbiased estimator), 但是通常用近似来解决. 
 
+![Algo 5.1][22]
+
+> `!$\boldsymbol{z}^{(i)}$` 在监督学习中是 `!$(\boldsymbol{x}^{(i)}, y^{(i)})$`, 在无监督学习中是 `!$\boldsymbol{x}^{(i)}$`
+
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
@@ -1131,3 +1135,4 @@ $$J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omeg
   [19]: ./images/1518084054593.jpg
   [20]: ./images/1520217653005.jpg
   [21]: ./images/1520248674777.jpg
+  [22]: ./images/1520316296099.jpg
