@@ -1162,7 +1162,7 @@ $$
 &= 0
 \end{split}
 \nonumber
-\end{euqation}
+\end{equation}
 $$
 ```
 
