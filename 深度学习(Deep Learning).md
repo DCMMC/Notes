@@ -1203,6 +1203,8 @@ $$
 $$\tilde{\sigma}^2_m = \frac{1}{m-1} \sum_{i=1}^m \left( x^{(i)} - \hat{\mu}_m \right)^2$$
 ```
 
+**方差(Variance)** 和 **标准差(standard error)**
+
 
 
   [1]: ./images/1516613842738.jpg
