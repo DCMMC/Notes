@@ -1134,7 +1134,7 @@ $$J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omeg
 $$\text{bias}(\hat{\theta}_m) = \mathbb{E}(\hat{\theta}_m) - \theta$$
 ```
 
-
+当 `!$\text{bias}(\hat{\theta}_m) = 0$`, 称为 **无偏(unbiased)**, 如果 `!$\lim_{m \rightarrow \infty} \text{bias}(\hat{\theta}_m) = 0$`, 就叫做 **渐进无偏(asymptotically unbiased)** . 
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
