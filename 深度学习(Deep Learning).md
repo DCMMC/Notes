@@ -1197,6 +1197,33 @@ $$
 \end{equation}
 ```
 
+```mathjax!
+\documentclass{article} 
+\begin{document} 
+  \begin{tabular}{|c|c|} 
+    a & b \\ 
+    c & d\\ 
+  \end{tabular} 
+
+  \begin{tabular}{|c|c|} 
+    \hline 
+    a & b \\ 
+    \hline 
+    c & d\\ 
+    \hline 
+  \end{tabular} 
+
+  \begin{center} 
+    \begin{tabular}{|c|c|} 
+      \hline 
+      a & b \\ \hline 
+      c & d\\ 
+      \hline 
+    \end{tabular} 
+  \end{center} 
+\end{document} 
+```
+
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
