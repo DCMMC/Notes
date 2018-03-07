@@ -566,6 +566,13 @@ $$\mathbb{E}_{x ~ p} [f(x)] = \int_x p(x) f(x)$$
 ```mathjax!
 $$\mathtt{Var} (f(x)) = \mathbb{E} [(f(x) - \mathbb{E}(f(x)))^2]$$
 ```
+经过简单的变换(记得把内层嵌套的数学期望当做常数转移到外层数学期望外面), 反差还可以表示为
+
+```mathjax!
+$$
+\mathtt{Var} (f(x)) = \mathbb{E} [ f(x)^2 ] - \mathbb{E}^2 [ f(x) ]
+$$
+```
 
 方差的平方根就是 **标准差(standard deviation)** .
 
@@ -1168,7 +1175,7 @@ $$
 
 所以可以看出, 该估计是无偏差的.
 
-同样的类似于上面过程的还有估计高斯分布 `!$\mathcal{N} (x^{(i)}; \mu, \sigma^2)$`的 `!$\mu$` 的估计的一般方法 `!$\hat{\mu}_m = \frac{1}{m} x^{(i)}$` 是无偏的.
+同样的类似于上面过程的还可以证明估计高斯分布 `!$\mathcal{N} (x^{(i)}; \mu, \sigma^2)$`的均值 `!$\mu$` 的估计的一般方法 `!$\hat{\mu}_m = \frac{1}{m} x^{(i)}$`(样本均值) 是无偏的.
 
 
 
