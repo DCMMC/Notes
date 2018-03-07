@@ -1197,32 +1197,13 @@ $$
 \end{equation}
 ```
 
+因为偏差不为 `!$0$`, 所以这个估计是有偏差的, 修正为无偏差估计只需要换一下这个归一公式的系数
+
 ```mathjax!
-\documentclass{article} 
-\begin{document} 
-  \begin{tabular}{|c|c|} 
-    a & b \\ 
-    c & d\\ 
-  \end{tabular} 
-
-  \begin{tabular}{|c|c|} 
-    \hline 
-    a & b \\ 
-    \hline 
-    c & d\\ 
-    \hline 
-  \end{tabular} 
-
-  \begin{center} 
-    \begin{tabular}{|c|c|} 
-      \hline 
-      a & b \\ \hline 
-      c & d\\ 
-      \hline 
-    \end{tabular} 
-  \end{center} 
-\end{document} 
+$$\tilde{\sigma}^2_m = \frac{1}{m-1} \sum_{i=1}^m \left( x^{(i)} - \hat{\mu}_m \right)^2$$
 ```
+
+
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
