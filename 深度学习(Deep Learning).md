@@ -1177,7 +1177,25 @@ $$
 
 同样的类似于上面过程的还可以证明估计高斯分布 `!$\mathcal{N} (x^{(i)}; \mu, \sigma^2)$`的均值 `!$\mu$` 的估计的一般方法 `!$\hat{\mu}_m = \frac{1}{m} x^{(i)}$`(样本均值) 是无偏的.
 
+同样我们可以用样本方差来估计真实方差, 但是它是有偏差的, 证明如下
 
+```mathjax!
+\begin{equation}
+\begin{split}
+\text{bias}(\hat{\sigma}_m^2) &= \mathbb{E} [\hat{\sigma}_m^2] - \sigma^2 \\
+&= \frac{1}{m} \mathbb{E}\left[ \sum_{i=1}^{m} \left( x^{(i)} - 2x^{(i)} \hat{\mu}_m + \hat{\mu}^2_m \right) \right] - \sigma^2 \\
+&= \frac{1}{m} \mathbb{E} \left[ \sum_{i=1}^m \left( x^{(i)} \right)^2 - 2 \sum_{i=1}^m x^{(i)} \hat{\mu}_m + \sum_{i=1}^m \hat{\mu}_m^2 \right] - \sigma^2 \\
+&= \frac{1}{m} \left( \mathbb{E} \left[ \sum_{i=1}^m \left( x^{(i)} \right)^2 \right] - \mathbb{E} \left( 2m \hat{\mu}_m^2 + m \hat{\mu}^2_m \right) \right) - \sigma^2 \\
+&= \frac{1}{m} \sum_{i=1}^m \mathbb{E} \left[ (x^{(i)})^2 \right] - \mathbb{E} [ \hat{\mu}^2_m ] - sigma^2 \\
+&= \mathbb{E}^2 [ x ] + \mathtt{Var} [ x ] - \mathbb{E}^2 [ \hat{\mu}_m ] - \mathtt{Var}[\hat{\mu}_m] - sigma^2 \\
+&= \sigma^2 - \mathtt{Var}[\hat{\mu}_m] - \sigma^2 \\
+&= - \mathtt{Var} \left[ \frac{1}{m} \sum_{i=1}^m x^{(i)} \right] \\
+&= - \frac{1}{m} \sum_{i=1}^m \mathtt{Var} [ x^{(i)}] \\
+&= - \frac{1}{m} \sigma^2
+\end{split}
+\nonumber
+\end{equation}
+```
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
