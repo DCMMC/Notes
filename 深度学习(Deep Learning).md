@@ -1116,6 +1116,14 @@ $$J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omeg
 
 ### (p) 1.4.4 估计(Estimators), 偏差(Bias) 和 方差(Variance)
 
+**点估计(point estimation)**
+
+点估计用来尝试找到一些感兴趣的量的单个最优预测, 这个感兴趣的量可以是参数模型中的一个参数或参数向量, 甚至是整个函数.
+
+> 为了区分参数的估计和它们的真正的值, 我们将参数 `!$\theta$` 的点估计记住 `!$\hat{\theta}$`.
+
+例如, 对于独立同分布(i.i.d)数据点集 `!$\boldsymbol{x}^{(1)}, \boldsymbol{(m)}$`, 一个点估计或统计(statistic)可以是任意函数: `!$\boldsymbol{\hat{\theta}}_m = g(\boldsymbol{x}^{(1)}, \boldsymbol{x}^{(m)})$`. 并且没有要求点估计的值要和真实值接近, 也没有要求函数的值域必须在真实值的合法范围, 这样能够让点估计的设计更加的灵活.
+
 
 
   [1]: ./images/1516613842738.jpg
