@@ -1152,8 +1152,22 @@ $$\hat{\theta}_m = \frac{1}{m} \sum_{i=1}^{m} x^{(i)}$$
 结合两式, 计算其偏差
 
 ```mathjax!
-$$\text{bias}(\hat{\theta}_m) = \mathbb{E} (\hat{\theta}_m) - \theta$$
+$$
+\begin{equation}
+\begin{split}
+\text{bias}(\hat{\theta}_m) &= \mathbb{E} (\hat{\theta}_m) - \theta \\
+&= \frac{1}{m} \sum_{i=1}^{m} \mathbb{E} \left[ x^{(i)} \right] - \theta \\
+&= \frac{1}{m} \sum_{i=1}^{m} \sum_{x^{(i)} = 0}^{1} x^{(i)} \theta^{x^{(i)}} (1 - \theta)^{1 - x^{(i)}} - \theta \\
+&= \frac{1}{m} m \theta - \theta \\
+&= 0
+\end{split}
+\nonumber
+\end{euqation}
+$$
 ```
+
+所以可以看出, 该估计是无偏差的.
+
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
