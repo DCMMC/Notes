@@ -1136,6 +1136,25 @@ $$\text{bias}(\hat{\theta}_m) = \mathbb{E}(\hat{\theta}_m) - \theta$$
 
 当 `!$\text{bias}(\hat{\theta}_m) = 0$`, 称为 **无偏(unbiased)**, 如果 `!$\lim_{m \rightarrow \infty} \text{bias}(\hat{\theta}_m) = 0$`, 就叫做 **渐进无偏(asymptotically unbiased)** . 
 
+**例子, 伯努利分布(Bernoulli Distribution)**
+
+均值为 `!$\theta$` 的伯努利分布的独立同分布样本 `!$x^{(1)}, \vdots, x^{(m)}$`.
+
+```mathjax!
+$$P(x^{(i)}; \theta) = \theta^{x^{(i)}} (1 - \theta)^{1 - x^{(i)}}$$
+```
+一种常见的估计就是
+
+```mathjax!
+$$\hat{\theta}_m = \frac{1}{m} \sum_{i=1}^{m} x^{(i)}$$
+```
+
+结合两式, 计算其偏差
+
+```mathjax!
+$$\text{bias}(\hat{\theta}_m) = \mathbb{E} (\hat{\theta}_m) - \theta$$
+```
+
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
