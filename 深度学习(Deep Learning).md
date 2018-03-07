@@ -1186,8 +1186,8 @@ $$
 &= \frac{1}{m} \mathbb{E}\left[ \sum_{i=1}^{m} \left( x^{(i)} - 2x^{(i)} \hat{\mu}_m + \hat{\mu}^2_m \right) \right] - \sigma^2 \\
 &= \frac{1}{m} \mathbb{E} \left[ \sum_{i=1}^m \left( x^{(i)} \right)^2 - 2 \sum_{i=1}^m x^{(i)} \hat{\mu}_m + \sum_{i=1}^m \hat{\mu}_m^2 \right] - \sigma^2 \\
 &= \frac{1}{m} \left( \mathbb{E} \left[ \sum_{i=1}^m \left( x^{(i)} \right)^2 \right] - \mathbb{E} \left( 2m \hat{\mu}_m^2 + m \hat{\mu}^2_m \right) \right) - \sigma^2 \\
-&= \frac{1}{m} \sum_{i=1}^m \mathbb{E} \left[ (x^{(i)})^2 \right] - \mathbb{E} [ \hat{\mu}^2_m ] - sigma^2 \\
-&= \mathbb{E}^2 [ x ] + \mathtt{Var} [ x ] - \mathbb{E}^2 [ \hat{\mu}_m ] - \mathtt{Var}[\hat{\mu}_m] - sigma^2 \\
+&= \frac{1}{m} \sum_{i=1}^m \mathbb{E} \left[ (x^{(i)})^2 \right] - \mathbb{E} [ \hat{\mu}^2_m ] - \sigma^2 \\
+&= \mathbb{E}^2 [ x ] + \mathtt{Var} [ x ] - \mathbb{E}^2 [ \hat{\mu}_m ] - \mathtt{Var}[\hat{\mu}_m] - \sigma^2 \\
 &= \sigma^2 - \mathtt{Var}[\hat{\mu}_m] - \sigma^2 \\
 &= - \mathtt{Var} \left[ \frac{1}{m} \sum_{i=1}^m x^{(i)} \right] \\
 &= - \frac{1}{m} \sum_{i=1}^m \mathtt{Var} [ x^{(i)}] \\
