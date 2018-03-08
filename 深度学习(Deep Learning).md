@@ -1095,7 +1095,7 @@ $$J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omeg
 
 显式或隐式得对模型表达偏好的方法统称为 **正则化** .
 
-> *Regularization is any modiﬁcation we make to alearning algorithm that is intended to reduce its generalization error but not itstraining error.*
+> *Regularization is any modiﬁcation we make to a learning algorithm that is intended to reduce its generalization error but not itstraining error.*
 
 就如没有免费的午餐定理所述, 同样一般来说也没有最优的正则化形式. 深度学习的哲学(尤其是本书中)就是能够通过一个非常通用的(general-purpose)正则化形式来解决大部分的任务.
 
