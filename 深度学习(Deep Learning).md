@@ -1219,7 +1219,10 @@ $$
 $$
 ```
 
-又由 **中心极限定理(central limit theorem)**, 这些服从正态分布的随机变量的均值也一样服从正态分布. 均值的标准差在机器学习实验中很有用, 例如均值为 `!$\hat{\mu}_m$`, 方差 `!$\text{SE}(\hat{\mu}_m)^2$` 的高斯分布的以均值 `!$\hat{\mu}_m$` 为中心 `!$95\%$` 的 **置信区间(confidence interval)** 为 `!$\left( \hat{\mu}_m - 1.96 \text{SE}(\hat{\mu}_m), \hat{\mu}_m + 1.96 \text{SE}(\hat{\mu}_m) \right)$`  [1]: ./images/1516613842738.jpg
+又由 **中心极限定理(central limit theorem)**, 这些服从正态分布的随机变量的均值也一样服从正态分布. 均值的标准差在机器学习实验中很有用, 例如均值为 `!$\hat{\mu}_m$`, 方差 `!$\text{SE}(\hat{\mu}_m)^2$` 的高斯分布的以均值 `!$\hat{\mu}_m$` 为中心 `!$95\%$` 的 **置信区间(confidence interval)** 为 `!$\left( \hat{\mu}_m - 1.96 \text{SE}(\hat{\mu}_m), \hat{\mu}_m + 1.96 \text{SE}(\hat{\mu}_m) \right)$`  
+  
+  
+  [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
   [4]: ./images/1516624370367.jpg
