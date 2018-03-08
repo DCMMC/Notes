@@ -1205,7 +1205,9 @@ $$\tilde{\sigma}^2_m = \frac{1}{m-1} \sum_{i=1}^m \left( x^{(i)} - \hat{\mu}_m \
 
 **方差(Variance)** 和 **标准差(standard error)**
 
-类似于计算估计量的数学期望, 我们还会计算其方差 `!$\mathtt{Var} (\hat{\theta})$`, 以及标准差(方差的平方根) `!$\text{SE}(\hat{\theta})$`
+类似于计算估计量的数学期望, 我们还会计算其方差 `!$\mathtt{Var} (\hat{\theta})$`, 以及标准差(方差的平方根) `!$\text{SE}(\hat{\theta})$`.
+
+
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
