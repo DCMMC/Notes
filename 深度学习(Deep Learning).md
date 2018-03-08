@@ -1145,7 +1145,7 @@ $$\text{bias}(\hat{\theta}_m) = \mathbb{E}(\hat{\theta}_m) - \theta$$
 
 **例子, 伯努利分布(Bernoulli Distribution)**
 
-均值为 `!$\theta$` 的伯努利分布的独立同分布样本 `!$x^{(1)}, \vdots, x^{(m)}$`.
+均值为 `!$\theta$` 的伯努利分布的独立同分布样本 `!$x^{(1)}, \ldots, x^{(m)}$`.
 
 ```mathjax!
 $$P(x^{(i)}; \theta) = \theta^{x^{(i)}} (1 - \theta)^{1 - x^{(i)}}$$
@@ -1208,6 +1208,18 @@ $$\tilde{\sigma}^2_m = \frac{1}{m-1} \sum_{i=1}^m \left( x^{(i)} - \hat{\mu}_m \
 类似于计算估计量的数学期望, 我们还会计算其方差 `!$\mathtt{Var} (\hat{\theta})$`, 以及标准差(方差的平方根) `!$\text{SE}(\hat{\theta})$`.
 
 因为估计在统计上会随着训练样本的变化而发生变化, 所以方差衡量这些估计离真实值的变化程度的大小.
+
+不过不管是用样本方差的平方根还是方差的无偏估计(也就是上面高斯分布的那个修正的方差估计)的平方根来估计标准差都是有偏的(都倾向于低估(underestimate)真实方差), 不过方差的无偏估计的平方根低估的少一点, 对于数量很大的样本, 还是有意义的.
+
+例如这里用样本均值的方差的平方根估计其标准差, 由前面高斯分布的方差的有偏估计的推导, 很容易得出
+
+```mathjax!
+$$
+\text{SE} (\hat{\mu}_m) = \sqrt{\mathtt{Var} \left[ \frac{1}{m} \sum_{i=1}{m} x^{(i)} \right]} = \frac{\sigma}{\sqrt{m}}
+$$
+```
+
+又由 **中心极限定理(central limit theorem)**, 正态分布的随机变量的均值
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
