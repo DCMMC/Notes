@@ -1283,7 +1283,7 @@ $$
 ```mathjax!
 $$\text{plim}_{m \rightarrow \infty} \hat{\theta}_m = \theta$$
 ```
-> 其中 `!$\text{plim}$` 表示依概率收敛(convergence), 也就是对于任意 `!$\epsilon > 0$`, 当 `!$m \rightarrow \infty$`, 有 `!$P(|\hat{\theta}_m - \theta| > \epsilon) \rightarrow 0$`.
+> 其中 `!$\theta$` 为要估计的参数, `!$\text{plim}$` 表示依概率收敛(convergence), 也就是对于任意 `!$\epsilon > 0$`, 当 `!$m \rightarrow \infty$`, 有 `!$P(|\hat{\theta}_m - \theta| > \epsilon) \rightarrow 0$`.
 
 相对于上面的弱一致性, **强一致性(strong consistency)** 是指 **几乎必然(almost sure)** 从 `!$\hat{\theta}$` 收敛到 `!$\theta$`, 随机变量 `!$\boldsymbol{\mathtt{x}}^{(1)}, \ldots$`几乎必然收敛到 `!$x$` 是指 `!$p(\lim_{m \rightarrow \infty} \boldsymbol{\mathtt{x}}^{(m)} = x) = 1$`.
 
