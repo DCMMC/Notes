@@ -1259,8 +1259,10 @@ $$
   \begin{equation}
   \begin{split}
   \text{MSE} &= \mathbb{E}\left[ \left( \hat{\theta}_m - \theta \right)^2 \right] \\
-  &= 
-  &= \text{bias}(\hat{\theta}_m)^2 + \mathtt{Var} (\hat{\theta}_m)
+  &= \mathbb{E} \left[ (\hat{\theta}_m)^2 - 2 \hat{\theta}_m \theta + \theta^2 \right] \\
+  &= \mathbb{E} \left[ \left( \hat{\theta}_m \right) \right] - 2 \theta \mathbb{E}[\hat{\theta}_m] + \theta^2 \\
+  &= \left( \mathbb{E} [ \hat{\theta}_m^2] - \theta \right)^2 - \mathbb{E}^2 [\hat{\theta}_m] + \mathbb{E} \left[ \left( \hat{\theta}_m \right)^2 \right] \\
+  &= \text{bias}^2 \hat{\theta}_m + \mathtt{Var} (\hat{\theta}_m)
   \end{split}
   \nonumber
   \end{equation}
