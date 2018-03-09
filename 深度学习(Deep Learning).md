@@ -1283,11 +1283,15 @@ $$
 ```mathjax!
 $$\text{plim}_{m \rightarrow \infty} \hat{\theta}_m = \theta$$
 ```
-> 其中 `!$\theta$` 为要估计的参数, `!$\text{plim}$` 表示依概率收敛(convergence), 也就是对于任意 `!$\epsilon > 0$`, 当 `!$m \rightarrow \infty$`, 有 `!$P(|\hat{\theta}_m - \theta| > \epsilon) \rightarrow 0$`.
+> 其中 `!$\theta$` 为要估计的参数, `!$\text{plim}$` 表示 **依概率收敛(convergence)** , 也就是对于任意 `!$\epsilon > 0$`, 当 `!$m \rightarrow \infty$`, 有 `!$P(|\hat{\theta}_m - \theta| > \epsilon) \rightarrow 0$`.
 
 相对于上面的弱一致性, **强一致性(strong consistency)** 是指 **几乎必然(almost sure)** 从 `!$\hat{\theta}$` 收敛到 `!$\theta$`, 随机变量 `!$\boldsymbol{\mathtt{x}}^{(1)}, \ldots$`几乎必然收敛到 `!$x$` 是指 `!$p(\lim_{m \rightarrow \infty} \boldsymbol{\mathtt{x}}^{(m)} = x) = 1$`.
 
+**总之, 按照书上的结论, 一致(consistent)表明该估计的偏差一定会随着样本数量的增大而较小.**
 
+例如, 我们现在要估计的量 `!$\theta$` 的真实值为 `!$1$`, 样本集为 `! x^{(i)} \text{ drawn from } ${-1, 1}$` 并且它们是 **i.i.d** 并且服从 `!$p = 0.5$` 的伯努利分布, 此时我们有一种估计方法 `!$\hat{\theta} = x^{(1)} + 1$`, 很明显我们可以得出其偏差为 `!$0$` (因为其数学期望为 `!$1$`), 但是这个数学期望相对于真实值的偏差并不会随着样本个数的增加而减少(因为一直是 `!$0$`)
+
+> 上面例子 [参考](https://www.quora.com/Are-unbiased-estimators-always-consistent)
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
