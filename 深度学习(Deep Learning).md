@@ -1225,7 +1225,18 @@ $$
   
   **例子: 伯努利分布**
   
+  同样类似上面的例子, 我们可以求得均值的方差
   
+  ```mathjax!
+  \begin{equation}
+  \begin{split}
+  \mathtt{Var}(\hat{\theta}_m) &= \mathtt{Var} \left( \frac{1}{m} \sum_{i=1}^m x^{(i)} \right) \\
+  &= \frac{1}{m^2} \sum_{i=1}^m \mathtt{Var}(x^{(i)}) \\
+  &= \frac{1}{m^2} \sum_{i=1}^m 
+  \end{split}
+  \nonumber
+  \end{equation}
+  ```
   
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
