@@ -1287,9 +1287,9 @@ $$\text{plim}_{m \rightarrow \infty} \hat{\theta}_m = \theta$$
 
 相对于上面的弱一致性, **强一致性(strong consistency)** 是指 **几乎必然(almost sure)** 从 `!$\hat{\theta}$` 收敛到 `!$\theta$`, 随机变量 `!$\boldsymbol{\mathtt{x}}^{(1)}, \ldots$`几乎必然收敛到 `!$x$` 是指 `!$p(\lim_{m \rightarrow \infty} \boldsymbol{\mathtt{x}}^{(m)} = x) = 1$`.
 
-**总之, 按照书上的结论, 一致(consistent)表明该估计的偏差一定会随着样本数量的增大而较小.**
+**总之, 按照书上的结论, 一致(consistent)表明该估计的偏差一定会随着样本数量的增大而减小.**
 
-例如, 我们现在要估计的量 `!$\theta$` 的真实值为 `!$1$`, 样本集为 `! x^{(i)} \text{ drawn from } ${-1, 1}$` 并且它们是 **i.i.d** 并且服从 `!$p = 0.5$` 的伯努利分布, 此时我们有一种估计方法 `!$\hat{\theta} = x^{(1)} + 1$`, 很明显我们可以得出其偏差为 `!$0$` (因为其数学期望为 `!$1$`), 但是这个数学期望相对于真实值的偏差并 **不会** 随着样本个数的增加而减少(因为一直是 `!$0$`), 或者形式化得说, `!$\text{for any } \epsilon > 0, \Pr(|\hat{\theta} - \theta| > \epsilon) \equiv 1$` 而不会因为 `!$m \rightarrow \infty$` 而趋近于 `!$0$` (这里面直接把 `!$\hat{\theta} = x^{(1)} + 1$` 带进去, 也就是 `!$\hat{\theta}$` 要么是 `!$0$` 要么是 `!$2$` ).
+例如, 我们现在要估计的量 `!$\theta$` 的真实值为 `!$1$`, 样本集为 `!$x^{(i)} \text{ drawn from } \{-1, 1\}$` 并且它们是 **i.i.d** 并且服从 `!$p = 0.5$` 的伯努利分布, 此时我们有一种估计方法 `!$\hat{\theta} = x^{(1)} + 1$`, 很明显我们可以得出其偏差为 `!$0$` (因为其数学期望为 `!$1$`), 但是这个数学期望相对于真实值的偏差并 **不会** 随着样本个数的增加而减少(因为一直是 `!$0$`), 或者形式化得说, `!$\text{for any } \epsilon > 0, \Pr(|\hat{\theta} - \theta| > \epsilon) \equiv 1$` 而不会因为 `!$m \rightarrow \infty$` 而趋近于 `!$0$` (这里面直接把 `!$\hat{\theta} = x^{(1)} + 1$` 带进去, 也就是 `!$\hat{\theta}$` 要么是 `!$0$` 要么是 `!$2$` ).
 
 > 上面例子 [参考](https://www.quora.com/Are-unbiased-estimators-always-consistent)
 
