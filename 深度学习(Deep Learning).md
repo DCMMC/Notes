@@ -1293,6 +1293,10 @@ $$\text{plim}_{m \rightarrow \infty} \hat{\theta}_m = \theta$$
 
 > 上面例子 [参考](https://www.quora.com/Are-unbiased-estimators-always-consistent)
 
+### (p) 1.4.5 最大似然估计(Maximum Likelihood Estimation)
+
+
+
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
