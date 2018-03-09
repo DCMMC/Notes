@@ -561,11 +561,21 @@ $$\mathbb{E}_{x ~ p} [f(x)] = \int_x p(x) f(x)$$
 
 期望是线性的: `!$\mathbb{E}_x [ \alpha f(x) + \beta g(x)] = \alpha \mathbb{E}_x[f(x)] + \beta \mathbb{E}_x [f(x)]$`.
 
+数学期望的一些简单性质:
+
+```mathjax!
+$$
+\mathbb{E} (c) = c \text{, where } c \text{ is a constant.}
+$$
+$$\mathbb{E} \left[ \sum_{i=1}^m c_i u_i(X) \right] = \sum_{i=1}^m c_i \mathbb{E} [u_i(X)] \text{, where u_i is a function about a random variable } X$$
+```
+
 **方差(variance)** 衡量关于 x 的函数的值和我们对于 x 按照它的概率分布进行采样之间有多大的差距:
 
 ```mathjax!
 $$\mathtt{Var} (f(x)) = \mathbb{E} [(f(x) - \mathbb{E}(f(x)))^2]$$
 ```
+
 经过简单的变换(记得把内层嵌套的数学期望当做常数转移到外层数学期望外面), 反差还可以表示为
 
 ```mathjax!
