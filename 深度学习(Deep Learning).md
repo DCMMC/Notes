@@ -1295,6 +1295,8 @@ $$\text{plim}_{m \rightarrow \infty} \hat{\theta}_m = \theta$$
 
 ### (p) 1.4.5 最大似然估计(Maximum Likelihood Estimation)
 
+### (p) 1.4.6 贝叶斯统计(Bayesian Statistics)
+
 
 
   [1]: ./images/1516613842738.jpg
