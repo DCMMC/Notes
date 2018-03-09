@@ -570,6 +570,8 @@ $$
 $$\mathbb{E} \left[ \sum_{i=1}^m c_i u_i(X) \right] = \sum_{i=1}^m c_i \mathbb{E} [u_i(X)] \text{, where } u_i \text{ is a function about a random variable } X$$
 ```
 
+> [Reference: PSU online courses](https://onlinecourses.science.psu.edu/stat414/node/63)
+
 **方差(variance)** 衡量关于 x 的函数的值和我们对于 x 按照它的概率分布进行采样之间有多大的差距:
 
 ```mathjax!
@@ -1268,7 +1270,7 @@ $$
   \end{equation}
   $$
 ```
-> [Reference](https://en.wikipedia.org/wiki/Mean_squared_error)
+> [Reference: Wiki](https://en.wikipedia.org/wiki/Mean_squared_error)
   
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
