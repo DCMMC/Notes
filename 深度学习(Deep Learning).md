@@ -1271,7 +1271,11 @@ $$
   $$
 ```
 > [Reference: Wiki](https://en.wikipedia.org/wiki/Mean_squared_error)
-  
+    
+偏差和方差与学习算法的模型的容量有一定关系, 随着模型的容量的增加, 方差和偏差分别有增加和较小的趋势.
+
+
+
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
