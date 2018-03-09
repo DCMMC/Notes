@@ -1278,12 +1278,16 @@ $$
 
 **一致性(consistency)**
 
-前面我们说的都是在固定大小训练集上的各种估计的属性, 我们还关注训练集大小 `!$m$` 不断增加时点估计的性质. 一般我们想要 **一致性** :
+前面我们说的都是在固定大小训练集上的各种估计的属性, 我们还关注训练集大小 `!$m$` 不断增加时点估计的性质. 一般我们想要 **一致性(有时候也被称为弱一致性 weak consistency)** :
 
 ```mathjax!
 $$\text{plim}_{m \rightarrow \infty} \hat{\theta}_m = \theta$$
 ```
 > 其中 `!$\text{plim}$` 表示依概率收敛(convergence), 也就是对于任意 `!$\epsilon > 0$`, 当 `!$m \rightarrow \infty$`, 有 `!$P(|\hat{\theta}_m - \theta| > \epsilon) \rightarrow 0$`.
+
+相对于上面的弱一致性, **强一致性(strong consistency)** 是指 **几乎必然(almost sure)** 从 `!$\hat{\theta}$` 收敛到 `!$\theta$`, 随机变量 `!$\boldsymbol{\mathtt{x}}^{(1)}, \ldots$`几乎必然收敛到 `!$x$` 是指 `!$p(\lim_{m \rightarrow \infty} \boldsymbol{\mathtt{x}}^{(m)} = x) = 1$`.
+
+
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
