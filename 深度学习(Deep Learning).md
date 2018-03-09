@@ -1244,7 +1244,7 @@ $$
   
   如果有两种估计方法, 一个估计方法的偏差很大而另外一个的方差很大的情况下, 我们可以用均方误差(MSE)作为惩罚的交叉验证来权衡方差和偏差:
   
-  ```mathjax!
+```mathjax!
   $$
   \begin{equation}
   \begin{split}
@@ -1254,7 +1254,8 @@ $$
   \nonumber
   \end{equation}
   $$
-  ```
+```
+> [Reference](https://en.wikipedia.org/wiki/Mean_squared_error)
   
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
