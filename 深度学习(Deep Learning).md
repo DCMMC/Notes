@@ -1278,14 +1278,12 @@ $$
 
 **一致性(consistency)**
 
-前面我们说的都是在固定大小训练集上的各种估计的属性, 我们还关注训练集大小 `!$m$` 不断增加时点估计的性质. 一般我们想要
+前面我们说的都是在固定大小训练集上的各种估计的属性, 我们还关注训练集大小 `!$m$` 不断增加时点估计的性质. 一般我们想要 **一致性** :
 
 ```mathjax!
 $$\text{plim}_{m \rightarrow \infty} \hat{\theta}_m = \theta$$
 ```
 > 其中 `!$\text{plim}$` 表示依概率收敛(convergence), 也就是对于任意 `!$\epsilon > 0$`, 当 `!$m \rightarrow \infty$`, 有 `!$P(|\hat{\theta}_m - \theta| > \epsilon) \rightarrow 0$`.
-
-
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
