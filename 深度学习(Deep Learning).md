@@ -1232,7 +1232,9 @@ $$
   \begin{split}
   \mathtt{Var}(\hat{\theta}_m) &= \mathtt{Var} \left( \frac{1}{m} \sum_{i=1}^m x^{(i)} \right) \\
   &= \frac{1}{m^2} \sum_{i=1}^m \mathtt{Var}(x^{(i)}) \\
-  &= \frac{1}{m^2} \sum_{i=1}^m 
+  &= \frac{1}{m^2} \sum_{i=1}^m \left( \mathbb{E}\left[ \left( x^{(i)} \right)^2 \right] - \mathbb{E}^2 [x^{(i)}] \right) \\
+  &= \frac{1}{m^2} \sum_{i=1}^m \left( 1^2 \Pr (x^{(i)} = 1) + 0 - \left( 1 \Pr (x^{(i)} = 1) + 0 \right)^2 \right) \\
+  &= \frac{1}{m} \theta (1 - \theta)
   \end{split}
   \nonumber
   \end{equation}
