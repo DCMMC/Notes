@@ -1307,7 +1307,9 @@ $$\text{plim}_{m \rightarrow \infty} \hat{\theta}_m = \theta$$
 $$\boldsymbol{\theta}_{\text{ML}} = \text{arg} \max_{\boldsymbol{\theta}} p_{\text{model}}(\mathbb{X}; \boldsymbol{\theta}) = \text{arg} \max_{\boldsymbol{\theta}} \prod_{i=1}^m p_{\text{model}} (x^{(i)}; \boldsymbol{\theta})$$
 ```
 
-但是上面
+但是上面的乘积有一点不方便, 例如可能会造成数字下溢, 为了方便, 我们经常使用对数似然(log-likelihood)来等价的替代上述优化问题, `!$\boldsymbol{\theta}_{\text{ML}} = \text{arg} \max_{\boldsymbol{\theta}} \sum_{i=1}^m \log p_{\text{model}}(x^{(i)}; \boldsymbol{\theta})$`.  
+
+
 
 ### (p) 1.4.6 贝叶斯统计(Bayesian Statistics)
 
