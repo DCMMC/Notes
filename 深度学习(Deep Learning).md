@@ -1295,6 +1295,20 @@ $$\text{plim}_{m \rightarrow \infty} \hat{\theta}_m = \theta$$
 
 ### (p) 1.4.5 最大似然估计(Maximum Likelihood Estimation)
 
+我们需要对不同模型使用不用的优秀的估计函数提供原理, 而不是去瞎猜. 其中最常用的原理就是 **最大似然估计**.  
+
+假设 `!$m$` 个样本的集合 `!$\mathbb{X} = \{ x^{(1)}, \ldots, x^{(m)} \}$` 独立地由真实但是未知的概率分布 `!$p_{\text{data}}(\mathtt{x})$` 生成. 让 `!$p_{\text{model}}(\mathtt{x}; \boldsymbol{\theta})$` 为由 `!$\boldsymbol{\theta}$` ( `!$\boldsymbol{\theta}$` 为模型的(向量)参数 )确定的在相同空间上的一参数族(parametric family, 表示为 `!$\{ p_{\text{model}} (\mathtt{x}; \boldsymbol{\theta}) | \boldsymbol{\theta} \in \boldsymbol{\Theta} \}$` )的概率分布.
+
+最大似然估计找到这个参数 `!$\boldsymbol{\theta}$` 的最大似然估计 `!$\boldsymbol{\theta}_{\text{ML}}$` 使得最大化 **似然函数(Likelihood function)** `!$\mathcal{L} (\boldsymbol{\theta}; \mathtt{x})$`.
+
+在本例中
+
+```mathjax!
+$$\boldsymbol{\theta}_{\text{ML}} = \text{arg} \max_{\boldsymbol{\theta}} p_{\text{model}}(\mathbb{X}; \boldsymbol{\theta}) = \text{arg} \max_{\boldsymbol{\theta}} \prod_{i=1}^m p_{\text{model}} (x^{(i)}; \boldsymbol{\theta})$$
+```
+
+但是上面
+
 ### (p) 1.4.6 贝叶斯统计(Bayesian Statistics)
 
 
