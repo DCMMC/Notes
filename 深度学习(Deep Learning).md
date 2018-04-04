@@ -513,7 +513,7 @@ $$
 
 PDF 没有直接给定某个状态的概率, 而是给出了落在面积为 `!$\sigma x$` 的无限小(infinitesimal)区域的概率是 `!$p(x) \sigma x$`. 我们可以通过对 PDF 求积分(integrate)来获得点集的概率质量. 对于单变量(univariate) PDF , x 在区间 \[a, b] 的概率为 `!$\int_{[a, b]} p(x) \mathrm{d} x$`.
 
-例如概率在实数区间 \[*a*, *b*] ( *a* < *b*) 上均匀分布(uniform distribution), 考虑函数 *u*(*x*; *a*, *b*), ";" 表示以什么作为函数(parametrized by),  *x* 是函数的自变量(argument), 而 *a* 和 *b* 是函数的参数(parameters), 并且对于所有 `!$x \notin [a, b], u(x; a, b) = 0$`, 而对于所有 `!$x \in [a, b], u(x; a, b) = \frac{1}{b - a}$`, 可记作 x ~ *U*(a, b). 
+例如概率在实数区间 \[*a*, *b*] ( *a* < *b*) 上均匀分布(uniform distribution), 考虑函数 *u*(*x*; *a*, *b*), ";" 表示以什么作为参数(parametrized by),  *x* 是函数的自变量(argument), 而 *a* 和 *b* 是函数的参数(parameters), 并且对于所有 `!$x \notin [a, b], u(x; a, b) = 0$`, 而对于所有 `!$x \in [a, b], u(x; a, b) = \frac{1}{b - a}$`, 可记作 x ~ *U*(a, b). 
 
 ### (p) 1.2.4 边缘概率(Marginal Probability)
 
