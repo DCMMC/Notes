@@ -81,6 +81,13 @@ wget https://busybox.net/downloads/busybox-1.28.4.tar.bz2
 tar xjf ./busybox-1.28.4.tar.bz2
 ```
 
+**using default config**
+
+```shell
+cd busybox-1.21.1
+make defconfig
+```
+
 ## 参考
 
 http://devarea.com/building-embedded-linux-system-with-qemu/#.WxoUmSRfhhE
