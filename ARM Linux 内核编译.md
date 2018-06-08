@@ -44,8 +44,8 @@ yaourt -S arm-linux-gnueabi-gcc
 ## 指定编译环境和目标架构
 
 ```shell
-export ARCH=arm
- export CROSS_COMPILE=arm-linux-gnueabi-
+export ARCH=arm # 目标 arch
+ export CROSS_COMPILE=arm-linux-gnueabi- # 使用的编译链 prefix
 ```
 
 ## Setting up kernel configuration
