@@ -41,6 +41,13 @@ yaourt -S arm-linux-gnueabi-gcc
 > 提示 `未知的公共密匙 13FCEF89DD9E3C4F`
 > 解决方法: gpg 导入公钥 ==gpg --recv-key 13FCEF89DD9E3C4F==
 
+## 指定编译环境和目标架构
+
+```shell
+export ARCH=arm
+ export CROSS_COMPILE=arm-linux-gnueabi-
+```
+
 ## Setting up kernel configuration
 
 configuration 可以用于指定哪些内核驱动/模块打开或关闭.
