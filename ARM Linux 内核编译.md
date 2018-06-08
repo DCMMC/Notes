@@ -91,7 +91,11 @@ make -j 8 install
 
 > 将会安装到 ==_install== 目录
 
+**添加一些重要的文件夹(作为 root dir)**
 
+```shell
+mkdir proc sys dev etc etc/init.d
+```
 
 ## 参考
 
