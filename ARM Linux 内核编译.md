@@ -128,8 +128,12 @@ env LANG=en.US qemu-system-arm -M vexpress-a15 -m 256M -kernel arch/arm/boot/zIm
 
 > 模拟的是 ARM-v7h A15 架构, 假设 ==rootfs.img== 就在当前目录
 
+## 使用磁盘镜像文件作为根文件系统
+
 ## 参考
 
 http://devarea.com/building-embedded-linux-system-with-qemu/#.WxoUmSRfhhE
 
 https://github.com/surajx/qemu-arm-linux/wiki/Compile-Linux,-BusyBox-for-ARM-and-load-it-using-QEMU
+
+https://hellogc.net/archives/121
