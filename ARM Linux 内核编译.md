@@ -31,7 +31,7 @@ yaourt -S qemu-arch-extra
 
 ### gcc with gnu-eabi
 
-> 同时会安装 ==binutils== (汇编器和链接器, etc.) 还有 ==glibc== 的 `ARM` 版本
+> 同时会安装 ==binutils== (汇编器和链接器, etc.) 还有 ==glibc== (C library 和 headers )的 `ARM` 版本
 
 
 ```shell
