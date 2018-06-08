@@ -31,7 +31,7 @@ yaourt -S qemu-arch-extra
 
 ### gcc with gnu-eabi
 
-> 同时会安装 ==binutils== (汇编器和链接器, etc.)
+> 同时会安装 ==binutils== (汇编器和链接器, etc.) 还有 ==glibc== 的 `ARM` 版本
 
 
 ```shell
@@ -45,10 +45,10 @@ yaourt -S arm-linux-gnueabihf-gcc
 
 ```shell
 export ARCH=arm # 目标 arch
-export CROSS_COMPILE=arm-linux-gnueabi- # 使用的编译链 prefix
+export CROSS_COMPILE=arm-linux-gnueabihf- # 使用的编译链 prefix
 ```
 
-> 也可以直接写在 ==Makefile== 指定位置或者 ==make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi-== 来指定.
+> 也可以直接写在 ==Makefile== 指定位置或者 ==make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-== 来指定.
 
 ## Setting up kernel configuration
 
