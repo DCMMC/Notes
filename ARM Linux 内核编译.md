@@ -74,6 +74,13 @@ env LANG=en.US qemu-system-arm -M vexpress-a15 -m 512 -kernel arch/arm/boot/zIma
 
 ![效果图](./images/1528441438781.png)
 
+## 下载编译 busybox
+
+```shell
+wget https://busybox.net/downloads/busybox-1.28.4.tar.bz2
+tar xjf ./busybox-1.28.4.tar.bz2
+```
+
 ## 参考
 
 http://devarea.com/building-embedded-linux-system-with-qemu/#.WxoUmSRfhhE
