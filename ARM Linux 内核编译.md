@@ -13,10 +13,13 @@ grammar_cjkRuby: true
 
 * ArchLinux amd64
 
-## qemu
+### qemu
 
-### qemu-system-arm
+**qemu-system-arm**
 
 ```shell
 yaourt -S qemu-arch-extra
 ```
+
+### Arm toolchain
+
