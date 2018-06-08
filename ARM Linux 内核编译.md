@@ -130,6 +130,8 @@ env LANG=en.US qemu-system-arm -M vexpress-a15 -m 256M -kernel arch/arm/boot/zIm
 
 ## 使用磁盘镜像文件作为根文件系统
 
+> 假定在 linux 源码目录下
+
 创建 512M 的磁盘文件并格式化为 ==ext4==
 
 ```shell
