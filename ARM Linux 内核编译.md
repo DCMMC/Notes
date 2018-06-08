@@ -144,6 +144,15 @@ mkdir ./img
 sudo mount -o loop ./disk.raw ./img
 ```
 
+## 安装 Linux Kernel image 和 busybox 到虚拟磁盘
+
+```shell
+sudo make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- \
+modules_install \ # 安装内核模块
+INSTALL_MOD_PATH=./img  # 指定安装路径
+
+```
+
 ## 参考
 
 http://devarea.com/building-embedded-linux-system-with-qemu/#.WxoUmSRfhhE
