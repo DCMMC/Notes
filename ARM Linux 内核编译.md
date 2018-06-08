@@ -96,10 +96,13 @@ make  ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j 8 install
 **添加一些重要的文件夹(作为 root dir)**
 
 ```shell
+cd _install
 mkdir proc sys dev etc etc/init.d
 ```
 
 ==/sbin/init== 一般是开机第一个被 kernel 运行的程序, 并且其默认的行为就是执行 == /etc/init.d/rcS== 中的内容.
+
+记得添加权限 ==chmod +x etc/init.d/rcS==
 
 
 
