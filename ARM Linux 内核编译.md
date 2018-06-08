@@ -86,7 +86,12 @@ tar xjf ./busybox-1.28.4.tar.bz2
 ```shell
 cd busybox-1.21.1
 make defconfig
+make -j 8 install
 ```
+
+> 将会安装到 ==_install== 目录
+
+
 
 ## 参考
 
