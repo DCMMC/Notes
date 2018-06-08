@@ -119,6 +119,12 @@ $ sudo pacman cpio
  ```
  
  这样带有 ==busybox== 的 ==rootfs== 就打包好了.
+ 
+ ## 运行 ==qemu== 模拟
+
+```shell
+env LANG=en.US qemu-system-arm -M vexpress-a15 -m 256M -kernel linux-3.10/arch/arm/boot/zImage -initrd busybox-1.21.1/rootfs.img -append "root=/dev/ram rdinit=/sbin/init"
+```
 
 ## 参考
 
