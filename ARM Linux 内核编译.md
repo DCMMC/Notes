@@ -87,7 +87,7 @@ tar xjf ./busybox-1.28.4.tar.bz2
 
 ```shell
 cd busybox-1.21.1
-make  ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- defconfig
+make  ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- menuconfig
 make  ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j 8 install
 ```
 
