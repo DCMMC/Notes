@@ -60,7 +60,7 @@ configuration 可以用于指定哪些内核驱动/模块打开或关闭.
 
 ## make
 
-==make j8==
+==make -j 8==
 
 > 8 个核心全跑满, 大概 4 min
 
@@ -85,8 +85,8 @@ tar xjf ./busybox-1.28.4.tar.bz2
 
 ```shell
 cd busybox-1.21.1
-make defconfig
-make -j 8 install
+make  ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- defconfig
+make  ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j 8 install
 ```
 
 > 将会安装到 ==_install== 目录
