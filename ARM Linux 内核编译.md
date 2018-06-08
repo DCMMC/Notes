@@ -68,7 +68,9 @@ configuration 可以用于指定哪些内核驱动/模块打开或关闭.
 
 ## qemu 运行一下
 
+```
 qemu-system-arm -M vexpress-a15 -m 512 -kernel arch/arm/boot/zImage -dtb arch/arm/boot/
+```
 
 ## 参考
 
