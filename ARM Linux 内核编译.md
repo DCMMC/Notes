@@ -99,6 +99,8 @@ make  ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j 8 install
 mkdir proc sys dev etc etc/init.d
 ```
 
+==/sbin/init==
+
 ## 参考
 
 http://devarea.com/building-embedded-linux-system-with-qemu/#.WxoUmSRfhhE
