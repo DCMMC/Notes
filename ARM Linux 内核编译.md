@@ -23,3 +23,8 @@ yaourt -S qemu-arch-extra
 
 ### Arm toolchain
 
+### gcc with gnu-eabi
+
+```shell
+yaourt -S arm-linux-gnueabi-gcc
+```
