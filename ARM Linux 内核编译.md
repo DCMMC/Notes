@@ -28,3 +28,6 @@ yaourt -S qemu-arch-extra
 ```shell
 yaourt -S arm-linux-gnueabi-gcc
 ```
+
+> 提示 `未知的公共密匙 13FCEF89DD9E3C4F`
+> 解决方法: gpg 导入公钥 ==gpg --recv-key 13FCEF89DD9E3C4F==
