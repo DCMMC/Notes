@@ -58,7 +58,11 @@ configuration 可以用于指定哪些内核驱动/模块打开或关闭.
 
 我们这里使用 ==make vexpress_defconfig== 创建默认配置.
 
-## 
+## make
+
+==make j8==
+
+> 8 个核心全跑满
 
 ## 参考
 
