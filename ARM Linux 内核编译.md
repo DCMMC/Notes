@@ -119,14 +119,6 @@ $ sudo pacman cpio
  ```
  
  这样带有 ==busybox== 的 ==rootfs== 就打包好了.
- 
- ## 运行 ==qemu== 模拟
-
-```shell
-env LANG=en.US qemu-system-arm -M vexpress-a15 -m 256M -kernel arch/arm/boot/zImage -initrd rootfs.img -append "root=/dev/ram rdinit=/sbin/init"
-```
-
-> 模拟的是 ARM-v7h A15 架构, 假设 ==rootfs.img== 就在当前目录
 
 ## 使用磁盘镜像文件作为根文件系统
 
@@ -161,6 +153,15 @@ INSTALL_MOD_PATH=./img  # 指定安装路径
 ```shell
 sudo make CONFIG_PREFIX=<path_to_disk_img_mount_point> ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
 ```
+
+ ## 运行 ==qemu== 模拟
+
+```shell
+env LANG=en.US qemu-system-arm -M vexpress-a15 -smp 4-m 256M -kernel arch/arm/boot/zImage -drive format=raw,file=./disk.raw \
+-append "init=/linuxrc root=/dev/sda"
+```
+
+> 模拟的是 ARM-v7h A15 架构, 假设 ==rootfs.img== 就在当前目录
 
 ## 参考
 
