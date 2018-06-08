@@ -54,7 +54,7 @@ export CROSS_COMPILE=arm-linux-gnueabi- # 使用的编译链 prefix
 
 configuration 可以用于指定哪些内核驱动/模块打开或关闭.
 
-==make defconfig== 创建默认配置, 不过我们一般需要更多的配置, 使用 ==make menuconfig== 创建 minimal config.
+==make defconfig== 创建默认配置, 不过我们一般需要更多的配置, 使用 ==make menuconfig== 交互式的创建自定义 config.
 
 我们这里使用 ==make vexpress_defconfig== 创建默认配置.
 
