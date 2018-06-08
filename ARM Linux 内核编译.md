@@ -62,7 +62,13 @@ configuration 可以用于指定哪些内核驱动/模块打开或关闭.
 
 ==make j8==
 
-> 8 个核心全跑满
+> 8 个核心全跑满, 大概 4 min
+
+**编译好的 kernel 在 ==arch/arm/boot/zImage==
+
+## qemu 运行一下
+
+qemu-system-arm -M vexpress-a15 -m 512 -kernel arch/arm/boot/zImage -dtb arch/arm/boot/
 
 ## 参考
 
