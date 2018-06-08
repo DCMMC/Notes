@@ -35,7 +35,7 @@ yaourt -S qemu-arch-extra
 
 
 ```shell
-yaourt -S arm-linux-gnueabi-gcc
+yaourt -S arm-linux-gnueabihf-gcc
 ```
 
 > 提示 `未知的公共密匙 13FCEF89DD9E3C4F`
