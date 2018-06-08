@@ -91,6 +91,12 @@ make  ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- menuconfig
 make  ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j 8 install
 ```
 
+这里有一个重要的配置，因为 busybox 将被用作 init 程序，而且我们的磁盘镜像中没有任何其它库，所以 busybox 需要被静态编译成一个独立、无依赖的可执行文件，以免运行时发生链接错误。配置路径如下：
+
+> Busybox Settings —>
+> — Build Options
+> [*] Build BusyBox as a static binary (no shared libs)
+
 > 将会安装到 ==_install== 目录
 
 **添加一些重要的文件夹(作为 root dir)**
