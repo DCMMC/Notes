@@ -126,6 +126,8 @@ $ sudo pacman cpio
 env LANG=en.US qemu-system-arm -M vexpress-a15 -m 256M -kernel linux-3.10/arch/arm/boot/zImage -initrd rootfs.img -append "root=/dev/ram rdinit=/sbin/init"
 ```
 
+> 模拟的是 ARM-v7h A15 架构, 假设 ==rootfs.img== 就在当前目录
+
 ## 参考
 
 http://devarea.com/building-embedded-linux-system-with-qemu/#.WxoUmSRfhhE
