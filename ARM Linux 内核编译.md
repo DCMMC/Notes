@@ -31,6 +31,9 @@ yaourt -S qemu-arch-extra
 
 ### gcc with gnu-eabi
 
+> 同时会安装 ==binutils== (汇编器和链接器, etc.)
+
+
 ```shell
 yaourt -S arm-linux-gnueabi-gcc
 ```
@@ -41,3 +44,5 @@ yaourt -S arm-linux-gnueabi-gcc
 ## 参考
 
 http://devarea.com/building-embedded-linux-system-with-qemu/#.WxoUmSRfhhE
+
+https://github.com/surajx/qemu-arm-linux/wiki/Compile-Linux,-BusyBox-for-ARM-and-load-it-using-QEMU
