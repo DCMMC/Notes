@@ -108,6 +108,14 @@ mkdir proc sys dev etc etc/init.d
 
 ==/sbin/init== 一般是开机第一个被 kernel 运行的程序, 并且其默认的行为就是执行 == /etc/init.d/rcS== 中的内容.
 
+写入如下内容, 挂载目录 ==proc== 和 ==sysfs==
+
+```shell
+#!/bin/sh
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+```
+
 记得添加权限 ==chmod +x etc/init.d/rcS==
 
 ### 打包成 **rootfs.img**
