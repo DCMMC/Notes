@@ -41,6 +41,14 @@ yaourt -S arm-linux-gnueabi-gcc
 > 提示 `未知的公共密匙 13FCEF89DD9E3C4F`
 > 解决方法: gpg 导入公钥 ==gpg --recv-key 13FCEF89DD9E3C4F==
 
+## Setting up kernel configuration
+
+configuration 可以用于指定哪些内核驱动/模块打开或关闭.
+
+==make defconfig== 创建默认配置, 不过我们一般需要更多的配置, 使用 ==make menuconfig== 创建 minimal config.
+
+我们这里使用 ==make vexpress_defconfig== 创建默认配置.
+
 ## 参考
 
 http://devarea.com/building-embedded-linux-system-with-qemu/#.WxoUmSRfhhE
