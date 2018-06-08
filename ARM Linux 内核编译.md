@@ -157,7 +157,7 @@ sudo make CONFIG_PREFIX=<path_to_disk_img_mount_point> ARCH=arm CROSS_COMPILE=ar
  ## 运行 ==qemu== 模拟
 
 ```shell
-env LANG=en.US qemu-system-arm -M vexpress-a15 -smp 4-m 256M -kernel arch/arm/boot/zImage -drive format=raw,file=./disk.raw \
+env LANG=en.US qemu-system-arm -M vexpress-a15 -smp 4 -m 256M -kernel arch/arm/boot/zImage -drive format=raw,file=./disk.raw \
 -append "init=/linuxrc root=/dev/sda"
 ```
 
