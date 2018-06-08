@@ -48,6 +48,8 @@ export ARCH=arm # 目标 arch
 export CROSS_COMPILE=arm-linux-gnueabi- # 使用的编译链 prefix
 ```
 
+> 也可以直接写在 ==Makefile== 指定位置或者 ==make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi-== 来指定.
+
 ## Setting up kernel configuration
 
 configuration 可以用于指定哪些内核驱动/模块打开或关闭.
@@ -55,6 +57,8 @@ configuration 可以用于指定哪些内核驱动/模块打开或关闭.
 ==make defconfig== 创建默认配置, 不过我们一般需要更多的配置, 使用 ==make menuconfig== 创建 minimal config.
 
 我们这里使用 ==make vexpress_defconfig== 创建默认配置.
+
+## 
 
 ## 参考
 
