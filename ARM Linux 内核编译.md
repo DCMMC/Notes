@@ -104,7 +104,21 @@ mkdir proc sys dev etc etc/init.d
 
 记得添加权限 ==chmod +x etc/init.d/rcS==
 
+### 打包成 **rootfs.img**
 
+先安装一下 ==cpio==
+
+```shell
+$ sudo pacman cpio
+```
+
+打包
+
+```shell
+ find . | cpio -o --format=newc > rootfs.img
+ ```
+ 
+ 这样带有 ==busybox== 的 ==rootfs== 就打包好了.
 
 ## 参考
 
