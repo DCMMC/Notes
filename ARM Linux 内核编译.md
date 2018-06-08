@@ -146,11 +146,18 @@ sudo mount -o loop ./disk.raw ./img
 
 ## 安装 Linux Kernel image 和 busybox 到虚拟磁盘
 
+在 linux 源码目录下
+
 ```shell
 sudo make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- \
 modules_install \ # 安装内核模块
 INSTALL_MOD_PATH=./img  # 指定安装路径
+```
 
+在 busybox 源码muluxia
+
+```shell
+sudo make CONFIG_PREFIX=<path_to_disk_img_mount_point> ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
 ```
 
 ## 参考
