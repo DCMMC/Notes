@@ -38,8 +38,10 @@ yaourt -S qemu-arch-extra
 yaourt -S arm-linux-gnueabihf-gcc
 ```
 
-> 提示 `未知的公共密匙 13FCEF89DD9E3C4F`
-> 解决方法: gpg 导入公钥 ==gpg --recv-key 13FCEF89DD9E3C4F==
+> 提示 `未知的公共密匙 79BE3E4300411886`
+> 解决方法: gpg 导入公钥 ==gpg --recv-key 79BE3E4300411886==
+
+> 需要编译很多重量级软件, 大约 30min
 
 ## 指定编译环境和目标架构
 
