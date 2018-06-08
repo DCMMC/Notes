@@ -130,6 +130,20 @@ env LANG=en.US qemu-system-arm -M vexpress-a15 -m 256M -kernel arch/arm/boot/zIm
 
 ## 使用磁盘镜像文件作为根文件系统
 
+创建 512M 的磁盘文件并格式化为 ==ext4==
+
+```shell
+qemu-img create -f raw disk.raw 512M
+mkfs -t ext4 ./disk.raw
+```
+
+挂载到新文件夹 ==./img==
+
+```shell
+mkdir ./img
+sudo mount -o loop ./disk.raw ./img
+```
+
 ## 参考
 
 http://devarea.com/building-embedded-linux-system-with-qemu/#.WxoUmSRfhhE
