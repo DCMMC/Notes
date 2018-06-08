@@ -9,6 +9,12 @@ grammar_cjkRuby: true
 
 [官方链接](https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.17.tar.xz)
 
+**解压 Linux 内核源码**
+
+```shell
+tar xaf linux-4.17.tar.xz 
+```
+
 ## 实验环境
 
 * ArchLinux amd64
