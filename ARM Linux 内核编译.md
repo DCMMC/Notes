@@ -29,7 +29,7 @@ yaourt -S qemu-arch-extra
 
 ### Arm toolchain
 
-### gcc with gnu-eabihf
+### arm gcc with gnu-eabihf
 
 > 同时会安装 ==binutils== (汇编器和链接器, etc.) 还有 ==glibc== (C library 和 headers)的 `ARM` 版本
 
