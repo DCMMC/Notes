@@ -45,7 +45,7 @@ yaourt -S arm-linux-gnueabi-gcc
 
 ```shell
 export ARCH=arm # 目标 arch
- export CROSS_COMPILE=arm-linux-gnueabi- # 使用的编译链 prefix
+export CROSS_COMPILE=arm-linux-gnueabi- # 使用的编译链 prefix
 ```
 
 ## Setting up kernel configuration
