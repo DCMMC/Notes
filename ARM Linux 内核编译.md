@@ -319,8 +319,8 @@ Linux vexpress 4.17.0 #3 SMP Sat Jun 9 02:00:02 CST 2018 armv7l GNU/Linux
  ## 运行 ==qemu== 模拟
 
 ```shell
-env LANG=en.US qemu-system-arm -M vexpress-a15 -dtb arch/arm/boot/dts/vexpress-v2p-ca15-tc1.dtb -m 256M -kernel arch/arm/boot/zImage -sd ./a15rootfs.ext4 \
--append "root=/dev/mmcblk0 console=tty1"
+env LANG=en.US qemu-system-arm -M vexpress-a15 -dtb arch/arm/boot/dts/vexpress-v2p-ca15-tc1.dtb -m 256M -kernel arch/arm/boot/zImage -drive format=raw,file=./a15rootfs.ext4,index=0,if=sd \
+-append "root=/dev/mmcblk0 console=ttyAMA0 panic=0 rootfstype=ext4 rw" --nographic
 ```
 
 > console 指定 tty1 或者其他 tty 都可以
