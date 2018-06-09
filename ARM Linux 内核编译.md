@@ -71,10 +71,32 @@ configuration 可以用于指定哪些内核驱动/模块打开或关闭.
 ## qemu 运行一下
 
 ```
-env LANG=en.US qemu-system-arm -M vexpress-a15 -m 512 -kernel arch/arm/boot/zImage -dtb arch/arm/boot/dts/vexpress-v2p-ca15-tc1.dtb -append "console=tty1"
+env LANG=en.US qemu-system-arm -M vexpress-a15 -m 512 -kernel arch/arm/boot/zImage -dtb arch/arm/boot/dts/vexpress-v2p-ca15-tc1.dtb -append "console=tty1" --nographic
 ```
 
+> 指定 ==--nographic== 将会将内核输出在当前终端
+
 ![效果图](./images/1528441438781.png)
+
+一般运行结果为类似于以下 kernel 报错:
+
+```
+Please append a correct "root=" boot option; here are the available partitions:
+1f00          131072 mtdblock0  (driver?)
+1f01           32768 mtdblock1  (driver?)
+Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)
+CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.4.0+ #5
+Hardware name: ARM-Versatile Express
+[<8001640c>] (unwind_backtrace) from [<80012f28>] (show_stack+0x10/0x14)
+[<80012f28>] (show_stack) from [<8025978c>] (dump_stack+0x88/0x98)
+[<8025978c>] (dump_stack) from [<800a4cd0>] (panic+0xa0/0x204)
+[<800a4cd0>] (panic) from [<80646254>] (mount_block_root+0x1c0/0x25c)
+[<80646254>] (mount_block_root) from [<8064640c>] (mount_root+0x11c/0x124)
+[<8064640c>] (mount_root) from [<8064656c>] (prepare_namespace+0x158/0x19c)
+[<8064656c>] (prepare_namespace) from [<80645ef0>] (kernel_init_freeable+0x268/0x278)
+[<80645ef0>] (kernel_init_freeable) from [<804b8f44>] (kernel_init+0xc/0xe8)
+[<804b8f44>] (kernel_init) from [<8000f538>] (ret_from_fork+0x14/0x3c)
+```
 
 ## 下载编译 busybox
 
@@ -110,7 +132,7 @@ mkdir proc sys dev etc etc/init.d var tmp mnt root
 
 ==/sbin/init== 一般是开机第一个被 kernel 运行的程序, 并且其默认的行为就是执行 == /etc/init.d/rcS== 中的内容.
 
-写入如下内容, 挂载目录 ==proc== 和 ==sysfs==
+写入如下内容, 挂载目录 ==proc== 和 ==sysfs== 以及其他 init 操作
 
 ```shell
 #!/bin/sh
