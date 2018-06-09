@@ -221,6 +221,8 @@ sudo cp -r rootfs/* tmpfs/
 sudo umount tmpfs
 ```
 
+> ==/usr/arm-linux-gnueabihf/lib/== 是 glibc-armhf 的位置, 可以是其他地方
+
 ### 打包成 **rootfs.img**
 
 先安装一下 ==cpio==
