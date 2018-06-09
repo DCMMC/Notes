@@ -286,6 +286,8 @@ env LANG=en.US qemu-system-arm -M vexpress-a15 -dtb arch/arm/boot/dts/vexpress-v
 
 > 模拟的是 ARM-v7h A15 架构, 假设 ==disk.raw== 就在当前目录
 
+![最终效果](./images/1528560044521.png)
+
 ## 参考
 
 http://devarea.com/building-embedded-linux-system-with-qemu/#.WxoUmSRfhhE
@@ -293,3 +295,5 @@ http://devarea.com/building-embedded-linux-system-with-qemu/#.WxoUmSRfhhE
 https://github.com/surajx/qemu-arm-linux/wiki/Compile-Linux,-BusyBox-for-ARM-and-load-it-using-QEMU
 
 https://hellogc.net/archives/121
+
+https://medicineyeh.wordpress.com/2016/03/29/buildup-your-arm-image-for-qemu/
