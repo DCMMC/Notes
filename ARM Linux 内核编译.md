@@ -132,6 +132,8 @@ mkdir proc sys dev etc etc/init.d var tmp mnt root
 
 ==/sbin/init== 一般是开机第一个被 kernel 运行的程序, 并且其默认的行为就是执行 == /etc/init.d/rcS== 中的内容.
 
+> 这里用的是 busybox init, 嵌入式系统中经常使用, 但是主流发行版一般使用 ==systemd==
+
 写入如下内容, 挂载目录 ==proc== 和 ==sysfs== 以及其他 init 操作
 
 ```shell
