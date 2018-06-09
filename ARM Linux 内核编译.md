@@ -142,6 +142,19 @@ LD_LIBRARY_PATH=/lib:/usr/lib:$LD_LIBRARY_PATH
 export PATH LD_LIBRARY_PATH
 ```
 
+==fstab== 指定一些基本的设备挂载点
+
+```shell
+#device		mount-point	type	options		dump	fsck order
+proc		/proc		proc	defaults		0	0
+tmpfs		/tmp		tmpfs	defaults		0	0
+sysfs		/sys		sysfs	defaults		0	0
+tmpfs		/dev		tmpfs	defaults		0	0
+var		/dev		tmpfs	defaults		0	0
+ramfs		/dev		ramfs	defaults		0	0
+debugfs		/sys/kernel/debug	debugfs		defaults	0	0
+```
+
 ### 打包成 **rootfs.img**
 
 先安装一下 ==cpio==
