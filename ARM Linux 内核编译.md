@@ -223,6 +223,20 @@ sudo umount tmpfs
 
 > ==/usr/arm-linux-gnueabihf/lib/== 是 glibc-armhf 的位置, 可以是其他地方
 
+> ==whoami== 提示 ==unknown uid 0 ==
+
+编辑 ==/etc/passwd==
+
+添加 ==root:x:0:0:root:/root:/bin/sh==
+
+编辑 ==/etc/group ==
+
+添加 ==root:x:0:root==
+
+然后通过passwd给root设置密码(第一回需要通过图形的qemu输入命令)
+
+
+
 ### 打包成 **rootfs.img**
 
 先安装一下 ==cpio==
@@ -297,3 +311,5 @@ https://github.com/surajx/qemu-arm-linux/wiki/Compile-Linux,-BusyBox-for-ARM-and
 https://hellogc.net/archives/121
 
 https://medicineyeh.wordpress.com/2016/03/29/buildup-your-arm-image-for-qemu/
+
+http://blog.163.com/awaken_ing/blog/static/12061319720127264411897
