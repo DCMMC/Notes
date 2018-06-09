@@ -112,8 +112,10 @@ mkdir proc sys dev etc etc/init.d var tmp mnt root
 
 ```shell
 #!/bin/sh
-mount -t proc proc /proc
-mount -t sysfs sysfs /sys
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+mount -a # 由 ==/fstab== 指定
+mdev -s
+mkdir -p /var/lock
 ```
 
 记得添加权限 ==chmod +x etc/init.d/rcS==
