@@ -299,7 +299,7 @@ INSTALL_MOD_PATH=./img  # 指定安装路径
 在 busybox 源码目录下
 
 ```bash?linenums
-sudo make CONFIG_PREFIX=<path_to_disk_img_mount_point> ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j 8 install
+$ sudo make CONFIG_PREFIX=<path_to_disk_img_mount_point> ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j 8 install
 ```
 
 > 记得在挂载点也必须按照前面说的创建一些根目录下的文件夹以及 ==etc/init.d/rcS==
