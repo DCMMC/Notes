@@ -323,7 +323,7 @@ env LANG=en.US qemu-system-arm -M vexpress-a15 -dtb arch/arm/boot/dts/vexpress-v
 -append "root=/dev/mmcblk0 console=ttyAMA0 panic=0 rootfstype=ext4 rw" --nographic
 ```
 
-> console 指定 tty1 或者其他 tty 都可以
+> console 指定 tty1 或者其他 tty 都可以, 不过要想使用 ==--nographic== 必须是 ==ttyAMA0==
 
 > 模拟的是 ARM-v7h A15 架构, 假设 ==disk.raw== 就在当前目录
 
