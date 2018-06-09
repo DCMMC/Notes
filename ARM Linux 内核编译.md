@@ -137,11 +137,11 @@ mkdir proc sys dev etc etc/init.d var tmp mnt root
 ```shell
 #!/bin/sh
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
+mkdir -p /var/lock
 mount -a # 由 ==/fstab== 指定
 mkdir -p /dev/pts
 mount -t devpts devpts /dev/pts
 echo /sbin/mdev > /proc/sys/kernel/hotplug
-mkdir -p /var/lock
 mdev -s
 ifconfig lo 127.0.0.1
 /bin/hostname -F /etc/sysconfig/HOSTNAME
