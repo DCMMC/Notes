@@ -101,6 +101,8 @@ make  ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j 8 install
 
 **添加一些重要的文件夹(作为 root dir)**
 
+> 注意这些文件的所有用户都是 ==root==
+
 ```shell
 cd _install
 mkdir proc sys dev etc etc/init.d var tmp mnt root
