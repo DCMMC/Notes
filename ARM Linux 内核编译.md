@@ -68,6 +68,12 @@ configuration 可以用于指定哪些内核驱动/模块打开或关闭.
 
 **编译好的 kernel 在 ==arch/arm/boot/zImage==
 
+> 编译出来的内核(压缩后)大小:
+
+```shell
+-rwxr-xr-x   1 kevin kevin 3.9M Jun  9 02:00 zImage
+```
+
 ## qemu 运行一下
 
 ```
