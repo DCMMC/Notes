@@ -235,7 +235,15 @@ sudo umount tmpfs
 
 然后通过passwd给root设置密码(第一回需要通过图形的qemu输入命令)
 
+> 提示 ==mmcblk0 Mounted root (ext4 filesystem) readonly==, ==mount -o rw== 提示没有开启 ==linux Large file support==
 
+这是因为 ==a15ext4.ext4== 没有开启 huge_file 支持
+
+```
+tune2fs -O ^huge_file ./a15rootfs.ext4
+e2fsck ./a15rootfs.ext4
+
+```
 
 ### 打包成 **rootfs.img**
 
