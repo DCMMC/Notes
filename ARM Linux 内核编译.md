@@ -152,7 +152,7 @@ export PATH LD_LIBRARY_PATH
 ==/etc/sysconfig/HOSTNAME== 指定 hostname
 
 ```shell
-dcmmc
+dcmmc # 随便取
 ```
 
 ==/etc/fstab== 指定一些基本的设备挂载点
