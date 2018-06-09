@@ -11,7 +11,7 @@ grammar_cjkRuby: true
 
 **解压 Linux 内核源码**
 
-```shell
+```bash?linenums
 tar xaf linux-4.17.tar.xz 
 ```
 
@@ -23,8 +23,8 @@ tar xaf linux-4.17.tar.xz
 
 **qemu-system-arm**
 
-```shell
-yaourt -S qemu-arch-extra
+```bash?linenums
+$ yaourt -S qemu-arch-extra
 ```
 
 ### Arm toolchain
@@ -34,7 +34,7 @@ yaourt -S qemu-arch-extra
 > 同时会安装 ==binutils== (汇编器和链接器, etc.) 还有 ==glibc== (C library 和 headers)的 `ARM` 版本
 
 
-```shell
+```bash?linenums
 yaourt -S arm-linux-gnueabihf-gcc
 ```
 
@@ -45,7 +45,7 @@ yaourt -S arm-linux-gnueabihf-gcc
 
 ## 指定编译环境和目标架构
 
-```shell
+```bash?linenums
 export ARCH=arm # 目标 arch
 export CROSS_COMPILE=arm-linux-gnueabihf- # 使用的编译链 prefix
 ```
@@ -70,7 +70,7 @@ configuration 可以用于指定哪些内核驱动/模块打开或关闭.
 
 > 编译出来的内核(压缩后)大小:
 
-```shell
+```bash?linenums
 -rwxr-xr-x   1 kevin kevin 3.9M Jun  9 02:00 zImage
 ```
 
@@ -106,14 +106,14 @@ Hardware name: ARM-Versatile Express
 
 ## 下载编译 busybox
 
-```shell
+```bash?linenums
 wget https://busybox.net/downloads/busybox-1.28.4.tar.bz2
 tar xjf ./busybox-1.28.4.tar.bz2
 ```
 
 **using default config**
 
-```shell
+```bash?linenums
 cd busybox-1.21.1
 make  ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- menuconfig
 make  ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j 8 install
@@ -131,7 +131,7 @@ make  ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j 8 install
 
 > 注意这些文件的所有用户都是 ==root==
 
-```shell
+```bash?linenums
 cd _install
 mkdir proc sys dev etc etc/init.d var tmp mnt root
 ```
@@ -142,7 +142,7 @@ mkdir proc sys dev etc etc/init.d var tmp mnt root
 
 写入如下内容, 挂载目录 ==proc== 和 ==sysfs== 以及其他 init 操作
 
-```shell
+```bash?linenums
 #!/bin/sh
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 mkdir -p /var/lock
@@ -159,7 +159,7 @@ ifconfig lo 127.0.0.1
 
 ==rcS== 默认是被 ==/inittab== 指定的, ==inittab== 默认(也就是如果没有该文件的时候)是以下内容
 
-```shell
+```bash?linenums
 # /etc/inittab
 ::sysinit:/etc/init.d/rcS
 console::askfirst:-/bin/sh
@@ -170,7 +170,7 @@ console::askfirst:-/bin/sh
 	
 ==/etc/profile== 指定一些基本的环境变量
 
-```shell
+```bash?linenums
 LOGNAME=$USER
 export HOSTNAME=`/bin/hostname`
 export USER=root
@@ -183,13 +183,13 @@ export PATH LD_LIBRARY_PATH
 
 ==/etc/sysconfig/HOSTNAME== 指定 hostname
 
-```shell
+```bash?linenums
 dcmmc # 随便取
 ```
 
 ==/etc/fstab== 指定一些基本的设备挂载点
 
-```shell
+```bash?linenums
 #device		mount-point	type	options		dump	fsck order
 proc		/proc		proc	defaults		0	0
 tmpfs		/tmp		tmpfs	defaults		0	0
@@ -202,7 +202,7 @@ debugfs		/sys/kernel/debug	debugfs		defaults	0	0
 
 ### 创建 ==/dev== 下的基本文件和创建 ==ext4 image file== (也可以用下面的打包成 rootfs.img)
 
-```shell
+```bash?linenums
 #Copy shared libraries to rootfs
 sudo cp -arf /usr/arm-linux-gnueabihf/lib/* rootfs/lib/
 sudo rm rootfs/lib/*.a
@@ -247,7 +247,7 @@ sudo umount tmpfs
 
 这是因为 ==a15rootfs.ext4== 没有开启 huge_file 支持
 
-```
+```bash?linenums
 tune2fs -O ^huge_file ./a15rootfs.ext4
 e2fsck ./a15rootfs.ext4
 ```
@@ -256,13 +256,13 @@ e2fsck ./a15rootfs.ext4
 
 先安装一下 ==cpio==
 
-```shell
+```bash?linenums
 $ sudo pacman cpio
 ```
 
 打包
 
-```shell
+```bash?linenums
  find . | cpio -o --format=newc > rootfs.img
  ```
  
@@ -274,14 +274,14 @@ $ sudo pacman cpio
 
 创建 512M 的磁盘文件并格式化为 ==ext4==
 
-```shell
+```bash?linenums
 qemu-img create -f raw disk.raw 512M
 mkfs -t ext4 ./disk.raw
 ```
 
 挂载到新文件夹 ==./img==
 
-```shell
+```bash?linenums
 mkdir ./img
 sudo mount -o loop ./disk.raw ./img
 ```
@@ -290,7 +290,7 @@ sudo mount -o loop ./disk.raw ./img
 
 在 linux 源码目录下
 
-```shell
+```bash?linenums
 sudo make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- \
 modules_install \ # 安装内核模块
 INSTALL_MOD_PATH=./img  # 指定安装路径
@@ -298,7 +298,7 @@ INSTALL_MOD_PATH=./img  # 指定安装路径
 
 在 busybox 源码目录下
 
-```shell
+```bash?linenums
 sudo make CONFIG_PREFIX=<path_to_disk_img_mount_point> ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j 8 install
 ```
 
@@ -306,7 +306,7 @@ sudo make CONFIG_PREFIX=<path_to_disk_img_mount_point> ARCH=arm CROSS_COMPILE=ar
 
 > 最终整个根目录大小:
 
-```shell
+```bash?linenums
 [root@vexpress ]# du -sh
 14.1M	.
 [root@vexpress ]# 
@@ -318,7 +318,7 @@ Linux vexpress 4.17.0 #3 SMP Sat Jun 9 02:00:02 CST 2018 armv7l GNU/Linux
 
  ## 运行 ==qemu== 模拟
 
-```shell
+```bash?linenums
 env LANG=en.US qemu-system-arm -M vexpress-a15 -dtb arch/arm/boot/dts/vexpress-v2p-ca15-tc1.dtb -m 256M -kernel arch/arm/boot/zImage -drive format=raw,file=./a15rootfs.ext4,index=0,if=sd \
 -append "root=/dev/mmcblk0 console=ttyAMA0 panic=0 rootfstype=ext4 rw" --nographic
 ```
