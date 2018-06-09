@@ -237,7 +237,7 @@ sudo umount tmpfs
 
 > 提示 ==mmcblk0 Mounted root (ext4 filesystem) readonly==, ==mount -o rw== 提示没有开启 ==linux Large file support==
 
-这是因为 ==a15ext4.ext4== 没有开启 huge_file 支持
+这是因为 ==a15rootfs.ext4== 没有开启 huge_file 支持
 
 ```
 tune2fs -O ^huge_file ./a15rootfs.ext4
