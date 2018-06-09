@@ -196,7 +196,7 @@ debugfs		/sys/kernel/debug	debugfs		defaults	0	0
 
 ```shell
 #Copy shared libraries to rootfs
-sudo cp -arf ~/bin/linaro-arm-linux-gnueabihf/libc/usr/lib rootfs/
+sudo cp -arf /usr/arm-linux-gnueabihf/lib/* rootfs/lib/
 sudo rm rootfs/lib/*.a
 sudo arm-linux-gnueabihf-strip rootfs/lib/*
  
