@@ -151,6 +151,10 @@ export PATH LD_LIBRARY_PATH
 
 ==/etc/sysconfig/HOSTNAME== 指定 hostname
 
+```shell
+dcmmc
+```
+
 ==/etc/fstab== 指定一些基本的设备挂载点
 
 ```shell
