@@ -192,6 +192,35 @@ ramfs		/dev		ramfs	defaults		0	0
 debugfs		/sys/kernel/debug	debugfs		defaults	0	0
 ```
 
+### 创建 ==/dev== 下的基本文件和创建 ==ext4 image file== (也可以用下面的打包成 rootfs.img)
+
+```shell
+#Copy shared libraries to rootfs
+sudo cp -arf ~/bin/linaro-arm-linux-gnueabihf/libc/usr/lib rootfs/
+sudo rm rootfs/lib/*.a
+sudo arm-linux-gnueabihf-strip rootfs/lib/*
+ 
+#Create basic device nodes
+sudo mkdir -p rootfs/dev/
+sudo mknod rootfs/dev/tty1 c 4 1
+sudo mknod rootfs/dev/tty2 c 4 2
+sudo mknod rootfs/dev/tty3 c 4 3
+sudo mknod rootfs/dev/tty4 c 4 4
+sudo mknod rootfs/dev/console c 5 1
+sudo mknod rootfs/dev/ttyAMA0 c 204 64
+sudo mknod rootfs/dev/null c 1 3
+ 
+#Create ext4 image file
+dd if=/dev/zero of=a15rootfs.ext4 bs=1M count=$((32))
+mkfs.ext4 a15rootfs.ext4
+ 
+#Copy all the files in our rootfs to image
+mkdir -p tmpfs
+sudo mount -t ext4 a15rootfs.ext4 tmpfs/ -o loop
+sudo cp -r rootfs/* tmpfs/
+sudo umount tmpfs
+```
+
 ### 打包成 **rootfs.img**
 
 先安装一下 ==cpio==
