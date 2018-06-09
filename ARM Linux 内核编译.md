@@ -149,6 +149,8 @@ LD_LIBRARY_PATH=/lib:/usr/lib:$LD_LIBRARY_PATH
 export PATH LD_LIBRARY_PATH
 ```
 
+==/etc/sysconfig/HOSTNAME== 指定 hostname
+
 ==/etc/fstab== 指定一些基本的设备挂载点
 
 ```shell
