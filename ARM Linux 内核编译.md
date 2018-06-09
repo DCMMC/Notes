@@ -103,7 +103,7 @@ make  ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j 8 install
 
 ```shell
 cd _install
-mkdir proc sys dev etc etc/init.d
+mkdir proc sys dev etc etc/init.d var tmp mnt root
 ```
 
 ==/sbin/init== 一般是开机第一个被 kernel 运行的程序, 并且其默认的行为就是执行 == /etc/init.d/rcS== 中的内容.
