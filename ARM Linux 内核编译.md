@@ -298,6 +298,18 @@ sudo make CONFIG_PREFIX=<path_to_disk_img_mount_point> ARCH=arm CROSS_COMPILE=ar
 
 > 记得在挂载点也必须按照前面说的创建一些根目录下的文件夹以及 ==etc/init.d/rcS==
 
+> 最终整个根目录大小:
+
+```shell
+[root@vexpress ]# du -sh
+14.1M	.
+[root@vexpress ]# 
+[root@vexpress ]# uname -a
+Linux vexpress 4.17.0 #3 SMP Sat Jun 9 02:00:02 CST 2018 armv7l GNU/Linux
+[root@vexpress ]# 
+```
+
+
  ## 运行 ==qemu== 模拟
 
 ```shell
