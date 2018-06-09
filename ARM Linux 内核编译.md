@@ -136,7 +136,7 @@ console::askfirst:-/bin/sh
 ::restart:/sbin/init
 ```
 	
-==/profile== 指定一些基本的环境变量
+==/etc/profile== 指定一些基本的环境变量
 
 ```shell
 LOGNAME=$USER
@@ -149,7 +149,7 @@ LD_LIBRARY_PATH=/lib:/usr/lib:$LD_LIBRARY_PATH
 export PATH LD_LIBRARY_PATH
 ```
 
-==fstab== 指定一些基本的设备挂载点
+==/etc/fstab== 指定一些基本的设备挂载点
 
 ```shell
 #device		mount-point	type	options		dump	fsck order
