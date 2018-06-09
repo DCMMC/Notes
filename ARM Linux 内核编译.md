@@ -242,7 +242,6 @@ sudo umount tmpfs
 ```
 tune2fs -O ^huge_file ./a15rootfs.ext4
 e2fsck ./a15rootfs.ext4
-
 ```
 
 ### 打包成 **rootfs.img**
