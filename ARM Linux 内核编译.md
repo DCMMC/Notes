@@ -118,6 +118,30 @@ mount -t sysfs sysfs /sys
 
 记得添加权限 ==chmod +x etc/init.d/rcS==
 
+==rcS== 默认是被 ==/inittab== 指定的, ==inittab== 默认(也就是如果没有该文件的时候)是以下内容
+
+```shell
+# /etc/inittab
+::sysinit:/etc/init.d/rcS
+console::askfirst:-/bin/sh
+::ctrlaltdel:/sbin/reboot
+::shutdown:/bin/umount -a -r
+::restart:/sbin/init
+```
+	
+==/profile== 指定一些基本的环境变量
+
+```shell
+LOGNAME=$USER
+export HOSTNAME=`/bin/hostname`
+export USER=root
+export HOME=/root
+export PS1="[$USER@$HOSTNAME \W]\# "
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+LD_LIBRARY_PATH=/lib:/usr/lib:$LD_LIBRARY_PATH
+export PATH LD_LIBRARY_PATH
+```
+
 ### 打包成 **rootfs.img**
 
 先安装一下 ==cpio==
