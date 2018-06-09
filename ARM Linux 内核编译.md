@@ -278,10 +278,11 @@ sudo make CONFIG_PREFIX=<path_to_disk_img_mount_point> ARCH=arm CROSS_COMPILE=ar
  ## 运行 ==qemu== 模拟
 
 ```shell
-env LANG=en.US qemu-system-arm -M vexpress-a15 -m 256M -kernel arch/arm/boot/zImage -dtb arch/arm/boot/dts/vexpress-v2p-ca15-tc1.dtb\
--drive format=raw,file=./disk.raw \
--append "root=/dev/sda init=/linuxrc console=tty1"
+env LANG=en.US qemu-system-arm -M vexpress-a15 -dtb arch/arm/boot/dts/vexpress-v2p-ca15-tc1.dtb -m 256M -kernel arch/arm/boot/zImage -sd ./a15rootfs.ext4 \
+-append "root=/dev/mmcblk0 console=tty1"
 ```
+
+> console 指定 tty1 或者其他 tty 都可以
 
 > 模拟的是 ARM-v7h A15 架构, 假设 ==disk.raw== 就在当前目录
 
