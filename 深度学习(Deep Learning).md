@@ -1313,7 +1313,7 @@ $$\boldsymbol{\theta}_{\text{ML}} = \text{arg} \max_{\boldsymbol{\theta}} p_{\te
 
 ### (p) 1.4.6 贝叶斯统计(Bayesian Statistics)
 
-前面讨论的都是 **频率派统计(frequentist statistics, 估计的是 `!$\theta$` 的单一值)**, 贝叶斯统计则会考虑要估计的参数 `!$\theta$` 的所有可能的值.
+前面讨论的都是 **频率派统计(frequentist statistics, 是对固定但是未知的参数 `!$\theta$` 的单一值估计 `!$\hat{\theta}$`, 而这个点估计是一个随机变量)**, 贝叶斯统计则会考虑要估计的参数 `!$\theta$`() 的所有可能的值.	
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
