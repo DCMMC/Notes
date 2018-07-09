@@ -1010,7 +1010,7 @@ $$\forall \boldsymbol{x}, \forall \boldsymbol{y}, |f(\boldsymbol{x}) - f(\boldsy
 
 **性能度量(Performance Measure) P**
 
-对于分类, 缺失输入的分类和转录, *P* 往往是衡量模型的 **准确率(accuracy, 模型产生正确输出的比率, 或者用错误率(error rate)来度量)** . 我们通常把错误率称为 **0-1损失的期望** , 在一定特定的样本上, 如果结果是对的, 那么 0 -1 损失为0, 否则是1. 但是 0 - 1 损失模型或者准确率错误率对于密度估计这类任务而言, 是没有意义的, 我们可以对模型的每个样本都输出一个连续数值的得分, 最常见的方法就是输出模型在一些样本上概率对数的平均值.  我们使用 **测试集(test set)** 来度量性能. 有时候, 很难确定到底要度量什么, 比如在度量转录任务时, 我们是应该度量整个序列的准确率还是更加细粒度(fine-grained)地对序列中正确的那部分元素以正面评价, 在度量回归任务时, 我们是应该很多的惩罚(penalize)那些频繁的中等错误还是少数几个很大的错误?	这些选取取决于应用. 又有些时候, 我们知道应该度量什么, 但是度量他们又不现实, 例如密度估计, 很多最好的概率模型只能隐式的表现其概率分布, 在这种情况, 我们必须设计一个对应于设计对象的替代标准, 或者设计一个理想标准的近似. 
+对于分类, 缺失输入的分类和转录, *P* 往往是衡量模型的 **准确率(accuracy, 模型产生正确输出的比率, 或者用错误率(error rate)来度量)** . 我们通常把错误率称为 **0-1损失的期望** , 在一定特定的样本上, 如果结果是对的, 那么 0-1 损失为0, 否则是1. 但是 0 - 1 损失模型或者准确率错误率对于密度估计这类任务而言, 是没有意义的, 我们可以对模型的每个样本都输出一个连续数值的得分, 最常见的方法就是输出模型在一些样本上概率对数的平均值.  我们使用 **测试集(test set)** 来度量性能. 有时候, 很难确定到底要度量什么, 比如在度量转录任务时, 我们是应该度量整个序列的准确率还是更加细粒度(fine-grained)地对序列中正确的那部分元素以正面评价, 在度量回归任务时, 我们是应该很多的惩罚(penalize)那些频繁的中等错误还是少数几个很大的错误?	这些选取取决于应用. 又有些时候, 我们知道应该度量什么, 但是度量他们又不现实, 例如密度估计, 很多最好的概率模型只能隐式的表现其概率分布, 在这种情况, 我们必须设计一个对应于设计对象的替代标准, 或者设计一个理想标准的近似. 
 
 **经验(experience) E**
 
@@ -1021,7 +1021,7 @@ $$\forall \boldsymbol{x}, \forall \boldsymbol{y}, |f(\boldsymbol{x}) - f(\boldsy
 最古老的用来给统计学家和机器学习研究人员学习的数据集是 Iris(鸢尾花卉) 数据集, 每个样本包括该植物不同部分的测量结果(萼片长度、萼片宽度之类的), 这个数据集中包含三个品种, 并且标明了每个样本的品种.
 
 * 无监督学习从数据集中学习这个数据集上有用的结构性质. 在深度学习的背景下, 学习生成数据集的整个概率分布(例如密度统计着这种显式的, 或者合成, 去噪这些隐式的). 还有些其他类型的, 例如 **聚类(clustering)** , 将数据集中的所有样本按照相似的放在一起来分成若干个集群.
-* 监督学习也是从包含很多特征的数据集中学习, 不过每个样本都有一个与之关联的 **标签(label)** 或 **目标(target)** . 例如, 监督学习通过研究 Iris 数据集, 学习如果通过测量信息来将样本划分为三个品种.
+* 监督学习也是从包含很多特征的数据集中学习, 不过每个样本都有一个与之关联的 **标签(label)** 或 **目标(target)** . 例如, 监督学习通过研究 Iris 数据集, 学习如何通过测量信息来将样本划分为三个品种.
 
 粗略得说, 无监督学习从一些随机向量 `!$\boldsymbol{\mathtt{x}}$` 中观察并隐式或显式的学习概率分布 `!$p(\boldsymbol{\mathtt{x}})$` , 或这个概率分布的有趣的性质, 而监督学习从一些随机向量`!$\boldsymbol{\mathtt{x}}$` 和与之关联的值或向量 `!$\boldsymbol{\mathtt{y}}$`观察学习来预测 `!$\boldsymbol{\mathtt{y}}$` (也就是估计 `!$p(\boldsymbol{\mathtt{y}} | \boldsymbol{\mathtt{x}})$` ). 监督学习和无监督学习并非形式化定义的术语, 所以他们之间的界限往往也比较模糊, 我们知道条件概率的链式法则 `!$p(\boldsymbol{\mathtt{x}} \in \mathbb{R}^n) = \prod_{i = 1}^n p(x_i | x_1, \ldots, x_{i - 1})$`, 所以我们可以把模型 `!$p(\boldsymbol{\mathtt{x}})$`的无监督学习转化为 `!$n$` 个监督学习. 又由贝叶斯法则 `!$p(y | \boldsymbol{\mathtt{x}}) = \frac{p(\boldsymbol{\mathtt{x}}, y')} {\sum_{y'}p(\boldsymbol{\mathtt{x}}, y')}$` , 可以把监督学习转化为无监督学习. 
 
@@ -1107,7 +1107,7 @@ $$J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omeg
 
 显式或隐式得对模型表达偏好的方法统称为 **正则化** .
 
-> *Regularization is any modiﬁcation we make to a learning algorithm that is intended to reduce its generalization error but not itstraining error.*
+> *Regularization is any modiﬁcation we make to a learning algorithm that is intended to reduce its generalization error but not its training error.*
 
 就如没有免费的午餐定理所述, 同样一般来说也没有最优的正则化形式. 深度学习的哲学(尤其是本书中)就是能够通过一个非常通用的(general-purpose)正则化形式来解决大部分的任务.
 
@@ -1313,7 +1313,7 @@ $$\boldsymbol{\theta}_{\text{ML}} = \text{arg} \max_{\boldsymbol{\theta}} p_{\te
 
 ### (p) 1.4.6 贝叶斯统计(Bayesian Statistics)
 
-
+前面讨论的都是 **频率派统计(frequentist statistics, 估计的是 `!$\theta$` 的单一值)**, 贝叶斯统计则会考虑要估计的参数 `!$\theta$` 的所有可能的值.
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
