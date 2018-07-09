@@ -674,7 +674,7 @@ Dirac 分布经常作为 **经验分布(empirical distribution)** 的一个组�
 
 **混合分布(Mixtures of Distribution)**
 
-混合分布由一些组件(component)分布构成, 每次试验, 样本是由哪个组件产生的取决于从一个 Multinoulli 分布中采样的结果: `!$P(x) = \sum_i P(c = i) P(x | c = i)$`, 其中 `!$P(c)$` 是对各组件的一个 Multinoulli 分布.
+混合分布由一些组件(component)分布构成, 每次试验, 样本是由哪个组件产生的取决于从一个 Multinoulli 分布中采样的结果: `!$P(x) = \sum_i P(x | c = i)P(c = i)$`(**全概率公式,可结合 Venn 图证明**), 其中 `!$P(c)$` 是对各组件的一个 Multinoulli 分布.
 
 前面的实数上的经验分布就是一个混合分布. 混合模型的思想将会在后面的学习中用到, 例如这里的 `!$c$` 就相当于一个 **潜变量(latent variable, See Chapter 16)** .
 
