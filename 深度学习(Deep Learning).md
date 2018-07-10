@@ -1140,10 +1140,9 @@ $$J(\boldsymbol{\omega}) = \text{MSE}_{\text{train}} + \lambda \boldsymbol{\omeg
 点估计用来尝试找到一些感兴趣的量的单个最优预测, 这个感兴趣的量可以是参数模型中的一个参数或参数向量, 甚至是整个函数(这时候还叫做 **函数估计()** ).
 
 > 为了区分参数的估计和它们的真正的值, 我们将参数 `!$\theta$` 的点估计记住 `!$\hat{\theta}$`.
-11
-> 假设`!$\theta$` 是固定且未知的, 而由于数据采样是随机的, 所以点估计 `!$\hat{\theta}$` 的值也是随机的, 也就是一个随机变量.
+> 假设 `!$\theta$` 是固定且未知的, 而由于数据采样是随机的, 所以点估计 `!$\hat{\theta}$` 的值也是随机的, 也就是一个随机变量.
 
-例如, 对于独立同分布(i.i.d)数据点集 `!$\boldsymbol{x}^{(1)}, \boldsymbol{(m)}$`, 一个点估计或统计(statistic)可以是任意函数: `!$\boldsymbol{\hat{\theta}}_m = g(\boldsymbol{x}^{(1)}, \boldsymbol{x}^{(m)})$`. 并且没有要求点估计的值要和真实值接近(当然是越接近越好), 也没有要求函数的值域必须在真实值的合法范围, 这样能够让点估计的设计更加的灵活.
+例如, 对于独立同分布(i.i.d)数据点集 `!$\boldsymbol{x}^{(1)}, \boldsymbol{x^{(m)}}$`, 一个点估计或统计(statistic)可以是任意函数: `!$\boldsymbol{\hat{\theta}}_m = g(\boldsymbol{x}^{(1)}, \cdots, \boldsymbol{x}^{(m)})$`. 并且没有要求点估计的值要和真实值接近(当然是越接近越好), 也没有要求函数的值域必须在真实值的合法范围, 这样能够让点估计的设计更加的灵活.
 
 **偏差(Bias)**
 
@@ -1309,11 +1308,9 @@ $$\boldsymbol{\theta}_{\text{ML}} = \text{arg} \max_{\boldsymbol{\theta}} p_{\te
 
 但是上面的乘积有一点不方便, 例如可能会造成数字下溢, 为了方便, 我们经常使用对数似然(log-likelihood)来等价的替代上述优化问题, `!$\boldsymbol{\theta}_{\text{ML}} = \text{arg} \max_{\boldsymbol{\theta}} \sum_{i=1}^m \log p_{\text{model}}(x^{(i)}; \boldsymbol{\theta})$`.  
 
-
-
 ### (p) 1.4.6 贝叶斯统计(Bayesian Statistics)
 
-前面讨论的都是 **频率派统计(frequentist statistics, 是对固定但是未知的参数 `!$\theta$` 的单一值估计 `!$\hat{\theta}$`, 而这个点估计是一个随机变量)**, 贝叶斯统计则会考虑要估计的参数 `!$\theta$`() 的所有可能的值.	
+前面讨论的都是 **频率派统计(frequentist statistics, 是对固定但是未知的参数 `!$\theta$` 的单一值估计 `!$\hat{\theta}$`, 而这个点估计是一个随机变量)**, 贝叶斯统计则会考虑要估计的参数 `!$\theta$`(贝叶斯派认为这个参数是一个随机变量) 的所有可能的值.	
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
