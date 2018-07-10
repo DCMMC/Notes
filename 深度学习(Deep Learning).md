@@ -1322,8 +1322,8 @@ $$\boldsymbol{\theta}_{\text{ML}} = \text{arg} \max_{\boldsymbol{\theta}} p_{\te
 $$p(x^{(m+1)} | x^{(1)}, \cdots, x^{(m)}) = \int p(x^{(m + 1)} | \boldsymbol{\theta}) p(\boldsymbol{\theta} | x^{(1)}, \cdots, x^{(m)}) d \boldsymbol{\theta}$$
 
 Pf.
-
-由连续性随机变量的边缘概率, 条件概率定义, 以及 $$p(x^{(m+1)}), p(\boldsymbol{\theta})$$ 和 $$p(x^{(1)}, \cdots, x^{(m)})$$ 独立可得.
+$$$$
+由连续性随机变量的边缘概率, 条件概率定义, 以及 $p(x^{(m+1)}), p(\boldsymbol{\theta})$ 和 $p(x^{(1)}, \cdots, x^{(m)})$ 独立可得.
 ```
 
   [1]: ./images/1516613842738.jpg
