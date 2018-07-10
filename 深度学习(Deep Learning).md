@@ -1316,6 +1316,12 @@ $$\boldsymbol{\theta}_{\text{ML}} = \text{arg} \max_{\boldsymbol{\theta}} p_{\te
 
 我们将对未知参数 `!$\boldsymbol{\theta}$`(随机变量) **已知的知识**(在观测数据集之前的) 作为 **先验概率分布(prior probability distribution) `!$p(\boldsymbol{\theta})$`**,  一般这个先验的选取都是很 **宽泛(墒值很高)** 	的分布, 比如在无限大面积或体积的均匀分布(也就是各种可能的点都是相同概率, 并且在整个可行域上都有分布)或者高斯分布, 然后得到的 **后验(posterior)概率分布** 一般是 **低墒且概率集中在几个最有可能的参数值上面**.
 
+在观察 `!$m$` 个样本后, 预测第 `!$m + 1$` 个样本:
+
+```mathjax!
+$$$$
+```
+
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
