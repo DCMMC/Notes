@@ -1312,6 +1312,8 @@ $$\boldsymbol{\theta}_{\text{ML}} = \text{arg} \max_{\boldsymbol{\theta}} p_{\te
 
 前面讨论的都是 **频率派统计(frequentist statistics, 是对固定但是未知的参数 `!$\theta$` 的单一值估计 `!$\hat{\theta}$`, 而这个点估计是一个随机变量)**, 贝叶斯统计则会考虑要估计的参数 `!$\theta$`(贝叶斯派认为这个参数是一个随机变量) 的所有可能的值.	
 
+我们将对未知参数 `!$\boldsymbol{\theta}$`(随机变量) 已知的知识作为 **先验概率分布(prior probability distribution) `!$p(\boldsymbol{\theta})$`**,  一般这个先验的选取都是很宽泛(墒值很高)的分布, 比如在无限大面积或体积的均匀分布(也就是各种可能的点都是相同概率, 并且在整个可行域上都有分布)
+
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
