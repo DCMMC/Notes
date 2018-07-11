@@ -1326,7 +1326,7 @@ $$$$
 由连续性随机变量的边缘概率, 条件概率定义, 以及 $p(x^{(m+1)}), p(\boldsymbol{\theta})$ 和 $p(x^{(1)}, \cdots, x^{(m)})$ 独立可得.
 $$$$
 ```
-上述公式又称 **边际似然(Marginal likelihood)**
+上述公式又称 **边际似然(Marginal likelihood)**. 每个正概率密度的 `!$\boldsymbol{\theta}$` 都为预测下一个(第 m + 1 个)样本做贡献, 并且乘上去的都是 `!$\boldsymbol{\theta}$` 的后验概率 `!$p(\boldsymbol{\theta} | x^{(1)}, \cdots, x^{(m)})$`.
 
 
   [1]: ./images/1516613842738.jpg
