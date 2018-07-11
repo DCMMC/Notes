@@ -1324,7 +1324,10 @@ $$p(x^{(m+1)} | x^{(1)}, \cdots, x^{(m)}) = \int p(x^{(m + 1)} | \boldsymbol{\th
 Pf.
 $$$$
 由连续性随机变量的边缘概率, 条件概率定义, 以及 $p(x^{(m+1)}), p(\boldsymbol{\theta})$ 和 $p(x^{(1)}, \cdots, x^{(m)})$ 独立可得.
+$$$$
 ```
+上述公式又称 **边际似然(Marginal likelihood)**
+
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
