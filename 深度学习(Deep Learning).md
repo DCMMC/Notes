@@ -1367,6 +1367,10 @@ $$p(\boldsymbol{w} | \boldsymbol{X}, \boldsymbol{y}) \propto p(\boldsymbol{y} | 
 
 > 上面的推导过程中省略所有不含 `!$\boldsymbol{w}$` 的项, 因为那些项在条件概率的上下文下都是已知的, 不会对 `!$\boldsymbol{w}$` 的后验分布造成影响. 这个推导里面最难的就是用 `!$\boldsymbol{\Lambda}_m$` 和 `!$\boldsymbol{\mu}_m$` 凑成高斯分布.
 
+**最大后验估计(Maximum Posterior Estimation, abbr., MAP)**
+
+
+
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
   [3]: ./images/1516621710096.jpg
