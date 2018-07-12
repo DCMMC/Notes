@@ -1322,6 +1322,8 @@ $$\boldsymbol{\theta}_{\text{ML}} = \text{arg} \max_{\boldsymbol{\theta}} p_{\te
 
 我们将对未知参数 `!$\boldsymbol{\theta}$`(随机变量) **已知的知识**(在观测数据集之前的) 作为 **先验概率分布(prior probability distribution) `!$p(\boldsymbol{\theta})$`**,  一般这个先验的选取都是很 **宽泛(墒值很高)** 	的分布, 比如在无限大面积或体积的均匀分布(也就是各种可能的点都是相同概率, 并且在整个可行域上都有分布)或者高斯分布, 然后得到的 **后验(posterior)概率分布** 一般是 **低墒且概率集中在几个最有可能的参数值上面**.
 
+> e.g. 对于期末考试学生成绩的预测, 平时成绩就可以作为要预测的那个学生的先验.
+
 在观察 `!$m$` 个样本后, 预测第 `!$m + 1$` 个样本:
 
 ```mathjax!
@@ -1369,7 +1371,17 @@ $$p(\boldsymbol{w} | \boldsymbol{X}, \boldsymbol{y}) \propto p(\boldsymbol{y} | 
 
 **最大后验估计(Maximum Posterior Estimation, abbr., MAP)**
 
+前面提到的完整贝叶斯后验分布的计算量比较大, 有时候我们依然点估计使用较少的计算量来提供一个可行的近似解, 我们依然可以加入先验来影响点估计, 这就称为 **最大后验点估计**.
 
+MAP 选择后验概率最大的点:
+
+```mathjax!
+$$\theta_{\text{MAP}} = \arg \min_\theta p(\theta | x) = \arg \min_\theta \left(\log p(x | \theta) + \log p(\theta)\right)$$
+```
+
+前面带有正则化的最大似然估计(带有 `!$\lambda w^\top w$` 惩罚的就是正比于对数先验项)就可以看作是贝叶斯推断的MAP近似.
+
+MAP 提供了一个直观的方法来设计复杂但是可以解释的正则化项.
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
