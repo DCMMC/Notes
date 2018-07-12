@@ -34,6 +34,12 @@ grammar_tableExtra: true
 # Notations
 在本书中, `!$log x$` 对数均指代 **自然对数 `!$\log_e x$` 即 `!$\ln x$`**
 
+**Reference**
+
+Pattern Recognition and Machine Learnin
+
+Deep Learning
+
 # Intro
 
 在现在人工智能(Artificial Intelligence, *abbr.* AI)领域主要需要解决的是那些对人类来说很 **直观的(Intuitively)** 但是难以形式化(formally, *i.e.*, mathematic rules)的描述的问题. 本书讨论的一种方案, 可以让计算机通过较为简单的知识来从经验中学习产生更加复杂的 **层次体系(相互关联的层次概念, hierarchy concepts)** , 我们称这种方法为 **深度学习(AI deep learning)** . 
@@ -1232,7 +1238,7 @@ $$
 $$
 ```
 
-又由 **中心极限定理(central limit theorem)**, 这些服从正态分布的随机变量的均值也一样服从正态分布. 均值的标准差在机器学习实验中很有用, 例如均值为 `!$\hat{\mu}_m$`, 方差 `!$\text{SE}(\hat{\mu}_m)^2$` 的高斯分布的以均值 `!$\hat{\mu}_m$` 为中心 `!$95\%$`(也就是该高斯函数在该置信区间上的积分是整个定义域上积分的值的 `!$95\%$`) 的 **置信区间(confidence interval)** 为 `!$\left( \hat{\mu}_m - 1.96 \text{SE}(\hat{\mu}_m), \hat{\mu}_m + 1.96 \text{SE}(\hat{\mu}_m) \right)$`  
+又由 **中心极限定理(central limit theorem)**, 这些服从正态分布的随机变量的均值也一样服从正态分布. 均值的标准差在机器学习实验中很有用, 例如均值为 `!$\hat{\mu}_m$`, 方差 `!$\text{SE}(\hat{\mu}_m)^2$` 的高斯分布的以均值 `!$\hat{\mu}_m$` 为中心 `!$95\%$`(也就是该高斯函数在该置信区间上的积分是整个定义域上积分的值的 `!$95\%$`) 的 **置信区间(confidence interval)** 为 `!$\left( \hat{\mu}_m - 1.96 \text{SE}(\hat{\mu}_m), \hat{\mu}_m + 1.96 \text{SE}(\hat{\mu}_m) \right)$`  (区间估计)
   
   算法 A 比算法  B 好通常是指算法 A 误差的 `!$95\%$` 置信区间的上界都比算法 B 的 `!$95\%$` 置信区间的下界还小.
   
@@ -1319,15 +1325,47 @@ $$\boldsymbol{\theta}_{\text{ML}} = \text{arg} \max_{\boldsymbol{\theta}} p_{\te
 在观察 `!$m$` 个样本后, 预测第 `!$m + 1$` 个样本:
 
 ```mathjax!
-$$p(x^{(m+1)} | x^{(1)}, \cdots, x^{(m)}) = \int p(x^{(m + 1)} | \boldsymbol{\theta}) p(\boldsymbol{\theta} | x^{(1)}, \cdots, x^{(m)}) d \boldsymbol{\theta}$$
-
-Pf.
-$$$$
-由连续性随机变量的边缘概率, 条件概率定义, 以及 $p(x^{(m+1)}), p(\boldsymbol{\theta})$ 和 $p(x^{(1)}, \cdots, x^{(m)})$ 独立可得.
-$$$$
+$$p(x^{(m+1)} | x^{(1)}, \cdots, x^{(m)}) = \int p(x^{(m+1)}, \boldsymbol{\theta} | x^{1}, \cdots, x^{(m)}) d\boldsymbol{\theta} = \int p(x^{(m + 1)} | \boldsymbol{\theta}, x^{(1)}, \cdots, x^{(m)}) p(\boldsymbol{\theta} | x^{(1)}, \cdots, x^{m}) = \int p(x^{(m + 1)} | \boldsymbol{\theta}) p(\boldsymbol{\theta} | x^{(1)}, \cdots, x^{(m)}) d \boldsymbol{\theta}$$
 ```
-上述公式又称 **边际似然(Marginal likelihood)**. 每个正概率密度的 `!$\boldsymbol{\theta}$` 都为预测下一个(第 m + 1 个)样本做贡献, 并且乘上去的都是 `!$\boldsymbol{\theta}$` 的后验概率 `!$p(\boldsymbol{\theta} | x^{(1)}, \cdots, x^{(m)})$`.
 
+> 其中 `!$p(x^{(m+1)} | \boldsymbol{\theta}, x^{(1)}, \cdots, x^{(m)}) = p(x^{(m+1)} | \boldsymbol{\theta})$` 是因为 `!$x^{(m+1)}$` 和 `!$x^{(1)}, \cdots, x^{(m)}$` 是 **互斥** 的.
+
+
+每个正概率密度的 `!$\boldsymbol{\theta}$` 都为预测下一个(第 m + 1 个)样本做贡献, 并且乘上去的都是 `!$\boldsymbol{\theta}$` 的后验概率 `!$p(\boldsymbol{\theta} | x^{(1)}, \cdots, x^{(m)})$`. 
+
+如果是频率派的观点, `!$\boldsymbol{\theta}$` 的点估计是有不确定度(uncertainty)的, 并且用其点估计的方差来做区间估计, 而贝叶斯派则是直接考虑了所有 `!$\boldsymbol{\theta}$` 的可能值的后验概率并进行积分(**往往可以防止过拟合**), 后验概率分布的墒也就反映了其不确定度.
+
+贝叶斯方法还有一个特点是先验的选择有 **人为主观因素** 在里面.
+
+在训练样本有限的时候, 贝叶斯方法通常泛化得更好, 而数据规模大的时候计算量太大了. 
+
+**贝叶斯线性回归**
+
+贝叶斯方法不用像前面提到的线性回归那样, 通过正则化来添加一个对模型复杂度的偏好 `!$\lambda$` 来控制模型的复杂度, 而可以直接避免像最大似然估计那样会导致模型过拟合的情况.
+
+```mathjax!
+$$\hat{y} = \boldsymbol{w}^\top \boldsymbol{x}, \boldsymbol{x} \in \mathbb{R}^n, y \in \mathbb{R}, \boldsymbol{w} \in \mathbb{R}^n$$
+$$\hat{\boldsymbol{w}}^{(\text{train})} = \boldsymbol{X}^{(\text{train})} \boldsymbol{w}$$
+
+用 $\boldsymbol{y}^{(\text{train})}$ 上的高斯条件分布(假设该条件概率服从高斯分布, 因为往往我们可以认为 $y = \hat{y} + \epsilon$, 其中噪声 $\epsilon$ 为服从均值为 0 的高斯分布的随机变量)可是表示为(省略了 train 上标):
+
+$$p(\boldsymbol{y} | \boldsymbol{X}, \boldsymbol{w}) = \mathcal{N}(\boldsymbol{y}; \boldsymbol{Xw}, \boldsymbol{I}) \propto \exp\left(- 0.5(\boldsymbol{y} - \boldsymbol{X w})^\top(\boldsymbol{y} - \boldsymbol{X w}) \right)$$
+```
+
+![Gaussian conditional distribution for t given by x](./images/1531366660088.png)
+
+> t 就是相当于前面公式的 y
+
+又设 `!$\boldsymbol{w}$` 的先验为高斯分布 `!$p(\boldsymbol{w}) = \mathcal{N}(\boldsymbol{w}; \boldsymbol{\mu}_0, \boldsymbol{\Lambda}_0) \propto \exp\left( -0.5(\boldsymbol{w} - \boldsymbol{\mu}_0)^\top \boldsymbol{\Lambda}_0^{-1} (\boldsymbol{w} - \boldsymbol{\mu}_0) \right)$` (而且一般 `!$\boldsymbol{\mu}_0 = 0, \boldsymbol{\Lambda}_0 = \frac{1}{\alpha} \boldsymbol{I}$`, `!$\alpha$` 是方差的倒数, 在贝叶斯方法中常被称为 **精度** )
+
+所以 `!$\boldsymbol{w}$` 的后验概率为
+```mathjax!
+$$p(\boldsymbol{w} | \boldsymbol{X}, \boldsymbol{y}) \propto p(\boldsymbol{y} | \boldsymbol{X}, \boldsymbol{w}) p(\boldsymbol{w}) \propto \exp\left(-0.5(\boldsymbol{w} - \boldsymbol{\mu}_m)^\top \boldsymbol{\Lambda}_m^{-1}(\boldsymbol{w} - \boldsymbol{\mu}_m) \right)$$
+
+其中 $\boldsymbol{\Lambda}_m = \left(\boldsymbol{X}^\top\boldsymbol{X} + \boldsymbol{\Lambda}_0^{-1}\right)^{-1}, \boldsymbol{\mu}_m = \boldsymbol{\Lambda}_m(\boldsymbol{X}^\top\boldsymbol{y} + \boldsymbol{\Lambda}_0^{-1}\boldsymbol{\mu}_0)$
+```
+
+> 上面的推导过程中省略所有不含 `!$\boldsymbol{w}$` 的项, 因为那些项在条件概率的上下文下都是已知的, 不会对 `!$\boldsymbol{w}$` 的后验分布造成影响.
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
