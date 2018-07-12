@@ -1356,7 +1356,7 @@ $$p(\boldsymbol{y} | \boldsymbol{X}, \boldsymbol{w}) = \mathcal{N}(\boldsymbol{y
 
 > t 就是相当于前面公式的 y
 
-又设 `!$\boldsymbol{w}$` 的先验为高斯分布 `!$p(\boldsymbol{w}) = \mathcal{N}(\boldsymbol{w}; \boldsymbol{\mu}_0, \boldsymbol{\Lambda}_0) \propto \exp\left( -0.5(\boldsymbol{w} - \boldsymbol{\mu}_0)^\top \boldsymbol{\Lambda}_0^{-1} (\boldsymbol{w} - \boldsymbol{\mu}_0) \right)$` (而且一般 `!$\boldsymbol{\mu}_0 = 0, \boldsymbol{\Lambda}_0 = \frac{1}{\alpha} \boldsymbol{I}$`, `!$\alpha$` 是方差的倒数, 在贝叶斯方法中常被称为 **精度** )
+又设 `!$\boldsymbol{w}$` 的先验为高斯分布 `!$p(\boldsymbol{w}) = \mathcal{N}(\boldsymbol{w}; \boldsymbol{\mu}_0, \boldsymbol{\Lambda}_0) \propto \exp\left( -0.5(\boldsymbol{w} - \boldsymbol{\mu}_0)^\top \boldsymbol{\Lambda}_0^{-1} (\boldsymbol{w} - \boldsymbol{\mu}_0) \right)$` (而且一般 `!$\boldsymbol{\mu}_0 = 0, \boldsymbol{\Lambda}_0 = \frac{1}{\alpha} \boldsymbol{I}$`, `!$\alpha$` 是方差的倒数, 在贝叶斯方法中常被称为 **精度**, 这个时候贝叶斯方法估计出来的 `!$\boldsymbol{w}$` 跟前面说到的频率派的带有 `!$\alpha \boldsymbol{w}^\top\boldsymbol{w}$` 容量限制惩罚的正则项的线性回归 )
 
 所以 `!$\boldsymbol{w}$` 的后验概率为
 ```mathjax!
@@ -1365,7 +1365,7 @@ $$p(\boldsymbol{w} | \boldsymbol{X}, \boldsymbol{y}) \propto p(\boldsymbol{y} | 
 其中 $\boldsymbol{\Lambda}_m = \left(\boldsymbol{X}^\top\boldsymbol{X} + \boldsymbol{\Lambda}_0^{-1}\right)^{-1}, \boldsymbol{\mu}_m = \boldsymbol{\Lambda}_m(\boldsymbol{X}^\top\boldsymbol{y} + \boldsymbol{\Lambda}_0^{-1}\boldsymbol{\mu}_0)$
 ```
 
-> 上面的推导过程中省略所有不含 `!$\boldsymbol{w}$` 的项, 因为那些项在条件概率的上下文下都是已知的, 不会对 `!$\boldsymbol{w}$` 的后验分布造成影响.
+> 上面的推导过程中省略所有不含 `!$\boldsymbol{w}$` 的项, 因为那些项在条件概率的上下文下都是已知的, 不会对 `!$\boldsymbol{w}$` 的后验分布造成影响. 这个推导里面最难的就是用 `!$\boldsymbol{\Lambda}_m$` 和 `!$\boldsymbol{\mu}_m$` 凑成高斯分布.
 
   [1]: ./images/1516613842738.jpg
   [2]: ./images/1516613842738.jpg
