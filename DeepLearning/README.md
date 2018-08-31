@@ -18,3 +18,9 @@ MathJax.Hub.Config({
 ```
 
 to `/usr/lib/python3.7/site-packages/notebook/static/custom/custom.js`
+
+### PRML errate(勘误)
+
+[github errata prml](https://github.com/yousuketakada/prml_errata)
+
+[ms research](https://www.microsoft.com/en-us/research/wp-content/uploads/2016/05/prml-errata-1st-20110921.pdf)
