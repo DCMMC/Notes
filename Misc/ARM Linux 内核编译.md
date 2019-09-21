@@ -31,7 +31,7 @@ $ yaourt -S qemu-arch-extra
 
 ### arm gcc with gnu-eabihf
 
-> 同时会安装 ==binutils== (汇编器和链接器, etc.) 还有 ==glibc== (C library 和 headers)的 `ARM` 版本
+> 同时会安装 `binutils` (汇编器和链接器, etc.) 还有 `glibc` (C library 和 headers)的 `ARM` 版本
 
 
 ```bash?linenums
@@ -39,7 +39,7 @@ yaourt -S arm-linux-gnueabihf-gcc
 ```
 
 > 提示 `未知的公共密匙 79BE3E4300411886`
-> 解决方法: gpg 导入公钥 ==gpg --recv-key 79BE3E4300411886==
+> 解决方法: gpg 导入公钥 `gpg --recv-key 79BE3E4300411886`
 
 > 需要编译很多重量级软件, 大约 30min
 
@@ -50,23 +50,23 @@ export ARCH=arm # 目标 arch
 export CROSS_COMPILE=arm-linux-gnueabihf- # 使用的编译链 prefix
 ```
 
-> 也可以直接写在 ==Makefile== 指定位置或者 ==make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-== 来指定.
+> 也可以直接写在 `Makefile` 指定位置或者 `make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-` 来指定.
 
 ## Setting up kernel configuration
 
 configuration 可以用于指定哪些内核驱动/模块打开或关闭.
 
-==make defconfig== 创建默认配置, 不过我们一般需要更多的配置, 使用 ==make menuconfig== 交互式的创建自定义 config.
+`make defconfig` 创建默认配置, 不过我们一般需要更多的配置, 使用 `make menuconfig` 交互式的创建自定义 config.
 
-我们这里使用 ==make vexpress_defconfig== 创建默认配置.
+我们这里使用 `make vexpress_defconfig` 创建默认配置.
 
 ## make
 
-==make -j 8==
+`make -j 8`
 
 > 8 个核心全跑满, 大概 4 min
 
-**编译好的 kernel 在 ==arch/arm/boot/zImage==
+**编译好的 kernel 在 `arch/arm/boot/zImage`**
 
 > 编译出来的内核(压缩后)大小:
 
@@ -80,7 +80,7 @@ configuration 可以用于指定哪些内核驱动/模块打开或关闭.
 env LANG=en.US qemu-system-arm -M vexpress-a15 -m 512 -kernel arch/arm/boot/zImage -dtb arch/arm/boot/dts/vexpress-v2p-ca15-tc1.dtb -append "console=tty1" --nographic
 ```
 
-> 指定 ==--nographic== 将会将内核输出在当前终端
+> 指定 `--nographic` 将会将内核输出在当前终端
 
 ![效果图](./images/1528441438781.png)
 
@@ -125,28 +125,28 @@ make  ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j 8 install
 > — Build Options
 > [*] Build BusyBox as a static binary (no shared libs)
 
-> 将会安装到 ==_install== 目录
+> 将会安装到 `_install` 目录
 
 **添加一些重要的文件夹(作为 root dir)**
 
-> 注意这些文件的所有用户都是 ==root==
+> 注意这些文件的所有用户都是 `root`
 
 ```bash?linenums
 cd _install
 mkdir proc sys dev etc etc/init.d var tmp mnt root
 ```
 
-==/sbin/init== 一般是开机第一个被 kernel 运行的程序, 并且其默认的行为就是执行 == /etc/init.d/rcS== 中的内容.
+`/sbin/init` 一般是开机第一个被 kernel 运行的程序, 并且其默认的行为就是执行 `/etc/init.d/rcS` 中的内容.
 
-> 这里用的是 busybox init, 嵌入式系统中经常使用, 但是主流发行版一般使用 ==systemd  init==
+> 这里用的是 busybox init, 嵌入式系统中经常使用, 但是主流发行版一般使用 `systemd  init`
 
-写入如下内容, 挂载目录 ==proc== 和 ==sysfs== 以及其他 init 操作
+写入如下内容, 挂载目录 `proc` 和 `sysfs` 以及其他 init 操作
 
 ```bash?linenums
 #!/bin/sh
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 mkdir -p /var/lock
-mount -a # 由 ==/fstab== 指定
+mount -a # 由 `/fstab` 指定
 mkdir -p /dev/pts
 mount -t devpts devpts /dev/pts
 echo /sbin/mdev > /proc/sys/kernel/hotplug
@@ -155,9 +155,9 @@ ifconfig lo 127.0.0.1
 /bin/hostname -F /etc/sysconfig/HOSTNAME
 ```
 
-记得添加权限 ==chmod +x etc/init.d/rcS==
+记得添加权限 `chmod +x etc/init.d/rcS`
 
-==rcS== 默认是被 ==/inittab== 指定的, ==inittab== 默认(也就是如果没有该文件的时候)是以下内容
+`rcS` 默认是被 `/inittab` 指定的, `inittab` 默认(也就是如果没有该文件的时候)是以下内容
 
 ```bash?linenums
 # /etc/inittab
@@ -167,8 +167,8 @@ console::askfirst:-/bin/sh
 ::shutdown:/bin/umount -a -r
 ::restart:/sbin/init
 ```
-	
-==/etc/profile== 指定一些基本的环境变量
+
+`/etc/profile` 指定一些基本的环境变量
 
 ```bash?linenums
 LOGNAME=$USER
@@ -181,13 +181,13 @@ LD_LIBRARY_PATH=/lib:/usr/lib:$LD_LIBRARY_PATH
 export PATH LD_LIBRARY_PATH
 ```
 
-==/etc/sysconfig/HOSTNAME== 指定 hostname
+`/etc/sysconfig/HOSTNAME` 指定 hostname
 
 ```bash?linenums
 dcmmc # 随便取
 ```
 
-==/etc/fstab== 指定一些基本的设备挂载点
+`/etc/fstab` 指定一些基本的设备挂载点
 
 ```bash?linenums
 #device		mount-point	type	options		dump	fsck order
@@ -200,10 +200,10 @@ ramfs		/dev		ramfs	defaults		0	0
 debugfs		/sys/kernel/debug	debugfs		defaults	0	0
 ```
 
-### 创建 ==/dev== 下的基本文件和创建 ==ext4 image file== (也可以用下面的打包成 rootfs.img)
+### 创建 `/dev` 下的基本文件和创建 `ext4 image file` (也可以用下面的打包成 rootfs.img)
 
 ```bash?linenums
-#Copy shared libraries to rootfs
+# Copy shared libraries to rootfs
 sudo cp -arf /usr/arm-linux-gnueabihf/lib/* rootfs/lib/
 sudo rm rootfs/lib/*.a
 sudo arm-linux-gnueabihf-strip rootfs/lib/*
@@ -229,23 +229,23 @@ sudo cp -r rootfs/* tmpfs/
 sudo umount tmpfs
 ```
 
-> ==/usr/arm-linux-gnueabihf/lib/== 是 glibc-armhf 的位置, 可以是其他地方
+> `/usr/arm-linux-gnueabihf/lib/` 是 glibc-armhf 的位置, 可以是其他地方
 
-> ==whoami== 提示 ==unknown uid 0 ==
+> `whoami` 提示 `unknown uid 0 `
 
-编辑 ==/etc/passwd==
+编辑 `/etc/passwd`
 
-添加 ==root:x:0:0:root:/root:/bin/sh==
+添加 `root:x:0:0:root:/root:/bin/sh`
 
-编辑 ==/etc/group ==
+编辑 `/etc/group `
 
-添加 ==root:x:0:root==
+添加 `root:x:0:root`
 
 然后通过passwd给root设置密码(第一回需要通过图形的qemu输入命令)
 
-> 提示 ==mmcblk0 Mounted root (ext4 filesystem) readonly==, ==mount -o rw== 提示没有开启 ==linux Large file support==
+> 提示 `mmcblk0 Mounted root (ext4 filesystem) readonly`, `mount -o rw` 提示没有开启 `linux Large file support`
 
-这是因为 ==a15rootfs.ext4== 没有开启 huge_file 支持
+这是因为 `a15rootfs.ext4` 没有开启 huge_file 支持
 
 ```bash?linenums
 tune2fs -O ^huge_file ./a15rootfs.ext4
@@ -254,7 +254,7 @@ e2fsck ./a15rootfs.ext4
 
 ### 打包成 **rootfs.img**
 
-先安装一下 ==cpio==
+先安装一下 `cpio`
 
 ```bash?linenums
 $ sudo pacman cpio
@@ -264,22 +264,22 @@ $ sudo pacman cpio
 
 ```bash?linenums
  find . | cpio -o --format=newc > rootfs.img
- ```
- 
- 这样带有 ==busybox== 的 ==rootfs== 就打包好了.
+```
+
+ 这样带有 `busybox` 的 `rootfs` 就打包好了.
 
 ## 使用磁盘镜像文件作为根文件系统
 
 > 假定在 linux 源码目录下
 
-创建 512M 的磁盘文件并格式化为 ==ext4==
+创建 512M 的磁盘文件并格式化为 `ext4`
 
 ```bash?linenums
 qemu-img create -f raw disk.raw 512M
 mkfs -t ext4 ./disk.raw
 ```
 
-挂载到新文件夹 ==./img==
+挂载到新文件夹 `./img`
 
 ```bash?linenums
 mkdir ./img
@@ -302,7 +302,7 @@ INSTALL_MOD_PATH=./img  # 指定安装路径
 $ sudo make CONFIG_PREFIX=<path_to_disk_img_mount_point> ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j 8 install
 ```
 
-> 记得在挂载点也必须按照前面说的创建一些根目录下的文件夹以及 ==etc/init.d/rcS==
+> 记得在挂载点也必须按照前面说的创建一些根目录下的文件夹以及 `etc/init.d/rcS`
 
 > 最终整个根目录大小:
 
@@ -316,16 +316,16 @@ Linux vexpress 4.17.0 #3 SMP Sat Jun 9 02:00:02 CST 2018 armv7l GNU/Linux
 ```
 
 
- ## 运行 ==qemu== 模拟
+ ## 运行 `qemu` 模拟
 
 ```bash?linenums
 env LANG=en.US qemu-system-arm -M vexpress-a15 -dtb arch/arm/boot/dts/vexpress-v2p-ca15-tc1.dtb -m 256M -kernel arch/arm/boot/zImage -drive format=raw,file=./a15rootfs.ext4,index=0,if=sd \
 -append "root=/dev/mmcblk0 console=ttyAMA0 panic=0 rootfstype=ext4 rw" --nographic
 ```
 
-> console 指定 tty1 或者其他 tty 都可以, 不过要想使用 ==--nographic== 必须是 ==ttyAMA0==
+> console 指定 tty1 或者其他 tty 都可以, 不过要想使用 `--nographic` 必须是 `ttyAMA0`
 
-> 模拟的是 ARM-v7h A15 架构, 假设 ==disk.raw== 就在当前目录
+> 模拟的是 ARM-v7h A15 架构, 假设 `disk.raw` 就在当前目录
 
 ![最终效果](./images/1528560044521.png)
 

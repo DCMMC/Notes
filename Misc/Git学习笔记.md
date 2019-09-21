@@ -4,6 +4,7 @@ tags: Git,笔记
 grammar_cjkRuby: true
 ---
 
+> TODO: 应该重新写一下 git 的 quickstart
 
 # Github项目的clone与上传
 
