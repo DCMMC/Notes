@@ -1,0 +1,18 @@
+\contentsline {chapter}{About this Note}{5}{chapter*.4}%
+\contentsline {chapter}{\numberline {1}NLP with DL}{6}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Word Vector}{6}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}Word2vec}{6}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}HW1}{9}{subsection.1.1.2}%
+\contentsline {subsection}{\numberline {1.1.3}GloVe}{9}{subsection.1.1.3}%
+\contentsline {subsection}{\numberline {1.1.4}Word sense ambiguity}{11}{subsection.1.1.4}%
+\contentsline {section}{\numberline {1.2}Math Backgrounds}{11}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Dropout}{13}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Xavier}{13}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}Adam}{13}{subsection.1.2.3}%
+\contentsline {subsection}{\numberline {1.2.4}Practice: Named Entity Recognition}{13}{subsection.1.2.4}%
+\contentsline {subsection}{\numberline {1.2.5}HW2}{13}{subsection.1.2.5}%
+\contentsline {section}{\numberline {1.3}Dependency Parser}{14}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Neural Dependency Parsing}{14}{subsection.1.3.1}%
+\contentsline {section}{\numberline {1.4}Language Modeling and Recurrent Neural Networks}{15}{section.1.4}%
+\contentsline {chapter}{\numberline {2}Bibliography}{17}{chapter.2}%
+\contentsfinish 

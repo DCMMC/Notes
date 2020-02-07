@@ -1,0 +1,76 @@
+\begin{thebibliography}{}
+
+\bibitem[Arora et~al., 2018]{TACL_word_senses}
+Arora, S., Li, Y., Liang, Y., Ma, T., and Risteski, A. (2018).
+\newblock Linear algebraic structure of word senses, with applications to
+  polysemy.
+\newblock {\em Transactions of the Association for Computational Linguistics},
+  6(0):483--495.
+
+\bibitem[Brin, 1995]{brin95nn}
+Brin, S. (1995).
+\newblock Near neighbor search in large metric spaces.
+\newblock In {\em Conference on Very Large Databases (VLDB)}.
+
+\bibitem[Chen and Manning, 2014]{chen-manning-2014-fast}
+Chen, D. and Manning, C. (2014).
+\newblock A fast and accurate dependency parser using neural networks.
+\newblock In {\em Proceedings of the 2014 Conference on Empirical Methods in
+  Natural Language Processing ({EMNLP})}, pages 740--750, Doha, Qatar.
+  Association for Computational Linguistics.
+
+\bibitem[Collobert and Weston, 2008]{NER_ICML}
+Collobert, R. and Weston, J. (2008).
+\newblock A unified architecture for natural language processing: Deep neural
+  networks with multitask learning.
+\newblock In {\em Proceedings of the 25th International Conference on Machine
+  Learning}, ICML ’08, page 160–167, New York, NY, USA. Association for
+  Computing Machinery.
+
+\bibitem[Huang et~al., 2012]{huang-etal-2012-improving}
+Huang, E., Socher, R., Manning, C., and Ng, A. (2012).
+\newblock Improving word representations via global context and multiple word
+  prototypes.
+\newblock In {\em Proceedings of the 50th Annual Meeting of the Association for
+  Computational Linguistics (Volume 1: Long Papers)}, pages 873--882, Jeju
+  Island, Korea. Association for Computational Linguistics.
+
+\bibitem[Mikolov et~al., 2013]{word2vec}
+Mikolov, T., Sutskever, I., Chen, K., Corrado, G.~S., and Dean, J. (2013).
+\newblock Distributed representations of words and phrases and their
+  compositionality.
+\newblock In Burges, C. J.~C., Bottou, L., Welling, M., Ghahramani, Z., and
+  Weinberger, K.~Q., editors, {\em Advances in Neural Information Processing
+  Systems 26}, pages 3111--3119. Curran Associates, Inc.
+
+\bibitem[Nivre, 2003]{nivre-2003-efficient}
+Nivre, J. (2003).
+\newblock An efficient algorithm for projective dependency parsing.
+\newblock In {\em Proceedings of the Eighth International Conference on Parsing
+  Technologies}, pages 149--160, Nancy, France.
+
+\bibitem[Pennington et~al., 2014]{GloVe}
+Pennington, J., Socher, R., and Manning, C. (2014).
+\newblock {G}love: Global vectors for word representation.
+\newblock In {\em Proceedings of the 2014 Conference on Empirical Methods in
+  Natural Language Processing ({EMNLP})}, pages 1532--1543, Doha, Qatar.
+  Association for Computational Linguistics.
+
+\bibitem[Quinlan, 1986]{quinlan}
+Quinlan, J.~R. (1986).
+\newblock Induction of decision trees.
+\newblock {\em Machine learning}, 1(1):81--106.
+
+\bibitem[Rohde et~al., 2005]{rohde2005_hacks}
+Rohde, D.~L., Gonnerman, L.~M., and Plaut, D.~C. (2005).
+\newblock An improved model of semantic similarity based on lexical
+  co-occurrence.
+
+\bibitem[Rosenblatt, 1958]{rosenblatt58perceptron}
+Rosenblatt, F. (1958).
+\newblock The perceptron: A probabilistic model for information storage and
+  organization in the brain.
+\newblock {\em Psychological Review}, 65:386--408.
+\newblock Reprinted in \emph{Neurocomputing} (MIT Press, 1998).
+
+\end{thebibliography}

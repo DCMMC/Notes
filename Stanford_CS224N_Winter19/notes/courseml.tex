@@ -1,0 +1,150 @@
+\documentclass[fleqn,explicit,twoside,openany]{tufte-book}
+\hypersetup{colorlinks}
+
+\usepackage[T1]{fontenc}
+
+\font\ttfsegoeuilsmall Colaborate-Thin at12pt
+\font\ttfsegoeuil Colaborate-Thin at16pt
+\font\ttfsegoeuilhuge Colaborate-Thin at30pt
+
+\renewcommand{\contentsname}{Table of Contents}
+
+\title[A Note in Machine Learning]{\ttfsegoeuilhuge A Note in Machine Learning}
+\author{\ttfsegoeuil DCMMC}
+
+\usepackage{pdfpages}
+\usepackage{amsthm}
+\usepackage{xcolor}
+\usepackage{hyperref}
+%\usepackage{wrapfig}
+% http://mirrors.ctan.org/macros/latex209/contrib/picins/picins.sty
+\usepackage{picins}
+\usepackage{soul}
+\usepackage{lipsum}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{answers}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{verbatim}
+\usepackage{fancyvrb}
+\usepackage{xspace}
+% provides boldsymbol
+\usepackage{bm} 
+% provides inline frac: \nicefrac
+\usepackage{nicefrac}
+%\usepackage[labelsep=none]{caption}
+\usepackage{tikz}
+\usepackage{units}
+\usepackage{makeidx}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{multirow}
+\usepackage{calc}
+
+\usepackage{haldefs}
+
+%\usepackage{draftwatermark}
+
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{graphics/}}
+
+\fvset{fontsize=\normalsize}
+
+\usetikzlibrary{shapes,snakes}
+
+\include{halbook}
+
+%https://github.com/Tufte-LaTeX/tufte-latex/issues/107#issuecomment-183679016
+%Next block avoids bug, from  http://tex.stackexchange.com/a/200725/1913 
+\ifx\ifxetex\ifluatex\else % if lua- or xelatex http://tex.stackexchange.com/a/140164/1913
+\newcommand{\textls}[2][5]{%
+	\begingroup\addfontfeatures{LetterSpace=#1}#2\endgroup
+}
+\renewcommand{\allcapsspacing}[1]{\textls[15]{#1}}
+\renewcommand{\smallcapsspacing}[1]{\textls[10]{#1}}
+\renewcommand{\allcaps}[1]{\textls[15]{\MakeTextUppercase{#1}}}
+\renewcommand{\smallcaps}[1]{\smallcapsspacing{\scshape\MakeTextLowercase{#1}}}
+\renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{#1}}}
+\fi
+
+\renewenvironment{mycomment}{}{}   % comment this if you want comments :)
+
+\let\cleardoublepage\clearpage
+
+\makeindex
+
+
+\begin{document}
+
+%\Opensolutionfile{solutions}[ans2]{Solutions}
+%\Writetofile{solutions}{\protect\chapter{Solutions To Exercises}}
+
+\setcounter{secnumdepth}{3}
+
+\frontmatter
+
+%\SetWatermarkAngle{60}
+%\SetWatermarkLightness{0.95}
+%\SetWatermarkText{}
+%\SetWatermarkScale{0.7}
+
+
+%\includepdf[pages={1},frame=true,fitpaper=true,noautoscale,width=614.295pt,height=794.97pt]{cover/cover.pdf}
+\maketitle
+
+%\SetWatermarkText{\shortstack[c]{Draft:\\Do Not\\Distribute}}
+
+%\include{pub}
+%\include{ded}
+\tableofcontents
+\listoffigures
+\listoftables
+\cleardoublepage
+\include{intro}
+\mainmatter
+
+\include{NLP}
+%\include{dt}
+%\include{formal}
+%\include{knn}
+%\include{perc}
+%\include{prac}
+%\include{bias}
+%\include{complex}
+%\include{loss}
+%\include{prob}
+%\include{nnet}
+%\include{kernel}
+%\include{thy}
+%\include{ens}
+%\include{opt}
+%\include{unsup}
+%\include{em}
+% NOT WRITTEN \include{semi}
+% NOT WRITTEN \include{gm}
+% NOT WRITTEN \include{online}
+%\include{srl}
+%\include{imit}
+% NOT WRITTEN \include{bayes}
+
+%\appendix
+%\backmatter
+%\include{data}
+% NOT WRITTEN \include{not}
+
+\bibliographystyle{apalike}
+\bibliography{bibfile}
+
+%\Closesolutionfile{solutions}
+%\Readsolutionfile{solutions}
+
+{
+\linespread{1}
+\printindex
+}
+%\include{important-terms}  trick CheckIndex to read this file
+
+
+\end{document}

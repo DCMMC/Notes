@@ -1,0 +1,46 @@
+\indexentry{one-hot vector|hyperpage}{6}
+\indexentry{orthogonal|hyperpage}{6}
+\indexentry{localist|hyperpage}{6}
+\indexentry{distributional representation|hyperpage}{6}
+\indexentry{lookup table|hyperpage}{6}
+\indexentry{fine tuning|hyperpage}{6}
+\indexentry{Skip-gram|hyperpage}{6}
+\indexentry{Continuous Bag of Words|hyperpage}{6}
+\indexentry{Skip-gram|hyperpage}{6}
+\indexentry{softmax|hyperpage}{7}
+\indexentry{cosine|hyperpage}{7}
+\indexentry{NLL|hyperpage}{7}
+\indexentry{i.i.d|hyperpage}{7}
+\indexentry{gradient descent|hyperpage}{8}
+\indexentry{negative sampling|hyperpage}{8}
+\indexentry{unigram distribution|hyperpage}{8}
+\indexentry{of|hyperpage}{8}
+\indexentry{the|hyperpage}{8}
+\indexentry{sigmoid|hyperpage}{9}
+\indexentry{Continuous Bag of Words|hyperpage}{9}
+\indexentry{log-bilinear model with vector differences|hyperpage}{10}
+\indexentry{least squares|hyperpage}{11}
+\indexentry{multi-class classification|hyperpage}{11}
+\indexentry{NLL|hyperpage}{11}
+\indexentry{Maximum Likelihood Estimate|hyperpage}{11}
+\indexentry{cross entropy|hyperpage}{11}
+\indexentry{ground truth distribution|hyperpage}{11}
+\indexentry{empirical distribution|hyperpage}{12}
+\indexentry{cross entropy|hyperpage}{12}
+\indexentry{dense layer|hyperpage}{12}
+\indexentry{Jacobian Matrix|hyperpage}{12}
+\indexentry{chain rule|hyperpage}{12}
+\indexentry{backward propagation|hyperpage}{12}
+\indexentry{regularization|hyperpage}{12}
+\indexentry{overfitting|hyperpage}{12}
+\indexentry{activation function|hyperpage}{12}
+\indexentry{Optimizer|hyperpage}{12}
+\indexentry{feedforward neural network model|hyperpage}{14}
+\indexentry{dense layers|hyperpage}{14}
+\indexentry{sequential input|hyperpage}{16}
+\indexentry{Recurrent Neural Network|hyperpage}{16}
+\indexentry{unfold|hyperpage}{16}
+\indexentry{hidden state|hyperpage}{16}
+\indexentry{back-propagation through time|hyperpage}{16}
+\indexentry{evaluation metric|hyperpage}{16}
+\indexentry{long-term dependencies|hyperpage}{16}
