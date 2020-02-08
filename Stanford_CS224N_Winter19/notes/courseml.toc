@@ -6,13 +6,15 @@
 \contentsline {subsection}{\numberline {1.1.3}GloVe}{9}{subsection.1.1.3}%
 \contentsline {subsection}{\numberline {1.1.4}Word sense ambiguity}{11}{subsection.1.1.4}%
 \contentsline {section}{\numberline {1.2}Math Backgrounds}{11}{section.1.2}%
-\contentsline {subsection}{\numberline {1.2.1}Dropout}{13}{subsection.1.2.1}%
-\contentsline {subsection}{\numberline {1.2.2}Xavier}{13}{subsection.1.2.2}%
-\contentsline {subsection}{\numberline {1.2.3}Adam}{13}{subsection.1.2.3}%
-\contentsline {subsection}{\numberline {1.2.4}Practice: Named Entity Recognition}{13}{subsection.1.2.4}%
-\contentsline {subsection}{\numberline {1.2.5}HW2}{13}{subsection.1.2.5}%
-\contentsline {section}{\numberline {1.3}Dependency Parser}{14}{section.1.3}%
-\contentsline {subsection}{\numberline {1.3.1}Neural Dependency Parsing}{14}{subsection.1.3.1}%
-\contentsline {section}{\numberline {1.4}Language Modeling and Recurrent Neural Networks}{15}{section.1.4}%
-\contentsline {chapter}{\numberline {2}Bibliography}{17}{chapter.2}%
+\contentsline {subsection}{\numberline {1.2.1}Data Preprocessing}{13}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Parameter Initialization}{13}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}Optimizer}{13}{subsection.1.2.3}%
+\contentsline {subsection}{\numberline {1.2.4}Regularization}{14}{subsection.1.2.4}%
+\contentsline {subsection}{\numberline {1.2.5}Practice: Named Entity Recognition}{15}{subsection.1.2.5}%
+\contentsline {subsection}{\numberline {1.2.6}HW2}{16}{subsection.1.2.6}%
+\contentsline {section}{\numberline {1.3}Dependency Parser}{16}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Neural Dependency Parsing}{17}{subsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.3.2}HW3}{17}{subsection.1.3.2}%
+\contentsline {section}{\numberline {1.4}Language Modeling and Recurrent Neural Networks}{18}{section.1.4}%
+\contentsline {chapter}{\numberline {2}Bibliography}{20}{chapter.2}%
 \contentsfinish 

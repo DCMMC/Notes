@@ -35,12 +35,21 @@
 \indexentry{overfitting|hyperpage}{12}
 \indexentry{activation function|hyperpage}{12}
 \indexentry{Optimizer|hyperpage}{12}
-\indexentry{feedforward neural network model|hyperpage}{14}
-\indexentry{dense layers|hyperpage}{14}
-\indexentry{sequential input|hyperpage}{16}
-\indexentry{Recurrent Neural Network|hyperpage}{16}
-\indexentry{unfold|hyperpage}{16}
-\indexentry{hidden state|hyperpage}{16}
-\indexentry{back-propagation through time|hyperpage}{16}
-\indexentry{evaluation metric|hyperpage}{16}
-\indexentry{long-term dependencies|hyperpage}{16}
+\indexentry{normal distribution|hyperpage}{13}
+\indexentry{uniform distribution|hyperpage}{13}
+\indexentry{Annealing|hyperpage}{13}
+\indexentry{Momentum|hyperpage}{14}
+\indexentry{arithmetic underflow|hyperpage}{14}
+\indexentry{dropout|hyperpage}{14}
+\indexentry{batch nomalization|hyperpage}{15}
+\indexentry{trainable parameters|hyperpage}{15}
+\indexentry{unbiased estimates|hyperpage}{15}
+\indexentry{feedforward neural network model|hyperpage}{17}
+\indexentry{dense layers|hyperpage}{17}
+\indexentry{sequential input|hyperpage}{18}
+\indexentry{Recurrent Neural Network|hyperpage}{18}
+\indexentry{unfold|hyperpage}{18}
+\indexentry{hidden state|hyperpage}{18}
+\indexentry{back-propagation through time|hyperpage}{19}
+\indexentry{evaluation metric|hyperpage}{19}
+\indexentry{long-term dependencies|hyperpage}{19}

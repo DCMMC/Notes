@@ -7,11 +7,6 @@ Arora, S., Li, Y., Liang, Y., Ma, T., and Risteski, A. (2018).
 \newblock {\em Transactions of the Association for Computational Linguistics},
   6(0):483--495.
 
-\bibitem[Brin, 1995]{brin95nn}
-Brin, S. (1995).
-\newblock Near neighbor search in large metric spaces.
-\newblock In {\em Conference on Very Large Databases (VLDB)}.
-
 \bibitem[Chen and Manning, 2014]{chen-manning-2014-fast}
 Chen, D. and Manning, C. (2014).
 \newblock A fast and accurate dependency parser using neural networks.
@@ -27,6 +22,15 @@ Collobert, R. and Weston, J. (2008).
   Learning}, ICML ’08, page 160–167, New York, NY, USA. Association for
   Computing Machinery.
 
+\bibitem[Glorot and Bengio, 2010]{Xavier}
+Glorot, X. and Bengio, Y. (2010).
+\newblock Understanding the difficulty of training deep feedforward neural
+  networks.
+\newblock In Teh, Y.~W. and Titterington, M., editors, {\em Proceedings of the
+  Thirteenth International Conference on Artificial Intelligence and
+  Statistics}, volume~9 of {\em Proceedings of Machine Learning Research},
+  pages 249--256, Chia Laguna Resort, Sardinia, Italy. PMLR.
+
 \bibitem[Huang et~al., 2012]{huang-etal-2012-improving}
 Huang, E., Socher, R., Manning, C., and Ng, A. (2012).
 \newblock Improving word representations via global context and multiple word
@@ -34,6 +38,19 @@ Huang, E., Socher, R., Manning, C., and Ng, A. (2012).
 \newblock In {\em Proceedings of the 50th Annual Meeting of the Association for
   Computational Linguistics (Volume 1: Long Papers)}, pages 873--882, Jeju
   Island, Korea. Association for Computational Linguistics.
+
+\bibitem[Ioffe and Szegedy, 2015]{BatchNorm}
+Ioffe, S. and Szegedy, C. (2015).
+\newblock Batch normalization: Accelerating deep network training by reducing
+  internal covariate shift.
+\newblock In {\em Proceedings of the 32nd International Conference on
+  International Conference on Machine Learning - Volume 37}, ICML’15, page
+  448–456. JMLR.org.
+
+\bibitem[Kingma and Ba, 2014]{Adam}
+Kingma, D.~P. and Ba, J. (2014).
+\newblock Adam: A method for stochastic optimization.
+\newblock {\em arXiv preprint arXiv:1412.6980}.
 
 \bibitem[Mikolov et~al., 2013]{word2vec}
 Mikolov, T., Sutskever, I., Chen, K., Corrado, G.~S., and Dean, J. (2013).
@@ -56,21 +73,15 @@ Pennington, J., Socher, R., and Manning, C. (2014).
   Natural Language Processing ({EMNLP})}, pages 1532--1543, Doha, Qatar.
   Association for Computational Linguistics.
 
-\bibitem[Quinlan, 1986]{quinlan}
-Quinlan, J.~R. (1986).
-\newblock Induction of decision trees.
-\newblock {\em Machine learning}, 1(1):81--106.
-
 \bibitem[Rohde et~al., 2005]{rohde2005_hacks}
 Rohde, D.~L., Gonnerman, L.~M., and Plaut, D.~C. (2005).
 \newblock An improved model of semantic similarity based on lexical
   co-occurrence.
 
-\bibitem[Rosenblatt, 1958]{rosenblatt58perceptron}
-Rosenblatt, F. (1958).
-\newblock The perceptron: A probabilistic model for information storage and
-  organization in the brain.
-\newblock {\em Psychological Review}, 65:386--408.
-\newblock Reprinted in \emph{Neurocomputing} (MIT Press, 1998).
+\bibitem[Srivastava et~al., 2014]{dropout}
+Srivastava, N., Hinton, G., Krizhevsky, A., Sutskever, I., and Salakhutdinov,
+  R. (2014).
+\newblock Dropout: A simple way to prevent neural networks from overfitting.
+\newblock {\em Journal of Machine Learning Research}, 15:1929--1958.
 
 \end{thebibliography}

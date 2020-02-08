@@ -104,7 +104,7 @@ Iteratively update equation (na\"ive version) is given by:
 \begin{equation}
 \theta^{new} = \theta^{old} - \alpha \nabla_\theta J(\theta)
 \end{equation}
-where $\alpha$ is the learning size (step size).
+where $\alpha$ is the learning size (step size) such as $10^{-3}$.
 
 Note that the summation over $|V|$ ($\sum_{x \in V}$) is very expensive to compute!
 For every training step, instead of looping over the entire vocabulary, we can just sample several negative examples!
@@ -277,11 +277,92 @@ We can use \concept{backward propagation} (reversed of the \emph{topological sor
 
 Other machine learning basic concepts are: \concept{regularization} (e.g. L2) to prevent \concept{overfitting}, vectorization to parallelization, (non-linear) \concept{activation function} (e.g. sigmoid, tanh, (leaky) ReLU), parameter initialization (e.g. Xavier), \concept{Optimizer} (e.g. RMSprop, Adam), learning rate.
 
-\subsection{Dropout}
+\subsection{Data Preprocessing}
+\Figure{mean_subtraction}{An exmaple of mean subtration.}
+\Figure{normalization}{An example of normalization.}
 
-\subsection{Xavier}
+\begin{itemize}
+	\item \textbf{Mean Subtraction (Shifting)}: Shifting all data so that they have zero mean as shown in Fig.~\ref{fig:mean_subtraction}. Formally, $\bm{x}^{(i)} \leftarrow \bm{x}^{(i)} - \mathbb{E}[\bm{x}^{(i)}]$ for sample $i$, where $\mathbb{E}$ indicates mean.
+	\item \textbf{Normalization (Scaling)}: Scale every input feature dimension to have
+	similar ranges of magnitudes, as shown in Fig.~\ref{fig:normalization}. This is useful since input features are often measured in different "units", but we often want to initially consider all features as equally important. Formally, $x^{(i)}_{j} \leftarrow \frac{x^{(i)}_{j}}{\sigma_i (x^{(i)}_{j})}$ for feature $j$ in sample $i$ where $\sigma(\cdot)$ is the standard variance over $x^{(0)}_{j}, \cdots, x^{(N)}_{j}$.
+	\item \textbf{Whitening}: Whitening converts the data to a have an identity covariance matrix - that is, features become uncorrelated and have a variance of $1$. In the specific, we can divide the principal components achieved from PCA by the square roots of their eigenvalues (singular value).
+\end{itemize}
 
-\subsection{Adam}
+\subsection{Parameter Initialization}
+	
+If two hidden units have exactly the same bias and exactly the same incoming and outgoing weights (e.g. different channels for learning different features in the same convolutional layer), they will always get exactly the same gradient.
+So we should initialize the weights to small random values.
+
+A good starting strategy is to initialize the weights to small random numbers of \concept{normal distribution} with the mean around $0$.
+Xavier et al. \mycite{Xavier} suggest that for sigmoid and tanh activation units, it's better for the weight matrix $W \in \mathbb{R}^{n^{(l+1)} * n^{(l)}}$ to be initialized randomly with a \concept{uniform distribution}:
+\begin{equation}
+W \sim U\left[- \sqrt{\frac{6}{n^{(l)} + n^{(l+1)}}}, \sqrt{\frac{6}{n^{(l)} + n^{(l+1)}}}\right]
+\end{equation}
+where $n^{(l)}, n^{(l+1)}$ are also called \textbf{fan-in} and \textbf{fan-out}.
+
+\subsection{Optimizer}
+To avoid a diverging loss (too large learning step) or unconverging (too small learning step), there are some learning strategies.
+
+\concept{Annealing}: start off with a high learning rate to approach a minimum quickly, after several iterations, the learning rate is reduced in some way under a more fine-grained scope.
+\begin{itemize}
+	\item Exponential decay: $\alpha(t) = \alpha_0 e^{-kt}$ where $\alpha_0$ is initial learning rate.
+	\item Decrease over time: $\alpha(t) = \nicefrac{(\alpha_0 \tau)}{\max(t, \tau)}$ where $\tau$ denotes the time at which the learning rate should start reducing.
+\end{itemize}
+
+\Figure{momentum}{A picture of momentum.}
+
+\concept{Momentum} (a picture of it can be seen in Fig.\ref{fig:momentum}) based methods:
+\begin{itemize}
+	\item AdaGrad: $\bm{m} \leftarrow \bm{m} + \left(\nabla_{\bm{\theta}} J (\bm{\theta})\right)^2, \bm{\theta} \leftarrow \bm{\theta} - \alpha \nabla_{\bm{\theta}} J (\bm{\theta}) \odot \left(\sqrt{\bm{m}} + \epsilon\right)^{-1}$ where $\odot, (\cdot)^{-1}, (\cdot)^{2}, \sqrt{\cdot}$ are all element-wise operators, and $\epsilon$ is a very small value such as $10^{-8}$ to prevent \concept{arithmetic underflow}.
+	It leads to that parameters that have not been updated much in the past are likelier to have higher learning rates now.
+	\item RMSprop: $\bm{m} \leftarrow \beta \bm{m} + (1-\beta) \left(\nabla_{\bm{\theta}} J (\bm{\theta})\right)^2, \bm{\theta} \leftarrow \bm{\theta} - \alpha \nabla_{\bm{\theta}} J (\bm{\theta}) \odot \left(\sqrt{\bm{m}} + \epsilon\right)^{-1}$ where $\beta$ is the decay rate with default value $0.9$. Unlike AdaGrad, its updates do not become monotonically smaller.
+	\item Adam\mycite{Adam}: $\bm{m} \leftarrow \beta_1 \bm{m} + (1-\beta_1) \nabla_{\bm{\theta}} J (\bm{\theta}), \bm{v} \leftarrow \beta_2 \bm{v} + (1-\beta_2) \left(\nabla_{\bm{\theta}} J (\bm{\theta})\right)^2, \hat{\bm{m}} = \bm{m} / (1 - \beta_1^t), \hat{\bm{v}} = \bm{v} / (1 - \beta_2^t), \bm{\theta} \leftarrow \bm{\theta} - \alpha \hat{\bm{m}} /  \left(\sqrt{\hat{\bm{v}}} + \epsilon\right)^{-1}$, where $/$ is also a element-wise operator, hyperparameters $\beta_1 = 0.9, \beta_2 = 0.999 \in [0, 1)$. $\hat{\bm{m}}, \hat{\bm{v}}$ are the bias-corrected $\bm{m}, \bm{v}$, and they indicate a rolling average
+	of the gradients and a rolling average of the magnitudes of the gradients, respectively. In adition, $\bm{m}, \bm{v}$ are all initialized to $\bm{0}$ Adam is like a combination of RMSProp and momentum.
+\end{itemize}
+
+\sidenotedcmmc{For the implementation of momentum such as RMSprop, there is a interesting small trick: use $\bm{m} = \bm{m} - (1-\beta)(\bm{m} - \left(\nabla_{\bm{\theta}} J (\bm{\theta})\right)^2)$ instead of $\bm{m} = \beta \bm{m} + (1-\beta) \left(\nabla_{\bm{\theta}} J (\bm{\theta})\right)^2$. In such way, we need calculate only one multiplication, compared with original two multiplications.}
+
+\subsection{Regularization}
+\textbf{1. Dropout}
+
+During training, \concept{dropout} \mycite{dropout} randomly disables units in the hidden layer by a mask vector drawn from Bernoulli distribution where each entry is $0$ with probability $p_{\text{drop}}$ and $1$ with probability ($1 − p_{\text{drop}}$):
+\begin{equation}
+\text{Dropout Layer: } \textcolor{red}{d_i \sim \text{Bernoulli}(1 - p_{\text{drop}}), \hat{\bm{h}}^{(t)} = } \textcolor{blue}{\frac{1}{1-p_{\text{drop}}}} \textcolor{red}{\bm{d} \odot \bm{h}^{(t)}}
+\end{equation}
+where $\odot$ is element-wise product, $\bm{d} \in \{0, 1\}^{D_h}, \bm{h}^{(t)} \in \mathbb{R}^{D_h}$.
+
+If the expected output of a neuron during testing if far different as it was during training, the magnitude of the outputs could be radically different, and the behavior of the network is no longer well-defined.
+Therefore, all the parameters should divided by retain rate $1-p$ (blue part in above formula), so that $\mathbb{E}_{P_{\text{drop}}} [\bm{h}_{\text{drop}}]_i = h_i$.
+If we do not such correction in training, we should multiply $1-p$ to all related parameters.
+
+If we use dropout in testing, the result is \emph{unstable} (vary from every testing) because of thedropout is drawn from Bernoulli distribution.
+Therefore, we should apply dropout only during training but not during evaluation or testing.
+
+\textbf{2. Batch Normalization}
+
+Although \concept{batch nomalization} \mycite{BatchNorm} is like nomalization used in data preprocessing with $N$ be the mini-batch size instead of the dataset size, it is inserted between hidden layers to normalize the output of last layer.
+It leads to achieve the fixed distributions of inputs that would remove the ill effects of the internal covariate shift.
+\emph{Internal Covariate Shift} is defined as the change in the distribution of network activations due to the change in network parameters during training.
+
+The batch normalization in training is defined as follows:
+\begin{equation}
+\text{BN}(h_i) = \gamma \frac{h_i - \mu_{\mathcal{B}}}{\sqrt{\sigma_{\mathcal{B}}^2 + \epsilon}} + \beta
+\end{equation}
+where $\gamma, \beta$ are \concept{trainable parameters}, $\mu_{\mathcal{B}}, \sigma_{\mathcal{B}}^2$ are the mean and variance over the mini-batch as the way of normalization for data preprocessing.
+Since the mean subtraction will \emph{ignore} the learned bias which may useful to the model.
+The trainable $\gamma$ and $\beta$ are used to corrected them and make the BN layer trainable.
+Them ensure that the batch normalization inserted in the network can represent the identity transform.
+
+However, when testing, we cannot use mini-batch in most time.
+We instead feed one sample into the model.
+Therefore, we leverage $m$ training mini-batches to perform \concept{unbiased estimates} of them:
+\begin{align}
+&\mathbb{E}[h_i] \leftarrow \mathbb{E}_{\mathcal{B}}[\mu_{\mathcal{B}}] \nonumber \\
+&\texttt{Var}[h_i] \leftarrow \frac{m}{m-1} \mathbb{E}_{\mathcal{B}}[\sigma_{\mathcal{B}}^2] \nonumber
+\end{align}
+
+Note that in many implementations, the above estimation is replaced with the way like the momentum used in RMSprop.
+More details refer to the source code, e.g. Keras.
 
 \subsection{Practice: Named Entity Recognition}
 To find and classify words as entities (e.g. location, or organization) in text.
@@ -359,6 +440,24 @@ The input features with embedding dimension $d$ are:
 
 The predicted class is the one of transitions (i.e. shift, left/right arc reduction): $p = \texttt{softmax}(\bm{W}_2 f(\bm{W}_1^w \bm{x}^w + \bm{W}_1^t \bm{x}^t + \bm{W}_1^l \bm{x}^l + \bm{b}_1))$, where $f(\cdot)$ is the activation function (e.g. ReLU, or $x^3$).
 The number of class is $3$ when untyped reductions or $T * 2 + 1$ when typed reductions (e.g. left-arc reduction with type \emph{nsubj}).
+
+\subsection{HW3}
+\textbf{1. Machine Learning \& Neural Networks}
+
+\begin{enumerate}[label=(\alph*)]
+	\item Adam
+	\begin{enumerate}[label=(\roman*)]
+		\item Because $\beta = 0.9$, most of the final gradients ($\bm{m}$) come from the past ($90\%$). Even if current gradients are varying much from previous, it only occupy $1 - \beta_1 = 0.1$ of the final gradients.
+		\item Parameters that have not been updated much in the past are likelier to have higher learning rates.
+	\end{enumerate}
+	\item Dropout
+	\begin{enumerate}[label=(\roman*)]
+		\item If the expected output of a neuron during testing if far different as it was during training, the magnitude of the outputs could be radically different, and the behavior of the network is no longer well-defined. Thus, all the parameters should divided by retain rate $1-p$, so that $\mathbb{E}_{p_{\text{drop}}} [\bm{h}_{\text{drop}}]_i = h_i$.
+		\item If we use dropout in testing, the result is unstable because of the dropout is drawn from Bernoulli distribution.
+	\end{enumerate}
+\end{enumerate}
+
+\textbf{2. Neural Transition-Based Dependency Parsing}
 
 \section{Language Modeling and Recurrent Neural Networks}
 
