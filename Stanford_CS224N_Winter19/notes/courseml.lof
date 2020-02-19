@@ -8,5 +8,11 @@
 \contentsline {figure}{\numberline {1.6}{\ignorespaces An example of normalization.}}{13}{figure.1.6}%
 \contentsline {figure}{\numberline {1.7}{\ignorespaces A picture of momentum.}}{14}{figure.1.7}%
 \contentsline {figure}{\numberline {1.8}{\ignorespaces Principle of RNN}}{19}{figure.1.8}%
+\contentsline {figure}{\numberline {1.9}{\ignorespaces The repeating module in an LSTM contains four interacting layers.}}{21}{figure.1.9}%
+\contentsline {figure}{\numberline {1.10}{\ignorespaces Residual connections.}}{21}{figure.1.10}%
+\contentsline {figure}{\numberline {1.11}{\ignorespaces Dense Net.}}{21}{figure.1.11}%
+\contentsline {figure}{\numberline {1.12}{\ignorespaces Alignment from french to english translation.}}{22}{figure.1.12}%
+\contentsline {figure}{\numberline {1.13}{\ignorespaces Training phase for NMT.}}{23}{figure.1.13}%
+\contentsline {figure}{\numberline {1.14}{\ignorespaces Seq2Seq with attention.}}{24}{figure.1.14}%
 \addvspace {10\p@ }
 \contentsfinish 

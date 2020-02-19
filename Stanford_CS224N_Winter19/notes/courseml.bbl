@@ -7,11 +7,27 @@ Arora, S., Li, Y., Liang, Y., Ma, T., and Risteski, A. (2018).
 \newblock {\em Transactions of the Association for Computational Linguistics},
   6(0):483--495.
 
+\bibitem[Brown et~al., 1993]{SMT}
+Brown, P.~F., Della~Pietra, S.~A., Della~Pietra, V.~J., and Mercer, R.~L.
+  (1993).
+\newblock The mathematics of statistical machine translation: Parameter
+  estimation.
+\newblock {\em Computational Linguistics}, 19(2):263--311.
+
 \bibitem[Chen and Manning, 2014]{chen-manning-2014-fast}
 Chen, D. and Manning, C. (2014).
 \newblock A fast and accurate dependency parser using neural networks.
 \newblock In {\em Proceedings of the 2014 Conference on Empirical Methods in
   Natural Language Processing ({EMNLP})}, pages 740--750, Doha, Qatar.
+  Association for Computational Linguistics.
+
+\bibitem[Cho et~al., 2014]{GRU}
+Cho, K., van Merri{\"e}nboer, B., Gulcehre, C., Bahdanau, D., Bougares, F.,
+  Schwenk, H., and Bengio, Y. (2014).
+\newblock Learning phrase representations using {RNN} encoder{--}decoder for
+  statistical machine translation.
+\newblock In {\em Proceedings of the 2014 Conference on Empirical Methods in
+  Natural Language Processing ({EMNLP})}, pages 1724--1734, Doha, Qatar.
   Association for Computational Linguistics.
 
 \bibitem[Collobert and Weston, 2008]{NER_ICML}
@@ -31,6 +47,17 @@ Glorot, X. and Bengio, Y. (2010).
   Statistics}, volume~9 of {\em Proceedings of Machine Learning Research},
   pages 249--256, Chia Laguna Resort, Sardinia, Italy. PMLR.
 
+\bibitem[{He} et~al., 2016]{ResNet}
+{He}, K., {Zhang}, X., {Ren}, S., and {Sun}, J. (2016).
+\newblock Deep residual learning for image recognition.
+\newblock In {\em 2016 IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, pages 770--778.
+
+\bibitem[Hochreiter and Schmidhuber, 1997]{LSTM}
+Hochreiter, S. and Schmidhuber, J. (1997).
+\newblock Long short-term memory.
+\newblock {\em Neural Computation}, 9(8):1735--1780.
+
 \bibitem[Huang et~al., 2012]{huang-etal-2012-improving}
 Huang, E., Socher, R., Manning, C., and Ng, A. (2012).
 \newblock Improving word representations via global context and multiple word
@@ -38,6 +65,12 @@ Huang, E., Socher, R., Manning, C., and Ng, A. (2012).
 \newblock In {\em Proceedings of the 50th Annual Meeting of the Association for
   Computational Linguistics (Volume 1: Long Papers)}, pages 873--882, Jeju
   Island, Korea. Association for Computational Linguistics.
+
+\bibitem[{Huang} et~al., 2017]{DenseNet}
+{Huang}, G., {Liu}, Z., v.~d. {Maaten}, L., and {Weinberger}, K.~Q. (2017).
+\newblock Densely connected convolutional networks.
+\newblock In {\em 2017 IEEE Conference on Computer Vision and Pattern
+  Recognition (CVPR)}, pages 2261--2269.
 
 \bibitem[Ioffe and Szegedy, 2015]{BatchNorm}
 Ioffe, S. and Szegedy, C. (2015).
@@ -65,6 +98,13 @@ Nivre, J. (2003).
 \newblock An efficient algorithm for projective dependency parsing.
 \newblock In {\em Proceedings of the Eighth International Conference on Parsing
   Technologies}, pages 149--160, Nancy, France.
+
+\bibitem[Pascanu et~al., 2013]{RNN_vanishing}
+Pascanu, R., Mikolov, T., and Bengio, Y. (2013).
+\newblock On the difficulty of training recurrent neural networks.
+\newblock In {\em Proceedings of the 30th International Conference on
+  International Conference on Machine Learning - Volume 28}, ICML’13, page
+  III–1310–III–1318. JMLR.org.
 
 \bibitem[Pennington et~al., 2014]{GloVe}
 Pennington, J., Socher, R., and Manning, C. (2014).

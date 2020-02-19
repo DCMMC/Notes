@@ -277,6 +277,8 @@ We can use \concept{backward propagation} (reversed of the \emph{topological sor
 
 Other machine learning basic concepts are: \concept{regularization} (e.g. L2) to prevent \concept{overfitting}, vectorization to parallelization, (non-linear) \concept{activation function} (e.g. sigmoid, tanh, (leaky) ReLU), parameter initialization (e.g. Xavier), \concept{Optimizer} (e.g. RMSprop, Adam), learning rate.
 
+\sidenotedcmmc{Compared with activations such as sigmoid and tanh, ReLU does not \emph{saturate} even for larger values. Note that ReLU is not \emph{differentiable} at $0$, where we can use \emph{sub-derivatives} in implementation with a certain value such as $0$ or $1$.}
+
 \subsection{Data Preprocessing}
 \Figure{mean_subtraction}{An exmaple of mean subtration.}
 \Figure{normalization}{An example of normalization.}
@@ -299,6 +301,7 @@ Xavier et al. \mycite{Xavier} suggest that for sigmoid and tanh activation units
 W \sim U\left[- \sqrt{\frac{6}{n^{(l)} + n^{(l+1)}}}, \sqrt{\frac{6}{n^{(l)} + n^{(l+1)}}}\right]
 \end{equation}
 where $n^{(l)}, n^{(l+1)}$ are also called \textbf{fan-in} and \textbf{fan-out}.
+Besides, bias units are initialized to $0$.
 
 \subsection{Optimizer}
 To avoid a diverging loss (too large learning step) or unconverging (too small learning step), there are some learning strategies.
@@ -332,10 +335,11 @@ During training, \concept{dropout} \mycite{dropout} randomly disables units in t
 where $\odot$ is element-wise product, $\bm{d} \in \{0, 1\}^{D_h}, \bm{h}^{(t)} \in \mathbb{R}^{D_h}$.
 
 If the expected output of a neuron during testing if far different as it was during training, the magnitude of the outputs could be radically different, and the behavior of the network is no longer well-defined.
-Therefore, all the parameters should divided by retain rate $1-p$ (blue part in above formula), so that $\mathbb{E}_{P_{\text{drop}}} [\bm{h}_{\text{drop}}]_i = h_i$.
+Therefore, all the parameters should divided by retain rate $1-p$ (blue part in above formula), so that $\mathbb{E}_{p_{\text{drop}}} [\bm{h}_{\text{drop}}]_i = h_i$.
 If we do not such correction in training, we should multiply $1-p$ to all related parameters.
 
-If we use dropout in testing, the result is \emph{unstable} (vary from every testing) because of thedropout is drawn from Bernoulli distribution.
+If we use dropout in testing, the result is \emph{unstable} (vary from every testing) because of the
+dropout is drawn from Bernoulli distribution.
 Therefore, we should apply dropout only during training but not during evaluation or testing.
 
 \textbf{2. Batch Normalization}
@@ -420,7 +424,8 @@ Basic transition-based dependency parser \mycite{nivre-2003-efficient} with stac
 &\text{2. Left-Arc reduction: } \sigma | w_i | w_j, \beta, A \Rightarrow \sigma | w_j, \beta, A \cup \{r(w_j, w_i)\} \nonumber \\
 &\text{3. Right-Arc reduction: } \sigma | w_i | w_j, \beta, A \Rightarrow \sigma | w_i, \beta, A \cup \{r(w_i, w_j)\} \nonumber
 \end{align}
-where $r(w_j, w_i)$ denotes $w_i$ is the dependency of $w_j$ (e.g. $\text{nsubj}(\text{ate} \rightarrow \text{I})$). The finish state is: $\sigma = [w], \beta = \emptyset$.
+where $r(w_j, w_i)$ denotes $w_i$ is the dependency of $w_j$ (e.g. $\text{nsubj}(\text{ate} \rightarrow \text{I})$), $|$ and $\cup$ stand for concatenate.
+The finish state is: $\sigma = [w], \beta = \emptyset$.
 How to select (search) the best choice among the exponential size of different possible parse trees is the problem.
 In 1960s, they use \emph{dynamic programming algorithms} ($\mathcal{O}(n^3)$).
 In paper \mycite{nivre-2003-efficient}, the authors predict each action by a discriminative classifier (e.g. SVM classifier) which is more efficient but the accuracy is fractionally below the state-of-the-art.
@@ -438,7 +443,7 @@ The input features with embedding dimension $d$ are:
 
 \sidenotedcmmc{Note that we use a special \textbf{NULL} token for non-existent elements: when the stack and buffer are empty or dependents have not been assigned yet.}
 
-The predicted class is the one of transitions (i.e. shift, left/right arc reduction): $p = \texttt{softmax}(\bm{W}_2 f(\bm{W}_1^w \bm{x}^w + \bm{W}_1^t \bm{x}^t + \bm{W}_1^l \bm{x}^l + \bm{b}_1))$, where $f(\cdot)$ is the activation function (e.g. ReLU, or $x^3$).
+The predicted class is the one of transitions (i.e. shift, left/right arc reduction): $p = \texttt{softmax}(\bm{W}_2 f(\bm{W}_1^w \bm{x}^w + \bm{W}_1^t \bm{x}^t + \bm{W}_1^l \bm{x}^l + \bm{b}_1) + \bm{b}_2)$, where $f(\cdot)$ is the activation function (e.g. ReLU, or $x^3$).
 The number of class is $3$ when untyped reductions or $T * 2 + 1$ when typed reductions (e.g. left-arc reduction with type \emph{nsubj}).
 
 \subsection{HW3}
@@ -459,6 +464,27 @@ The number of class is $3$ when untyped reductions or $T * 2 + 1$ when typed red
 
 \textbf{2. Neural Transition-Based Dependency Parsing}
 
+(a) The remaindered configuration is:
+\begin{table}
+	\begin{center}
+		\begin{tabular}{c|c|c|c}
+			Stack & Buffer & New dependency & Transition \\
+			\hline
+			[ROOT, parsed, this] & [sentence, correctly] & & \textsf{SHIFT} \\ \hline
+			[ROOT, parsed, this, sentence] & [correctly] & & \textsf{SHIFT} \\ \hline
+			[ROOT, parsed, sentence] & [correctly] & sentence $\rightarrow$ this & \textsf{LEFT-ARC} \\ \hline
+			[ROOT, parsed] & [correctly] & parsed $\rightarrow$ sentence & \textsf{RIGHT-ARC} \\ \hline
+			[ROOT, parsed, correctly] & [] & & \textsf{SHIFT} \\ \hline
+			[ROOT, parsed] & [] & parsed $\rightarrow$ correctly & \textsf{RIGHT-ARC} \\ \hline
+			[ROOT] & [] & ROOT $\rightarrow$ parsed & \textsf{RIGHT-ARC}
+		\end{tabular}
+	\end{center}
+\end{table}
+
+(b) $2n$
+
+Note that in the source code, the restriction that the version of PyTorch must be 1.0.0 is meaningless and thus I remove it.
+
 \section{Language Modeling and Recurrent Neural Networks}
 
 Language Modeling: given a sequence of words $\bm{x}^{(1)}, \cdots, \bm{x}^{(t)}$, compute the probability distribution of the next word at $\bm{x}^{(t+1)}$:
@@ -474,8 +500,8 @@ P(\bm{x}^{(1)}, \cdots, \bm{x}^{(T)}) = \prod_{t=1}^T P(\bm{x}^{(t)} | \bm{x}^{(
 $n$-gram is a chunk of $n$ consecutive words: unigram, bigram, trigram, 4-gram, ...
 $n$-gram language model is based on a simplifying assumption: $\bm{x}^{(t+1)}$ depends only on the preceding $n-1$ words with i.i.d.:
 \begin{align}
-P(\bm{x}^{(t+1)} | \bm{x}^{(t)}, \cdots, \bm{x}^{(1)}) &= P(\bm{x}^{(t+1)} | \bm{x}^{(t)}, \cdots, \bm{x}^{(t-n+2)}) \\
-&= \frac{P(\bm{x}^{(t+1)}, \bm{x}^{(t)}, \cdots, \bm{x}^{(t-n+2)})}{P(\bm{x}^{(t)}, \cdots, \bm{x}^{(t-n+2)})}
+P(\bm{x}^{(t+1)} | \bm{x}^{(t)}, \cdots, \bm{x}^{(1)}) &= P(\bm{x}^{(t+1)} | \bm{x}^{(t)}, \cdots, \bm{x}^{(t-n+2)}) \nonumber \\
+&= \frac{P(\bm{x}^{(t+1)}, \bm{x}^{(t)}, \cdots, \bm{x}^{(t-n+2)})}{P(\bm{x}^{(t)}, \cdots, \bm{x}^{(t-n+2)})} \nonumber
 \end{align}
 where the $n$-gram and (n-1)-gram probabilities are calculated by \emph{counting}.
 There are some \emph{sparsity problems} with the above $n$-gram models such as the numerator or denominator is zero.
@@ -493,9 +519,9 @@ To process \emph{variable} length \concept{sequential input} such as text, \conc
 As the principle of RNN shown in Fig.~\ref{RNN}: \emph{repeat} (i.e. \concept{unfold} or unroll) the same RNN cell for each time-step but with different input and previous \concept{hidden state}.
 A vanilla RNN for language modeling is:
 \begin{align}
-\bm{h}^{(t)} &= \sigma \left(\bm{W}_h \bm{h}^{(t-1)} + \bm{W}_x \bm{x}^{(t)} + \bm{b}_1\right) \\
-\hat{\bm{y}} &= P(\bm{x}^{(t)} | \bm{x}^{(t-1)}, \cdots, \bm{x}^{(1)}) \nonumber \\
-&= \texttt{softmax}(\bm{U}\bm{h}^{(t)} + \bm{b}_2) 
+\bm{h}^{(t)} &= \sigma \left(\bm{W}_h \bm{h}^{(t-1)} + \bm{W}_x \bm{x}^{(t)} + \bm{b}_1\right) \nonumber \\
+\hat{\bm{y}} &= P(\bm{x}^{(t)} | \bm{x}^{(t-1)}, \cdots, \bm{x}^{(1)}) \nonumber \nonumber \\
+&= \texttt{softmax}(\bm{U}\bm{h}^{(t)} + \bm{b}_2) \nonumber
 \end{align}
 where $\sigma(\cdot)$ is the activation function, and $\bm{h}^{(0)}$ is the initial (random or zero) hidden state.
 The gradient w.r.t. the weight matrix is the \emph{sum} of the gradients w.r.t each time it appears using \concept{back-propagation through time} (BPTT, just as same as normal back-prop).
@@ -507,4 +533,153 @@ And the \concept{evaluation metric} for language modeling is \emph{perlexity} wh
 
 There are some other applications of RNN: part-of-speech tagging, named entity recognition, sentence classification, text generator, encoder module, etc.
 The final feature can be the final hidden state or elemen-wise max/mean of all hidden states.
-However, the \emph{vanilla} RNN has these disadvantages: (1) recurrent computation is slow (2) hard to access long-term information (\concept{long-term dependencies}) due to \emph{gradient vanish} and \emph{gradient explosion}.
+Using chain rule, we get $\frac{\partial J^{(n)}}{\partial \bm{h}^{(1)}} = \frac{\partial J^{(n)}}{\partial \bm{h}^{(n)}} \times \prod_{i=2}^n \frac{\partial \bm{h}^{(n)}}{\partial \bm{h}^{(n-1)}} = \frac{\partial J^{(n)}}{\partial \bm{h}^{(n)}} \times \prod_{i=2}^n \sigma^\prime \circ \bm{W}_h$.
+For a large $n$ and small $\bm{W}_h$, it's easy to encounter the vanishing gradient problem.
+In overall, the \emph{vanilla} RNN has these disadvantages: (1) recurrent computation is slow (2) hard to access long-term information (\concept{long-term dependencies}) due to \emph{gradient vanish} and \emph{gradient explosion}.
+
+We can formalize the above vanishing intuitions according to \mycite{RNN_vanishing}.
+Let $\bm{W}_h$ have the \concept{eigenvalues} $\lambda_1, \cdots, \lambda_n$ such that $|\lambda_1| > |\lambda_2| > \cdots > |\lambda_n|$ and the corresponding (left) eigenvectors $\bm{q}_1^\top, \cdots, \bm{q}_n^\top$ which have unit norms: $\bm{q}_i^\top \bm{W}_h = \lambda_i \bm{q}_i$.
+We can rewrite the gradients $\frac{J^{(n)}}{\bm{h}^{(n)}} = \sum_{i=1}^N c_i \bm{q}_i^\top$ where $c_i = 0$ for $i < j$ and $c_j \ne 0$.
+Thus, the overall gradient is:
+\begin{align}
+\frac{\partial J^{(n)}}{\partial \bm{h}^{(1)}} &= \frac{\partial J^{(n)}}{\partial \bm{h}^{(n)}} \times \prod_{i=2}^n \sigma^\prime \circ \bm{W}_h \nonumber \\ 
+&= \sum_{i=1}^N c_i \bm{q}_i^\top (\texttt{diag}(\sigma^\prime))^{n-1} (\bm{W}_h)^{n-1} \nonumber \\
+&= \sum_{i=1}^N c_i \bm{q}_i^\top (\bm{W}_h)^{n-1} (\texttt{diag}(\sigma^\prime))^{n-1} \nonumber \\
+&= c_j \lambda_j^{n-1} \bm{q}_j^\top (\texttt{diag}(\sigma^\prime))^{n-1} + \lambda_j^{n-1} \sum_{i=j+1}^N c_i \left(\frac{\lambda_i}{\lambda_j}\right)^{n-1} \bm{q}_i^\top  (\texttt{diag}(\sigma^\prime))^{n-1} \nonumber \nonumber \\
+&\approx c_j \lambda_j^{n-1} (\sigma^\prime)^{n-1} \bm{q}_j^\top \nonumber
+\end{align}
+where $\frac{\lambda_i}{\lambda_j} < 1$, and for large $n$ we have $\lim_{n \to \infty} \left(\frac{\lambda_i}{\lambda_j}\right)^{n-1} = 0$.
+Therefore, if $\forall j, \sigma^\prime < \frac{1}{\lambda_j}$ then we get vanishing gradient.
+Note that, $\sup \text{sigmoid}^\prime = \frac{1}{4}, \sup ReLU^\prime = 1$.
+Thus, the largest eigenvalue $\lambda_1 < \frac{1}{\sigma^\prime}$ will lead to vanishing.
+
+For avoid gradient explosion, one simple method is \emph{gradient clipping}: $\hat{\bm{g}} \leftarrow \frac{threshold}{\lVert \bm{g} \rVert} \bm{g}$ if $\lVert \bm{g} \rVert \ge threshold$.
+As for fixing vanishing gradient, many RNN variants are introduced such as \concept{Long Short-Term Memory} (LSTM) \mycite{LSTM} and \concept{Gated Recurrent Unit} (GRU) \mycite{GRU}.
+LSTM uses two \emph{separated} memories: \emph{hidden state} $\bm{h}^{(t)}$ for \emph{short-term} information and \emph{cell state} $\bm{c}^{(t)}$ for \emph{long-term} information.
+There are three \emph{gates} performed in each LSTM \emph{cell}:
+\begin{align}
+&\text{Forget gate: } \bm{f}^{(t)} = \sigma(\bm{W}_f \bm{h}^{(t-1)} + \bm{U}_f \bm{x}^{(t)} + \bm{b}_f) \nonumber \\
+&\text{Input gate: } \bm{i}^{(t)} = \sigma(\bm{W}_i \bm{h}^{(t-1)} + \bm{U}_i \bm{x}^{(t)} + \bm{b}_i) \nonumber \\
+&\text{Output gate: } \bm{o}^{(t)} = \sigma(\bm{W}_o \bm{h}^{(t-1)} + \bm{U}_o \bm{x}^{(t)} + \bm{b}_o) \nonumber \\
+&\text{New cell content: } \tilde{\bm{c}}^{(t)} = \tanh \left(\bm{W}_c \bm{h}^{(t-1)} + \bm{U}_c \bm{x}^{(t)} + \bm{b}_c \right) \nonumber \\
+&\text{Cell state: } \bm{c}^{(t)} = \bm{f}^{(t)} \circ \bm{c}^{(t-1)} + \bm{i}^{(t)} \circ \tilde{\bm{c}}^{(t)} \nonumber \\
+&\text{Hidden state: } \bm{h}^{(t)} = \bm{o}^{(t)} \circ \tanh \bm{c}^{(t)} \nonumber
+\end{align}
+where $\sigma$ is sigmoid function, $\circ$ is element-wise product, and $\tanh$ used in hidden state (the last formula) is to provide non-linearity and normalize $\bm{c}^{(t)}$ to $(0, 1)$.
+The structure of LSTM is shown in Fig.\ref{fig:LSTM} made by \href{http://colah.github.io/posts/2015-08-Understanding-LSTMs/}{colah's blog}.
+
+\Figure{LSTM}{The repeating module in an LSTM contains four interacting layers.}
+
+Those three gates (forget, input, output) enable the abilities of erase, read and write for LSTM.
+Each element of the gates are between $1$ (open) and $0$ (close).
+While The LSTM architecture makes it \emph{easier} for the RNN to preserve long-distance dependencies, it does not \emph{guarantee} that  there is no vanishing/exploding
+gradient.
+
+In the other hand, GRU combines input and forget gate into \emph{update} gate, and add new \emph{reset} gate to select useful part of previous hidden state to compute new state content.
+While there is no conclusive evidence that GRU consistently performs better than LSTM or vice versa, GRU is computed more efficient due to fewer parameters.
+\begin{align}
+&\text{Update gate: } \bm{u}^{(t)} = \sigma (\bm{W}_u \bm{h}^{(t-1)} + \bm{U}_u \bm{x}^{(t)} + \bm{b}_u) \nonumber \\
+&\text{Reset gate: } \bm{r}^{(t)} = \sigma (\bm{W}_r \bm{h}^{(t-1)} + \bm{U}_r \bm{x}^{(t)} + \bm{b}_r) \nonumber \\
+&\text{New hidden state content: } \tilde{\bm{h}}^{(t)} = \tanh (\bm{W}_h (\bm{r}^{(t)} \circ \bm{h}^{(t-1)}) + \bm{U}_h \bm{x}^{(t)} + \bm{b}_h) \nonumber \\
+&\text{Hidden state: } \bm{h}^{(t)} = (1 - \bm{u}^{(t)}) \circ \bm{h}^{(t-1)} + \bm{u}^{(t)} \circ \tilde{\bm{h}}^{(t)} \nonumber
+\end{align}
+
+The vanishing gradient problem appears not only in RNNs, but also for most all other neural networks inlcuding MLP (dense layers) and CNNs, especially for deep ones.
+One solution is add more \emph{direct connections} between future apart layers to allow gradients flow more easier.
+For example, \concept{Residual connections} (aka. ResNet \mycite{ResNet} or skip-connections) is shown in Fig.\ref{fig:ResNet} where an identity skips two layers.
+Another example is \concept{Dense connections} (aka. DenseNet \mycite{DenseNet}) which directly connect every layers to every layers where the output of each layer will \concept{concatenate} the input as presented in Fig.\ref{fig:DenseNet}.
+\concept{Highway connections} is inspired from the gates of LSTM and similar to residual connections, where the identity connect and the transformation layer is controlled by a dynamic gate.
+
+\Figure{ResNet}{Residual connections.}
+
+\Figure{DenseNet}{Dense Net.}
+
+Apart from the above RNNs, there are other important RNN architectures: \concept{Bidirectional RNNs} and \concept{Multi-layer RNNs} (aka. stacked RNNs).
+The definition of bidirectional RNNs is given by:
+\begin{align}
+&\text{Forward RNN: } \overrightarrow{\bm{h}}^{(t)} = \overrightarrow{\text{RNN}}_{FW} (\overrightarrow{\bm{h}}^{(t-1)}, \bm{x}^{(t)}) \nonumber \\
+&\text{Backward RNN: } \overleftarrow{\bm{h}}^{(t)} = \overleftarrow{\text{RNN}}_{BW} (\overleftarrow{\bm{h}}^{(t-1)}, \bm{x}^{(t)}) \nonumber \\
+&\bm{h}^{(t)} = [\overrightarrow{\bm{h}}^{(t)}; \overleftarrow{\bm{h}}^{(t)}] \nonumber
+\end{align}
+
+While LSTM bacame the dominant approach between 2013 to 2016, \emph{Transormer} is the state-of-the-art now in 2019.
+More descriptions refer to Section~\ref{contextual_word_rep}.
+
+\section{Seq2Seq and Attention}
+Pre-neural machine translation: (1) Rule-based bilingual dictionary in 1950s (2) Statistical machine translation from 1990s to 2010s.
+More formally, statistical machine translation from \emph{source language} $x$ to \emph{target language} $y$ is given by:
+\begin{align}
+\arg \max_y P(y | x) &= \arg \max_y \frac{P(x, y)}{P(x)} \nonumber \\
+&= \arg \max_y \frac{P(x | y) P(y)}{P(x)} \nonumber \\
+&= \arg \max_y P(x | y) P(y) \nonumber
+\end{align}
+where $P(y | x)$ is broke down to two components according to \concept{Baye's rule}: $P(x | y)$ is the translation model which learn from parallel (bilingual) data to model the fidelity of words and phrases whether $x$ is well- or ill-formed, $P(y)$ is the language model which learn from monolingual data of target language to model the fluency of the whole sentence regardless of their connection to the French. 
+
+\Figure{alignment}{Alignment from french to english translation.}
+
+In practice, we further consider \concept{alignment} (word-level correspondence) because there are one-to-many, many-to-one, many-to-many, and even no couterpart apart from one-to-one reflection relations.
+One example of one-to-many (entarté) and no counterpart (a) is shown in Fig.\ref{fig:alignment}.
+More examples refer to the original paper \mycite{SMT}.
+Therefore, we add alignment to the model: $P(x, a | y)$.
+
+The core idea of Seq2Seq model is using two RNN to construct an \emph{encode-decode} architecture.
+At test time, first we feed source sentence (with embedding) into the encoder RNN, then we use the last hidden state of the encode RNN as the initial state of the decoder RNN as a conditional language model.
+The output word at position $t$ is given by:
+\begin{equation}
+w_t = \texttt{softmax}(RNN(h^{(t-1)}, W_e \arg \max \texttt{softmax}(h^{(t-1)}))) \nonumber
+\end{equation}
+where $W_e$ is the embedding table of the target language and the first input $x_1 = \text{<START>}$ is a special token and repeatedly output until output <END>.
+Note that there are two different embedding lookup table for source and target language.
+When traning, we need provide parallel dataset whose samples consist of bilingual sentences.
+As for traning, the diagram is represented in Fig.\ref{fig:NMT_training}.
+
+\begin{figure}[!thp]
+	\centerline{\includegraphics[width=8.0cm]{figs/NMT_training.png}}
+	\caption{Training phase for NMT.}
+	\label{fig:NMT_training}
+\end{figure}
+
+However, the aforementioned (greedy) decoding has no way to undo decisions. This is, if one of the output words are wrong, all the follow-up outputs are also wrong.
+\concept{Beam search} decoding is utilized to fix this problem: on each step of decoder, keep track of the $k$ (in practice around $5$ to $10$) most probable partial translation (\emph{hypotheses}, path, or branch).
+The target is the path with the largest cumulative log probabilities with shortest one (i.e. average).
+Apart from all paths reach <END> as the stop sign, we can set some pre-defined cutoff for maximum number of timesteps or finished paths.
+
+Although NMT is much simple and less human engineering effort while achieves better performance, NMT is diffcult to control (i.e. specify rules or guidelines) and less interpretable which leads to hard to debug.
+
+The popular evaluation metric for MT is \concept{BLEU} (Bilingual Evaluation Understudy).
+Its calculation is based on n-gram precision plus a penality for too-short translations.
+Note that BLEU is useful but imperfect because there are many valid translations which has low $n$-gram overlap with the ground truth translation.
+NMT outperforms SMT quickly, but there are still many difficulties remain:
+\begin{itemize}
+	\item Out-of-vocabulary words.
+	\item Domain mismatch between train and test data.
+	\item Maintaining context over longer text (long-term dependencies).
+	\item Low-resource language pairs (few-shot learning).
+	\item Using common sense is still hard.
+\end{itemize}
+
+\begin{figure}[!thp]
+	\centerline{\includegraphics[width=8.0cm]{figs/Seq2Seq_attention.png}}
+	\caption{Seq2Seq with attention.}
+	\label{fig:Seq2Seq_Attention}
+\end{figure}
+
+We notice that only the last hidden state from encoder RNN to represent the whole source sentence may be the information bottleneck.
+Thus we introduce Seq2Seq with \concept{attention}: on each step of the decoder, we use the attention distribution (like soft version of alignment) for each hidden states of encoder RNN to take a weighted sum of the encoder hidden states as the current decoder hidden state.
+Note that sometimes the input of decoder RNN will concatenate the previous translated word vector and the previous attention output.
+The diagram can be seen in Fig.\ref{fig:Seq2Seq_Attention}.
+In addition, attention in here helps with vanishing gradient problem by providing shortcut to faraway states, and also provides some interpretability.
+More formally, the attention for Seq2Seq is:
+\begin{align}
+&\bm{e}^{(t)} = [\bm{s}_t^\top \bm{h}_1, \cdots, \bm{s}_t^\top \bm{h}_n] \in \mathbb{R}^n \nonumber \\
+&\text{Attention distribution: } \bm{\alpha}^{(t)} = \texttt{softmax}(\bm{e}^{(t)}) \nonumber \\
+&\text{Attention ouput: } \bm{a}^{(t)} = \sum_{i=1}^n \alpha_i^t \bm{h}_i \in \mathbb{R}^h \nonumber \\
+&\text{Attention decoder hidden state: } [\bm{a}^{(t)}; \bm{s}_t] \in \mathbb{R}^{2h}
+\end{align}
+where encoder hidden states $\bm{h}_1, \cdots, \bm{h}_n \in \mathbb{R}^h$, and decoder hidden state at timestep $t$ is $\bm{s}_t \in \mathbb{R}^h$.
+
+More general definition of attention: given a set of vector \emph{values}, and a vector \emph{query}, attention is to compute a weighted sum of the values, dependent on the query.
+We can found that attention is a way to obtain a \emph{fixed-size} representation of an arbitrary set of representations (e.g. sequential features).
+There are many ways to obtain query vector: dot product $e_i = \bm{s}^\top \bm{h}_i$, multiplicative $e_i = \bm{s}^\top \bm{W} \bm{h}_i$, additive $e_i = \bm{v}^\top \tanh (\bm{W}_1 \bm{h}_i + \bm{W}_2 \bm{s})$, where $\bm{v}, \bm{W}, \bm{W}_1, \bm{W}_2$ are trainable parameters.
+
+\section{Contextual Word Representations and Pretraining} \label{contextual_word_rep}

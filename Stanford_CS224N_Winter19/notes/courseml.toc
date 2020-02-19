@@ -16,5 +16,7 @@
 \contentsline {subsection}{\numberline {1.3.1}Neural Dependency Parsing}{17}{subsection.1.3.1}%
 \contentsline {subsection}{\numberline {1.3.2}HW3}{17}{subsection.1.3.2}%
 \contentsline {section}{\numberline {1.4}Language Modeling and Recurrent Neural Networks}{18}{section.1.4}%
-\contentsline {chapter}{\numberline {2}Bibliography}{20}{chapter.2}%
+\contentsline {section}{\numberline {1.5}Seq2Seq and Attention}{22}{section.1.5}%
+\contentsline {section}{\numberline {1.6}Contextual Word Representations and Pretraining}{24}{section.1.6}%
+\contentsline {chapter}{\numberline {2}Bibliography}{25}{chapter.2}%
 \contentsfinish 

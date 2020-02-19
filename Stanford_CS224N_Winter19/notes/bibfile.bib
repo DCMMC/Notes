@@ -9,6 +9,20 @@
 	url = {http://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf}
 }
 
+@article{SMT,
+	title = "The Mathematics of Statistical Machine Translation: Parameter Estimation",
+	author = "Brown, Peter F.  and
+	Della Pietra, Stephen A.  and
+	Della Pietra, Vincent J.  and
+	Mercer, Robert L.",
+	journal = "Computational Linguistics",
+	volume = "19",
+	number = "2",
+	year = "1993",
+	url = "https://www.aclweb.org/anthology/J93-2003",
+	pages = "263--311",
+}
+
 @article{rohde2005_hacks,
 	title={An Improved Model of Semantic Similarity Based on Lexical Co-Occurrence},
 	author={Rohde, Douglas LT and Gonnerman, Laura M and Plaut, David C},
@@ -71,6 +85,60 @@
 	series = {ICML ’08}
 }
 
+@article{LSTM,
+	author = {Hochreiter, Sepp and Schmidhuber, Jürgen},
+	title = {Long Short-Term Memory},
+	journal = {Neural Computation},
+	volume = {9},
+	number = {8},
+	pages = {1735-1780},
+	year = {1997},
+	doi = {10.1162/neco.1997.9.8.1735},
+	
+	URL = { 
+	https://doi.org/10.1162/neco.1997.9.8.1735
+	
+	},
+	eprint = { 
+	https://doi.org/10.1162/neco.1997.9.8.1735
+	
+	}
+	,
+	abstract = { Learning to store information over extended time intervals by recurrent backpropagation takes a very long time, mostly because of insufficient, decaying error backflow. We briefly review Hochreiter's (1991) analysis of this problem, then address it by introducing a novel, efficient, gradient based method called long short-term memory (LSTM). Truncating the gradient where this does not do harm, LSTM can learn to bridge minimal time lags in excess of 1000 discrete-time steps by enforcing constant error flow through constant error carousels within special units. Multiplicative gate units learn to open and close access to the constant error flow. LSTM is local in space and time; its computational complexity per time step and weight is O. 1. Our experiments with artificial data involve local, distributed, real-valued, and noisy pattern representations. In comparisons with real-time recurrent learning, back propagation through time, recurrent cascade correlation, Elman nets, and neural sequence chunking, LSTM leads to many more successful runs, and learns much faster. LSTM also solves complex, artificial long-time-lag tasks that have never been solved by previous recurrent network algorithms. }
+}
+
+@inproceedings{GRU,
+	title = "Learning Phrase Representations using {RNN} Encoder{--}Decoder for Statistical Machine Translation",
+	author = {Cho, Kyunghyun  and
+	van Merri{\"e}nboer, Bart  and
+	Gulcehre, Caglar  and
+	Bahdanau, Dzmitry  and
+	Bougares, Fethi  and
+	Schwenk, Holger  and
+	Bengio, Yoshua},
+	booktitle = "Proceedings of the 2014 Conference on Empirical Methods in Natural Language Processing ({EMNLP})",
+	month = oct,
+	year = "2014",
+	address = "Doha, Qatar",
+	publisher = "Association for Computational Linguistics",
+	url = "https://www.aclweb.org/anthology/D14-1179",
+	doi = "10.3115/v1/D14-1179",
+	pages = "1724--1734",
+}
+
+
+@inproceedings{RNN_vanishing,
+	author = {Pascanu, Razvan and Mikolov, Tomas and Bengio, Yoshua},
+	title = {On the Difficulty of Training Recurrent Neural Networks},
+	year = {2013},
+	publisher = {JMLR.org},
+	booktitle = {Proceedings of the 30th International Conference on International Conference on Machine Learning - Volume 28},
+	pages = {III–1310–III–1318},
+	numpages = {9},
+	location = {Atlanta, GA, USA},
+	series = {ICML’13}
+}
+
 @inproceedings{BatchNorm,
 	author = {Ioffe, Sergey and Szegedy, Christian},
 	title = {Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift},
@@ -83,7 +151,31 @@
 	series = {ICML’15}
 }
 
+@INPROCEEDINGS{ResNet, 
+	author={K. {He} and X. {Zhang} and S. {Ren} and J. {Sun}}, 
+	booktitle={2016 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}, 
+	title={Deep Residual Learning for Image Recognition}, 
+	year={2016}, 
+	volume={}, 
+	number={}, 
+	pages={770-778}, 
+	keywords={image classification;learning (artificial intelligence);neural nets;object detection;COCO segmentation;ImageNet localization;ILSVRC & COCO 2015 competitions;deep residual nets;COCO object detection dataset;visual recognition tasks;CIFAR-10;ILSVRC 2015 classification task;ImageNet test set;VGG nets;residual nets;ImageNet dataset;residual function learning;deeper neural network training;image recognition;deep residual learning;Training;Degradation;Complexity theory;Image recognition;Neural networks;Visualization;Image segmentation}, 
+	doi={10.1109/CVPR.2016.90}, 
+	ISSN={1063-6919}, 
+	month={June},}
 
+@INPROCEEDINGS{DenseNet, 
+	author={G. {Huang} and Z. {Liu} and L. v. d. {Maaten} and K. Q. {Weinberger}}, 
+	booktitle={2017 IEEE Conference on Computer Vision and Pattern Recognition (CVPR)}, 
+	title={Densely Connected Convolutional Networks}, 
+	year={2017}, 
+	volume={}, 
+	number={}, 
+	pages={2261-2269}, 
+	keywords={convolution;feedforward neural nets;learning (artificial intelligence);DenseNet;traditional convolutional networks;feature propagation;feature reuse;object recognition benchmark tasks;dense convolutional network;vanishing-gradient problem;Training;Convolution;Network architecture;Convolutional codes;Neural networks;Road transportation}, 
+	doi={10.1109/CVPR.2017.243}, 
+	ISSN={1063-6919}, 
+	month={July},}
 
 @inproceedings{nivre-2003-efficient,
 	title = "An Efficient Algorithm for Projective Dependency Parsing",
