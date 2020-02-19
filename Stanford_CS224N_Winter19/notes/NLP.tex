@@ -446,6 +446,14 @@ The input features with embedding dimension $d$ are:
 The predicted class is the one of transitions (i.e. shift, left/right arc reduction): $p = \texttt{softmax}(\bm{W}_2 f(\bm{W}_1^w \bm{x}^w + \bm{W}_1^t \bm{x}^t + \bm{W}_1^l \bm{x}^l + \bm{b}_1) + \bm{b}_2)$, where $f(\cdot)$ is the activation function (e.g. ReLU, or $x^3$).
 The number of class is $3$ when untyped reductions or $T * 2 + 1$ when typed reductions (e.g. left-arc reduction with type \emph{nsubj}).
 
+Here are mainly four types of parsing error:
+\begin{itemize}
+	\item \textbf{Prepositional Phrase Attachment Error}
+	\item \textbf{Verb Phrase Attachment Error}
+	\item \textbf{Modifier Attachment Error}
+	\item \textbf{Coordination Attachment Error}
+\end{itemize}
+
 \subsection{HW3}
 \textbf{1. Machine Learning \& Neural Networks}
 
@@ -482,6 +490,16 @@ The number of class is $3$ when untyped reductions or $T * 2 + 1$ when typed red
 \end{table}
 
 (b) $2n$
+
+(e) dev UAS: 88.56, test UAS: 89.07
+
+(f) Refer to \href{https://corenlp.run/}{Stanford CoreNLP} to visualize the results of dependencies parses (also may contain errors).
+\begin{enumerate}[label=(\roman*)]
+	\item Verb Phrase Attachment Error, wedding -> fearing should be heading -> fearing.
+	\item Coordination Attachment Error, makes -> rescue should be rush -> rescue.
+	\item Prepositional Phrase Attachment Error, named -> Midland should be guy -> Midland.
+	\item Modifier Attachment Error, elements -> most should be crucial -> most.
+\end{enumerate}
 
 Note that in the source code, the restriction that the version of PyTorch must be 1.0.0 is meaningless and thus I remove it.
 
@@ -681,5 +699,38 @@ where encoder hidden states $\bm{h}_1, \cdots, \bm{h}_n \in \mathbb{R}^h$, and d
 More general definition of attention: given a set of vector \emph{values}, and a vector \emph{query}, attention is to compute a weighted sum of the values, dependent on the query.
 We can found that attention is a way to obtain a \emph{fixed-size} representation of an arbitrary set of representations (e.g. sequential features).
 There are many ways to obtain query vector: dot product $e_i = \bm{s}^\top \bm{h}_i$, multiplicative $e_i = \bm{s}^\top \bm{W} \bm{h}_i$, additive $e_i = \bm{v}^\top \tanh (\bm{W}_1 \bm{h}_i + \bm{W}_2 \bm{s})$, where $\bm{v}, \bm{W}, \bm{W}_1, \bm{W}_2$ are trainable parameters.
+
+\subsection{HW4}
+\textbf{1. Neural Machine Translation with RNNs}
+
+Refer to the source codes for detail.
+
+\textbf{2. Analyzing NMT Systems}
+
+(a)
+\begin{enumerate}[label=(\roman*)]
+	\item Error: duplication of translations ("favorite"), Reason: model limitations in preventing duplications, Solution: add penalty on duplicated translations.
+	\item Error: the superlative comparison is mistranslated (most instead of more), Reason: could be because specific linguistic construct of comparison in Spanish, Solution: train with more comparision examples or add penalty for comparision examples.
+	\item Reason: out-of-vocabulary words of names, Reason: the model do not consider out-of-vocabulary words, Solution: keep the out-of-vocabulary the same with named entity regconization in option, or add the size of vocabulary.
+	\item Error: "go around" is mistranslated to "go back," "block" is mistranslated to "apple", Reason: "apple" and "block" are same in Spanish "manzana", "go around" and "go back" are also similar in Spanish, Solution: train with more examples about such polysemic words.
+	\item Error: "teacher" is mistranslated to "women" for Spanish "profesores", Reason: training dataset may contain the above mistakes, Solution: correct the dataset and add rules to correct this error.
+	\item Error: "hectareas" (1/4 acres) is mistranslated to "acres", Reason: there is no such measure unit in English, Solution: identify measure unit in the source sentence and perform some rules.
+\end{enumerate}
+
+(b)
+
+\sidenotedcmmc{Note that despite the HW taking sentence-level BLEU, BLEU is used as a \concept{corpus-level measure}.}
+
+(c) BLEU
+\begin{enumerate}[label=(\roman*)]
+	\item $p_1 = 0.5477, p_2 = 0.6325$, $c_2$, agree.
+	\item $p_1 = 0.4484, p_2 = 0.2589$, $c_1$, disagree.
+	\item There are often many valiad translations for one sentence.
+	\item Pros and cons of BELU:
+	\begin{itemize}
+		\item Pros: 1. BLEU has frequently been reported as correlating well with human judgement. 2. few human effort with inexpensive computations.
+		\item Cons: 1. A good translation can get a poor BLEU score because it has low n-gram overlap with the human (reference) translation. 2. It does not consider meaning and sentence structure, etc.
+	\end{itemize}
+\end{enumerate}
 
 \section{Contextual Word Representations and Pretraining} \label{contextual_word_rep}
