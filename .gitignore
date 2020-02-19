@@ -177,5 +177,7 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+Stanford_CS224N_Winter19/a3/data/
+
 
 # End of https://www.gitignore.io/api/python
