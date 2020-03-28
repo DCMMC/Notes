@@ -161,7 +161,7 @@ It captures global corpus statistics directly.
 
 \Figure{ratio_cooccurrence}{An example of the conditional probabilities and their ratio in GloVe paper.}
 
-Some notations: $X_{ij}$ tabulate the number of times word $j$ occurs in the context of word $i$, $X_i = \sum_{k} X_ik$ is the number of times any word appears in the context of word $i$ i.e., the nomalization denominator.
+Some notations: $X_{ij}$ tabulate the number of times word $j$ occurs in the context of word $i$, $X_i = \sum_{k} X_{ik}$ is the number of times any word appears in the context of word $i$ i.e., the nomalization denominator.
 $P_{ij} = P(j|i) = \nicefrac{X_{ij}}{X_i}$ is the probability that word $j$ appear in the context of word $i$.
 The crucial insight is that the \emph{ratios} of co-occurrence probabilities as shown in Fig.~\ref{fig:ratio_cooccurrence} to encode meaning components.
 We'd like to leverage the word vectors $w_i, w_j, \tilde{w}_k$ to represent such ratio: $F(w_i, w_j, \tilde{w}_k) = \nicefrac{P_{ik}}{P{jk}}$, where $\tilde{w}$ is a seperate \emph{context} word vector for various \emph{probe words} $k$, instead of the word vector $w$ (similar to center word vector in skip-gram).
@@ -186,8 +186,8 @@ Therefore, the ratios of co-occurrence probabilities is the \concept{log-bilinea
 The final objective function is \emph{weighted} \concept{least squares} (MSE) for this regression problem.
 
 \begin{equation}
-	J = \sum_{i,j=1}^V f(X_{ij})\left(w_i^\top \tilde{w}_j + b_i + \tilde{b}_j - 
-	log X_{ij}\right)
+	J = \sum_{i,j=1}^V f(X_{ij})\left(\bm{w}_i^\top \tilde{\bm{w}}_j + b_i + \tilde{b}_j - 
+	log X_{ij}\right)^2
 \end{equation}
 where weighted function (is also a hyperparamter) is:
 
@@ -328,7 +328,7 @@ To avoid a diverging loss (too large learning step) or unconverging (too small l
 \subsection{Regularization}
 \textbf{1. Dropout}
 
-During training, \concept{dropout} \mycite{dropout} randomly disables units in the hidden layer by a mask vector drawn from Bernoulli distribution where each entry is $0$ with probability $p_{\text{drop}}$ and $1$ with probability ($1 − p_{\text{drop}}$):
+During training, \concept{dropout} \mycite{dropout} randomly disables units in the hidden layer by a mask vector drawn from Bernoulli distribution where each entry is $0$ with probability $p_{\text{drop}}$ and $1$ with probability ($1 - p_{\text{drop}}$):
 \begin{equation}
 \text{Dropout Layer: } \textcolor{red}{d_i \sim \text{Bernoulli}(1 - p_{\text{drop}}), \hat{\bm{h}}^{(t)} = } \textcolor{blue}{\frac{1}{1-p_{\text{drop}}}} \textcolor{red}{\bm{d} \odot \bm{h}^{(t)}}
 \end{equation}
@@ -341,6 +341,11 @@ If we do not such correction in training, we should multiply $1-p$ to all relate
 If we use dropout in testing, the result is \emph{unstable} (vary from every testing) because of the
 dropout is drawn from Bernoulli distribution.
 Therefore, we should apply dropout only during training but not during evaluation or testing.
+
+A motivation of dropout is to reduce complex \emph{co-adaptations} among the hidden units which comes from the superiority of sexual reproduction compared with asexual.
+The criterion for natural selection may be the mix-ability of genes.
+A gene which rely only on a \emph{small} number of other genes is able to work well with another random set of genes that could come from another paraent's genes in sexual reproduction.
+Hence, it will more robust aginst noises and increases the chance of a new gene improving the fitness of an individual.
 
 \textbf{2. Batch Normalization}
 
@@ -367,6 +372,7 @@ Therefore, we leverage $m$ training mini-batches to perform \concept{unbiased es
 
 Note that in many implementations, the above estimation is replaced with the way like the momentum used in RMSprop.
 More details refer to the source code, e.g. Keras.
+For the motivation, the use of BatchNorm makes models much less sensitive to parameter initialization.
 
 \subsection{Practice: Named Entity Recognition}
 To find and classify words as entities (e.g. location, or organization) in text.
@@ -622,6 +628,7 @@ The definition of bidirectional RNNs is given by:
 
 While LSTM bacame the dominant approach between 2013 to 2016, \emph{Transormer} is the state-of-the-art now in 2019.
 More descriptions refer to Section~\ref{contextual_word_rep}.
+And another notable fact is that RNNs parallelize badly and are slow compared with CNNs.
 
 \section{Seq2Seq and Attention}
 Pre-neural machine translation: (1) Rule-based bilingual dictionary in 1950s (2) Statistical machine translation from 1990s to 2010s.
@@ -691,7 +698,7 @@ More formally, the attention for Seq2Seq is:
 \begin{align}
 &\bm{e}^{(t)} = [\bm{s}_t^\top \bm{h}_1, \cdots, \bm{s}_t^\top \bm{h}_n] \in \mathbb{R}^n \nonumber \\
 &\text{Attention distribution: } \bm{\alpha}^{(t)} = \texttt{softmax}(\bm{e}^{(t)}) \nonumber \\
-&\text{Attention ouput: } \bm{a}^{(t)} = \sum_{i=1}^n \alpha_i^t \bm{h}_i \in \mathbb{R}^h \nonumber \\
+&\text{Attention output: } \bm{a}^{(t)} = \sum_{i=1}^n \alpha_i^{(t)} \bm{h}_i \in \mathbb{R}^h \nonumber \\
 &\text{Attention decoder hidden state: } [\bm{a}^{(t)}; \bm{s}_t] \in \mathbb{R}^{2h}
 \end{align}
 where encoder hidden states $\bm{h}_1, \cdots, \bm{h}_n \in \mathbb{R}^h$, and decoder hidden state at timestep $t$ is $\bm{s}_t \in \mathbb{R}^h$.
@@ -700,10 +707,22 @@ More general definition of attention: given a set of vector \emph{values}, and a
 We can found that attention is a way to obtain a \emph{fixed-size} representation of an arbitrary set of representations (e.g. sequential features).
 There are many ways to obtain query vector: dot product $e_i = \bm{s}^\top \bm{h}_i$, multiplicative $e_i = \bm{s}^\top \bm{W} \bm{h}_i$, additive $e_i = \bm{v}^\top \tanh (\bm{W}_1 \bm{h}_i + \bm{W}_2 \bm{s})$, where $\bm{v}, \bm{W}, \bm{W}_1, \bm{W}_2$ are trainable parameters.
 
+As for \emph{out-of-vocabulary} (OOV) problem in NMT, we can increase the size of vocabulary.
+However, large vocabulary leads to huge computations in the softmax layer.
+To solve it, we can use \emph{hierarchical softmax} (tree-structured vocabulary).
+We can also use character-based model instead of word-based to handle OOV problem.
+
 \subsection{HW4}
 \textbf{1. Neural Machine Translation with RNNs}
 
 Refer to the source codes for detail.
+Note that \href{https://stackoverflow.com/questions/51030782/why-do-we-pack-the-sequences-in-pytorch}{pack\_padded\_sequence} is often used to reduce unnecessary computations of paded elements for variable length sequence.
+In implementation, I found that for reshaping the last\_hidden with shape (2, b, h) to shape (b, 2h), I had to use \texttt{torch.cat((last\_hidden[0, :], last\_hidden[1, :]), axis=1)} instead of \texttt{.permute(1, 0, 2).view(b, -1)}.
+Common used torch function include: \texttt{torch.squeeze}, \texttt{torch.unsqueeze}, \texttt{torch.split}, \texttt{torch.cat}, \texttt{torch.stack}, \texttt{torch.Tensor.view}, \texttt{torch.Tensor.permute}, \texttt{torch.Tensor.size}.
+
+(i) Corpus BLEU score when testing: $22.68$.
+
+(j) Dot product attention is simple but requires $\bm{s}_t, \bm{h}_i$ have the same shape. Additive attention could learn more complicated features but need more computations. 
 
 \textbf{2. Analyzing NMT Systems}
 
@@ -711,7 +730,7 @@ Refer to the source codes for detail.
 \begin{enumerate}[label=(\roman*)]
 	\item Error: duplication of translations ("favorite"), Reason: model limitations in preventing duplications, Solution: add penalty on duplicated translations.
 	\item Error: the superlative comparison is mistranslated (most instead of more), Reason: could be because specific linguistic construct of comparison in Spanish, Solution: train with more comparision examples or add penalty for comparision examples.
-	\item Reason: out-of-vocabulary words of names, Reason: the model do not consider out-of-vocabulary words, Solution: keep the out-of-vocabulary the same with named entity regconization in option, or add the size of vocabulary.
+	\item Reason: out-of-vocabulary words of names, Reason: the model do not consider out-of-vocabulary words, Solution: keep the out-of-vocabulary the same according to named entity regconization or attention output, or just increase the size of vocabulary.
 	\item Error: "go around" is mistranslated to "go back," "block" is mistranslated to "apple", Reason: "apple" and "block" are same in Spanish "manzana", "go around" and "go back" are also similar in Spanish, Solution: train with more examples about such polysemic words.
 	\item Error: "teacher" is mistranslated to "women" for Spanish "profesores", Reason: training dataset may contain the above mistakes, Solution: correct the dataset and add rules to correct this error.
 	\item Error: "hectareas" (1/4 acres) is mistranslated to "acres", Reason: there is no such measure unit in English, Solution: identify measure unit in the source sentence and perform some rules.
@@ -733,4 +752,136 @@ Refer to the source codes for detail.
 	\end{itemize}
 \end{enumerate}
 
+\subsection{Tips for Research}
+Two basic start points:
+\begin{itemize}
+	\item Start with a (domain) problem of interest and try to find good/better ways to address it than currently known/used.
+	\item Start with a technical approach of interest, and work out good ways to extend or improve it or new ways to apply it.
+	\item Experimental strategy: start from simple model and work incrementally on models, initially run on a tiny dataset (e.g. $8$ exmaples), make sure get $100\%$ accuracy on testing, then run your model on a large dataset that still get score to $100\%$ on training (it's okay to overfitting), and try to regularize the model.
+\end{itemize}
+
+Recommendation sources: ACL, NeurIPS, ICML, ICLR, arXiv (\href{http://www.arxiv-sanity.com/}{arXiv-sanity}), \href{https://paperswithcode.com/}{PapersWithCode} (leaderboards for various tasks).
+
 \section{Contextual Word Representations and Pretraining} \label{contextual_word_rep}
+
+\section{Attention Model and Question Answering}
+
+Compared with previous versions, Stanford Question Answering Dataset (SQuAD) 2.0 has many unanswerable questions.
+Each question has 3 gold answers, and there are two evaluation metrics:
+\begin{itemize}
+	\item Exact match (EM): 1/0 accuracy on whether match one of 3 answers.
+	\item F1: take system (predict) and gold answers as bag of words to calculate F1 scores.
+\end{itemize}
+where both metrics ignore punctuation and articles.
+Disadvantages:  the answer is only sub-span of the paragraph (the answers are directly appeared in the question), without indirect answers, e.g., yes/no, counting, and implicit why.
+
+A simple and successful aechitecture is the Stanford Attentive Reader \mycite{SAR} which likes the attentive Seq2Seq model.
+For paragraph $[\bm{p}_1, \cdots, \bm{p}_m]$ and question $[\bm{q}_1, \cdots, \bm{q}_n]$ with GloVe embedding, the index of start token and end token for the sub-span answer is:
+\begin{align}
+&\bm{q} = [\overrightarrow{\text{LSTM}}(\overrightarrow{\bm{h}}^{(m-1)}, \bm{q}_{m-1}); \overleftarrow{\text{LSTM}}(\overleftarrow{\bm{h}}^{(2)}, \bm{q}_{2})] \nonumber \\
+&\tilde{\bm{p}}_i = \text{Bi-LSTM}(\bm{p}_i) \nonumber \\
+&\text{Start token: } \text{softmax}_i (\bm{q}^\top \bm{W}_s \tilde{\bm{p}}_i) \nonumber \\
+&\text{End token: } \text{softmax}_i (\bm{q}^\top \bm{W}_e \tilde{\bm{p}}_i) \nonumber
+\end{align}
+
+Compared with SAR, Stanford Attentive Reader++ \mycite{DrQA} mainly leverages these updates: (1) use weighted sum (attention) of all hidden states in the encoder of question, (2) multi-layers Bi-LSTM (3) add more features in the encoder of the paragraph, including linguistic features such as POS\&NER tags\&term frequency, exact match (wether the word appears in the question), aligned question embedding ($\sum_j \texttt{softmax}_{j^\prime}(\alpha(p_i) \cdot \alpha(q_{j^\prime})) \times q_j$ where $\alpha$ is dense layer with ReLU activation and $p_i, q_j$ are embedding of the paragraph and the question word.
+
+Bi-Directional Attention Flow (DiDAF) \mycite{BiDAF} is a state-of-the-art (SoTA) method in 2018 and 2017.
+It comes up with word and char embedding, and the main innovation is attention flow layer which consists of Query2Context (i.e. Question2Paragraph) and Context2Query.
+C2Q attention is defined as:
+\begin{align}
+&\text{Similarity matrix: } s_{ij} = w_s^\top [p_i; q_j; p_i \circ q_j] \in \mathbb{R} \\
+&\alpha_i = \text{softmax}(s_{i,:}) \\
+&a_i = \sum_j \alpha_{ij} q_j \in \mathbb{R}^{2h} 
+\end{align}
+
+\begin{figure}[!thp]
+	\centerline{\includegraphics[width=8.0cm]{figs/BiDAF.png}}
+	\caption{Architecture of BiDAF}
+	\label{fig:bidaf}
+\end{figure}
+
+Q2C attention (the weighted sum of the most important words in the context w.r.t the query) is given by:
+\begin{align}
+&m_i = \max_j s_{ij} \\
+&\beta = \text{softmax}(m) \\
+&p^\prime = \sum_i \beta_i p_i
+\end{align}
+The BiDAF layer output of each paragraph position is: $b_i = [p_i; a_i; p_i \circ a_i; p_i \circ p^\prime] \in \mathbb{R}^{8h}$.
+The overall architecture is presented in Fig.\ref{fig:bidaf}.
+The start token comes from the output of dense layer with softmax built upon the concatenation of the BiDAF output and the output $M_1$ of modelling layer (2-layer Bi-LSTM) whose input is BiDAF output.
+And the end token is the dense layer with softmax upon the concatenation of the BiDAF output and the output $M_2$ of another modelling layer whose input is $M_1$.
+
+\section{ConvNets for NLP}
+
+Convolutions are classically used to extract (position-invariant) features from images by leveraging fixed-size \emph{filter} (\emph{kernel}) weights which are used to perform element-wise product with certain window (patch) of the whole image.
+\emph{Zero padding} ("same" padding) is often used to keep the length.
+The kernel window slides with a stride (e.g. 1) over the whole sentence.
+One more variant about convolutions is \emph{dilation convolution} (skip conv) which can access more wide \emph{receptive field} with smaller filter.
+Same as the \emph{channels} (aka. feature maps) in CNNs, we can also define the dimensions of word embedding as channels like 3 channels (RBG) of images.
+Each channel may indicates one feature (e.g. words about food or sport).
+\emph{Pooling} (e.g. max, average) over time (aka. global pooling) is utilized to aggregate the information of the whole sentence.
+$k$-max (global) pooling is also a common technique used in ConvNet for NLP.
+Besides, local pooling is more common used in CNN circumstances.
+1x1 convolution (aka. Network-in-Network connection) is a famous technique that can be seen as a fully connection linear layer across chennels.
+It can be also (often) used to map from many channels to fewer channels to reduce computation while keeping performance.
+
+\begin{figure}[!thp]
+	\centerline{\includegraphics[width=10.0cm]{figs/ConvNet_NLP.png}}
+	\caption{Simple ConvNet for NLP classification.}
+	\label{fig:ConvNetNLP}
+\end{figure}
+
+Above is an example \mycite{kim-2014-convolutional} of single layer CNN for sentence classification.
+Fig.\ref{fig:ConvNetNLP} illustrates the architecture.
+Multiple single convolution layer with different kernel size and global max pooling are used.
+Specifically, there are 100 feature maps for each of kernel size 3, 4, and 5. 
+The input is two copies of pre-trained word vector (word2vec-300).
+Keep one as 'static' (no gradient), and the other 'dynamic' will be updated during training.
+The 'static' word vector gives unseen words appeared in the test set a better chance of being interreted correctly.
+There are several ways of handling these two channels, most common is to simply average them before using in a CNN.
+The other method is to double the length of the CNN filters.
+The output of max poolings are concatenated into a vector, which is then fed into a dense layer with softmax to perform classification.
+Dropout and L2 regularization are used.
+
+VD-CNN \mycite{VDCNN} for text classification is to build a ResNet like very deep CNN which has 29 depth and many shortcut (residual) connections.
+Note that 29 depth is not as deep as ResNet whose depths are typically 34, 50, and 101.
+The researchers found that, for more deep one like 47 layers, the results are fraction worse than the one with 29 layers.
+The input text sequence will pad into fixed length (1024).
+
+Quasi-recurrent neural network takes the best and parallelizable parts of RNNs and CNNs.
+It achives $3\sim16$ times faster than LSTM.
+One Quasi-RNN layer consists of a normal convolution layer with left same padding to learn new hidden content $z$, forget gate $f$, optional output gate $i$, and optional input gate $i$, and three dynamic average pooling (non-parametric) variants to perform RNN-like unfolding.
+\begin{align}
+&\text{New hidden contents: } \bm{Z} = \tanh(\bm{W}_z * \bm{X}) \nonumber \\
+&\text{Forget gates: } \bm{F} = \sigma(\bm{W}_f * \bm{X}) \nonumber \\
+&\text{Optional output gates: } \bm{O} = \sigma(\bm{W}_o * \bm{X}) \nonumber \\
+&\text{Optional input gates: } \bm{I} = \sigma(\bm{W}_i * \bm{X}) \nonumber \\
+&\textit{f}\text{-pooling: } \bm{h}_t = \bm{f}_t \odot \bm{h_{t-1}} + (1 - \bm{f}_t) \odot \bm{z}_t \nonumber \\
+&\textit{fo}\text{-pooling: } \nonumber \\
+\begin{split}
+&\bm{c}_t = \bm{f}_t \odot \bm{c}_{t-1} + (1-\bm{f}_t) \odot \bm{z}_t) \nonumber \\
+&\bm{h}_t = \bm{o}_t \odot \bm{c}_t \nonumber
+\end{split} \nonumber \\
+&\textit{ifo}\text{-pooling: } \nonumber \\
+\begin{split}
+&\bm{c}_t = \bm{f}_t \odot \bm{c}_{t-1} + \bm{i}_t \odot \bm{z}_t) \nonumber \\
+&\bm{h}_t = \bm{o}_t \odot \bm{c}_t \nonumber
+\end{split} \nonumber
+\end{align}
+where the hidden state $\bm{h}$ and the cell state $\bm{c}$ are initialized to zeros, $*$ indicates convolution operator, and $\odot$ denotes element-wise product.
+A variant dropout called zoneout is adopt in the forget gate channels of stacked QRNN.
+Dense connection layers from DenseNet are also extended in stacked QRNN.
+Note that QRNN often need deeper network to get as good performance as LSTM.
+
+\section{Subword models}
+
+Although what our mouths produce is continuous space, phonology posits phonetics the sound stream that consists of smaller distinctive categorical units: phonemes.
+In linguistics, morphemes (subwords) is the smallest semantic unit that has meanings, e.g. unfortunately can be divided into tree structure of morephemes using \emph{recursive neural networks} \mycite{morphology}:
+
+\begin{equation}
+[[\text{un }[[\text{fortun(e)}]_{\text{ROOT}} \text{ ate}]_{\text{STEM}}]_{\text{STEM}}\text{ ly}]_{\text{WORD}} \nonumber
+\end{equation}
+
+There are many languages that do not segment words or has many separated and joined words, e.g. Chinese, French.
+Moreover, subword models solve the OOV problem.

@@ -172,6 +172,9 @@ class NMT(nn.Module):
         ###         https://pytorch.org/docs/stable/torch.html#torch.cat
         ###     Tensor Permute:
         ###         https://pytorch.org/docs/stable/tensors.html#torch.Tensor.permute
+        # pack_padded_sequence is used to reduce unnecessary computations of paded elements for
+        # variable length seq.
+        # ref: https://stackoverflow.com/questions/51030782/why-do-we-pack-the-sequences-in-pytorch
         X = pack_padded_sequence(self.model_embeddings.source(source_padded), source_lengths)
         enc_hiddens, (last_hidden, last_cell) = self.encoder(X)
         # (b, src_len, 2h)

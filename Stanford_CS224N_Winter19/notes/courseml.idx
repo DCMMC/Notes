@@ -49,7 +49,7 @@
 \indexentry{sequential input|hyperpage}{19}
 \indexentry{Recurrent Neural Network|hyperpage}{19}
 \indexentry{unfold|hyperpage}{19}
-\indexentry{hidden state|hyperpage}{19}
+\indexentry{hidden state|hyperpage}{20}
 \indexentry{back-propagation through time|hyperpage}{20}
 \indexentry{evaluation metric|hyperpage}{20}
 \indexentry{long-term dependencies|hyperpage}{20}
@@ -62,9 +62,9 @@
 \indexentry{Highway connections|hyperpage}{22}
 \indexentry{Bidirectional RNNs|hyperpage}{22}
 \indexentry{Multi-layer RNNs|hyperpage}{22}
-\indexentry{Baye's rule|hyperpage}{22}
-\indexentry{alignment|hyperpage}{22}
+\indexentry{Baye's rule|hyperpage}{23}
+\indexentry{alignment|hyperpage}{23}
 \indexentry{Beam search|hyperpage}{23}
-\indexentry{BLEU|hyperpage}{23}
+\indexentry{BLEU|hyperpage}{24}
 \indexentry{attention|hyperpage}{24}
-\indexentry{corpus-level measure|hyperpage}{25}
+\indexentry{corpus-level measure|hyperpage}{26}
