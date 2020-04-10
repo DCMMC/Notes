@@ -180,10 +180,11 @@ class NMT(nn.Module):
         # (b, src_len, 2h)
         enc_hiddens = pad_packed_sequence(enc_hiddens)[0].permute(1, 0, 2)
         batch_size = last_hidden.size()[1]
+        # (2, b, h) -> (b, 2h)
         # cannot use permute(1, 0, 2).view(b, -1) in here.
         last_hidden = torch.cat((last_hidden[0, :], last_hidden[1, :]), axis=1)
         last_cell = torch.cat((last_cell[0, :], last_cell[1, :]), axis=1)
-        # (2, b, h) -> (b, 2h)
+        # (b, 2h) -> (b, h)
         dec_init_state = (self.h_projection(last_hidden),
                           self.c_projection(last_cell))
 
@@ -403,9 +404,11 @@ class NMT(nn.Module):
         src_encodings, dec_init_vec = self.encode(src_sents_var, [len(src_sent)])
         src_encodings_att_linear = self.att_projection(src_encodings)
 
+        # h^{(t-1)}
         h_tm1 = dec_init_vec
         att_tm1 = torch.zeros(1, self.hidden_size, device=self.device)
 
+        # end of sequence
         eos_id = self.vocab.tgt['</s>']
 
         hypotheses = [['<s>']]
