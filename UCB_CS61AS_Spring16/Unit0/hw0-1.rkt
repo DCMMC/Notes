@@ -41,7 +41,14 @@ None.
 
 #|
 DCMMC Notes:
-(define ([name of procedure] [variables]) [body of procedure])
+(define ([name of procedure] [arguments]) [body of procedure])
+
+> The body of precedure is not evaluated until the precedure is called
+
+> The name of arguments in the precedure definition is not allowed
+> to duplicated with names of any defined precedures
+
+(define variable_name variable_value)
 |#
 
 ;; Exercise 1 - Define sum-of-squares
