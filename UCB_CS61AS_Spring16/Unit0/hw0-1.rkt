@@ -43,12 +43,14 @@ None.
 DCMMC Notes:
 (define ([name of procedure] [arguments]) [body of procedure])
 
-> The body of precedure is not evaluated until the precedure is called
+> The body of precedure is not evaluated (lazy) until the precedure is called
 
 > The name of arguments in the precedure definition is not allowed
 > to duplicated with names of any defined precedures
 
 (define variable_name variable_value)
+
+> The variable_value will greedy evaluated when define the variable.
 |#
 
 ;; Exercise 1 - Define sum-of-squares

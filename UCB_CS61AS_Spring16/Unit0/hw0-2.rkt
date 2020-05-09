@@ -53,8 +53,8 @@ In Racket, #t and #f denote true and false
 * sentence?
 * boolean?
 
-> ? in above is just a normal alphabet for precedure's name
-
+> ? in above is just a normal alphabet for precedure's name, it is used to
+> indicate this precedure is *predicate* which return only true or false
 > Anything that isnot false is true
 e.g. (false? 0) => #f
 
