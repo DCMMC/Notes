@@ -5,7 +5,7 @@ function: for a given input, the outputs are always same
 for a certain fucntion whenever it called.
 
 
-However, precedures have not this restriction.
+However, procedures have not this restriction.
 e.g. random
 
 In Racket, all functions are procedures, but not all procedures are functions.
@@ -24,9 +24,9 @@ For applicative order, the (+ 1 1) and (+ 2 2) will be evaluated
 1 and 1 times.
 For normal order, them will be evaluated 2 and 0 times.
 
-## Internal definitions
+### Internal definitions
 
-We can define precedures and variables in the body of a precedure.
+We can define procedures and variables in the body of a procedure.
 When a function defined inside another function, the one inside has access to variables and parameters of the outer function.
 |#
 
@@ -82,7 +82,7 @@ When a function defined inside another function, the one inside has access to va
 Your explanation here
 
 Infinite loop.
-Because the operands of precedure will be lazy evaluated, i.e.,
+Because the operands of procedure will be lazy evaluated, i.e.,
 applicative order.
 |#
 
