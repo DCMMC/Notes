@@ -94,12 +94,18 @@ when the incomplete computations (calls) are too large.
 
 ; **Tree recursive**
 ; exponential time
+; Example:
 
 (define (count-stairs n)
   (cond [(= n 1) 1]
 	[(= n 1) 2]
 	[else (+ (count-stairs (- n 1))
 		 (count-stairs (- n 2)))]))
+
+; Why use tree recursive?
+; 1. Some problems are more easily solved by thinking tree recursively
+; 2. Sometimes fastest known algorithms are still exponential in runtime
+; 3. We can optimize tree recursive
 
 ; Exercises of HW3
 
