@@ -198,11 +198,11 @@ Your explanation here
 			1 4))
 
 ; reverse list
-(define (reverse lst [res '()])
+(define (my-reverse lst [res '()])
   (if (null? lst)
     res
-    (reverse (cdr lst)
+    (my-reverse (cdr lst)
 	     (append (cons (car lst) '()) res))))
-(printf "check reverse: ~s~n"
-	(equal? (reverse (list 1 4 9 16 25))
+(printf "check my-reverse: ~s~n"
+	(equal? (my-reverse (list 1 4 9 16 25))
 		(list 25 16 9 4 1)))
