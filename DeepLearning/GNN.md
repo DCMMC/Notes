@@ -84,6 +84,8 @@ hypergraph Laplacian: $\Delta = I - D_v^{-1/2}HWD_e^{-1}H^\top D_v^{-1/2}$
 
 > TODO:  formula 2 到 real-valued optimization problem 的推导过程
 
+> $HWD_e^{-1}H^\top$ 主要是为了构造出类似于 Graph Laplacian 中的 $W$ 的那种半正定性质
+
 类似 Chebyshev polynomial as approximate of polynomial parameterization，可以得到：
 
 $g * x \approx \sum_{k=0}^K \theta_k T_k (\tilde{\Delta}) x$
@@ -106,7 +108,7 @@ $g * x \approx 0.5 \theta D_v^{-1/2}H(I + W)D_e^{-1}H^\top D_v^{-1/2}x \approx \
 
 $Y = \sigma (D_v^{-1/2}HWD_e^{-1}H^\top D_v^{-1/2} X \Theta)$
 
-node-edge-node transform：
+**node-edge-node transform** 用于学习 higher order ：
 
 例如顶点特征图卷积之后为 $n \times C_2$，接着使用左乘 $H^\top$ 按照边对顶点进行特征融合变为 $|\mathcal{E}| \times C_2$，接着再左乘 $H$ 按照顶点对边进行特征融合为 $n \times C_2$。
 

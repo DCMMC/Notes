@@ -225,3 +225,12 @@ op must be symmetric.
 ; Huffman trees: ommited
 
 ; Regroup problem:
+(define (regroup pattern)
+  ; Helpers
+  (define (skip-n n lst)
+    (if (> n 0)
+      (skip (- n 1) (cdr lst))
+      lst))
+  (define (get-n n lst)
+    (car (skip-n (- n 1) lst)))
+  ())
