@@ -1,4 +1,4 @@
-### Connected Undirected Weighted Graph
+# Connected Undirected Weighted Graph
 
 Ref: `The Emerging Field of Signal Processing on Graphs: Extending High-Dimensional Data Analysis to Networks and Other Irregular Domains`.
 
@@ -14,7 +14,7 @@ Laplacian ($\nabla^2$ 或 $\Delta$) 是一个标量算子，定义为 divergence
 
 $\nabla^2 f = \nabla \cdot \nabla f = \sum_{i=1}^n \frac{\partial^2 f}{\partial x_i^2}, \nabla \cdot f = \texttt{div} f = \sum_{i=1}^n \frac{\partial f}{\partial x_i}, f: \mathbb{R}^n \Rightarrow \mathbb{R}^n$.
 
-#### Graph Laplacian
+## Graph Laplacian
 
 * non-normalized  (/combinatorial) graph Laplacian: $L = D - W$。
 
@@ -32,7 +32,7 @@ $\nabla^2 f = \nabla \cdot \nabla f = \sum_{i=1}^n \frac{\partial^2 f}{\partial 
 
 https://www.zhihu.com/question/54504471
 
-#### Graph Fourier Transform
+## Graph Fourier Transform
 
 对于经典 Fourier Transform， $\mathcal{F}[f(w)]  = \langle f, \exp(-\boldsymbol{\mathit{i}}wt) \rangle = \int f(t) \exp(-\boldsymbol{\mathit{i}}wt) dt$ 可为视作 expansion of a functionfin terms of the complex exponentials 或者说 $f$ 和这个指数函数的内积。
 
@@ -56,6 +56,8 @@ https://www.zhihu.com/question/54504471
 
 * Chebyshev polynomial as approximate of polynomial parameterization [1]：$f_\theta (\Lambda) = \sum_{k=0}^{K-1} \theta_k T_k(\tilde{\Lambda}), f_\theta * h = \sum_k \theta_k T_k(\tilde{L})h, \tilde{\Lambda} = 2\Lambda / \lambda_{max} - I, \tilde{L} = 2 L / \lambda_{max} - I$，$\lambda_{max}$ 可以由 power iteration 求出，其计算复杂度为 $\mathcal{O}(K |\mathcal{E}|) \ll \mathcal{O}(n^2)$ 远小于前面两个（因为这里采用了 $K$ 个 **sparse** matrix-vector multiplications） 。Chebyshev polynomial 定义为 $T_k(x) = 2xT_{k-1}(x) - T_{k-2}(x), T_0 = 1, T_1 = x, x \in [-1, 1]$。
 
+  > $2 L / \lambda_{max} - I$ 的目的是为了满足 Chebyshev 对 $x \in [-1, 2]$ 的要求
+  
   > Chebyshev polynomial 的误差分析参考 [2]
 
 > Ref: 
@@ -64,9 +66,11 @@ https://www.zhihu.com/question/54504471
 > 2. Wavelets on graphs via spectral graph theory
 > 3. Spectral Networks and Deep Locally Connected Networks on Graphs
 
-### Undirected Weighted Hypergraph
+# Undirected Weighted Hypergraph
 
-Ref: `Hypergraph Neural Networks`
+## HGNN (AAAI-19)
+
+Ref: `Hypergraph Neural Networks`（abbr. HGNN, 19-AAAI）
 
 Hypergraph 就是指同一条边连接的结点数大于 $2$，也就是边的度大于 $2$。
 
@@ -80,7 +84,7 @@ $H(v, e) = \mathbb{I}(v \in e), v \in \mathcal{V}, e \in \mathcal{E}$
 
 hypergraph Laplacian: $\Delta = I - D_v^{-1/2}HWD_e^{-1}H^\top D_v^{-1/2}$
 
-> hypergraph Laplacian 由 Learning with Hypergraphs: Clustering,Classification, and Embedding 中 formula 2 的优化问题推导出来的，该组合优化问题很像 graph Laplacian 的定义。对于普通无向图，$D_e = 2I, HWH^\top - D_v = A$ 带入上式得 $\Delta = I - 0.5 D_v^{-1/2}HWH^\top D_v^{-1/2} = I - 0.5 D_v^{-1/2}(D_v + A) D_v^{-1/2} = 0.5 (I - D_v^{-1/2} A D_v^{-1/2})$，$A$ 就是邻接矩阵。
+> hypergraph Laplacian 由 Learning with Hypergraphs: Clustering,Classification, and Embedding (NIPS-07) 中 formula 2 的优化问题推导出来的，该组合优化问题很像 graph Laplacian 的定义。对于普通无向图，$D_e = 2I, HWH^\top - D_v = A$ 带入上式得 $\Delta = I - 0.5 D_v^{-1/2}HWH^\top D_v^{-1/2} = I - 0.5 D_v^{-1/2}(D_v + A) D_v^{-1/2} = 0.5 (I - D_v^{-1/2} A D_v^{-1/2})$，$A$ 就是邻接矩阵。
 
 > TODO:  formula 2 到 real-valued optimization problem 的推导过程
 
@@ -96,7 +100,9 @@ $g * x \approx \sum_{k=0}^K \theta_k T_k (\tilde{\Delta}) x$
 
 $g * x \approx \theta_0 x + \theta_1 \tilde{\Delta}x = \theta_0 x - \theta_1 D_v^{-1/2}HWD_e^{-1}H^\top D_v^{-1/2} x$
 
-> Ref: Semi-Supervised Classification with Graph Convolutional Networks
+> Ref:
+>
+> [1] Semi-Supervised Classification with Graph Convolutional Networks (abbr. GCN, ICLR-17)
 
 并且为了避免 overfitting 以及减少计算量，将两个参数用一个参数表示 $\theta_1 = - 0.5 \theta, \theta_0 = 0.5 \theta D_v^{-1/2}H{\color{red}I}D_e^{-1}H^\top D_v^{-1/2}$ (为什么要这样呢？为了凑后面的结果呀)，于是有：
 
@@ -112,3 +118,58 @@ $Y = \sigma (D_v^{-1/2}HWD_e^{-1}H^\top D_v^{-1/2} X \Theta)$
 
 例如顶点特征图卷积之后为 $n \times C_2$，接着使用左乘 $H^\top$ 按照边对顶点进行特征融合变为 $|\mathcal{E}| \times C_2$，接着再左乘 $H$ 按照顶点对边进行特征融合为 $n \times C_2$。
 
+> 该文差不多就是把 Learning with Hypergraphs: Clustering,Classification, and Embedding 和 GCN 结合了一下，并且它的两个应用：Citation network（把原来 graph network 改为 hypergraph，不过两者网络结构差别不大所以提升也不大）和点云分类（强行把 K 近邻的点连为一条 hyperedge，不过效果比较好）都不是很有代表性的 hypergrpah
+
+## HyperGCN (NIPS-2019)
+
+Ref: `HyperGCN: A New Method of Training GraphConvolutional Networks on Hypergraphs` (abbr. HyperGCN, NIPS-2019)
+
+> Code: https://github.com/malllabiisc/HyperGCN/blob/master/model/utils.py
+
+Applications:
+
+* co-authorship
+
+HyperGCN 认为 HGNN 一类方法采用的是 clique expansion of a hypergraph (converting each hyperedge to a clique subgraph), 认为会导致 distortion, fails to utilise higher-order relationships in the data and leadsto unreliable learning performance for clustering。这主要是为了解释本文提出的将 hypergraph 转化为 graph 来处理的思想。
+
+Defs:
+
+* $\mathcal{H} = (V, E), n = |V|$
+* Semi-supervised learning (SSL) : learning a small set $V_L$ of labeled hypernodes to predict other unlabeled hypernodes in $V / V_L$.
+* Basic assumption: hypernodes in the same hyperedge aresimilar and hence are likely to share the same labe. Hypergraph Laplacianas is an implicit regulariser which achieves this objective.
+
+Hypergraph laplacian with mediators:
+
+For graph signal $S \in R^{n \times c}$, construct weighted graph $G_S \in \mathbb{R}^{n \times n}$: For each hyperedge $e \in E$, connect node pair$(i_e,j_e) := \arg \max_{i,j\in e} | S_i^\top r - S_j^\top r|$ with $1 / (2 |e| - 3)$  and $r \in \mathbb{R}^{c \times 1}$ is a **random** vector (this trick is called **breaking ties randomly**). Also connect mediators $K_e := \{k \in e | k \ne i_e, k \ne j_e\}$to above two nodes with $1 / (2|e| - 3)$ (normalize weights on the edges for each hyperedge to $1$). Then the normalised hypergraph Laplacian is: $\mathbb{L} = I - D_S^{-1/2}A_SD_S^{-1/2}$ where $D_S, A_S$ are diagonal degree matrix and adjacency matrix of $G_S$.
+
+Two-layer GCN:
+
+$Z = f(X, A) = \text{softmax}(\hat{A}\ \text{ReLU}(\hat{A}X \Theta^{(1)})\Theta^{(2)}) \in \mathbb{R}^{n \times c}$
+
+where $\hat{A} = \tilde{D}^{-1/2} \tilde{A}\tilde{D}^{-1/2}, \tilde{A} = A + I, \tilde{D} = \sum_{j=1}^n \tilde{A}_{jj}$.
+
+> The above transform is called *renormalization trick* in GCN: 1st-order Chebyshev polynomial approximation is $g *x  = \theta (I + D^{-1/2}AD^{-1/2})x$ where $I + D^{-1/2}AD^{-1/2}$ has eigenvalues in range $[0,2]$ which will leads exploding/vanishing gradients. Therefore GCN use the trick to fix this problem.
+
+HyperGCN:
+
+$S_i = (\Theta^{(l)})^\top h_i^{(\tau,l-1)}$ where $\Theta^{(l)}$ is the parameters of the layer $l$, and $h_i^{(\tau,l-1)}$ is the representation of node $i$ from last layer in epoch $\tau$.
+
+In each epoch and each layer, HyperGCN will $\hat{A}_S^{(l)}$ according to the input graph signal ($X$ or $H^{(l-1)}$):
+
+>  neural message-passing framework 和 $h_v^{(\tau+1)} = \sigma(((\Theta^{(l)})^{(\tau)})^\top \sum_{u\in \mathcal{N}(v)}([\hat{A}_S^{(\tau)}]_{vu}h_u^{(\tau)}))$ 这玩意是强行加上去的吧。。代码里面根本没有, 只有重新计算 $\hat{A}^{(l)}_S$ 然后 $\hat{H}^{(l)}_S H^{(l-1)}\Theta^{(l)}$。
+
+> $H^{(0)} = X$
+
+where $\mathcal{N}(v)$ is the set of neighbours of $v$.
+
+$Z = \text{softmax}(\text{ReLU}(\hat{A}_S^{(2)}\ \text{ReLU}(\hat{A}_S^{(1)}X \Theta^{(1)} + b^{(1)})\Theta^{(2)} + b^{(2)}))$
+
+FastHyperGCN:
+
+Only compute $A$ once before training using $X$:
+
+$S_i = X_i, Z = \text{softmax}(\text{ReLU}(\hat{A}_S\ \text{ReLU}(\hat{A}_SX \Theta^{(1)}+b^{(1)})\Theta^{(2)}+b^{(2)}))$
+
+Experiments:
+
+> 本文主要思想就是 breaking ties randomly (15年 STOC 他们自己的论文) 和 mediators 将 hypergraph 转化为 graph 然后用 GCN
