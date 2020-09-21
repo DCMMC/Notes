@@ -1,0 +1,70 @@
+\chapter{工程硕士数学(a.k.a. 数值分析)}
+\label{chap:numerical_analysis}
+
+\chapternote{主要内容是讲解数值问题和求解方程}{工程硕士数学@Winter 2020}
+
+\begin{learningobjectives}
+	\item 误差，有效数值
+	\item 数值稳定性
+\end{learningobjectives}
+
+\dependencies{先修课程：线性代数}
+
+\section{绪论}
+
+\subsection{计算机上的数}
+
+采用\emph{浮点数}表示，尾数和阶数都具有限精度的位数，超过其位数会被\emph{截断}。
+
+\concept{病态问题}：原始数据的微小变化会引起计算结果的巨大变化。
+
+\subsection{误差与有效数字}
+
+误差来源：
+
+\begin{enumerate}
+	\item 数学模型
+	\item 观测误差
+	\item 截断误差
+	\item 舍入误差
+\end{enumerate}
+
+设 $x, x^*$ 分别为准确值和近似值，对 $\epsilon = |x - x^*| \le \sigma(x^*), \epsilon_r = |x - x^*| / |x^*| \le \sigma_r(x^*) = \sigma(x^*) / |x^*|$，$\epsilon$ 和 $\sigma(x^*)$ 分别为\concept{绝对误差}和\concept{绝对误差界}，$\epsilon_r, \sigma_r$ 为\concept{相对误差}和\concept{相对误差界}。
+
+将 $x^*$ 转化为类似于科学技术法的形式：
+% (DCMMC): use align* to write multiline equations, and use `&` to state the
+% alignment points.
+% (DCMMC): use `\ ` to insert spaces in math equations.
+\begin{align*}
+	&|x - x^*| = \pm 10^k \times 0.a_1a_2 \cdots c_n \cdots \le 0.5 \times 10^{k-n} \\
+	&s.t.\ a_1 \ne 0,  1 \le a_i \le 9, a_i \in \N, k \in \Z, n \in \N
+\end{align*}
+其中 $\Z$ 表示整数集，$n$ 表示\concept{有效数字位数}。
+
+\concept{函数误差}：
+\begin{align*}
+	|f(x) - f(x_A)| \le |f^\prime (x_A)||x - x_A|
+\end{align*}
+其中 $x_A$ 是 $x$ 的近似值。
+
+数值计算中常见误差的解决方法：
+\begin{enumerate}
+	\item 两个相近的数相减：使用分子有理化将减转化为加
+	\item 避免大数吃小数
+	\item 避免除数的绝对值远小于被除数的绝对值
+	\item 简化运算次数
+\end{enumerate}
+
+\concept{数值稳定性}:
+
+如果算法的初始值有误差，在运算中误差无限增加，不能控制，则该算法是数值不稳定的，反之则是数值稳定的。
+
+\section{线性代数复习}
+
+对角阵，三角阵的乘法和逆矩阵还是对角阵，三角阵。
+
+正定阵：
+
+矩阵的特征值：方程 $(\lambda I-A)x = \boldsymbol{0}$的非零解 $X\ne\boldsymbol{0}$ 就是 $A$ 的特征向量。
+
+如果特征值均大于 $0$，则矩阵为正定阵。

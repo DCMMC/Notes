@@ -118,17 +118,15 @@ $Y = \sigma (D_v^{-1/2}HWD_e^{-1}H^\top D_v^{-1/2} X \Theta)$
 
 例如顶点特征图卷积之后为 $n \times C_2$，接着使用左乘 $H^\top$ 按照边对顶点进行特征融合变为 $|\mathcal{E}| \times C_2$，接着再左乘 $H$ 按照顶点对边进行特征融合为 $n \times C_2$。
 
-> 该文差不多就是把 Learning with Hypergraphs: Clustering,Classification, and Embedding 和 GCN 结合了一下，并且它的两个应用：Citation network（把原来 graph network 改为 hypergraph，不过两者网络结构差别不大所以提升也不大）和点云分类（强行把 K 近邻的点连为一条 hyperedge，不过效果比较好）都不是很有代表性的 hypergrpah
+> 这个 node-edge-node 在代码里面没有找到。。
+
+> 该文差不多就是把 Learning with Hypergraphs: Clustering,Classification, and Embedding 和 GCN 结合了一下，并且它的两个应用：Citation network（把原来 graph network 改为 hypergraph，不过两者网络结构差别不大所以提升也不大）和点云分类（每个 node 为一个 object， 特征为 Multi-view CNN 和 Group-view CNN 提取出来的特征向量，强行把 K 近邻的 objects 连为一条 hyperedge，不过效果比较好）都不是很有代表性的 hypergrpah
 
 ## HyperGCN (NIPS-2019)
 
 Ref: `HyperGCN: A New Method of Training GraphConvolutional Networks on Hypergraphs` (abbr. HyperGCN, NIPS-2019)
 
 > Code: https://github.com/malllabiisc/HyperGCN/blob/master/model/utils.py
-
-Applications:
-
-* co-authorship
 
 HyperGCN 认为 HGNN 一类方法采用的是 clique expansion of a hypergraph (converting each hyperedge to a clique subgraph), 认为会导致 distortion, fails to utilise higher-order relationships in the data and leadsto unreliable learning performance for clustering。这主要是为了解释本文提出的将 hypergraph 转化为 graph 来处理的思想。
 
@@ -172,4 +170,43 @@ $S_i = X_i, Z = \text{softmax}(\text{ReLU}(\hat{A}_S\ \text{ReLU}(\hat{A}_SX \Th
 
 Experiments:
 
+* Co-authorship: All documents co-authored by an author are in one hyperedge
+* Co-citation: All documents cited by a document are connected by a hyperedge. Remove hyperedges with length $1$.
+
+Feature of each hypernode (document) is bag-of-words.
+
+Bad-of-words: For a dictionary $\Sigma$ of the most frequent words in all documents, the 0/1-valued feature vector $x^{(i)} \in \mathbb{R}^{|\Sigma|}$ for document $i$ indicating the absence/presence of the corresponding word from the dictionary.
+
+Objective:
+
+Classifying each document (hypernode) to its corresponding categories.
+
+本文比较好的地方是用理论分析了实验结果。
+
 > 本文主要思想就是 breaking ties randomly (15年 STOC 他们自己的论文) 和 mediators 将 hypergraph 转化为 graph 然后用 GCN
+
+## Datasets
+
+1. COLLAB (Scientific  Collaboration) [1]
+
+   3-class, If author i co-authoreda  paper with author j, the  graph contains an undirected edge from i to j.
+
+   Only have node id, no any other features in nodes and edges.
+
+   http://snap.stanford.edu/data/ca-HepPh.html
+
+   http://snap.stanford.edu/data/ca-CondMat.html
+
+   http://snap.stanford.edu/data/ca-AstroPh.html
+
+2. Twitter (not suitable to our target)
+
+   Containing around 950 ego networks (directed) of users from Twitter with a mean of around 130 nodes and 1700 edges per graph. 每个节点代表一个用户， 一个图代表一个以某个用户为中心的关于他的朋友圈，边代表用户关注，节点特征为 user profile（组织成 tree）。原文任务是从图中找出不同的小圈子（类似于 Twitter 的列表功能，也就是一个子图），并且这些小圈子可能会重叠或者内含。
+
+   http://snap.stanford.edu/data/egonets-Twitter.html
+
+3. 
+
+> Ref:
+>
+> [1] A New Space for Comparing Graphs

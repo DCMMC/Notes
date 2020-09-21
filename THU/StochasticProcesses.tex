@@ -1,0 +1,213 @@
+\chapter{随机过程}
+\label{chap:stochastic_processes}
+
+\chapternote{主要内容是讲解随机过程}{随机过程@Winter 2020}
+
+\begin{learningobjectives}
+	\item 概率论复习
+	\item 随机过程的定义
+\end{learningobjectives}
+
+\dependencies{先修课程：线性代数，概率论}
+
+\section{概率论复习}
+\concept{数学期望}：
+\begin{align*}
+	\mu &= EX = \int_{-\infty}^\infty x \mathrm{d} F(x) \\
+	E[g(X)] &= \int g(x) \mathrm{d} F_X(x)
+\end{align*}
+
+
+实用公式：
+\begin{enumerate}
+	\item $E[aX] = aE[X]$，对于常数 $a$。
+	\item $X$, $Y$ 相互独立 $\Rightarrow P(X, Y) = P(X) P(Y) \Rightarrow E[XY] = E[X]E[Y]$。
+\end{enumerate}
+
+\concept{方差(二阶矩)}:
+\begin{align*}
+	\sigma = DX := E[(X - EX)^2] = EX^2 - (EX)^2
+\end{align*}
+
+\concept{协方差}：
+\begin{align*}
+	C(X, Y) := E[(X - EX)(Y - EY)] = E[XY] - E[X]E[Y]
+\end{align*}
+用于多个 r.v. 之和的方差计算。
+
+\concept{相关系数}：
+\begin{align*}
+	R(X,Y) := \rho(X,Y):=\frac{C(X,Y)}{\sigma_X \sigma_Y}
+\end{align*}
+
+\concept{复 r.v.}, 对实 r.v. $\eta, \zeta$:
+\begin{align*}
+	\xi &:= \eta + j \zeta, j := \sqrt{-1} \\
+	E\xi &:= E\eta + j E\zeta, D\xi := E|\xi - E\xi| = E(\xi - E\xi)\overline{(\xi - E\xi)}
+\end{align*}
+
+\sidenotedcmmc{实用复数公式：$j^2 = -1, a \in \R, b \in \R, z = a +jb, |z| = \sqrt{a^2+b^2}, \overline{z} = a \textcolor{red}{-} jb, z\cdot \overline{z} = |z|^2, \exp(jx) = \cos(x) + j \sin(x), \frac{\partial jx}{\partial x} = j$}
+
+\concept{Schwarz 不等式}(\emph{重点})：
+\begin{align*}
+	(E[XY])^2 \le E[X^2]E[Y^2]
+\end{align*}
+
+\emph*{Pf.}
+\begin{align*}
+	&E[(X-\alpha Y)^2] = E[X^2] - 2\alpha E[XY] + \alpha^2E[Y^2]>= 0 \\
+	&\text{let } \alpha = \frac{E[XY]}{E[Y^2]} \\
+	&\Rightarrow (E[XY])^2 \le E[X^2]E[Y^2]
+\end{align*}
+
+\sidenotedcmmc{母函数和特征函数这样定义就是为了方便计算，它们能够提供良好的性质：e.g. 母函数可以结合泰勒展开，简化计算均值和方差的计算。}
+
+% TODO(DCMMC): 公式在 \concept 里面
+\concept{母函数}$G(S)$(重点)：
+\begin{align*}
+	&r.v.\ \xi, p_k := P{\xi = k}, k=0,1,2,\cdots\\
+	&G_\xi(s) := Es^\xi = \sum_{k=0}^\infty p_k s^k
+\end{align*}
+
+性质：
+\begin{enumerate}
+	\item $p_k = G^{(k)}(0)/k!$，$k$阶导
+	\item $E\xi = G^\prime(1), D\xi = G^{(2)}(1) + G^\prime(1) - (G^\prime(1))^2$
+	\item $\xi_1, \cdots, \xi_n$ 相互独立,$\eta = \sum_{k=1}^n \xi_k, \Rightarrow G_\eta(s) = \prod_{k=1}^n G_{\xi_k}$
+\end{enumerate}
+
+常用 Taylor 公式：
+\begin{align*}
+	\exp(x) &= \sum_{k=0}^{+\infty} \frac{x^k}{k!}
+\end{align*}
+
+\sidenotedcmmc{母函数适用于离散型 r.v., 特征函数适用于连续型}
+
+\concept{特征函数}$\Phi(t)$(核心就是 Fourier 变换)：
+\begin{align*}
+	\Phi_\xi(t) := G_\xi(\exp(\mathit{j}t)) = \int_{-\infty}^\infty \exp(jt\xi) \mathrm{d}F(x)
+\end{align*}
+
+性质：
+\begin{enumerate}
+	\item 共轭对称：$\Phi(-t) = \overline{\Phi(t)}$
+	\item 若 $\xi$ 的 $n$ 阶矩存在 $\Rightarrow \Phi_{\xi}^{(k)}(0) = j^k E\xi^k$
+	\item $EX = j^{-1} \Phi^\prime(0), DX = - \phi^{(2)}(0) - (EX)^2$
+	\item \concept{非负定性}(\emph{重点})：对$\forall \lambda_i \in \mathbb{C}, \forall t_1,\cdots,t_n \in \R, \Lambda = \diag(\lambda_1, \cdots, \lambda_n), R_{ij} := \Phi_\xi(t_i - t_j)$，有 $\Lambda R \overline{\Lambda} \ge 0$(i.e., $R\succeq 0$)。
+\end{enumerate}
+
+多维 r.v. 的特征函数：
+\begin{equation}
+	\Phi(t_1, \cdots, t_n) := E \exp(j(\textcolor{red}{t_1 \xi_1, \cdots, t_n \xi_n}))
+\end{equation}
+
+\section{随机过程(r.p.)}
+
+Def:
+
+设 $\{\Omega, \mathcal{F}, P\}$ 为概率空间，$T$ 为参数集，若对 $\forall t \in T$，$\xi(t)$ 是一个 r.v., 则称 r.v. 族 $\{\xi(t), t\in T\}$ 为该概率空间上的\concept{随机过程}。
+
+固定样本点 $w_0$, $\xi_t(w_0)$ 为一个关于 $t$ 的确定性函数，称\concept{样本函数}。
+
+\sidenotedcmmc{做题的时候我们可以固定 $t$ 来理解题目}
+
+对 $\{\xi(t), t \in T\}, \forall t_1, \cdots, t_n \in T,$，其 $n$ 维分布函数：$F_{t_1,\cdots,t_n}(x_1, \cdots, x_n) := F(x_1, \cdots, x_n; t_1, \cdots, t_n) := P(\xi(t_1)\le x_1,\cdots, \xi(t_n)\le x_n)$。
+
+分类：
+\begin{enumerate}
+	\item $T$ 离散集：随机序列/时间序列
+	\item $T$ 连续集：随机过程
+\end{enumerate}
+
+对 r.p. $\xi(t)$ 定义一些数字特征(期望，二阶矩，自相关函数，自协方差函数，相关系数)：
+\begin{align*}
+	\mu(t) &:= \int x \mathrm{d}F(x,t) \\
+	\sigma(t) &:= E\xi^2(t) - (E\xi(t))^2 \\
+	R(t_1,t_2) &:= E\xi(t_1)\xi(t_2) \\
+	C(t_1,t_2) &:= E[(\xi(t_1) - \mu(t_1))(\xi(t_2) - \mu(t_2))] = R(t_1, t_2) - \mu(t_1)\mu(t_2)\\
+	\rho(t_1,t_2) = \frac{C(t_1,t_2)}{\sigma(t_1)\sigma(t_2)}
+\end{align*}
+
+\sidenotedcmmc{r.p. 的均值和方差都是 $t$ 的确定性函数而不是一个值。}
+
+例题：对二项过程 $\{Y(t) = X_1 + \cdots + X_t, t \in T, X_i \sim B(1, p)\}$，有：
+% DCMMC: align* 环境中 `&&` 用于展示注释。
+\begin{align*}
+	\mu_Y(t) &= E[X_1+\cdots + X_t] = tp \\
+	\sigma_Y(m,n) &= E[Y(m)Y(n)] - EY(m)EY(n) \\
+	&= E\left[\textcolor{red}{\sum_{i=1}^{m} X_i^2 + \sum_{i\ne j}X_i X_j}\right] - mnp^2 &&(\text{w.l.o.g. Let } m = \min(m,n))\\
+	&= mp - m(n-1)p^2 - mnp^2 \\
+	&= \min(m,n)p(1-p)
+\end{align*}
+核心思想（\emph{重点}）就是明确 $EX_i^2$ 和 $EX_iX_j$是不一样的，并且他们分别有 $m$ 和 $m(n-1)$ 个。
+
+\concept{复随机过程}：
+
+$\{X(t), t \in T\}, \{T(t), t \in T\}$ 两个实过程具有相同的参数集 $T$ 和概率空间，称 $Z(t) = X(t) + jY(t)$ 为复过程。
+
+\begin{align*}
+	\mu(t) &:= EZ(t) = EX(t) + jEY(t) \\
+	C(t_1,t_2) &:= E|Z(t)|^2 - |EZ(t)|^2
+\end{align*}
+
+复 r.p. $Z(t) = X(t) +j Y(t)$, 其中 $X,Y$ 为实过程：
+\begin{align*}
+	\mu(t) &:= EX(t) + jEY(t) \\
+	R(t_1,t_2) &:= EZ(t_1)\overline{Z(t_2)}
+\end{align*}
+
+\subsection{随机过程的分类}
+
+\concept{二阶矩过程}：对 r.p. $\xi(t)$, $\forall t \in T, E|\xi(t)|^2 \le \infty$.
+
+\concept{常用不等式}：
+\begin{enumerate}
+	\item $E|\xi + \eta| \le E|\xi| + E|\eta|$
+	\item $E\xi \le |E\xi| \le E|\xi|$
+	\item $E|\xi\eta| \le \sqrt{E|\xi|^2E|\eta|^2}$ (Schwartz 不等式)
+	\item $\sqrt{E|\xi+\eta|^2} \le \sqrt{E|\xi|^2} + \sqrt{|\eta|^2}$ (三角不等式)
+\end{enumerate}
+
+\emph*{Pf.} of 三角不等式：
+\begin{align*}
+	E|\xi+\eta|^2 &= E\xi\overline{\xi} + E\xi\overline{\eta} + E\overline{\xi}\eta + E\eta\overline{\eta} \\
+	&\le E|\xi|^2 + 2E|\xi\overline{\eta}|+E|\eta|^2 && (\xi\overline{\xi} = |\xi|^2,  \text{ for } a = x +jy,\\
+	& &&a + \overline{a} = 2x \le 2|a| = 2\sqrt{x^2+y^2}) \\
+	&\le E|\xi|^2 + E|\eta|^2 + 2\sqrt{E|\xi|^2E|\eta|^2} && \text{(Schwartz 不等式)}\\
+	&= \sqrt{E|\xi|^2} + \sqrt{|\eta|^2}
+\end{align*}
+
+复二阶矩 r.p.
+
+二阶矩空间：$H:=\{\xi:E|\xi|^2\le\infty\}$ 即二阶矩存在的 r.v. 全体。
+
+性质：
+% (DCMMC)： LaTeX debug 经验：经常因为打错字符报看不懂的错误，这时候可以从上次正常编译的版本到现在的增量代码入手，
+% 可以采用二分回退（也就是删除掉一半新代码）搜索问题行。
+\begin{enumerate}
+	\item 线性空间，有三角不等式证明
+	\item 定义范数(距离空间)：$\lVert \xi\rVert := \sqrt{E|\xi|^2}, d(\xi,\eta) := \lVert \xi - \eta \rVert$, 范数算子满足：
+	\begin{enumerate}
+		\item $\lVert\xi\rVert \ge 0$
+		\item $\lVert c\xi \rVert= |c|\lVert \xi \rVert$
+		\item $\lVert \xi + \eta \rVert \le \lVert \xi \rVert + \lVert \eta \rVert$, 三角不等式
+	\end{enumerate}
+	\item 定义内积（内积空间/Hilbert空间）：$\langle\xi,\eta\rangle := E\xi\overline{\eta}$，特性（大多可直接按定义证明）：
+	\begin{enumerate}
+		\item $\langle\eta,\xi\rangle = \overline{\langle\xi,\eta\rangle}$, 注意顺序互换了
+		\item $\langle c\xi, \eta\rangle = c\langle\xi,\eta\rangle, c \in \R$
+		\item $\langle\xi,\xi\rangle = E|\xi|^2\ge0$ 且 $\langle \xi, \xi \rangle = 0 \Leftrightarrow \xi = 0, a.e.$ (a.e. 表示\emph{几乎处处})
+		\item 柯西不等式（a.k.a. Schwartz 不等式）：$|\langle \xi, \eta\rangle \le E|\xi\overline{\eta}| \le \lVert\xi\rVert\lVert\eta\rVert$
+	\end{enumerate}
+\end{enumerate}
+
+\sidenotedcmmc{为了满足相应概率上的性质，复数值的乘积一般写为 $a\overline{b}$ 而不是 $ab$。}
+
+\concept{均方收敛}（\emph{重点}）:
+
+
+对 $t_1 < \cdots t_n, t_i \in T, i \in [1, n]$，若增量
+\begin{equation}
+	X(t_1), X(t_2) - X(t_1), \cdots, X(t_n) - X(t_{n-1})
+\end{equation}
+相对独立，则 $\{X(t), t\in T\}$ 为\concept{独立增量过程}。若对一切 $0 \le s < t$，增量 $X(t) - X(s)$ 的分布只依赖 $t-s$, 则 $X_T$ 有\concept{平稳增量}。

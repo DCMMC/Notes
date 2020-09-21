@@ -1,0 +1,151 @@
+\documentclass[fleqn,explicit,twoside,openany]{tufte-book}
+\hypersetup{colorlinks}
+\usepackage{xeCJK}
+\usepackage[T1]{fontenc}
+
+\font\ttfsegoeuilsmall Colaborate-Thin at12pt
+\font\ttfsegoeuil Colaborate-Thin at16pt
+\font\ttfsegoeuilhuge Colaborate-Thin at30pt
+
+\renewcommand{\contentsname}{Table of Contents}
+
+\title[A Note for courses in THUSZ]{\ttfsegoeuilhuge A Note for courses in THUSZ}
+\author{\ttfsegoeuil DCMMC}
+
+\usepackage{pdfpages}
+\usepackage{amsthm}
+\usepackage{xcolor}
+\usepackage{hyperref}
+%\usepackage{wrapfig}
+% http://mirrors.ctan.org/macros/latex209/contrib/picins/picins.sty
+\usepackage{picins}
+\usepackage{soul}
+\usepackage{lipsum}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{answers}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{verbatim}
+\usepackage{fancyvrb}
+\usepackage{xspace}
+% provides boldsymbol
+\usepackage{bm} 
+% provides inline frac: \nicefrac
+\usepackage{nicefrac}
+%\usepackage[labelsep=none]{caption}
+\usepackage{tikz}
+\usepackage{units}
+\usepackage{enumitem} 
+\usepackage{makeidx}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{multirow}
+\usepackage{calc}
+
+\usepackage{haldefs}
+
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{graphics/}}
+\fvset{fontsize=\normalsize}
+\usetikzlibrary{shapes,snakes}
+
+\include{halbook}
+
+%https://github.com/Tufte-LaTeX/tufte-latex/issues/107#issuecomment-183679016
+%Next block avoids bug, from  http://tex.stackexchange.com/a/200725/1913 
+\ifx\ifxetex\ifluatex\else % if lua- or xelatex http://tex.stackexchange.com/a/140164/1913
+\newcommand{\textls}[2][5]{%
+	\begingroup\addfontfeatures{LetterSpace=#1}#2\endgroup
+}
+\renewcommand{\allcapsspacing}[1]{\textls[15]{#1}}
+\renewcommand{\smallcapsspacing}[1]{\textls[10]{#1}}
+\renewcommand{\allcaps}[1]{\textls[15]{\MakeTextUppercase{#1}}}
+\renewcommand{\smallcaps}[1]{\smallcapsspacing{\scshape\MakeTextLowercase{#1}}}
+\renewcommand{\textsc}[1]{\smallcapsspacing{\textsmallcaps{#1}}}
+\fi
+
+%\renewenvironment{mycomment}{}{}   % comment this if you want comments :)
+
+\let\cleardoublepage\clearpage
+
+\makeindex
+
+% emph 中文强调命令
+% 如果需要使用原义强调命令，则可使用 \emph* 命令
+% Ref: https://wenda.latexstudio.net/article-5065.html
+\usepackage{expl3}
+\usepackage{etoolbox}
+% 声中文明强调字体及强调方式
+% 用\bfseries表示强调
+\makeatletter
+\newcommand*\emphfont{\normalfont\bfseries}
+\DeclareTextFontCommand\@textemph{\emphfont}
+\newcommand\textem[1]{%
+	\ifdefstrequal{\f@series}{\bfdefault}
+	{\@textemph{\CJKunderline{#1}}}% 用下划线表示强调中的强调
+	{\@textemph{#1}}%
+}
+\makeatother
+
+
+\ExplSyntaxOn
+% % 修复 soul 的 hl 以修复 concept
+% Ref: https://tex.stackexchange.com/questions/449236/soul-package-command-hl-can-not-work-with-escaped-space
+\let\hlORIG\hl
+\tl_new:N \l_jdhao_hlx_tl
+\RenewDocumentCommand \hl { m }
+{
+	\tl_set:Nn \l_jdhao_hlx_tl { #1 }
+	\tl_replace_all:Nnn \l_jdhao_hlx_tl { \  } { ~ }
+	\regex_replace_all:nnN { \c[^CBEMTPUDA]\S } { \c{hbox} \0 } \l_jdhao_hlx_tl
+	\exp_args:NV \hlORIG \l_jdhao_hlx_tl
+}
+% 重新定义 \emph 强调命令
+% 参考：https://tex.stackexchange.com/questions/13048/upright-parentheses-in-italic-text?rq=1
+\cs_new_eq:Nc \emph_old:n { emph~ } % 备份`\emph`命令
+\cs_new_protected:Npn \emph_braces:n #1 % 排版括号为直立符号
+{ \mode_if_math:TF {#1} { \textup{#1} } }
+
+\cs_new:Npn \emph_new:n #1 {
+	\tl_set:Nn \l_emph_tl {\textem{#1}}% 中文强调时用黑体
+	\tl_replace_all:Nnn \l_emph_tl {(}{\emph_braces:n{(}}% 替换(为直立
+	\tl_replace_all:Nnn \l_emph_tl {)}{\emph_braces:n{)}}% 替换)为直立
+	\tl_replace_all:Nnn \l_emph_tl {[}{\emph_braces:n{[}}% 替换[为直立
+	\tl_replace_all:Nnn \l_emph_tl {]}{\emph_braces:n{]}}% 替换]为直立
+	\exp_args:NV \emph_old:n \l_emph_tl
+}
+\RenewDocumentCommand {\emph} {sm} {% \emph*是原命令，\emph为重新定义的命令
+	\IfBooleanTF {#1} {\emph_old:n {#2}} {\emph_new:n {#2}}
+}
+\ExplSyntaxOff
+
+
+\begin{document}
+\setcounter{secnumdepth}{3}
+
+\frontmatter
+
+\maketitle
+\tableofcontents
+\listoffigures
+\listoftables
+\cleardoublepage
+\mainmatter
+
+% (DCMMC): 导入笔记
+%\include{NLP}
+\include{NumericalAnalysis}
+\include{StochasticProcesses}
+\include{SpeechProcessing}
+
+\bibliographystyle{apalike}
+\bibliography{bibfile}
+
+{
+\linespread{1}
+\printindex
+}
+
+\end{document}
