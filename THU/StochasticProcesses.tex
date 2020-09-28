@@ -93,7 +93,7 @@
 	\item 共轭对称：$\Phi(-t) = \overline{\Phi(t)}$
 	\item 若 $\xi$ 的 $n$ 阶矩存在 $\Rightarrow \Phi_{\xi}^{(k)}(0) = j^k E\xi^k$
 	\item $EX = j^{-1} \Phi^\prime(0), DX = - \phi^{(2)}(0) - (EX)^2$
-	\item \concept{非负定性}(\emph{重点})：对$\forall \lambda_i \in \mathbb{C}, \forall t_1,\cdots,t_n \in \R, \Lambda = \diag(\lambda_1, \cdots, \lambda_n), R_{ij} := \Phi_\xi(t_i - t_j)$，有 $\Lambda R \overline{\Lambda} \ge 0$(i.e., $R\succeq 0$)。
+	\item \concept{非负定性}(\emph{重点})：对$\forall \lambda_i \in \mathbb{C}, \forall t_1,\cdots,t_n \in \R, \Lambda = (\lambda_1, \cdots, \lambda_n)^\top \in \mathbb{C}^{n}, R_{ij} := \Phi_\xi(t_i - t_j)$，有 $\Lambda R \overline{\Lambda} = \textcolor{red}{\sum_i \sum_k \lambda_i \int \exp(j(t_i - t_j)\xi)\mathrm{d}F(x) \overline{\lambda_j}} = \textcolor{red}{\int \sum_i \lambda_i \Phi(t_i) \sum_j \overline{\Phi(t_j)\lambda_j} = \int \left(\sum_i \lambda_i \Phi(t_i)\right)^2}\ge 0$(i.e., $R\succeq 0$)。
 \end{enumerate}
 
 多维 r.v. 的特征函数：
@@ -125,7 +125,7 @@ Def:
 	\sigma(t) &:= E\xi^2(t) - (E\xi(t))^2 \\
 	R(t_1,t_2) &:= E\xi(t_1)\xi(t_2) \\
 	C(t_1,t_2) &:= E[(\xi(t_1) - \mu(t_1))(\xi(t_2) - \mu(t_2))] = R(t_1, t_2) - \mu(t_1)\mu(t_2)\\
-	\rho(t_1,t_2) = \frac{C(t_1,t_2)}{\sigma(t_1)\sigma(t_2)}
+	\rho(t_1,t_2) &:= \frac{C(t_1,t_2)}{\sigma(t_1)\sigma(t_2)}
 \end{align*}
 
 \sidenotedcmmc{r.p. 的均值和方差都是 $t$ 的确定性函数而不是一个值。}
@@ -153,19 +153,22 @@ $\{X(t), t \in T\}, \{T(t), t \in T\}$ 两个实过程具有相同的参数集 $
 复 r.p. $Z(t) = X(t) +j Y(t)$, 其中 $X,Y$ 为实过程：
 \begin{align*}
 	\mu(t) &:= EX(t) + jEY(t) \\
-	R(t_1,t_2) &:= EZ(t_1)\overline{Z(t_2)}
+	R(t_1,t_2) &:= EZ(t_1)\overline{Z(t_2)} \\
+	DZ(t) &:= E|Z(t) - \mu(t)|^2 \\
+	C(t_1,t_2) &:= E[(Z(t_1) - \mu(t_1))\overline{(Z(t_2) - \mu(t_2))}]
 \end{align*}
+同样的对复 r.p. 的自相关函数也有非负定性 $R_{ij}:= R(t_i,t_j), R \succeq 0$.
 
-\subsection{随机过程的分类}
+\subsection{二阶矩过程}
 
-\concept{二阶矩过程}：对 r.p. $\xi(t)$, $\forall t \in T, E|\xi(t)|^2 \le \infty$.
+Def. 对 r.p. $\xi(t)$, $\forall t \in T, E|\xi(t)|^2 \le \infty$.
 
 \concept{常用不等式}：
 \begin{enumerate}
 	\item $E|\xi + \eta| \le E|\xi| + E|\eta|$
 	\item $E\xi \le |E\xi| \le E|\xi|$
 	\item $E|\xi\eta| \le \sqrt{E|\xi|^2E|\eta|^2}$ (Schwartz 不等式)
-	\item $\sqrt{E|\xi+\eta|^2} \le \sqrt{E|\xi|^2} + \sqrt{|\eta|^2}$ (三角不等式)
+	\item $\sqrt{E|\xi+\eta|^2} \le \sqrt{E|\xi|^2} + \sqrt{E|\eta|^2}$ (三角不等式)
 \end{enumerate}
 
 \emph*{Pf.} of 三角不等式：
@@ -174,8 +177,14 @@ $\{X(t), t \in T\}, \{T(t), t \in T\}$ 两个实过程具有相同的参数集 $
 	&\le E|\xi|^2 + 2E|\xi\overline{\eta}|+E|\eta|^2 && (\xi\overline{\xi} = |\xi|^2,  \text{ for } a = x +jy,\\
 	& &&a + \overline{a} = 2x \le 2|a| = 2\sqrt{x^2+y^2}) \\
 	&\le E|\xi|^2 + E|\eta|^2 + 2\sqrt{E|\xi|^2E|\eta|^2} && \text{(Schwartz 不等式)}\\
-	&= \sqrt{E|\xi|^2} + \sqrt{|\eta|^2}
+	&= \sqrt{E|\xi|^2} + \sqrt{E|\eta|^2}
 \end{align*}
+
+两个 r.p. 之间:
+\begin{enumerate}
+	\item 互相关函数 $R_{\xi\eta} := E\xi(t_1)\eta(t_2) = \int \int x y \mathrm{d} F_{\xi\eta}(x,t; t_1, t_2)$
+	\item 互协方差 $C_{\xi\eta}(t_1,t_2) := E[(\xi(t_1) - \mu_\xi(t_1))(\eta(t_2) - \mu_\eta(t_2))]$
+\end{enumerate}
 
 复二阶矩 r.p.
 
@@ -186,24 +195,92 @@ $\{X(t), t \in T\}, \{T(t), t \in T\}$ 两个实过程具有相同的参数集 $
 % 可以采用二分回退（也就是删除掉一半新代码）搜索问题行。
 \begin{enumerate}
 	\item 线性空间，有三角不等式证明
-	\item 定义范数(距离空间)：$\lVert \xi\rVert := \sqrt{E|\xi|^2}, d(\xi,\eta) := \lVert \xi - \eta \rVert$, 范数算子满足：
+	\item 定义范数(距离空间)：$\lVert \xi\rVert := \sqrt{E|\xi|^2} := R_\xi(t,t), d(\xi,\eta) := \lVert \xi - \eta \rVert$, 范数算子满足：
 	\begin{enumerate}
 		\item $\lVert\xi\rVert \ge 0$
 		\item $\lVert c\xi \rVert= |c|\lVert \xi \rVert$
 		\item $\lVert \xi + \eta \rVert \le \lVert \xi \rVert + \lVert \eta \rVert$, 三角不等式
 	\end{enumerate}
-	\item 定义内积（内积空间/Hilbert空间）：$\langle\xi,\eta\rangle := E\xi\overline{\eta}$，特性（大多可直接按定义证明）：
+\item 定义内积（内积空间/Hilbert空间）：$\langle\xi,\eta\rangle := E\xi\overline{\eta} = R(\xi, \eta)$，特性（大多可直接按定义证明）：
 	\begin{enumerate}
 		\item $\langle\eta,\xi\rangle = \overline{\langle\xi,\eta\rangle}$, 注意顺序互换了
 		\item $\langle c\xi, \eta\rangle = c\langle\xi,\eta\rangle, c \in \R$
 		\item $\langle\xi,\xi\rangle = E|\xi|^2\ge0$ 且 $\langle \xi, \xi \rangle = 0 \Leftrightarrow \xi = 0, a.e.$ (a.e. 表示\emph{几乎处处})
-		\item 柯西不等式（a.k.a. Schwartz 不等式）：$|\langle \xi, \eta\rangle \le E|\xi\overline{\eta}| \le \lVert\xi\rVert\lVert\eta\rVert$
+		\item 柯西不等式（a.k.a. Schwartz 不等式）：$|\langle \xi, \eta\rangle| \le E|\xi\overline{\eta}| \le \lVert\xi\rVert\lVert\eta\rVert$
 	\end{enumerate}
 \end{enumerate}
 
 \sidenotedcmmc{为了满足相应概率上的性质，复数值的乘积一般写为 $a\overline{b}$ 而不是 $ab$。}
 
-\concept{均方收敛}（\emph{重点}）:
+r.v. 的收敛性, 对$\{\xi(t) \in H\}, \exists \xi \in H$:
+\begin{enumerate}
+	\item 概率 $1$ 收敛(强收敛) $\xi_t \xrightarrow{a.s.} \xi: P(\lim_{t\to\infty} = \xi) = 1$
+	\item \concept{均方收敛}(强收敛, \emph{重点}, 记作 $\text{l.i.m.}_{t\to\infty}\xi_t = \xi$) $\xi_t \xrightarrow{m.s} \xi: \lim_{t\to \infty} E|\xi_t - \xi|^2 = \textcolor{red}{\lim_{t\to\infty}\lVert\xi_t-\xi\rVert = 0}$
+	\item 依概率收敛(弱收敛) $\xi_t \xrightarrow{P} \xi: \forall \epsilon > 0, \lim_{t\to \infty} P(|\xi_t - \xi| > \epsilon) = 0$
+	\item 依分布收敛(弱收敛) $\xi_t \xrightarrow{P} \xi: \lim_{n\to\infty} F(x, t) = F(x)$
+\end{enumerate}
+注意 $\xi_ti, \xi$ 分别是 r.p. 和 r.v., 并且上面四个收敛的强弱程度从上往下递减(\emph{强收敛的 r.p. 当然也是弱收敛}), 不过因为概率 $1$ 收敛条件比较苛刻所以我们一般使用均方收敛.
+
+\sidenotedcmmc{记住一定不要把 $\text{l.i.m.}$ 混淆成 $\lim$, 考试写错直接没分.}
+
+均方收敛的重要性质 $\xi_n \xrightarrow{m.s.} \xi, \eta_n \xrightarrow{m.s.} \eta$:
+\begin{enumerate}
+	\item 均值收敛(\emph{积分极限可互换}) $\lim_{n\to\infty}E\xi_n = E\xi =  E[\text{l.i.m.}_{n\to\infty} \xi_n]$
+	\item 范数收敛 $\lVert\xi_n\rVert \rightarrow \lVert\xi\rVert$
+	\item 内积收敛 $\langle\xi_m,\eta_n\rangle \rightarrow \langle\xi,\eta\rangle$ (也就是 $\lim_{m,n\to\infty} E\xi_m\overline{\eta_n} = E\xi\overline{\eta}$)
+	\item 线性 $a\xi_n+b\eta_n\xrightarrow{m.s.} a\xi+b\eta$
+\end{enumerate}
+
+\emph*{Pf.} of 均值收敛:
+\begin{align*}
+	|E\xi_n - E\xi| &= |E[\xi_n - \xi]| \\
+	&\le E|\xi_n - \xi| \\
+	&\le \sqrt{E|\xi_n - \xi|^2} &&\text{(Schwartz 不等式, 当}P\{Y=1\}=1\text{的特例)}\\
+	&= \sqrt{\lVert \xi_n - \xi\rVert} \\
+	\xi_n \xrightarrow{m.s.} \xi &\Rightarrow \lim_{n\to\infty}\lVert\xi_n-\xi\rVert  =0\\
+	&\Rightarrow \lim_{n\to\infty} \sqrt{\lVert\xi_n-\xi\rVert} &&(\lim\sqrt{f(x)} = \sqrt{\lim f(x)}) = 0\\
+	&\Rightarrow \lim_{n\to\infty}|E\xi_n-\xi| = 0
+\end{align*}
+
+\emph*{Pf.} of 内积收敛:
+\begin{align*}
+	E\xi_m\overline{\eta_n} - E\xi\overline{\eta} &= E[\xi_m\overline{\eta_n} - \xi\overline{\eta}] \\
+	&= E[(\xi_m - \xi)(\overline{\eta_n - \eta}) + (\xi_m - \xi)\overline{\eta} + \xi(\overline{\eta_n - \eta})] \\
+	&\le \sqrt{\textcolor{red}{E|\xi_m-\xi|^2E|\eta_n-\eta|^2}} + \sqrt{E|\xi|^2\textcolor{red}{E|\eta_n - \eta|^2}} + \sqrt{\textcolor{red}{E|\xi_m-\xi|^2}E|\eta|^2} \\
+	&\xrightarrow[m\to\infty]{n\to\infty} 0
+\end{align*}
+还有一种思路就是 $\xi_m(\overline{\eta_n - \eta}) + (\xi_m - \xi)\overline{\eta}$.
+
+\emph*{Pf.} of 范数收敛:
+\begin{align*}
+	E|\xi_n|^2 - E|\xi|^2 &= E[(|\xi_n| + |\xi|)(|\xi_n| - |\xi|)] \\
+	&\le \sqrt{E(|\xi_n| + |\xi|)^2}\sqrt{E(|\xi_n| - |\xi|)^2} \\
+	&\le \sqrt{E|\xi_n|^2E|\xi|^2}\sqrt{E(|\xi_n| - |\xi|)^2}
+\end{align*}
+
+\sidenotedcmmc{按照师兄经验, 考试基本考作业原题, 不考推导, 切勿落入推导公司的深坑!}
+
+证明上述这几个定理的核心思想就是凑 $\lim\lVert\xi_n-\xi\rVert$.
+
+% (DCMMC): LaTeX 真是 typo 杀手... 我把 exists 打错成 exsists 编译报错找了半天才发现...
+\emph*{Pf.} of $\lim_{x\to a}\sqrt{f(x)} = \sqrt{\lim_{x\to a} f(x)}$ (是我太菜了...):
+\begin{align*}
+	\lim_{x\to a} f(x) &= L \Leftrightarrow \\
+	\forall \epsilon_0 > 0, &\exists \sigma_0 > 0, \text{ s.t. } |x-a| \in (0, \sigma_0): \\
+	&|f(x) - L| < \sigma_0 \\
+	&\Downarrow \\
+	\forall \epsilon_1 \textcolor{red}{= \frac{\epsilon_0}{\sqrt{L}}}, &\exists \sigma_1 \textcolor{red}{= \sigma_0}, \text{ s.t. } |x-a|\in(0,\sigma_1): \\
+	|\sqrt{f(x)} - \sqrt{L}| &= \frac{|f(x) - L|}{\sqrt{f(x)} + \sqrt{L}} \\
+	&\le \frac{|f(x) - L|}{\sqrt{L}} \\
+	&< \frac{\epsilon_0}{\sqrt{L}} = \epsilon_1
+\end{align*}
+
+
+证明均方收敛的两个准则(\emph{重点}):
+
+\concept{柯西准则}: $\{\xi_n\} \text{ is Cauchy列} \Leftrightarrow \lim_{m,n\to\infty}\lVert\xi_m - \xi_n\rVert^2 = 0 \Leftrightarrow \exists \xi \in H, \xi_n \xrightarrow{m.s.} \xi$.
+
+\concept{Loève 准则}: $\xi_n \xrightarrow{m.s.} \xi \Leftrightarrow \lim_{m,n\to\infty}\langle\xi_m,\xi_n\rangle = c$, 其中 $c$ 是一个\emph{常数}(不是一定 $0$!)
 
 
 对 $t_1 < \cdots t_n, t_i \in T, i \in [1, n]$，若增量
@@ -211,3 +288,13 @@ $\{X(t), t \in T\}, \{T(t), t \in T\}$ 两个实过程具有相同的参数集 $
 	X(t_1), X(t_2) - X(t_1), \cdots, X(t_n) - X(t_{n-1})
 \end{equation}
 相对独立，则 $\{X(t), t\in T\}$ 为\concept{独立增量过程}。若对一切 $0 \le s < t$，增量 $X(t) - X(s)$ 的分布只依赖 $t-s$, 则 $X_T$ 有\concept{平稳增量}。
+
+
+宽平稳过程：
+\begin{enumerate}
+	\item $R(t_1, t_2) = R(0, t_2 - t_1) := R(t_1 - t_1)$
+\end{enumerate}
+
+平稳过程默认指宽平稳。
+
+证明宽平稳：求均值和相关函数, 然后二阶矩就是 $R(0)$, 三个条件都要写全。

@@ -15,13 +15,14 @@
 \indexentry{母函数|hyperpage}{8}
 \indexentry{特征函数|hyperpage}{8}
 \indexentry{非负定性|hyperpage}{8}
-\indexentry{随机过程|hyperpage}{8}
+\indexentry{随机过程|hyperpage}{9}
 \indexentry{样本函数|hyperpage}{9}
 \indexentry{复随机过程|hyperpage}{9}
-\indexentry{二阶矩过程|hyperpage}{9}
-\indexentry{常用不等式|hyperpage}{9}
-\indexentry{均方收敛|hyperpage}{10}
-\indexentry{独立增量过程|hyperpage}{10}
-\indexentry{平稳增量|hyperpage}{10}
-\indexentry{滤波器|hyperpage}{11}
-\indexentry{Source-Filter Model|hyperpage}{11}
+\indexentry{常用不等式|hyperpage}{10}
+\indexentry{均方收敛|hyperpage}{11}
+\indexentry{柯西准则|hyperpage}{12}
+\indexentry{Loève 准则|hyperpage}{12}
+\indexentry{独立增量过程|hyperpage}{12}
+\indexentry{平稳增量|hyperpage}{12}
+\indexentry{滤波器|hyperpage}{13}
+\indexentry{Source-Filter Model|hyperpage}{13}

@@ -7,6 +7,8 @@ Reallocating 'name_of_file' (item size: 1) to 24 items.
 A level-1 auxiliary file: StochasticProcesses.aux
 Reallocating 'name_of_file' (item size: 1) to 21 items.
 A level-1 auxiliary file: SpeechProcessing.aux
+Reallocating 'name_of_file' (item size: 1) to 20 items.
+A level-1 auxiliary file: BigDataAnalysis.aux
 Reallocating 'name_of_file' (item size: 1) to 8 items.
 The style file: apalike.bst
 Reallocating 'name_of_file' (item size: 1) to 8 items.
@@ -14,7 +16,7 @@ I found no \citation commands---while reading file courseml.aux
 Database file #1: bibfile.bib
 You've used 0 entries,
             1935 wiz_defined-function locations,
-            474 strings with 3739 characters,
+            475 strings with 3758 characters,
 and the built_in function-call counts, 17 in all, are:
 = -- 0
 > -- 0

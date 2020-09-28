@@ -5,10 +5,13 @@
 \contentsline {section}{\numberline {1.2}线性代数复习}{6}{section.1.2}%
 \contentsline {chapter}{\numberline {2}随机过程}{7}{chapter.2}%
 \contentsline {section}{\numberline {2.1}概率论复习}{7}{section.2.1}%
-\contentsline {section}{\numberline {2.2}随机过程(r.p.)}{8}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}随机过程的分类}{9}{subsection.2.2.1}%
-\contentsline {chapter}{\numberline {3}语音信号数字处理}{11}{chapter.3}%
-\contentsline {section}{\numberline {3.1}绪论}{11}{section.3.1}%
-\contentsline {section}{\numberline {3.2}语音学基础}{11}{section.3.2}%
-\contentsline {chapter}{\numberline {4}Bibliography}{13}{chapter.4}%
+\contentsline {section}{\numberline {2.2}随机过程(r.p.)}{9}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}二阶矩过程}{10}{subsection.2.2.1}%
+\contentsline {chapter}{\numberline {3}语音信号数字处理}{13}{chapter.3}%
+\contentsline {section}{\numberline {3.1}绪论}{13}{section.3.1}%
+\contentsline {section}{\numberline {3.2}语音学基础}{13}{section.3.2}%
+\contentsline {section}{\numberline {3.3}音频数字化}{15}{section.3.3}%
+\contentsline {chapter}{\numberline {4}大数据分析}{16}{chapter.4}%
+\contentsline {section}{\numberline {4.1}数据抽样和假设检验}{16}{section.4.1}%
+\contentsline {chapter}{\numberline {5}Bibliography}{17}{chapter.5}%
 \contentsfinish 
