@@ -3,7 +3,7 @@
 
 \section{显示和查看 SoundEditor 中的功能}
 
-打开 Praat, 在 Object window 中点击 Open => Read from file..., 导入 GuoL/40004.wav 文件。
+打开 Praat, 在 Object window 中点击 Open $rightarrow$ Read from file..., 导入 GuoL/40004.wav 文件。
 然后选中该项目，点击 View \& Edit, 进入 SoundEditor window。
 进去之后默认只展示波形waveform、语谱图spectrogram和部分其他信息。
 
@@ -59,15 +59,7 @@ Dynamic range 长度用于将语谱图中振幅低于最高振幅超过 Dynamic 
 
 在 Praat 中我们可以设置其在 SoundEditor 下半部分绘图的红点大小（dot size）。还可以通过设置共振峰数量的分析数量（number of formants），默认是 $5$，即分析并展示五条共振峰 $F_1, F_2, F_3, F_4, F_5$。该值是 $0.5$ 的任意正整数倍。
 
-因为共振峰也是通过窗函数分析估计出来的，所以我们调整窗口大小（window length）。注意实际的分析窗口是该窗口大小的两倍程度，因为 Praat 采用的是 {\kaishu 类 Gaussian 分析窗口}:
-
-\begin{equation}
-  w(n) =
-  \begin{cases}
-    \frac{2 \sqrt{6 \ln(2)}}{N}, & 0 \le n \le N\\
-    0, & n < 0 \text{ or } n > N
-  \end{cases}
-\end{equation}
+因为共振峰也是通过窗函数分析估计出来的，所以我们调整窗口大小（window length）。注意实际的分析窗口是该窗口大小的两倍程度，因为 Praat 采用的是 {\kaishu 类 Gaussian 分析窗口}, $-3$ dB 的频带为 $\frac{2 \sqrt{6 \ln(2)}}{\pi N}$。
 
 \subsection{脉冲}
 在 SoundEditor 上半部分的蓝色竖线就是脉冲，表示{\kaishu 声门闭合 (glottal closure)}。
@@ -115,8 +107,10 @@ Praat 使用一种精确自修正算法~\cite{pitch_algo}来计算 $F_0$，这�
 也就是说，谐波信号经过声道后，有些频率区域能量被大，而有些区域能量变小。
 共振峰是在声音的频谱中能量相对集中的一些区域，共振峰也就是被声道特别放大的频带，与声道的谐振频率相关。
 
+要想获得频谱切片，只需要先用鼠标点击或者拖动选中目标时间点或者时间段，然后在菜单中找到 \textbf{Spectrum} $\rightarrow$ \textbf{View spectral slice} 即可。
+
 \section{脉冲}
 脉冲指的是声门脉冲，每一条蓝色竖线就代表一次声门闭合。
-脉冲的开始在波形图中表现我局部最低点。
+脉冲的开始在波形图中表现为局部最低点。
 
 脉冲直接反映的就是音高轮廓，也就是基音频率 $F_0$。
