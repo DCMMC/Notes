@@ -1,17 +1,17 @@
 # Fdb version 3
-["bibtex NumericalAnalysis_hw1"] 1602936271 "NumericalAnalysis_hw1.aux" "NumericalAnalysis_hw1.bbl" "NumericalAnalysis_hw1" 1602936583
+["bibtex NumericalAnalysis_hw1"] 1602936271 "NumericalAnalysis_hw1.aux" "NumericalAnalysis_hw1.bbl" "NumericalAnalysis_hw1" 1602944274
   "./thuthesis-numeric.bst" 1602912708 44397 6a2bd524cab59a63725bd84e94c83607 ""
-  "NumericalAnalysis_hw1.aux" 1602936581 5201 967d9216626fcf4f364d892b13352cfd "xelatex"
-  "bu.aux" 1602936581 589 57268cd14a5e542f3a2bda48b49b09f8 "xelatex"
+  "NumericalAnalysis_hw1.aux" 1602944272 5201 967d9216626fcf4f364d892b13352cfd "xelatex"
+  "bu.aux" 1602944272 589 57268cd14a5e542f3a2bda48b49b09f8 "xelatex"
   "ref/refs.bib" 1602936229 11201 0b63050cf0452323ab76310cee8b1fee ""
   (generated)
   "NumericalAnalysis_hw1.blg"
   "NumericalAnalysis_hw1.bbl"
-["xdvipdfmx"] 1602936581 "NumericalAnalysis_hw1.xdv" "NumericalAnalysis_hw1.pdf" "NumericalAnalysis_hw1" 1602936583
-  "NumericalAnalysis_hw1.xdv" 1602936581 228880 747244f0f4449746bc3ce8cc594973c1 "xelatex"
+["xdvipdfmx"] 1602944272 "NumericalAnalysis_hw1.xdv" "NumericalAnalysis_hw1.pdf" "NumericalAnalysis_hw1" 1602944274
+  "NumericalAnalysis_hw1.xdv" 1602944272 228872 47251d53db0126481dd93b84829b7437 "xelatex"
   (generated)
   "NumericalAnalysis_hw1.pdf"
-["xelatex"] 1602936571 "NumericalAnalysis_hw1.tex" "NumericalAnalysis_hw1.xdv" "NumericalAnalysis_hw1" 1602936583
+["xelatex"] 1602944263 "NumericalAnalysis_hw1.tex" "NumericalAnalysis_hw1.xdv" "NumericalAnalysis_hw1" 1602944274
   "C:/Users/DCMMC/AppData/Local/MiKTeX/2.9/miktex/data/le/xetex/xelatex.fmt" 1601657459 23227412 8d512d5b60c480951b3457f0baa1c13f ""
   "C:/Users/DCMMC/AppData/Local/Programs/MiKTeX 2.9/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136743454 1528 7e12f4c0fcf5a072cebdcfbfc610f54c ""
   "C:/Users/DCMMC/AppData/Local/Programs/MiKTeX 2.9/fonts/tfm/jknappen/ec/ectt1000.tfm" 993062340 1348 d70ddf2d5d512b838e50a335e385e919 ""
@@ -139,14 +139,14 @@
   "C:/Users/DCMMC/AppData/Local/Programs/MiKTeX 2.9/tex/xelatex/xecjk/xeCJK.sty" 1598213474 180046 56366b925df15af1afefcd76fc5f7842 ""
   "C:/Users/DCMMC/AppData/Local/Programs/MiKTeX 2.9/tex/xelatex/xecjk/xeCJKfntef.sty" 1598213474 39112 288baba030c54150681aa36b936be4ea ""
   "C:/Users/DCMMC/AppData/Local/Programs/MiKTeX 2.9/tex/xelatex/xetexconfig/geometry.cfg" 1169251881 322 f4a6234bc28bf70659404393c15d3854 ""
-  "NumericalAnalysis_hw1.aux" 1602936581 5201 967d9216626fcf4f364d892b13352cfd "xelatex"
+  "NumericalAnalysis_hw1.aux" 1602944272 5201 967d9216626fcf4f364d892b13352cfd "xelatex"
   "NumericalAnalysis_hw1.bbl" 1602936272 2707 8fb0af4a5158917f395bfe80bee499de "bibtex NumericalAnalysis_hw1"
-  "NumericalAnalysis_hw1.lof" 1602936581 516 fba8f9e433da42cbeda26bced4b6baef "xelatex"
-  "NumericalAnalysis_hw1.out" 1602936581 1780 a9199f92e089c8e5d14e1c04523c0ae0 "xelatex"
+  "NumericalAnalysis_hw1.lof" 1602944272 516 fba8f9e433da42cbeda26bced4b6baef "xelatex"
+  "NumericalAnalysis_hw1.out" 1602944272 1780 a9199f92e089c8e5d14e1c04523c0ae0 "xelatex"
   "NumericalAnalysis_hw1.tex" 1602912704 2182 c47d051a127c5061bb925261d19c3022 ""
-  "NumericalAnalysis_hw1.toc" 1602936581 1089 fe2928d703409a7665d1644696efe891 "xelatex"
-  "bu.aux" 1602936581 589 57268cd14a5e542f3a2bda48b49b09f8 "xelatex"
-  "data/num1.tex" 1602936563 18458 c95fc0a9f56cd9522da281bdcf29bf3b ""
+  "NumericalAnalysis_hw1.toc" 1602944272 1089 fe2928d703409a7665d1644696efe891 "xelatex"
+  "bu.aux" 1602944272 589 57268cd14a5e542f3a2bda48b49b09f8 "xelatex"
+  "data/num1.tex" 1602944260 18456 6dda0ff347f0585abd0543342b59aa51 ""
   "figures/rank_120.jpg" 1602932026 80614 7df462e7d15ac5f0b5d2f3a6dc2ea316 ""
   "figures/rank_50.jpg" 1602932034 59230 a532b44383eba179c8f3baea9d7e1a4f ""
   "figures/raw_pic.jpg" 1602930664 91906 7b2349fdceb3c101a526336c5878dc80 ""
@@ -157,9 +157,9 @@
   "thuthesis.cls" 1602913030 86751 17a4377d78fe84d9b83047d8d467e239 ""
   (generated)
   "NumericalAnalysis_hw1.lof"
-  "NumericalAnalysis_hw1.log"
+  "NumericalAnalysis_hw1.out"
   "NumericalAnalysis_hw1.xdv"
+  "NumericalAnalysis_hw1.log"
+  "NumericalAnalysis_hw1.aux"
   "NumericalAnalysis_hw1.toc"
   "bu.aux"
-  "NumericalAnalysis_hw1.out"
-  "NumericalAnalysis_hw1.aux"
