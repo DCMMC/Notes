@@ -272,6 +272,8 @@ INPUT NumericalAnalysis_hw1.lof
 OUTPUT NumericalAnalysis_hw1.lof
 INPUT data/num1.tex
 INPUT data/num1.tex
+INPUT /home/xwt97294597/.miktex/texmfs/install/fonts/tfm/public/cm/cmmi9.tfm
+INPUT /home/xwt97294597/.miktex/texmfs/install/fonts/tfm/public/cm/cmmi6.tfm
 OUTPUT bu.aux
 INPUT NumericalAnalysis_hw1.bbl
 INPUT NumericalAnalysis_hw1.bbl
