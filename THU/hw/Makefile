@@ -58,5 +58,5 @@ distclean: cleanall
 
 # (DCMMC)
 %.pdf : %.tex cls FORCE_MAKE
-	# @echo "Test!" $< $@
+# @echo "Test!" $< $@
 	$(LATEXMK) $<
