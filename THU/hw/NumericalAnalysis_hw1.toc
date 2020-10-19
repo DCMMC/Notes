@@ -1,0 +1,17 @@
+\contentsline {chapter}{目录}{I}{section*.2}%
+\contentsline {chapter}{插图清单}{II}{section*.4}%
+\contentsline {chapter}{摘\hspace {\ccwd }要}{1}{section*.6}%
+\contentsline {chapter}{\numberline {第1章}概述}{2}{chapter.1}%
+\contentsline {chapter}{\numberline {第2章}数值稳定性问题}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}数值上溢和下溢}{3}{section.2.1}%
+\contentsline {section}{\numberline {2.2}病态条件}{4}{section.2.2}%
+\contentsline {chapter}{\numberline {第3章}矩阵特征分解}{6}{chapter.3}%
+\contentsline {section}{\numberline {3.1}主成分分析}{6}{section.3.1}%
+\contentsline {section}{\numberline {3.2}低秩估计}{7}{section.3.2}%
+\contentsline {section}{\numberline {3.3}线性回归}{8}{section.3.3}%
+\contentsline {section}{\numberline {3.4}主题模型}{9}{section.3.4}%
+\contentsline {section}{\numberline {3.5}去除图像背景}{10}{section.3.5}%
+\contentsline {chapter}{\numberline {第4章}结论}{11}{chapter.4}%
+\contentsline {chapter}{参考文献}{12}{section*.12}%
+\setcounter {tocdepth}{0}
+\contentsfinish 

@@ -205,8 +205,44 @@ Classifying each document (hypernode) to its corresponding categories.
 
    http://snap.stanford.edu/data/egonets-Twitter.html
 
-3. 
+3. arXiv
+
+   * co-ciations & co-author
+   * $1.35\times 10^6$ 篇论文，$6.72\times 10^6$ 条引用关系
+   * Features: co-ciations & co-author relations，论文标题，单位，论文 ID
+   * Task: 多分类（多标签）
+
 
 > Ref:
 >
 > [1] A New Space for Comparing Graphs
+>
+> [2] On the use of arxiv as a dataset
+
+## Pooling
+
+$$m_{ik}^l = \sum_{j\ne i}^{v_j \in e_k} h_j^{l-1}, \forall e_k \in \text{Adj}(v_i)$$
+
+把$v_i$所在边的顶点特征全部聚集起来就是 Pooling。
+
+$$z_{ik} = \langle h_i^{l-1}, m_{ik}^l \rangle$$
+
+$$n_i^l = \sum_k \text{softmax}(z_{ik})_k m_{ik}^l$$
+
+$h_j^{l-1}$ 表示顶点 $v_j$ 在第 $l-1$ 层的特征, $n_i^l$ 就是 aggregate 后的顶点特征
+
+> Ref:
+>
+> [1] Learning Multi-Granular Hypergraphs for Video-Based Person Re-Identiﬁcation
+
+$$Z = \sigma(\tilde{D}^{-1/2}\tilde{A}\tilde{D}^{-1/2}X\Theta)$$
+
+$$\text{idx} = \text{top-rank}(Z, \lceil kN \rceil), k \in (0, 1]$$
+
+$$X_{\text{out}} = X_{\text{idx}} \odot Z_{\text{mask}}$$
+
+把 $N$ 个顶点 Pooling 为 $\lceil kN \rceil$ 个顶点
+
+> Ref:
+>
+> [1] Self-Attention Graph Pooling

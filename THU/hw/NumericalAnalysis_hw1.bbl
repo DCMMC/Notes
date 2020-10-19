@@ -1,0 +1,67 @@
+\begin{thebibliography}{7}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{#1}
+\expandafter\ifx\csname urlstyle\endcsname\relax\else
+  \urlstyle{same}\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \DeclareUrlCommand\doi{\urlstyle{rm}}
+  \def\eprint#1#2{#2}
+\else
+  \def\doi#1{\href{https://doi.org/#1}{\nolinkurl{#1}}}
+  \let\eprint\href
+\fi
+
+\bibitem[{Theano Development Team}(2016)]{theano}
+{Theano Development Team}.
+\newblock {Theano: A {Python} framework for fast computation of mathematical
+  expressions}[J/OL].
+\newblock arXiv e-prints, 2016, abs/1605.02688.
+\newblock \url{http://arxiv.org/abs/1605.02688}.
+
+\bibitem[Paszke et~al.(2019)Paszke, Gross, Massa, Lerer, Bradbury, Chanan,
+  Killeen, Lin, Gimelshein, Antiga, Desmaison, Kopf, Yang, DeVito, Raison,
+  Tejani, Chilamkurthy, Steiner, Fang, Bai, and Chintala]{pytorch}
+Paszke~A, Gross~S, Massa~F, et~al.
+\newblock Pytorch: An imperative style, high-performance deep learning
+  library[M/OL]//
+Wallach~H, Larochelle~H, Beygelzimer~A, et~al.
+\newblock Advances in Neural Information Processing Systems 32.
+\newblock Curran Associates, Inc., 2019: 8024-8035.
+\newblock
+  \url{http://papers.neurips.cc/paper/9015-pytorch-an-imperative-style-high-performance-deep-learning-library.pdf}.
+
+\bibitem[F.R.S.(1901)]{PCA}
+F.R.S.~K~P.
+\newblock Liii. on lines and planes of closest fit to systems of points in
+  space[J/OL].
+\newblock The London, Edinburgh, and Dublin Philosophical Magazine and Journal
+  of Science, 1901, 2\penalty0 (11): 559-572.
+\newblock DOI: \doi{10.1080/14786440109462720}.
+
+\bibitem[Eckart et~al.(1936)Eckart and Young]{Eckart1936_lowrank}
+Eckart~C, Young~G.
+\newblock The approximation of one matrix by another of lower rank[J/OL].
+\newblock Psychometrika, 1936, 1\penalty0 (3): 211-218.
+\newblock \url{https://doi.org/10.1007/BF02288367}.
+
+\bibitem[Hofmann(1999)]{topic_model}
+Hofmann~T.
+\newblock Probabilistic latent semantic indexing[C/OL]//
+SIGIR '99: Proceedings of the 22nd Annual International ACM SIGIR Conference on
+  Research and Development in Information Retrieval.
+\newblock New York, NY, USA: Association for Computing Machinery, 1999:
+  50–57.
+\newblock \url{https://doi.org/10.1145/312624.312649}.
+
+\bibitem[Kingma et~al.(2017)Kingma and Ba]{adam}
+Kingma~D~P, Ba~J.
+\newblock Adam: A method for stochastic optimization[Z].
+\newblock 2017.
+
+\bibitem[{Xu} et~al.(2020){Xu}, {Li}, {Jiang}, and {Xia}]{adversarial}
+{Xu}~J, {Li}~Y, {Jiang}~Y, et~al.
+\newblock Adversarial defense via local flatness regularization[C]//
+2020 IEEE International Conference on Image Processing (ICIP).
+\newblock 2020: 2196-2200.
+
+\end{thebibliography}
