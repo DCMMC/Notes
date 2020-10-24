@@ -1,0 +1,97 @@
+% !TeX encoding = UTF-8
+% !TeX program = xelatex
+% !TeX spellcheck = en_US
+
+\documentclass[degree=project, degree-type=project]{thuthesis}
+  % (DCMMC): add `project` to degree.
+  % 学位 degree:
+  %   doctor | master | bachelor | postdoc
+  % 学位类型 degree-type:
+  %   academic（默认）| professional
+\usepackage{mathtools}
+
+
+% 论文基本配置，加载宏包等全局配置
+\thusetup{
+  output = electronic,
+  title = {作业1：方差分析},
+  author  = {肖文韬},
+  studentid = {2020214245},
+  course = {大数据分析},
+  include-spine = false,
+}
+
+\usepackage{float}
+\usepackage{amsthm}
+\usepackage[sort]{natbib}
+\bibliographystyle{thuthesis-numeric}
+\graphicspath{{figures/}}
+% hyperref 宏包在最后调用
+\usepackage{hyperref}
+
+\begin{document}
+
+% 封面
+\maketitle
+\frontmatter
+% \input{data/abstract}
+
+% 目录
+\tableofcontents
+
+% 插图和附表清单
+% \listoffigures           % 插图清单
+% \listoftables            % 附表清单
+% \listoffiguresandtables  % 插图和附表清单
+
+% 正文部分
+\mainmatter
+
+\chapter{HW1 ANOVA}
+
+\begin{enumerate}
+  \item (\textbf{5 points}) Recall and write down the assumption assumptions which oneone-way ANOVA are based on on.
+
+    ANOVA 是\textbf{方差分析（ANalysis Of VAriance）}的缩写，又称F检验, 用于三个及以上样本均值差别的显著性检验。它基于以下假设：
+    \begin{itemize}
+      \item 所有的数据都是随机采样的。
+      \item 每个组的方差是一样的（同调性），各组的标准差中最大和最小的比例不超过 $2:1$。
+      \item 残差是正态分布。
+    \end{itemize}
+  \item (\textbf{5 points}) Focus on two columns columns: Category (Col[2]) and Average Age (Col[7]). Taking feature Average Age as an example, we want to measure whether the average age varied significantly across the categories. Clearly state the null (H0) and the alternative (H1) hypotheses for this task.
+
+    相同 category 的样本属于同一个组。
+    \begin{itemize}
+      \item H0: 不同组的方差不相等。
+      \item H1: 不同组的反差相等
+     \end{itemize}
+
+   \item Use your favorite statistics analysis software, like Matlab , R, Excel Excel, SPSS or …
+     \begin{enumerate}
+       \item (\textbf{10 points}) Draw the empirical probability density funfction of Col[7], i.e. the empirical pdf of average age. Does the data in this dimension follow Gaussian distribution? Test normality of Col[7].
+
+         p-value $= 4.8348\times 10^{-6} < 0.05$，所以拒绝假设 $H_0$, col[7] 不符合高斯分布.
+
+       \item (\textbf{10 points}) In Col[7], there are 5 components divided by category labels labels. We denote the data in Col[7] with category $i$ ( where $i = 1,\cdots,5$) as Col[7|categoty=i]. Test the normality of each components and test the homogeneity of variancevariances.
+
+       \item (\textbf{20 points}) Do the one one-way ANOVA test for Col[7] with categories in Col[2]. Write down your conclusion, supporting statistics, and visualize your data which inspire the process.
+     \end{enumerate}
+
+   \item (\textbf{15 points}) Choose another 3 columns, draw the empirical pdf of each feature columns and test which column follows these assumptions in question 1? How about their corresponding log transformation?
+
+   \item How to do one one-way ANOVA with the non-normal data data?
+     \begin{enumerate}
+       \item (\textbf{10 points}) Find and list the possible solutions set.
+       \item (\textbf{25 points}) Do the one one-way ANOVA on the 3 columns you choose choose. Do these feature columns vary significantly? Visualize the results.
+     \end{enumerate}
+\end{enumerate}
+
+% 其他部分
+\backmatter
+
+% 参考文献
+\bibliography{ref/refs}  % 参考文献使用 BibTeX 编译
+
+% 附录
+\appendix
+\end{document}
