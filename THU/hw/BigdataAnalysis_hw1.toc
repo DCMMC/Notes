@@ -1,0 +1,5 @@
+\contentsline {chapter}{目录}{I}{section*.2}%
+\contentsline {chapter}{\numberline {第1章}HW1 ANOVA}{1}{chapter.1}%
+\contentsline {chapter}{参考文献}{3}{section*.4}%
+\setcounter {tocdepth}{0}
+\contentsfinish 

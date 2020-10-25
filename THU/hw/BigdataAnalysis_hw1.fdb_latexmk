@@ -1,13 +1,21 @@
 # Fdb version 3
-["xdvipdfmx"] 1603553901 "BigdataAnalysis_hw1.xdv" "BigdataAnalysis_hw1.pdf" "BigdataAnalysis_hw1" 1603553902
-  "BigdataAnalysis_hw1.xdv" 1603553899 43804 e881939f8c0ee28d476c31730906ab25 "xelatex"
+["bibtex BigdataAnalysis_hw1"] 1603638035 "BigdataAnalysis_hw1.aux" "BigdataAnalysis_hw1.bbl" "BigdataAnalysis_hw1" 1603639830
+  "./thuthesis-numeric.bst" 1603527328 46768 6a2bd524cab59a63725bd84e94c83607 ""
+  "BigdataAnalysis_hw1.aux" 1603639828 2099 427bee26f5476fdd5d72bfa8cdb1a1b7 "xelatex"
+  "bu.aux" 1603639828 0 d41d8cd98f00b204e9800998ecf8427e "xelatex"
+  "ref/refs.bib" 1603527328 11518 0b63050cf0452323ab76310cee8b1fee ""
+  (generated)
+  "BigdataAnalysis_hw1.bbl"
+  "BigdataAnalysis_hw1.blg"
+["xdvipdfmx"] 1603639829 "BigdataAnalysis_hw1.xdv" "BigdataAnalysis_hw1.pdf" "BigdataAnalysis_hw1" 1603639830
+  "BigdataAnalysis_hw1.xdv" 1603639829 34892 1c1f8e642b6d17262fd43376279ae35b "xelatex"
   (generated)
   "BigdataAnalysis_hw1.pdf"
-["xelatex"] 1603553988 "BigdataAnalysis_hw1.tex" "BigdataAnalysis_hw1.xdv" "BigdataAnalysis_hw1" 1603553988
-  "BigdataAnalysis_hw1.aux" 1603553899 1675 4c669b7e05e51567942773ef7d2c79f9 "xelatex"
-  "BigdataAnalysis_hw1.out" 1603553899 408 9c88b95986c5600ab24c7e97acdddec3 "xelatex"
-  "BigdataAnalysis_hw1.tex" 1603553986 3946 b160ae35bd2bcb2eb989c4c76324d253 ""
-  "BigdataAnalysis_hw1.toc" 1603553899 216 fdb379f7c8baee64ce7a5d87c8d7fb5b "xelatex"
+["xelatex"] 1603639819 "BigdataAnalysis_hw1.tex" "BigdataAnalysis_hw1.xdv" "BigdataAnalysis_hw1" 1603639830
+  "BigdataAnalysis_hw1.aux" 1603639828 2099 427bee26f5476fdd5d72bfa8cdb1a1b7 "xelatex"
+  "BigdataAnalysis_hw1.bbl" 1603638035 394 df8c4f4f41d6dc077f9019104a98461e "bibtex BigdataAnalysis_hw1"
+  "BigdataAnalysis_hw1.out" 1603639828 334 4b6436c04b05de2b5f32537f4efcfa5d "xelatex"
+  "BigdataAnalysis_hw1.tex" 1603639817 5377 3a97eb79054b24c4eab55e9d1fe0e3f2 ""
   "C:/Users/DCMMC/AppData/Local/MiKTeX/2.9/miktex/data/le/xetex/xelatex.fmt" 1601657459 23227412 8d512d5b60c480951b3457f0baa1c13f ""
   "C:/Users/DCMMC/AppData/Local/Programs/MiKTeX 2.9/fonts/tfm/adobe/zapfding/pzdr.tfm" 1136743454 1528 7e12f4c0fcf5a072cebdcfbfc610f54c ""
   "C:/Users/DCMMC/AppData/Local/Programs/MiKTeX 2.9/fonts/tfm/jknappen/ec/ectt1000.tfm" 993062340 1348 d70ddf2d5d512b838e50a335e385e919 ""
@@ -124,11 +132,13 @@
   "C:/Users/DCMMC/AppData/Local/Programs/MiKTeX 2.9/tex/xelatex/xecjk/xeCJK.sty" 1598213474 180046 56366b925df15af1afefcd76fc5f7842 ""
   "C:/Users/DCMMC/AppData/Local/Programs/MiKTeX 2.9/tex/xelatex/xecjk/xeCJKfntef.sty" 1598213474 39112 288baba030c54150681aa36b936be4ea ""
   "C:/Users/DCMMC/AppData/Local/Programs/MiKTeX 2.9/tex/xelatex/xetexconfig/geometry.cfg" 1169251881 322 f4a6234bc28bf70659404393c15d3854 ""
-  "bu.aux" 1603553899 0 d41d8cd98f00b204e9800998ecf8427e "xelatex"
+  "bu.aux" 1603639828 0 d41d8cd98f00b204e9800998ecf8427e "xelatex"
+  "figures/col7.png" 1603637562 35538 c341dd05c5d290c29dfc06ecb83731dc ""
+  "figures/col7_ANOVA.png" 1603637801 18386 4bd0ef3b03a1e267c86de8d49835b523 ""
   "thuthesis.cls" 1603527328 89775 17a4377d78fe84d9b83047d8d467e239 ""
   (generated)
-  "BigdataAnalysis_hw1.aux"
   "BigdataAnalysis_hw1.out"
-  "BigdataAnalysis_hw1.toc"
+  "bu.aux"
+  "BigdataAnalysis_hw1.aux"
   "BigdataAnalysis_hw1.log"
   "BigdataAnalysis_hw1.xdv"

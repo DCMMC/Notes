@@ -241,9 +241,16 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmmi1
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmmi12.tfm
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmmi10.tfm
 OUTPUT BigdataAnalysis_hw1.xdv
-INPUT BigdataAnalysis_hw1.toc
-INPUT BigdataAnalysis_hw1.toc
-OUTPUT BigdataAnalysis_hw1.toc
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmmi12.tfm
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmmi9.tfm
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmmi7.tfm
+INPUT figures\col7.png
+INPUT figures\col7_ANOVA.png
+OUTPUT bu.aux
+INPUT BigdataAnalysis_hw1.bbl
+INPUT BigdataAnalysis_hw1.bbl
+INPUT BigdataAnalysis_hw1.aux
+INPUT bu.aux
+INPUT bu.aux
+INPUT .\BigdataAnalysis_hw1.out
+INPUT .\BigdataAnalysis_hw1.out
