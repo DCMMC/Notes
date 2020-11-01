@@ -1,0 +1,14 @@
+\contentsline {chapter}{摘\hspace {\ccwd }要}{I}{}%
+\contentsline {chapter}{目录}{II}{}%
+\contentsline {chapter}{\numberline {第1章}概述}{1}{}%
+\contentsline {chapter}{\numberline {第2章}高斯过程}{2}{}%
+\contentsline {section}{\numberline {2.1}高斯过程在回归任务上的应用}{2}{}%
+\contentsline {section}{\numberline {2.2}高斯过程在分类任务上的应用}{4}{}%
+\contentsline {chapter}{\numberline {第3章}马尔可夫过程}{6}{}%
+\contentsline {section}{\numberline {3.1}马尔科夫过程和马尔科夫链的简史}{7}{}%
+\contentsline {section}{\numberline {3.2}开发隐藏马尔科夫模型需要的算法简史}{8}{}%
+\contentsline {section}{\numberline {3.3}马尔可夫模型的应用}{9}{}%
+\contentsline {chapter}{\numberline {第4章}结论}{10}{}%
+\contentsline {chapter}{参考文献}{11}{}%
+\setcounter {tocdepth}{0}
+\contentsfinish 

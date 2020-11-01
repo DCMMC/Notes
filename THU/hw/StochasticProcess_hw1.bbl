@@ -1,0 +1,49 @@
+\begin{thebibliography}{5}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{#1}
+\expandafter\ifx\csname urlstyle\endcsname\relax\else
+  \urlstyle{same}\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \DeclareUrlCommand\doi{\urlstyle{rm}}
+  \def\eprint#1#2{#2}
+\else
+  \def\doi#1{\href{https://doi.org/#1}{\nolinkurl{#1}}}
+  \let\eprint\href
+\fi
+
+\bibitem[Rasmussen et~al.(2005)Rasmussen and Williams]{gp_book}
+Rasmussen~C~E, Williams~C~K~I.
+\newblock Gaussian processes for machine learning (adaptive computation and
+  machine learning)[M].
+\newblock The MIT Press, 2005.
+
+\bibitem[{Rabiner}(1989)]{HMM}
+{Rabiner}~L~R.
+\newblock A tutorial on hidden markov models and selected applications in
+  speech recognition[J/OL].
+\newblock Proceedings of the IEEE, 1989, 77\penalty0 (2): 257-286.
+\newblock DOI: \doi{10.1109/5.18626}.
+
+\bibitem[Baum et~al.(1970)Baum, Petrie, Soules, and Weiss]{GEM}
+Baum~L~E, Petrie~T, Soules~G, et~al.
+\newblock A maximization technique occurring in the statistical analysis of
+  probabilistic functions of markov chains[J/OL].
+\newblock The Annals of Mathematical Statistics, 1970, 41\penalty0 (1):
+  164-171.
+\newblock \url{http://www.jstor.org/stable/2239727}.
+
+\bibitem[{Viterbi}(1967)]{Viterbi}
+{Viterbi}~A.
+\newblock Error bounds for convolutional codes and an asymptotically optimum
+  decoding algorithm[J/OL].
+\newblock IEEE Transactions on Information Theory, 1967, 13\penalty0 (2):
+  260-269.
+\newblock DOI: \doi{10.1109/TIT.1967.1054010}.
+
+\bibitem[Schrodt(2006)]{Schrodt2006}
+Schrodt~P~A.
+\newblock Forecasting conflict in the balkans using hidden markov models[M/OL].
+\newblock Dordrecht: Springer Netherlands, 2006: 161-184.
+\newblock \url{https://doi.org/10.1007/1-4020-4390-2_8}.
+
+\end{thebibliography}
