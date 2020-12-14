@@ -1,0 +1,12 @@
+\contentsline {chapter}{目录}{I}{}%
+\contentsline {chapter}{插图清单}{II}{}%
+\contentsline {chapter}{\numberline {第1章}任务一：Viterbi 解码算法实现}{1}{}%
+\contentsline {section}{\numberline {1.1}Forward 算法}{1}{}%
+\contentsline {section}{\numberline {1.2}Backward 算法}{2}{}%
+\contentsline {section}{\numberline {1.3}Viterbi 算法}{2}{}%
+\contentsline {chapter}{\numberline {第2章}任务二：基于 GMM-HMM 的语音识别}{4}{}%
+\contentsline {section}{\numberline {2.1}Q1 ($3"$)}{4}{}%
+\contentsline {chapter}{\numberline {第3章}任务三：基于 DNN-HMM 的语音识别}{5}{}%
+\contentsline {chapter}{参考文献}{6}{}%
+\setcounter {tocdepth}{0}
+\contentsfinish 

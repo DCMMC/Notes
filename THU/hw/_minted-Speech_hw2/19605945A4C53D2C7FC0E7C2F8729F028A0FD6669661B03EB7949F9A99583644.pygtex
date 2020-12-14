@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{n}{delta\PYGZus{}t} \PYG{o}{=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{pi}
+\PYG{n}{phi\PYGZus{}t} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{zeros}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{total\PYGZus{}states}\PYG{p}{)}
+\PYG{k}{for} \PYG{n}{t}\PYG{p}{,} \PYG{n}{o\PYGZus{}t} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n}{ob}\PYG{p}{):}
+  \PYG{n}{delta\PYGZus{}t} \PYG{o}{*=} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{B}\PYG{p}{[:,} \PYG{n}{o\PYGZus{}t}\PYG{p}{]}
+  \PYG{n}{delta}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]} \PYG{o}{=} \PYG{n}{delta\PYGZus{}t}
+  \PYG{n}{phi}\PYG{p}{[}\PYG{n}{t}\PYG{p}{]} \PYG{o}{=} \PYG{n}{phi\PYGZus{}t}
+  \PYG{n}{phi\PYGZus{}t} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{argmax}\PYG{p}{(}\PYG{n}{delta\PYGZus{}t} \PYG{o}{*} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{A}\PYG{o}{.}\PYG{n}{T}\PYG{p}{,} \PYG{n}{axis}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{)}
+  \PYG{n}{delta\PYGZus{}t} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{max}\PYG{p}{(}\PYG{n}{delta\PYGZus{}t} \PYG{o}{*} \PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{A}\PYG{o}{.}\PYG{n}{T}\PYG{p}{,} \PYG{n}{axis}\PYG{o}{=}\PYG{l+m+mi}{1}\PYG{p}{)}
+\end{Verbatim}

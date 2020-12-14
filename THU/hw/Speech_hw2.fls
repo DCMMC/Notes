@@ -1,13 +1,14 @@
 PWD C:\Users\DCMMC\Desktop\Repos\Notes\THU\hw
 INPUT C:\Users\DCMMC\AppData\Local\MiKTeX\2.9\miktex\data\le\xetex\xelatex.fmt
-INPUT StochasticProcess_hw1.tex
-OUTPUT StochasticProcess_hw1.log
+INPUT Speech_hw2.tex
+OUTPUT Speech_hw2.log
 INPUT .\thuthesis.cls
 INPUT thuthesis.cls
 INPUT .\thuthesis.cls
 INPUT .\thuthesis.cls
 INPUT .\thuthesis.cls
 INPUT .\thuthesis.cls
+INPUT .\thuthesis.cls
 INPUT thuthesis.cls
 INPUT .\thuthesis.cls
 INPUT thuthesis.cls
@@ -20,6 +21,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\iftex.s
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\iftex.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\iftex.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\iftex.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\iftex.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\kvdefinekeys\kvdefinekeys.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\kvdefinekeys\kvdefinekeys.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\kvdefinekeys\kvdefinekeys.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\kvdefinekeys\kvdefinekeys.sty
@@ -38,6 +41,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\kvsetkeys\kvs
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\kvsetkeys\kvsetkeys.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\kvsetkeys\kvsetkeys.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\kvsetkeys\kvsetkeys.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\kvsetkeys\kvsetkeys.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\kvoptions\kvoptions.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\kvoptions\kvoptions.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\kvoptions\kvoptions.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\kvoptions\kvoptions.sty
@@ -56,6 +61,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\keyval
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\keyval.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\keyval.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\keyval.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\keyval.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\ltxcmds\ltxcmds.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\ltxcmds\ltxcmds.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\ltxcmds\ltxcmds.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\ltxcmds\ltxcmds.sty
@@ -66,6 +73,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\ltxcmds\ltxcm
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\ltxcmds\ltxcmds.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\ltxcmds\ltxcmds.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\book.cls
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\book.cls
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fontspec\fontspec.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fontspec\fontspec.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexbook.cls
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexbook.cls
@@ -76,6 +85,7 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexbook.c
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexbook.cls
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexbook.cls
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexbook.cls
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexbook.cls
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\config\ctexbackend.cfg
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\config\ctexbackend.cfg
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\config\ctexbackend.cfg
@@ -89,6 +99,7 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3kernel\expl3.
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3kernel\expl3.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3kernel\expl3.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3kernel\expl3.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3kernel\expl3.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3backend\l3backend-xetex.def
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3backend\l3backend-xetex.def
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3backend\l3backend-xetex.def
@@ -98,6 +109,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3backend\l3bac
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3backend\l3backend-xetex.def
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3backend\l3backend-xetex.def
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3backend\l3backend-xetex.def
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3backend\l3backend-xetex.def
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\xparse\xparse.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\xparse\xparse.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\xparse\xparse.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\xparse\xparse.sty
@@ -108,9 +121,7 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\xpar
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\xparse\xparse.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\xparse\xparse.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\xparse\xparse-generic.tex
-INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\xparse\xparse-generic.tex
-INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\xparse\xparse-generic.tex
-INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\xparse\xparse-generic.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\l3keys2e\l3keys2e.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\l3keys2e\l3keys2e.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\l3keys2e\l3keys2e.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\l3keys2e\l3keys2e.sty
@@ -130,6 +141,7 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexhook.s
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexhook.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexhook.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexhook.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexhook.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexpatch.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexpatch.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexpatch.sty
@@ -139,6 +151,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexpatch.
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexpatch.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexpatch.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexpatch.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ctex\ctexpatch.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\fix-cm.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\fix-cm.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\fix-cm.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\fix-cm.sty
@@ -152,6 +166,7 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\ts1enc.def
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\ts1enc.def
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\ts1enc.def
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\ts1enc.def
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ms\everysel.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ms\everysel.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ms\everysel.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ms\everysel.sty
@@ -173,6 +188,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\book.cls
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\book.cls
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\book.cls
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\book.cls
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\book.cls
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\book.cls
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\bk12.clo
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\bk12.clo
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\bk12.clo
@@ -188,6 +205,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\xelatex\xecjk\xeCJK.s
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\xelatex\xecjk\xeCJK.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\xelatex\xecjk\xeCJK.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\xelatex\xecjk\xeCJK.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\xelatex\xecjk\xeCJK.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\xtemplate\xtemplate.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\xtemplate\xtemplate.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\xtemplate\xtemplate.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\l3packages\xtemplate\xtemplate.sty
@@ -206,6 +225,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fontspec\fontsp
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fontspec\fontspec.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fontspec\fontspec.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fontspec\fontspec.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fontspec\fontspec.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fontspec\fontspec-xetex.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fontspec\fontspec-xetex.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fontspec\fontspec-xetex.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fontspec\fontspec-xetex.sty
@@ -225,12 +246,14 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\fontenc.st
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\fontenc.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\fontenc.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\fontenc.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\fontenc.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fontspec\fontspec.cfg
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fontspec\fontspec.cfg
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fontspec\fontspec.cfg
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fontspec\fontspec.cfg
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\xelatex\xecjk\xeCJK.cfg
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\xelatex\xecjk\xeCJK.cfg
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\hyperref\hyperref.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\hyperref\hyperref.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\zhnumber\zhnumber.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\zhnumber\zhnumber.sty
@@ -242,6 +265,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\zhnumber\zhnumb
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\zhnumber\zhnumber.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\zhnumber\zhnumber.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\zhnumber\zhnumber.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\zhnumber\zhnumber.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\zhnumber\zhnumber.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\zhnumber\zhnumber-utf8.cfg
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\zhnumber\zhnumber-utf8.cfg
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\zhnumber\zhnumber-utf8.cfg
@@ -260,6 +285,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\etoolbox\etoolb
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\etoolbox\etoolbox.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\etoolbox\etoolbox.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\etoolbox\etoolbox.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\etoolbox\etoolbox.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\filehook\filehook.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\filehook\filehook.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\filehook\filehook.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\filehook\filehook.sty
@@ -278,6 +305,7 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\filehook\fileho
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\filehook\filehook-2020.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\filehook\filehook-2020.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\filehook\filehook-2020.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\filehook\filehook-2020.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\geometry\geometry.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\geometry\geometry.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\geometry\geometry.sty
@@ -287,6 +315,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\geometry\geomet
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\geometry\geometry.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\geometry\geometry.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\geometry\geometry.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\geometry\geometry.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\ifvtex.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\ifvtex.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\ifvtex.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\ifvtex.sty
@@ -309,6 +339,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fancyhdr\fancyh
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fancyhdr\fancyhdr.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fancyhdr\fancyhdr.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fancyhdr\fancyhdr.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fancyhdr\fancyhdr.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\titlesec\titletoc.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\titlesec\titletoc.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\titlesec\titletoc.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\titlesec\titletoc.sty
@@ -327,6 +359,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\notoccite\notoc
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\notoccite\notoccite.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\notoccite\notoccite.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\notoccite\notoccite.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\notoccite\notoccite.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsmath.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsmath.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsmath.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsmath.sty
@@ -337,6 +371,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsmath
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsmath.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsmath.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsopn.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsopn.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amstext.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amstext.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amstext.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amstext.sty
@@ -355,6 +391,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsgen.
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsgen.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsgen.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsgen.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsgen.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsbsy.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsbsy.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsbsy.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsbsy.sty
@@ -373,6 +411,7 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsopn.
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsopn.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsopn.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsopn.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\amsmath\amsopn.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\unicode-math\unicode-math.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\unicode-math\unicode-math.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\unicode-math\unicode-math.sty
@@ -382,6 +421,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\unicode-math\un
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\unicode-math\unicode-math.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\unicode-math\unicode-math.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\unicode-math\unicode-math.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\unicode-math\unicode-math.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\unicode-math\unicode-math-xetex.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\unicode-math\unicode-math-xetex.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\unicode-math\unicode-math-xetex.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\unicode-math\unicode-math-xetex.sty
@@ -402,6 +443,7 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\graphi
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\graphicx.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\graphicx.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\graphicx.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\graphicx.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\graphics.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\graphics.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\graphics.sty
@@ -411,6 +453,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\graphi
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\graphics.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\graphics.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\graphics.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\graphics.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\trig.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\trig.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\trig.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\trig.sty
@@ -437,6 +481,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\subcapt
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\subcaption.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\subcaption.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\subcaption.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\subcaption.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\caption.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\caption.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\caption.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\caption.sty
@@ -455,6 +501,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\caption
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\caption3.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\caption3.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\caption3.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\caption\caption3.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pdfpages\pdfpages.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pdfpages\pdfpages.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pdfpages\pdfpages.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pdfpages\pdfpages.sty
@@ -473,6 +521,7 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\ifthen.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\ifthen.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\ifthen.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\ifthen.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\ifthen.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\calc.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\calc.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\calc.sty
@@ -482,6 +531,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\calc.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\calc.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\calc.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\calc.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\calc.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\eso-pic\eso-pic.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\eso-pic\eso-pic.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\eso-pic\eso-pic.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\eso-pic\eso-pic.sty
@@ -499,12 +550,14 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\atbegshi\atbe
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\atbegshi-ltx.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\atbegshi\atbegshi.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\atbegshi-ltx.sty
-INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\atbegshi\atbegshi.sty
-INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\atbegshi\atbegshi.sty
-INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\atbegshi-ltx.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\atbegshi-ltx.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\atbegshi\atbegshi.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\atbegshi\atbegshi.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\atbegshi-ltx.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\atbegshi-ltx.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\atbegshi\atbegshi.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\atbegshi-ltx.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\xcolor\xcolor.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\xcolor\xcolor.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\xcolor\xcolor.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\xcolor\xcolor.sty
@@ -533,6 +586,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\enumitem\enumit
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\enumitem\enumitem.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\enumitem\enumitem.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\enumitem\enumitem.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\enumitem\enumitem.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\environ\environ.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\environ\environ.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\environ\environ.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\environ\environ.sty
@@ -551,6 +606,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\trimspaces\trim
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\trimspaces\trimspaces.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\trimspaces\trimspaces.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\trimspaces\trimspaces.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\trimspaces\trimspaces.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\footmisc\footmisc.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\footmisc\footmisc.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\footmisc\footmisc.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\footmisc\footmisc.sty
@@ -569,6 +626,9 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\xelatex\xecjk\xeCJKfn
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\xelatex\xecjk\xeCJKfntef.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\xelatex\xecjk\xeCJKfntef.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\xelatex\xecjk\xeCJKfntef.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\xelatex\xecjk\xeCJKfntef.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ulem\ulem.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ulem\ulem.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ulem\ulem.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ulem\ulem.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ulem\ulem.sty
@@ -589,6 +649,7 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\soul\soul.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\soul\soul.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\soul\soul.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\soul\soul.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\soul\soul.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\jknappen\ec\ectt1000.tfm
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\array.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\array.sty
@@ -599,6 +660,7 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\array.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\array.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\array.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\array.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\array.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\booktabs\booktabs.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\booktabs\booktabs.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\booktabs\booktabs.sty
@@ -608,6 +670,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\booktabs\bookta
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\booktabs\booktabs.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\booktabs\booktabs.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\booktabs\booktabs.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\booktabs\booktabs.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\url\url.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\url\url.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\url\url.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\url\url.sty
@@ -618,7 +682,10 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\url\url.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\url\url.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\url\url.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\natbib\natbib.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\natbib\natbib.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\algorithms\algorithm.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\algorithms\algorithm.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\algorithm2e\algorithm2e.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\algorithm2e\algorithm2e.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\mathtools\mathtools.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\mathtools\mathtools.sty
@@ -629,6 +696,7 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\mathtools\matht
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\mathtools\mathtools.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\mathtools\mathtools.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\mathtools\mathtools.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\mathtools\mathtools.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\mathtools\mhsetup.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\mathtools\mhsetup.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\mathtools\mhsetup.sty
@@ -638,6 +706,166 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\mathtools\mhset
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\mathtools\mhsetup.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\mathtools\mhsetup.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\mathtools\mhsetup.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\mathtools\mhsetup.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\minted\minted.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\minted\minted.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\minted\minted.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\minted\minted.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\minted\minted.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\minted\minted.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\minted\minted.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\minted\minted.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\minted\minted.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\minted\minted.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fvextra\fvextra.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fvextra\fvextra.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fvextra\fvextra.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fvextra\fvextra.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fvextra\fvextra.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fvextra\fvextra.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fvextra\fvextra.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fvextra\fvextra.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fvextra\fvextra.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fvextra\fvextra.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fancyvrb\fancyvrb.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fancyvrb\fancyvrb.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fancyvrb\fancyvrb.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fancyvrb\fancyvrb.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fancyvrb\fancyvrb.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fancyvrb\fancyvrb.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fancyvrb\fancyvrb.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fancyvrb\fancyvrb.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fancyvrb\fancyvrb.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\fancyvrb\fancyvrb.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\upquote\upquote.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\upquote\upquote.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\upquote\upquote.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\upquote\upquote.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\upquote\upquote.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\upquote\upquote.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\upquote\upquote.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\upquote\upquote.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\upquote\upquote.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\upquote\upquote.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\textcomp.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\textcomp.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\textcomp.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\textcomp.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\textcomp.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\textcomp.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\textcomp.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\textcomp.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\textcomp.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\base\textcomp.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lineno\lineno.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lineno\lineno.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lineno\lineno.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lineno\lineno.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lineno\lineno.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lineno\lineno.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lineno\lineno.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lineno\lineno.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lineno\lineno.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\lineno\lineno.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\shellesc.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\shellesc.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\shellesc.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\shellesc.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\shellesc.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\shellesc.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\shellesc.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\shellesc.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\shellesc.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\shellesc.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\shellesc.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\shellesc.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ifplatform\ifplatform.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ifplatform\ifplatform.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ifplatform\ifplatform.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ifplatform\ifplatform.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ifplatform\ifplatform.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ifplatform\ifplatform.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ifplatform\ifplatform.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ifplatform\ifplatform.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ifplatform\ifplatform.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\ifplatform\ifplatform.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pdftexcmds\pdftexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pdftexcmds\pdftexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pdftexcmds\pdftexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pdftexcmds\pdftexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pdftexcmds\pdftexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pdftexcmds\pdftexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pdftexcmds\pdftexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pdftexcmds\pdftexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pdftexcmds\pdftexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pdftexcmds\pdftexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\infwarerr\infwarerr.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\infwarerr\infwarerr.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\infwarerr\infwarerr.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\infwarerr\infwarerr.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\infwarerr\infwarerr.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\infwarerr\infwarerr.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\infwarerr\infwarerr.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\infwarerr\infwarerr.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\infwarerr\infwarerr.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\infwarerr\infwarerr.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\catchfile\catchfile.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\catchfile\catchfile.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\catchfile\catchfile.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\catchfile\catchfile.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\catchfile\catchfile.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\catchfile\catchfile.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\catchfile\catchfile.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\catchfile\catchfile.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\catchfile\catchfile.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\catchfile\catchfile.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\etexcmds\etexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\etexcmds\etexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\etexcmds\etexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\etexcmds\etexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\etexcmds\etexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\etexcmds\etexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\etexcmds\etexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\etexcmds\etexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\etexcmds\etexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\etexcmds\etexcmds.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\ifluatex.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\ifluatex.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\ifluatex.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\ifluatex.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\ifluatex.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\ifluatex.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\ifluatex.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\ifluatex.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\ifluatex.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\iftex\ifluatex.sty
+INPUT .\nul:.tex
+INPUT .\nul:.tex
+INPUT .\nul:.tex
+INPUT .\nul:.tex
+INPUT .\nul:.tex
+INPUT nul:.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\xstring\xstring.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\xstring\xstring.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\xstring\xstring.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\xstring\xstring.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\xstring\xstring.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\xstring\xstring.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\xstring\xstring.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\xstring\xstring.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\xstring\xstring.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\xstring\xstring.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\xstring\xstring.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\framed\framed.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\framed\framed.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\framed\framed.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\framed\framed.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\framed\framed.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\framed\framed.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\framed\framed.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\framed\framed.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\framed\framed.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\framed\framed.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\float\float.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\float\float.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\float\float.sty
@@ -647,6 +875,154 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\float\float.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\float\float.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\float\float.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\float\float.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\float\float.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tcolorbox\tcolorbox.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tcolorbox\tcolorbox.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tcolorbox\tcolorbox.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tcolorbox\tcolorbox.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tcolorbox\tcolorbox.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tcolorbox\tcolorbox.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tcolorbox\tcolorbox.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tcolorbox\tcolorbox.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tcolorbox\tcolorbox.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tcolorbox\tcolorbox.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgf.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgf.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgf.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgf.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgf.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgf.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgf.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgf.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgf.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgf.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\utilities\pgfrcs.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\utilities\pgfrcs.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\utilities\pgfrcs.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\utilities\pgfrcs.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\utilities\pgfrcs.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\utilities\pgfrcs.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\utilities\pgfrcs.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\utilities\pgfrcs.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\utilities\pgfrcs.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\utilities\pgfrcs.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\utilities\pgfutil-common.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\utilities\pgfutil-common-lists.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\utilities\pgfutil-latex.def
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\utilities\pgfrcs.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\utilities\pgfrcs.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\utilities\pgfrcs.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\utilities\pgfrcs.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\pgf.revision.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\pgf.revision.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgfcore.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgfcore.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgfcore.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgfcore.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgfcore.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgfcore.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgfcore.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgfcore.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgfcore.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\basiclayer\pgfcore.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\systemlayer\pgfsys.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\systemlayer\pgfsys.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\systemlayer\pgfsys.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\systemlayer\pgfsys.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\systemlayer\pgfsys.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\systemlayer\pgfsys.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\systemlayer\pgfsys.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\systemlayer\pgfsys.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\systemlayer\pgfsys.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\systemlayer\pgfsys.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\systemlayer\pgfsys.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\systemlayer\pgfsys.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\systemlayer\pgfsys.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\systemlayer\pgfsys.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\utilities\pgfkeys.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\utilities\pgfkeysfiltered.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\systemlayer\pgf.cfg
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\systemlayer\pgfsys-xetex.def
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\systemlayer\pgfsys-xetex.def
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\systemlayer\pgfsys-dvipdfmx.def
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\systemlayer\pgfsys-common-pdf.def
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\systemlayer\pgfsyssoftpath.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\systemlayer\pgfsyssoftpath.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\systemlayer\pgfsyssoftpath.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\systemlayer\pgfsyssoftpath.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\systemlayer\pgfsysprotocol.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\systemlayer\pgfsysprotocol.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\systemlayer\pgfsysprotocol.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\systemlayer\pgfsysprotocol.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcore.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcore.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcore.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcore.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\math\pgfmath.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\math\pgfmathcalc.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\math\pgfmathutil.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\math\pgfmathparser.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\math\pgfmathfunctions.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\math\pgfmathfunctions.basic.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\math\pgfmathfunctions.trigonometric.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\math\pgfmathfunctions.random.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\math\pgfmathfunctions.comparison.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\math\pgfmathfunctions.base.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\math\pgfmathfunctions.round.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\math\pgfmathfunctions.misc.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\math\pgfmathfunctions.integerarithmetics.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\math\pgfmathfloat.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\math\pgfint.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcorepoints.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcorepathconstruct.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcorepathusage.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcorescopes.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcoregraphicstate.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcoretransformations.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcorequick.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcoreobjects.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcorepathprocessing.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcorearrows.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcoreshade.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcoreimage.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcoreexternal.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcorelayers.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcoretransparency.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcorepatterns.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\basiclayer\pgfcorerdf.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\modules\pgfmoduleshapes.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\generic\pgf\modules\pgfmoduleplot.code.tex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-0-65.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-0-65.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-0-65.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-0-65.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-0-65.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-0-65.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-0-65.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-0-65.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-0-65.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-0-65.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-1-18.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-1-18.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-1-18.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-1-18.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-1-18.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-1-18.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-1-18.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-1-18.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-1-18.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pgf\compatibility\pgfcomp-version-1-18.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\verbatim.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\verbatim.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\verbatim.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\verbatim.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\verbatim.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\verbatim.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\verbatim.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\verbatim.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\verbatim.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\tools\verbatim.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\natbib\natbib.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\natbib\natbib.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\natbib\natbib.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\natbib\natbib.sty
@@ -665,13 +1041,17 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\bibunits\bibuni
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\bibunits\bibunits.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\bibunits\bibunits.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\bibunits\bibunits.sty
-INPUT .\StochasticProcess_hw1.aux
-INPUT StochasticProcess_hw1.aux
-INPUT StochasticProcess_hw1.aux
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\bibunits\bibunits.sty
+INPUT Speech_hw2.aex
+INPUT .\Speech_hw2.aex
+INPUT Speech_hw2.aex
+INPUT .\Speech_hw2.aux
+INPUT Speech_hw2.aux
+INPUT Speech_hw2.aux
 INPUT .\bu.aux
 INPUT bu.aux
 INPUT bu.aux
-OUTPUT StochasticProcess_hw1.aux
+OUTPUT Speech_hw2.aux
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pdflscape\pdflscape.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pdflscape\pdflscape.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pdflscape\pdflscape.sty
@@ -681,6 +1061,8 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pdflscape\pdfls
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pdflscape\pdflscape.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pdflscape\pdflscape.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pdflscape\pdflscape.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\pdflscape\pdflscape.sty
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\lscape.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\lscape.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\lscape.sty
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\lscape.sty
@@ -693,23 +1075,73 @@ INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\tex\latex\graphics\lscape
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmmi12.tfm
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmmi12.tfm
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmmi10.tfm
-OUTPUT StochasticProcess_hw1.xdv
-INPUT .\StochasticProcess_hw1.toc
-INPUT StochasticProcess_hw1.toc
-INPUT StochasticProcess_hw1.toc
-OUTPUT StochasticProcess_hw1.toc
+OUTPUT Speech_hw2.xdv
+INPUT .\Speech_hw2.toc
+INPUT Speech_hw2.toc
+INPUT Speech_hw2.toc
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmmi12.tfm
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmmi9.tfm
 INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmmi7.tfm
-INPUT .\figures\\HMM.png
-INPUT .\figures\\HMM.png
-INPUT figures\\HMM.png
+OUTPUT Speech_hw2.toc
+INPUT .\Speech_hw2.lof
+INPUT Speech_hw2.lof
+INPUT Speech_hw2.lof
+OUTPUT Speech_hw2.lof
+OUTPUT Speech_hw2.pyg
+INPUT .\_minted-Speech_hw2\default-pyg-prefix.pygstyle
+INPUT _minted-Speech_hw2\default-pyg-prefix.pygstyle
+INPUT .\_minted-Speech_hw2\default-pyg-prefix.pygstyle
+INPUT _minted-Speech_hw2\default-pyg-prefix.pygstyle
+INPUT .\_minted-Speech_hw2\default-pyg-prefix.pygstyle
+INPUT _minted-Speech_hw2\default-pyg-prefix.pygstyle
+INPUT .\_minted-Speech_hw2\default-pyg-prefix.pygstyle
+INPUT _minted-Speech_hw2\default-pyg-prefix.pygstyle
+INPUT .\_minted-Speech_hw2\friendly.pygstyle
+INPUT _minted-Speech_hw2\friendly.pygstyle
+INPUT .\_minted-Speech_hw2\friendly.pygstyle
+INPUT _minted-Speech_hw2\friendly.pygstyle
+INPUT .\_minted-Speech_hw2\friendly.pygstyle
+INPUT _minted-Speech_hw2\friendly.pygstyle
+INPUT .\_minted-Speech_hw2\friendly.pygstyle
+INPUT _minted-Speech_hw2\friendly.pygstyle
+INPUT .\Speech_hw2.pyg
+INPUT .\_minted-Speech_hw2\6D36AD3C36F5E2397D3D8559723B94B68A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT _minted-Speech_hw2\6D36AD3C36F5E2397D3D8559723B94B68A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT .\_minted-Speech_hw2\6D36AD3C36F5E2397D3D8559723B94B68A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT _minted-Speech_hw2\6D36AD3C36F5E2397D3D8559723B94B68A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT .\_minted-Speech_hw2\6D36AD3C36F5E2397D3D8559723B94B68A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT _minted-Speech_hw2\6D36AD3C36F5E2397D3D8559723B94B68A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT .\_minted-Speech_hw2\6D36AD3C36F5E2397D3D8559723B94B68A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT _minted-Speech_hw2\6D36AD3C36F5E2397D3D8559723B94B68A0FD6669661B03EB7949F9A99583644.pygtex
+OUTPUT Speech_hw2.pyg
+INPUT .\Speech_hw2.pyg
+INPUT .\_minted-Speech_hw2\3AC2576AE16AFEFA8EB3AC7EDB558A4D8A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT _minted-Speech_hw2\3AC2576AE16AFEFA8EB3AC7EDB558A4D8A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT .\_minted-Speech_hw2\3AC2576AE16AFEFA8EB3AC7EDB558A4D8A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT _minted-Speech_hw2\3AC2576AE16AFEFA8EB3AC7EDB558A4D8A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT .\_minted-Speech_hw2\3AC2576AE16AFEFA8EB3AC7EDB558A4D8A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT _minted-Speech_hw2\3AC2576AE16AFEFA8EB3AC7EDB558A4D8A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT .\_minted-Speech_hw2\3AC2576AE16AFEFA8EB3AC7EDB558A4D8A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT _minted-Speech_hw2\3AC2576AE16AFEFA8EB3AC7EDB558A4D8A0FD6669661B03EB7949F9A99583644.pygtex
+OUTPUT Speech_hw2.pyg
+INPUT .\Speech_hw2.pyg
+INPUT .\_minted-Speech_hw2\19605945A4C53D2C7FC0E7C2F8729F028A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT _minted-Speech_hw2\19605945A4C53D2C7FC0E7C2F8729F028A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT .\_minted-Speech_hw2\19605945A4C53D2C7FC0E7C2F8729F028A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT _minted-Speech_hw2\19605945A4C53D2C7FC0E7C2F8729F028A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT .\_minted-Speech_hw2\19605945A4C53D2C7FC0E7C2F8729F028A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT _minted-Speech_hw2\19605945A4C53D2C7FC0E7C2F8729F028A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT .\_minted-Speech_hw2\19605945A4C53D2C7FC0E7C2F8729F028A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT _minted-Speech_hw2\19605945A4C53D2C7FC0E7C2F8729F028A0FD6669661B03EB7949F9A99583644.pygtex
+INPUT C:\Users\DCMMC\AppData\Local\Programs\MiKTeX 2.9\fonts\tfm\public\cm\cmmi7.tfm
 OUTPUT bu.aux
-INPUT .\StochasticProcess_hw1.bbl
-INPUT StochasticProcess_hw1.bbl
-INPUT .\StochasticProcess_hw1.bbl
-INPUT StochasticProcess_hw1.bbl
-INPUT StochasticProcess_hw1.aux
+INPUT .\Speech_hw2.bbl
+INPUT Speech_hw2.bbl
+INPUT .\Speech_hw2.bbl
+INPUT Speech_hw2.bbl
+INPUT Speech_hw2.aux
 INPUT .\bu.aux
 INPUT bu.aux
 INPUT bu.aux
+INPUT .\Speech_hw2.pyg
+INPUT Speech_hw2.pyg
