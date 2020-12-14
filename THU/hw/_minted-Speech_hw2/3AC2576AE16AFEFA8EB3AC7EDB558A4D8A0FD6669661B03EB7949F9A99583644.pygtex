@@ -1,6 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
-\PYG{n}{beta\PYGZus{}t} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{ones}\PYG{p}{(}\PYG{n+nb+bp}{self}\PYG{o}{.}\PYG{n}{total\PYGZus{}states}\PYG{p}{)}
-\PYG{k}{for} \PYG{n}{t}\PYG{p}{,} \PYG{n}{o\PYGZus{}t} \PYG{o+ow}{in} \PYG{n+nb}{enumerate}\PYG{p}{(}\PYG{n+nb}{reversed}\PYG{p}{(}\PYG{n}{ob}\PYG{p}{)):}
-  \PYG{n}{bwd}\PYG{p}{[}\PYG{o}{\PYGZhy{}}\PYG{l+m+mi}{1}\PYG{o}{\PYGZhy{}}\PYG{n}{t}\PYG{p}{]} \PYG{o}{=} \PYG{n}{beta\PYGZus{}t}\PYG{o}{.}\PYG{n}{T}
-  \PYG{n}{beta\PYGZus{}t} \PYG{o}{=} \PYG{n}{A} \PYG{o}{@} \PYG{p}{(}\PYG{n}{B}\PYG{p}{[:,} \PYG{n}{o\PYGZus{}t}\PYG{p}{]} \PYG{o}{*} \PYG{n}{beta\PYGZus{}t}\PYG{p}{)}
-\end{Verbatim}

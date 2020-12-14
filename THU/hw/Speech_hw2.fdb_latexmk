@@ -1,17 +1,17 @@
 # Fdb version 3
-["bibtex Speech_hw2"] 1607916430 "Speech_hw2.aux" "Speech_hw2.bbl" "Speech_hw2" 1607916449
+["bibtex Speech_hw2"] 1607924791 "Speech_hw2.aux" "Speech_hw2.bbl" "Speech_hw2" 1607924810
   "./thuthesis-numeric.bst" 1603527328 46768 6a2bd524cab59a63725bd84e94c83607 ""
-  "Speech_hw2.aux" 1607916447 2817 bec8ca059774e36251838eca135790f3 "xelatex"
-  "bu.aux" 1607916447 0 d41d8cd98f00b204e9800998ecf8427e "xelatex"
+  "Speech_hw2.aux" 1607924808 3016 d4af1c07645cb2c4ab1d9cd37ffcf84b "xelatex"
+  "bu.aux" 1607924808 0 d41d8cd98f00b204e9800998ecf8427e "xelatex"
   "ref/refs.bib" 1603969206 13280 8ecffc55146817affe1fbab325184006 ""
   (generated)
-  "Speech_hw2.blg"
   "Speech_hw2.bbl"
-["xdvipdfmx"] 1607916449 "Speech_hw2.xdv" "Speech_hw2.pdf" "Speech_hw2" 1607916450
-  "Speech_hw2.xdv" 1607916448 90840 9050fb299aa1511203d521efb27034ad "xelatex"
+  "Speech_hw2.blg"
+["xdvipdfmx"] 1607924809 "Speech_hw2.xdv" "Speech_hw2.pdf" "Speech_hw2" 1607924810
+  "Speech_hw2.xdv" 1607924809 107128 552465804903ba23c7990b8338c23895 "xelatex"
   (generated)
   "Speech_hw2.pdf"
-["xelatex"] 1607916431 "Speech_hw2.tex" "Speech_hw2.xdv" "Speech_hw2" 1607916449
+["xelatex"] 1607924791 "Speech_hw2.tex" "Speech_hw2.xdv" "Speech_hw2" 1607924810
   "C:/Users/DCMMC/AppData/Local/MiKTeX/2.9/miktex/data/le/xetex/xelatex.fmt" 1604227930 23610208 601dded7a60e9416793e147971b6abe4 ""
   "C:/Users/DCMMC/AppData/Local/Programs/MiKTeX 2.9/fonts/tfm/jknappen/ec/ectt1000.tfm" 993062340 1348 d70ddf2d5d512b838e50a335e385e919 ""
   "C:/Users/DCMMC/AppData/Local/Programs/MiKTeX 2.9/fonts/tfm/public/cm/cmmi10.tfm" 1136765053 1528 abec98dbc43e172678c11b3b9031252a ""
@@ -181,22 +181,22 @@
   "C:/Users/DCMMC/AppData/Local/Programs/MiKTeX 2.9/tex/xelatex/xecjk/xeCJK.sty" 1603132118 180725 b63aab970a0b297a5ae2ef5421b881ec ""
   "C:/Users/DCMMC/AppData/Local/Programs/MiKTeX 2.9/tex/xelatex/xecjk/xeCJKfntef.sty" 1603132118 39112 41f6d85b70f6d3eccfcb49409d63b08c ""
   "C:/Users/DCMMC/AppData/Local/Programs/MiKTeX 2.9/tex/xelatex/xetexconfig/geometry.cfg" 1169251881 322 f4a6234bc28bf70659404393c15d3854 ""
-  "Speech_hw2.aux" 1607916447 2817 bec8ca059774e36251838eca135790f3 "xelatex"
-  "Speech_hw2.bbl" 1607916430 394 df8c4f4f41d6dc077f9019104a98461e "bibtex Speech_hw2"
-  "Speech_hw2.lof" 1607916448 74 e590ab8a4f57afee47ee3cfccb5ad7df "xelatex"
-  "Speech_hw2.tex" 1607916408 5963 a083ea1a2938843d3c34c25eb30a54e9 ""
-  "Speech_hw2.toc" 1607916448 699 a2e94e42de167846fd00694159587ae2 "xelatex"
-  "_minted-Speech_hw2/19605945A4C53D2C7FC0E7C2F8729F028A0FD6669661B03EB7949F9A99583644.pygtex" 1607914046 1207 de6dab84a43d4da73374fde55d79fa21 ""
-  "_minted-Speech_hw2/3AC2576AE16AFEFA8EB3AC7EDB558A4D8A0FD6669661B03EB7949F9A99583644.pygtex" 1607913843 723 44839bfa96757cb06e8c4545adcdf72b ""
+  "Speech_hw2.aux" 1607924808 3016 d4af1c07645cb2c4ab1d9cd37ffcf84b "xelatex"
+  "Speech_hw2.bbl" 1607924791 394 df8c4f4f41d6dc077f9019104a98461e "bibtex Speech_hw2"
+  "Speech_hw2.lof" 1607924809 74 e590ab8a4f57afee47ee3cfccb5ad7df "xelatex"
+  "Speech_hw2.tex" 1607924764 6614 3af8e38f5d8eb5c68efab0a9d43db5d9 ""
+  "Speech_hw2.toc" 1607924809 815 f2168081f4e25664fad83d9a23ee8e4e "xelatex"
+  "_minted-Speech_hw2/0DDDACD339C73555CEF6BDF9CC8D12568A0FD6669661B03EB7949F9A99583644.pygtex" 1607924789 1062 7e072a7944c3ddd285e7610cdb3c9264 ""
   "_minted-Speech_hw2/6D36AD3C36F5E2397D3D8559723B94B68A0FD6669661B03EB7949F9A99583644.pygtex" 1607913842 468 e692305c6e34ef5dfca302dd751fade3 ""
+  "_minted-Speech_hw2/BBEC2A03D6EEF56CD28DB40E364C4FFA8A0FD6669661B03EB7949F9A99583644.pygtex" 1607924788 694 a675e9efc23ee3233c716ad0fb529f51 ""
   "_minted-Speech_hw2/default-pyg-prefix.pygstyle" 1607911390 7990 3ce1fbc763e3e2c748310f4fe31722b6 ""
   "_minted-Speech_hw2/friendly.pygstyle" 1607911391 9665 fc10deaea526932d30957625b7cbeeaf ""
-  "bu.aux" 1607916447 0 d41d8cd98f00b204e9800998ecf8427e "xelatex"
+  "bu.aux" 1607924808 0 d41d8cd98f00b204e9800998ecf8427e "xelatex"
   "thuthesis.cls" 1603527328 89775 17a4377d78fe84d9b83047d8d467e239 ""
   (generated)
-  "bu.aux"
-  "Speech_hw2.lof"
   "Speech_hw2.xdv"
   "Speech_hw2.log"
-  "Speech_hw2.aux"
   "Speech_hw2.toc"
+  "Speech_hw2.aux"
+  "bu.aux"
+  "Speech_hw2.lof"

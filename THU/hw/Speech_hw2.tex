@@ -71,7 +71,7 @@ Forward 和 Backward 算法对应于讲义中的 Q1 (Evaluation)，Vertibi 算�
     \begin{split}
       P(O | \lambda) &= \sum_{Q} P(O, Q | \lambda) \\
       &= \sum_Q P(O | Q, \lambda) P(Q | \lambda) \\
-      &=  = \sum_Q \prod_{t=1}^T B(q_t, o_t) \pi(q_1) \prod_{t=2}^T A(q_{t-1}, q_t)
+      &= \sum_Q \prod_{t=1}^T B(q_t, o_t) \pi(q_1) \prod_{t=2}^T A(q_{t-1}, q_t)
     \end{split}
     \label{algo_fwd}
   \end{align}
@@ -105,7 +105,7 @@ Backward 算法目标与 Forward 一样，只不过迭代顺序是从后往前�
 代码：
 
   \begin{minted}[texcomments,tabsize=2,fontsize=\large,style=friendly,bgcolor=friendlybg]{python}
-beta_t = np.ones(self.total_states)
+beta_t = np.ones(total_states)
 for t, o_t in enumerate(reversed(ob)):
   bwd[-1-t] = beta_t.T
   beta_t = A @ (B[:, o_t] * beta_t)
@@ -152,14 +152,14 @@ for t, o_t in enumerate(reversed(ob)):
 代码实现：
 
   \begin{minted}[texcomments,tabsize=2,fontsize=\large,style=friendly,bgcolor=friendlybg]{python}
-delta_t = self.pi
-phi_t = np.zeros(self.total_states)
+delta_t = pi
+phi_t = np.zeros(total_states)
 for t, o_t in enumerate(ob):
-  delta_t *= self.B[:, o_t]
+  delta_t *= B[:, o_t]
   delta[t] = delta_t
   phi[t] = phi_t
-  phi_t = np.argmax(delta_t * self.A.T, axis=1)
-  delta_t = np.max(delta_t * self.A.T, axis=1)
+  phi_t = np.argmax(delta_t * A.T, axis=1)
+  delta_t = np.max(delta_t * A.T, axis=1)
   \end{minted}
 
 \chapter{任务二：基于 GMM-HMM 的语音识别}
@@ -183,6 +183,16 @@ A:
   \item wav.scp 中的音频文件必须是单通道的，否则需要用 sox 命令提取出指定的 channel。
   \item utterance-id, speaker-id 都推荐各自使用固定长度，否则可能回导致 C-style string order 出问题。
 \end{enumerate}
+
+\section{Q2 ($3"$)}
+
+Q: Look at the file data/lang/topo, which contains two kinds of HMM topology, draw them using circles and arrows like this. You may notice that the HMM topology of a special phoneme is different from other phonemes. Use data/lang/phones.txt to map and find the name of the special phoneme.
+
+A: 
+
+\section{Q3 ($2"$)}
+
+Q: You can change num-sil-states and num-nonsil-states for command utils/prepare\_lang.sh in run.sh, then run this stage again and draw new topologies from data/lang/topo. (Note that set them to default values(sil=3 and nonsil=3) and rerun this stage before proceeding to the next stage since other values may affect the performance).
 
 \chapter{任务三：基于 DNN-HMM 的语音识别}
 
