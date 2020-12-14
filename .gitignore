@@ -184,3 +184,6 @@ Stanford_CS224N_Winter19/a4/en_es_data/
 # End of https://www.gitignore.io/api/python
 
 .DS_Store
+
+# vim tmp file
+*.swp
