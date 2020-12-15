@@ -196,18 +196,18 @@ def rmse(X, X_hat):
 \chapter{任务二：矩阵分解算法}
 
 因为给定特征矩阵是一个稀疏矩阵，基于低秩假设，特征维度为 10000 的矩阵的特征值也很稀疏（或者很小），于是我们可以将矩阵分解为两个特征维度很小的隐空间特征表达：
-\begin{enumerate}
+\begin{equation}
 X_{m \times n} \approx U_{m \times k} V_{n \times k}^T
-\end{enumerate}
+\end{equation}
 其中 $k \ll n$。
 
-特别的，我们在电影推荐任务中，使用 X_train 构建出矩阵分解后，使用它们的乘积来预测 X_test 中的那部分结果。
+特别的，我们在电影推荐任务中，使用 X\_train 构建出矩阵分解后，使用它们的乘积来预测 X\_test 中的那部分结果。
 
 这里我们采用梯度下降算法来求解上述分解，目标函数为：
-\begin{enumerate}
+\begin{equation}
 J = \frac{1}{2} \lVert A \odot (X - UV^T \rVert_F^2 + \lambda \lVert U \rVert_F^2 + \lambda \lVert V \rVert_F^2)
-\end{enumerate}
-其中 $\odot$ 表示 Hadamard 乘积（逐位乘），$A$ 为指示矩阵，$A_{ij} = 1$ 表示 $X_{ij} 的值已知，$$\lVert A \rVert_F^2 = \sqrt{\sum_i \sum_j A_{ij}}$ 表示矩阵 Frobenius 范数，$\lambda$ 为正则化系数，用于防止过拟合。
+\end{equation}
+其中 $\odot$ 表示 Hadamard 乘积（逐位乘），$A$ 为指示矩阵，$A_{ij} = 1$ 表示 $X_{ij}$ 的值已知，$\lVert A \rVert_F^2 = \sqrt{\sum_i \sum_j A_{ij}}$ 表示矩阵 Frobenius 范数，$\lambda$ 为正则化系数，用于防止过拟合。
 
 对目标函数求偏导，得到：
 \begin{align}
@@ -235,13 +235,13 @@ def init_matrix(X, k, n_features=10000,
   np.abs(V, out=V)
   return cp.array(U), cp.array(V)
 
-def frobenius_norm_sq(X):
+def frob_norm_sq(X):
   norm = cp.sum(cp.power(X, 2))
   return norm
 
 def objective(diff, U, V, lamb):
-  loss = frobenius_norm_sq(diff)
-  loss = 0.5 * loss + (frobenius_norm_sq(U) + frobenius_norm_sq(V)) * lamb
+  loss = frob_norm_sq(diff)
+  loss = 0.5 * loss + (frob_norm_sq(U) + frob_norm_sq(V)) * lamb
   return loss.item()
 
 def fit(X, k, lamb, alpha=1e-3, tol=1e-4, max_iter=500):
@@ -268,8 +268,51 @@ def fit(X, k, lamb, alpha=1e-3, tol=1e-4, max_iter=500):
   return U @ V
   \end{minted}
 
+\section{迭代过程}
+
+\begin{figure}[h]
+\centering%
+\subcaptionbox{训练损失值\label{fig:loss}}
+{\includegraphics[width=.5\linewidth]{bigdata_loss.png}}%
+\hspace{4em}%
+\subcaptionbox{测试集 RMSE\label{fig:rmse}}
+{\includegraphics[width=.5\linewidth]{bigdata_rmse.png}}
+  \caption{迭代过程中的训练和测试误差}
+  \label{fig:training}
+\end{figure}
+
+如图\ref{fig:training} 所示，训练损失值和测试误差（RMSE）变化都是稳定下降的，并且下降幅度随着训练代数的增加逐渐减小。
+因为训练和测试用的损失值公式不一样，所以可以看出，训练的时候，损失值都很大，不过到了测试的时候，损失值是比较小的。
+采用 EarlyStop 技巧，超参数设置为 $\alpha=0.0001, \lambda = 0.01, k=50$，最终训练了 111 代后的测试结果 RMSE 为 $1.12452$，总共耗时 $31.86$s。
+
+\section{寻找最优超参}
+
+$k$ 选择 $\{10, 20, 30, 50\}$, $\lambda$ 选择 $\{0.001, 0.1, 0, 10\}$，学习率 $\alpha$ 使用 $0.0001$，最大训练代数为 $400$，采用 EarlyStop。
+进行 GridSearch 最优的超参数配置，不同参数的训练损失值曲线如图所示，最终的测试 RMSE 结果如表所示。
+
+从实验结果可以看出，
 
 \chapter{总结：}
+
+协同过滤：
+
+\begin{enumerate}
+  \item \textbf{可解释性好}：因为公式简单明了，算法的思路就是从当前用户行为特征（例如打分向量）相似（通过某种相似度衡量）的其他用户的打分分数来预测该用户对指定电影的打分情况。
+  \item \textbf{算法稳定}：对于给定的输入，不管运行多少次，都能得到相同的结果。
+  \item {优化空间小}：因为这是一种无参方法，只能通过使用不同的相似度量，不同的邻域函数（例如 kNN），不用的聚合函数来实现，这些选择与具体任务相关，都需要专家经验。
+\end{enumerate}
+
+矩阵分解：
+
+\begin{enumerate}
+  \item \textbf{灵活性强}：可以配合使用各种不同的目标函数。
+  \item \textbf{适合显卡并行运算}：使用 CuPy 等显卡加速矩形计算工具的计算速度提升明显。
+  \item {泛化性好}：因为可以通过梯度优化以及调整超参数，所以对于不同任务，不用做额外的修改。
+  \item {可解释性不好}：因为基于低秩假设，且隐特征的解释性不好，算法通过梯度下降寻找在给定目标函数下的局部最优解。
+  \item {超参数调整费时}：因为可解释性不好，所以对于超参数 $\lambda, \alpha, k$ 的调整都只能结合一点调参经验，遍历搜索，比较费时，而且不同任务适合的超参数也不一样。
+\end{enumerate}
+
+\textbf{注：} 矩阵分解其实是一种协同过滤算法，（广义的）协同过滤是一种思想而不是特定的某个算法。
 
 % 其他部分
 \backmatter
