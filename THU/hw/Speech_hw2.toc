@@ -8,7 +8,18 @@
 \contentsline {section}{\numberline {2.1}Q1 ($3"$)}{4}{}%
 \contentsline {section}{\numberline {2.2}Q2 ($3"$)}{4}{}%
 \contentsline {section}{\numberline {2.3}Q3 ($2"$)}{5}{}%
-\contentsline {chapter}{\numberline {第3章}任务三：基于 DNN-HMM 的语音识别}{6}{}%
-\contentsline {chapter}{参考文献}{7}{}%
+\contentsline {section}{\numberline {2.4}Q4 ($7"$)}{6}{}%
+\contentsline {section}{\numberline {2.5}Q5 ($1"$)}{6}{}%
+\contentsline {section}{\numberline {2.6}Q6 ($1"$)}{6}{}%
+\contentsline {section}{\numberline {2.7}Q7 ($1"$)}{7}{}%
+\contentsline {section}{\numberline {2.8}Q8 ($1"$)}{7}{}%
+\contentsline {section}{\numberline {2.9}Q9 ($1"$)}{7}{}%
+\contentsline {section}{\numberline {2.10}Q10 ($2"$)}{7}{}%
+\contentsline {section}{\numberline {2.11}Q11 ($2"$)}{7}{}%
+\contentsline {chapter}{\numberline {第3章}任务三：基于 DNN-HMM 的语音识别}{9}{}%
+\contentsline {section}{\numberline {3.1}Q1 ($1"$)}{9}{}%
+\contentsline {section}{\numberline {3.2}Q2 ($1"$)}{9}{}%
+\contentsline {section}{\numberline {3.3}Q3 ($2"$)}{9}{}%
+\contentsline {chapter}{参考文献}{10}{}%
 \setcounter {tocdepth}{0}
 \contentsfinish 
