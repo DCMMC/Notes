@@ -1,0 +1,71 @@
+% !TeX encoding = UTF-8
+% !TeX program = xelatex
+% !TeX spellcheck = en_US
+
+\documentclass[degree=project,degree-type=project,cjk-font=noto]{thuthesis}
+\usepackage{mathtools}
+% Syntax Highlighting in LaTeX, need pygments
+% Must build with xelatex -shell-escape -enable-8bit-chars.
+\usepackage{minted}
+% https://tex.stackexchange.com/a/112573
+\usepackage{tcolorbox}
+\usepackage{etoolbox}
+\BeforeBeginEnvironment{minted}{\begin{tcolorbox}}%
+\AfterEndEnvironment{minted}{\end{tcolorbox}}%
+% color for minted
+\definecolor{friendlybg}{HTML}{f0f0f0}
+
+
+% 论文基本配置，加载宏包等全局配置
+\thusetup{
+    output = electronic,
+    title  = {光网络综述},
+    author  = {肖文韬},
+    studentid = {2020214245},
+    course = {计算机网络体系结构},
+    include-spine = false,
+}
+
+\usepackage{float}
+\usepackage[sort]{natbib}
+\bibliographystyle{thuthesis-numeric}
+\graphicspath{{figures/}}
+
+\begin{document}
+
+% 封面
+\maketitle
+
+\frontmatter
+% \input{data/abstract}
+
+% 目录
+\tableofcontents
+
+% 正文部分
+\mainmatter
+
+\chapter{引言}
+
+任何技术的发展总是由社会变化的需要和需求来推动的。通信网络从基本的电话网到现在的高速大面积网络的快速发展，是伴随着人们之间交流的社会需求而来，随着用户对新应用需求的不断增加，以及使能技术的进步。现今电信网络的快速变化也是由用户需要随时随地保持联系的需求推动的。新的应用，即多媒体服务、视频会议、互动游戏、互联网服务和万维网，都需要非常大的带宽。除此之外，用户还希望下面的统一网络是可靠的，提供最好的服务，并且性价比高。
+
+因此，我们今天需要的是一个高容量、低成本的通信网络，它要快速、可靠，并能提供从专用服务到最佳服务的各种服务。
+现有的传输介质最适合满足这些要求的是 {\heiti 光纤}。
+除了拥有太赫兹（约 $10^{12}$ Hz）的巨大带宽，光纤还具有低损耗和低成本的特点。它重量轻、强度高、柔韧性好，而且不受电磁干扰和噪音的影响。 它的安全性和更多的特性使其成为理想的高速传输线路，因此光纤最适合满足当今通信网络的流量要求。 二十世纪末全世界铺设的大量光纤，为今天拥有巨大带宽的光网络信息超级高速公路奠定了基础。
+
+\section{光网络的发展趋势}
+
+为了提高点对点链路的容量，光纤首先取代了现有通信网络中的同轴线和双线传输线。在铺设的光纤中采用波分复用（WDM），从而在一根光纤中拥有多个波长通道，承载多个数据流，进一步提高了网络中光链路的容量。 但网络中所有的交换和路由操作仍然停留在电子领域。 在真正意义上，我们并没有把这种网络定义为全光网络。 全光网络是指大容量的电信网络，它不仅利用光学技术和元件提供大容量的光纤链路进行信息传输，而且还要完成所有的组网操作，如对所需路径上的信号进行交换和路由（即促进正确和合适的路径），将低比特率的流量信号梳理为更高的比特率，以更好地利用光纤的巨大容量，以及在网络中出现任何故障时，网络中光层面的控制和恢复功能。 在光级或波长颗粒级的网络运行具有很多优势。举例来说，当一个波长承载了大量的独立连接，而光缆发生故障时，通过对单个波长的路由和处理来恢复业务，在操作上比单独对每个连接进行重新路由要简单得多。 此外，光交换功能与电子功能相比，功耗要小得多，散热和占地面积也更小。 在目前的光学技术下，仍然无法以成本效益的方式轻松实现所有这些功能。因此，光器件和电子器件同时使用，这就使得光网络不是纯粹的光网络。 目前，这些网络确实是混合型的，既使用光学技术，又使用电子技术。
+
+曾经只支持电话语音通信的通信网络，现在承载了更多的数据通信，支持高速多媒体服务。在物理基础设施层面，光网络中现有的光元件现在可以支持多种速度的通信，最高速度可达Tbps，每根光纤在波分复用系统中携带大量的波长。另外，伴随着光组件基础设施的发展，由于网络采用了智能算法和协议，网络变得更加灵活敏捷，因此现在网络可以轻松应对新的应用和需求。 现在光网络的趋势是向SDON(软件定义光网络)发展，以促进网络操作的可编程性，进一步提高敏捷性，并为用户提供更多的网络功能控制权，从而使新业务和协议的部署更加灵活，网络利用率更高，QoS(服务质量)更好，网络中增加的可读性带来更高的收益，用户可以根据自己的要求管理网络。现在光网络的模式正在发生转变，SDON是一种快速发展的技术。
+
+
+% 其他部分
+\backmatter
+
+% 参考文献
+\bibliography{ref/refs}  % 参考文献使用 BibTeX 编译
+
+% 附录
+\appendix
+\end{document}

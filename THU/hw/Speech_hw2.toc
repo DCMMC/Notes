@@ -20,6 +20,7 @@
 \contentsline {section}{\numberline {3.1}Q1 ($1"$)}{9}{}%
 \contentsline {section}{\numberline {3.2}Q2 ($1"$)}{9}{}%
 \contentsline {section}{\numberline {3.3}Q3 ($2"$)}{9}{}%
-\contentsline {chapter}{参考文献}{10}{}%
+\contentsline {section}{\numberline {3.4}DNN 实验结果}{10}{}%
+\contentsline {chapter}{参考文献}{11}{}%
 \setcounter {tocdepth}{0}
 \contentsfinish 

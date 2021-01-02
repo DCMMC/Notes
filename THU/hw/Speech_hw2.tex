@@ -348,6 +348,13 @@ Q: Explain what is force alignment. docs: link
 
 A: 强制对齐（force alignment）是按照说话音频段对应文本，确定每一个出现的词对应与音频段中的具体时间。
 
+\begin{figure}[h]
+\centering%
+\includegraphics[width=.8\linewidth]{task3_dnn.png}
+  \caption{DNN 训练结果}
+  \label{fig:dnn}
+\end{figure}
+
 \section{Q2 ($1"$)}
 
 Q: What is the dimention of transformed MFCC features ?
@@ -360,6 +367,10 @@ Q: Explain why we need to subtract prior in train.py:line114-line115
 
 A: 因为 $P(f1 | hh) = P(hh | f1) * P(f1) / P(hh)$，而 DNN 模型只能得到后验概率（$P(hh | f1)$），我们需要除以 prior （先验概率）来得到似然概率（$P(f1 | hh)$）。
 取对数后除法就变成了减法了。
+
+\section{DNN 实验结果}
+
+训练 30 Epochs 后，得到 DEV 验证集结果为 \texttt{Acc 33.82\% WER 25.4}，Test 测试集结果为 \texttt{Acc 33.36\% WER 26.5}，如图 \ref{fig:dnn} 所示。
 
 % 其他部分
 \backmatter
