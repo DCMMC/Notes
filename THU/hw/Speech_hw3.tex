@@ -1,0 +1,94 @@
+% !TeX encoding = UTF-8
+% !TeX program = xelatex
+% !TeX spellcheck = en_US
+
+\documentclass[degree=project,degree-type=project,cjk-font=noto]{thuthesis}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usepackage[autosize]{dot2texi}
+% Syntax Highlighting in LaTeX, need pygments
+% Must build with xelatex -shell-escape -enable-8bit-chars.
+\usepackage{minted}
+% https://tex.stackexchange.com/a/112573
+\usepackage{tcolorbox}
+\usepackage{etoolbox}
+\BeforeBeginEnvironment{minted}{\begin{tcolorbox}}%
+\AfterEndEnvironment{minted}{\end{tcolorbox}}%
+% color for minted
+\definecolor{friendlybg}{HTML}{f0f0f0}
+
+
+% 论文基本配置，加载宏包等全局配置
+\thusetup{
+    output = electronic,
+    title  = {实验三：基于 PPG 的语音转换系统},
+    author  = {肖文韬},
+    studentid = {2020214245},
+    course = {语音信号数字处理},
+    include-spine = false,
+}
+
+\usepackage{float}
+\usepackage[sort]{natbib}
+\bibliographystyle{thuthesis-numeric}
+\graphicspath{{figures/}}
+
+
+\begin{document}
+
+% 封面
+\maketitle
+
+\frontmatter
+% \input{data/abstract}
+
+% 目录
+\tableofcontents
+
+% 插图和附表清单
+\listoffigures           % 插图清单
+
+% 正文部分
+\mainmatter
+
+\chapter{任务一: 提取 PPG 与声学参数 ($15"$)}
+
+\section{任务介绍}
+
+为了进行语音转换，我们首先需要使用 ASR 系统将源音频转换为一种中间特征（在本实验中就是音素序列 PPG~\cite{PPG}），对每一帧的 MFCC 特征 $X_t$ 我们可以得到所有音素（音素集 $\mathcal{S}$）的后验概率 $\{p(s | X_t) | s \in \mathcal{S}\}$。
+同时，我们还可以将原始波形序列加窗得到语音帧，对语音帧进行离散傅里叶变换后，计算各频率分量的能量后可以得到语谱图（线性谱）。
+而我们知道人类对低频成分更加敏感，而对高频不敏感，所以我们取对数后可以得到对应的 Mel 谱。
+本任务就是使用预训练模型得到音频的 PPG，同时还需要计算得到基频 $F_0$， 线性谱，Mel 谱等声学参数。
+
+接下来的小节就是回答问题啦。
+
+\section{提取音素后验概率 PPG （$4"$）}
+
+\textbf{(1) 简要说明 PPG 提取器(ppg\_extractor)的网络结构，给出网络的基本结构图。}
+
+\begin{figure}[!htp]
+\centering%
+\includegraphics[width=.8\linewidth]{PPG.png}
+  \caption{PPG 提取流程图}
+  \label{fig:ppg}
+\end{figure}
+
+
+\textbf{答}: PPG 提取器网络由卷积层、LSTM 和线性层组成，具体组成如图~\ref{fig:ppg}所示。
+
+\chapter{任务二: 训练并测试特定目标说话人的语音转换模型（$40"$）}
+
+\chapter{任务三: 探究残差网络对转换性能的影响（$15"$）}
+
+\chapter{任务四: 增加说话人嵌入网络，实现多目标说话人的语音转换（$20"$）}
+
+% 其他部分
+\backmatter
+
+% 参考文献
+\bibliography{ref/refs}  % 参考文献使用 BibTeX 编译
+
+% 附录
+\appendix
+\end{document}

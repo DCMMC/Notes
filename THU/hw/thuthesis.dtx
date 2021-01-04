@@ -20,6 +20,7 @@
 \ProvidesFile{thuthesis.dtx}[2020/09/09 7.0.0 Tsinghua University Thesis Template]
 \documentclass{ltxdoc}
 \usepackage{dtx-style}
+\usepackage{ifthen}
 
 \EnableCrossrefs
 \CodelineIndex
@@ -3214,6 +3215,14 @@
   course = {
     default = {课程中文名称},
   },
+% (DCMMC): 邮箱
+  email = {
+    default = {邮箱},
+  }
+% (DCMMC): 专业方向
+  major = {
+    default = {专业方向},
+  }
   supervisor = {
     default = {导师姓名},
   },
@@ -3639,6 +3648,10 @@
   \thu@titlepage@info@tabular{2.8cm}{2.8cm}{0.82cm}{%
     \thu@info@item{姓名}{}{\thu@author}%
     \thu@info@item{学号}{}{\thu@studentid}%
+    \ifthenelse{\equal{\thu@email}{邮箱}}{%
+      \thu@info@item{专业方向}{}{\thu@major}%
+      \thu@info@item{邮箱}{}{\thu@email}%
+    }{}%
   }\par
 }
 \newcommand\thu@titlepage@info@doctor@academic{%
@@ -3697,7 +3710,7 @@
 \newcommand\thu@titlepage@date{%
   \begingroup
     \def\CJKglue{\hskip 1bp}%
-% (DCMMC): 大作业采用lo精确到日的时间
+% (DCMMC): 大作业采用精确到日的时间
     \ifthu@degree@project
       \sanhao\thu@format@date{\thu@date@zh@long}{\thu@date}\par
     \else

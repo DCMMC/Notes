@@ -8,7 +8,7 @@
 %% 
 %% This is a generated file.
 %% 
-%% Copyright (C) 2005-2020 by Ruini Xue <xueruini@gmail.com>
+%% Copyright (C) 2005-2021 by Ruini Xue <xueruini@gmail.com>
 %% 
 %% This work may be distributed and/or modified under the
 %% conditions of the LaTeX Project Public License, either version 1.3
@@ -1322,6 +1322,12 @@
   course = {
     default = {课程中文名称},
   },
+  email = {
+    default = {邮箱},
+  }
+  major = {
+    default = {专业方向},
+  }
   supervisor = {
     default = {导师姓名},
   },
@@ -1638,6 +1644,10 @@
   \thu@titlepage@info@tabular{2.8cm}{2.8cm}{0.82cm}{%
     \thu@info@item{姓名}{}{\thu@author}%
     \thu@info@item{学号}{}{\thu@studentid}%
+    \ifthenelse{\equal{\thu@email}{邮箱}}{%
+      \thu@info@item{专业方向}{}{\thu@major}%
+      \thu@info@item{邮箱}{}{\thu@email}%
+    }{}%
   }\par
 }
 \newcommand\thu@titlepage@info@doctor@academic{%
