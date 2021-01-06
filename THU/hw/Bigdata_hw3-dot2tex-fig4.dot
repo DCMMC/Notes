@@ -1,0 +1,16 @@
+    digraph G2 {
+      graph [mindist=0.5];
+      rankdir=LR;
+      S_0 -> S_0 [label="0.33"];
+      S_0 -> S_1 [label="0.33"];
+      S_0 -> S_2 [label="0.33"];
+      S_1 -> S_1 [label="0.33"];
+      S_1 -> S_2 [label="0.33"];
+      S_1 -> S_3 [label="0.33"];
+      S_2 -> S_1 [label="0.33"];
+      S_2 -> S_2 [label="0.33"];
+      S_2 -> S_3 [label="0.33"];
+      S_3 -> S_3 [label="0.75"];
+      S_3 -> S_4 [label="0.25"];
+   }
+    

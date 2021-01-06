@@ -1324,10 +1324,10 @@
   },
   email = {
     default = {邮箱},
-  }
+  },
   major = {
     default = {专业方向},
-  }
+  },
   supervisor = {
     default = {导师姓名},
   },
@@ -1644,10 +1644,10 @@
   \thu@titlepage@info@tabular{2.8cm}{2.8cm}{0.82cm}{%
     \thu@info@item{姓名}{}{\thu@author}%
     \thu@info@item{学号}{}{\thu@studentid}%
-    \ifthenelse{\equal{\thu@email}{邮箱}}{%
+    \ifthenelse{\equal{\thu@email}{邮箱}}{}{%
       \thu@info@item{专业方向}{}{\thu@major}%
       \thu@info@item{邮箱}{}{\thu@email}%
-    }{}%
+    }%
   }\par
 }
 \newcommand\thu@titlepage@info@doctor@academic{%
