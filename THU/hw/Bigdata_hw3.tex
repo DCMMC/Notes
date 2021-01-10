@@ -59,12 +59,29 @@
 	}
 \end{abstract}
 
+\begin{abstract*}
+  The data sources of recommendation systems are characterized by multi-field data, i.e., the data consists of a combination of features from many different domains (e.g., user gender, age, browsing history, etc.).
+  These combined features of multi-field data are necessary for the success of many business models.
+  Recently, many deep models have been proposed to learn combinations of low- and high-order features from the original features.
+  Click-through prediction, an important task in recommender systems, aims to estimate the probability that a user will click on an item and is crucial for many online applications such as online advertising.
+  In this paper, we will explore how the click-through rate prediction problem is addressed in a paper represented by xDeepFM.
+  The paper will first give a brief overview of the papers before and after xDeepFM, followed by a formal definition of the click-through rate prediction problem.
+  Then, xDeepFM and the later proposed algorithms of AutoInt and FGCNN will be presented in detail.
+  Finally, the paper will reproduce the above three methods and analyze their experimental results.
+
+  % Use comma as seperator when inputting
+  \thusetup{
+    keywords* = {Recommendation System, click-through rate, deep learning, xDeepFM, AutoInt, FGCNN},
+  }
+\end{abstract*}
+
 
 % 目录
 \tableofcontents
 
 % 插图和附表清单
-\listoffigures           % 插图清单
+\listoffiguresandtables
+% \listoffigures           % 插图清单
 
 % 正文部分
 \mainmatter
@@ -205,6 +222,7 @@ CIN 的结构类似于 CNN 和 RNN，对于 $k$ 阶多项式的估计，只需�
 \end{enumerate}
 
 \subsection{xDeepFM 以后的方法}
+\label{sec:after_xeepfm}
 
 随着采用自注意力机制的 Transformer（\cite{self_attention}）在 NLP 领域的成功应用，\cite{autoint} 使用自注意力网络来学习特征组合，并且在 CTR 应用上取得了成功。
 特征组合层采用类似于 Transformer 的多头自注意力机制，不同域的 embedding 作为一个单元组成输入特征序列。
@@ -239,7 +257,7 @@ DCN-V2的核心是交叉层，它继承了DCN的简单结构的交叉网络，�
 然后通过门控机制对这些子空间进行聚合。
 
 
-为了解决深度神经网络计算复杂度的问题，\cite{deeplightd} 提出的 DeepLight 提出许多技巧来加速 CTR 的预测。
+为了解决深度神经网络计算复杂度的问题，\cite{deeplight} 提出的 DeepLight 提出许多技巧来加速 CTR 的预测。
 最终实验表明，DeepLight 在不损失任何预测精度的前提下，在 Criteo 数据集和 Avazu 数据集上分别取得了 46 和 27 倍的模型推导速度提升。
 这有助于将模型部署到生产环境中。
 DeepLight 加速 CTR 速度主要来自于以下三个方面：
@@ -298,7 +316,7 @@ CTR 的任务就是给定用户和项目数据 $\symbf{x}$，模型 $f: \mathbb{
 
 对于神经网络，我一般使用交叉墒损失函数（其实就是负对数似然）作为目标函数：
 
-\begin{equation}
+\begin{equation} \label{eq:loss}
   \mathcal{L} = - \frac{1}{N} \sum_{i=1}^N y_i \log \hat{y}_i + (1 - y_i) \log (1 - \hat{y_i})
 \end{equation}
 其中 $N$ 是数据集中的样本数量。
@@ -339,6 +357,7 @@ DNN 部分就是简单的 MLP，不再赘述。
 其中 $\bm{a}, \bm{x}^k_{dnn}$ 分别表示原始特征，$k$ 层 DNN 的输出。
 
 \section{AutoInt 模型}
+\label{sec:autoint}
 
 AutoInt 除了第一层为嵌入层之外，核心就是采用了多层特征组合层，其实特征组合层就是多头注意力的输出。
 定义嵌入层输出为 $\bm{e} \in \mathbb{M \times D}$。
@@ -369,6 +388,7 @@ AutoInt 除了第一层为嵌入层之外，核心就是采用了多层特征组
 \end{equation}
 
 \section{FGCNN 模型}
+\label{sec:fgcnn}
 
 \begin{figure}[h]
 \centering%
@@ -392,6 +412,7 @@ AutoInt 除了第一层为嵌入层之外，核心就是采用了多层特征组
 这就变成了深度 CTR 分类器的输入数据了。
 
 \chapter{评价指标}
+\label{chap:metrics}
 
 对于评价指标，我使用两个指标来评估模型。AUC（ROC曲线下面积）和Logloss（交叉熵）。这两个指标评估来自两个不同方面的性能：
 
@@ -424,21 +445,25 @@ Criteo 数据集是一个著名的工业基准数据集，用于开发预测广�
 代码如下：
 
   \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{python}
-data = pd.read_csv('./criteo_small.csv')
+data = pd.read_csv('./criteo_small.csv'); target = ['Label']
 # 按照列名分为离散和连续型
 sparse_features = ['C' + str(i) for i in range(1, 27)]
 dense_features = ['I' + str(i) for i in range(1, 14)]
 # 数据清洗
 data[sparse_features] = data[sparse_features].fillna('-1', )
 data[dense_features] = data[dense_features].fillna(0, )
-target = ['Label']
 # 离散标签变为整数 id
 for feat in sparse_features:
-    lbe = LabelEncoder()
-    data[feat] = lbe.fit_transform(data[feat])
+    lbe = LabelEncoder(); data[feat] = lbe.fit_transform(data[feat])
 # 连续特征缩放到 0 ~ 1
 mms = MinMaxScaler(feature_range=(0, 1))
 data[dense_features] = mms.fit_transform(data[dense_features])
+# 特征列的名称，DNN 和 线性都用相同的特征列，因为我们没有基于专家经验的特征组合
+fixlen_feature_columns = [SparseFeat(
+    feat, vocabulary_size=data[feat].nunique(),
+    embedding_dim=4) for feat in sparse_features] + [DenseFeat(
+    feat, 1, ) for feat in dense_features]
+dnn_feature_columns, feature = [fixlen_feature_columns, ] * 2
 # 划分训练和测试集
 train, test = train_test_split(data, test_size=0.2, random_state=2020)
   \end{minted}
@@ -452,10 +477,10 @@ train, test = train_test_split(data, test_size=0.2, random_state=2020)
 这些组件和对应的文件位置分别为：
 
 \begin{enumerate}
-  \item CIN: layers/interactions.py:195
-  \item Embedding: inputs.py:23
-  \item DNN: layers.py:116
-  \item xDeepFM: models/xdeepfm.py:17
+  \item CIN: \texttt{layers/interactions.py}
+  \item Embedding: \texttt{inputs.py}
+  \item DNN: \texttt{layers.py}
+  \item xDeepFM: \texttt{models/xdeepfm.py}
 \end{enumerate}
 
 \subsection{Embedding}
@@ -553,7 +578,7 @@ class CIN(Layer):
         dim = int(inputs.get_shape()[-1])
         hidden_nn_layers = [inputs]; final_result = []
         split_tensor0 = tf.split(hidden_nn_layers[0], dim * [1], 2)
-        # 计算：$X^k_{h,*} = \sum_{i=1}^{H_{k-1}} \sum_{j=1}^{M} W_{ij}^{k,h}(X_{i,*}^{k-1} \odot X_{j,*}^0)$
+        # 计算(核心就是reshape然后卷积)：$X^k_{h,*} = \sum_{i=1}^{H_{k-1}} \sum_{j=1}^{M} W_{ij}^{k,h}(X_{i,*}^{k-1} \odot X_{j,*}^0)$
         for idx, layer_size in enumerate(self.layer_size):
             split_tensor = tf.split(hidden_nn_layers[-1], dim * [1], 2)
             dot_result_m = tf.matmul(split_tensor0, split_tensor, transpose_b=True)
@@ -643,7 +668,6 @@ section{参数说明}
   \item train\_batch\_size, 10240
   \item epochs, 200
   \item validation\_split, 0.2
-  \item test\_batch\_size, 4096
 \end{enumerate}
 
 代码如下：
@@ -674,6 +698,12 @@ history = model_xdeepfm.fit(train_model_input, train[target].values,
 
 \section{测试过程}
 
+测试过程的参数：
+
+\begin{enumerate}
+  \item test\_batch\_size, 4096
+\end{enumerate}
+
 测试部分的代码如下：
 
   \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{python}
@@ -686,13 +716,187 @@ print("test AUC (xDeepFM)", round(roc_auc_score(test[target].values, pred_ans), 
 
 代码位于 \texttt{recommender.ipynb} 文件。
 
+\section{AutoInt 模型复现过程}
+\label{sec:autoint_reproduce}
+
+因为 AutoInt 的输入与 xDeepFM 一致，也是分为 DNN 部分和线性模型部分。
+而且我们没有基于专家经验的特征组合，所以线性部分和 DNN 部分的输入都是一样的。
+
+不过 DNN 部分除了 MLP 之外，就是多头自注意力网络了，也就是 InteractingLayer。
+对于参数设置，因为使用的数据集太小，所以模型不能太大，而且训练过程中很容易过拟合。
+所以对于多头注意力网络，使用很小的头（\texttt{att\_head\_num = 2}）并且添加一些正则化项。
+同时，使用较小的学习率 $lr = 10^{-4}$。
+
+复现代码如下：
+
+
+  \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{python}
+# 因为要在同一个进程运行多个模型，所以要先清理以下之前的 tf 回话
+tf.keras.backend.clear_session()
+model_autoint = AutoInt(linear_feature_columns, dnn_feature_columns,
+                        task='binary', l2_reg_linear=1e-5, att_layer_num=2,
+                        l2_reg_embedding=1e-5,  l2_reg_dnn=1e-5, att_head_num=2,
+                       )
+model_autoint = multi_gpu_model(model_autoint, gpus=3)
+model_autoint.compile(tf.keras.optimizers.Adam(1e-4), "binary_crossentropy",
+                      metrics=['binary_crossentropy'], )
+log_dir="logs/fit/AutoInt/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+# 训练
+history = model_autoint.fit(train_model_input, train[target].values,
+                            batch_size=10240, epochs=200, verbose=2, validation_split=0.2,
+                            callbacks=[es, time_callback, tensorboard_callback]
+                           )
+# 测试结果
+pred_ans = model_autoint.predict(test_model_input, batch_size=4096)
+print("test LogLoss (AutoInt)", round(log_loss(test[target].values, pred_ans), 4))
+print("test AUC (AutoInt)", round(roc_auc_score(test[target].values, pred_ans), 4))
+  \end{minted}
+
+AutoInt 的实现代码与 xDeepFM 类似，相当于把 CIN 换成多头自注意力网络(InteractingLayer)。
+InteractingLayer 的具体实现见 \texttt{layers.interaction.py}，基本上就是按照多头注意力的公式来，这里就不赘述了。
+
+\section{FGCNN 复现流程}
+\label{sec:fgcnn_reproduce}
+
+FGCNN 可以立即为是一个自动特征生成器，它利用卷积和重组层学习到新的特征，于旧特征拼接在一起组成新特征。
+再把这个新特征放进一个 CTR 分类器中去，这个分类器在论文中默认是 IPNN，当然也可以很简单的换成其他的模型。
+FGCNN 的核心就是卷积和池化再加上重组（flatten + dense），具体的代码见 \texttt{interaction.py}。
+
+对于超参数的设置，基本和 xDeepFM 类似，因为使用了三块 2080Ti，所以使用了很大的 batch size。
+卷积核大小和池化层的 filter 大小真的好难调出满意的。
+
+复现流程的代码如下：
+
+  \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{python}
+tf.keras.backend.clear_session()
+model_fgcnn = FGCNN(linear_feature_columns, dnn_feature_columns,
+                    task='binary', l2_reg_linear=1e-4, l2_reg_embedding=1e-4,
+                    l2_reg_dnn=1e-4, conv_kernel_width=(9,) * 2, pooling_width=(2,)*2,
+                    dnn_hidden_units=(1024, 1), new_maps=(3,) * 2,
+                    conv_filters=(38, 40))
+model_fgcnn = multi_gpu_model(model_fgcnn, gpus=3)
+model_fgcnn.compile(tf.keras.optimizers.Adam(0.00001), "binary_crossentropy",
+                   metrics=['binary_crossentropy'])
+log_dir="logs/fit/FGCNN/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+# 训练
+history = model_fgcnn.fit(train_model_input, train[target].values,
+                         batch_size=10240, epochs=200, verbose=2, validation_split=0.2,
+                         callbacks=[es, time_callback, tensorboard_callback])
+# 测试结果
+pred_ans = model_fgcnn.predict(test_model_input, batch_size=4096)
+print("test LogLoss (FGCNN)", round(log_loss(test[target].values, pred_ans), 4))
+print("test AUC (FGCNN)", round(roc_auc_score(test[target].values, pred_ans), 4))
+  \end{minted}
+
 \chapter{实验结果及分析}
+\label{chap:result}
+
+\begin{figure}[h]
+\centering%
+\includegraphics[width=.7\linewidth]{train_loss_ctr}
+  \caption{训练集损失图}
+  \label{fig:train_loss}
+\end{figure}
+
+\begin{figure}[h]
+\centering%
+\includegraphics[width=.7\linewidth]{val_loss_ctr}
+  \caption{验证集损失图}
+  \label{fig:val_loss}
+\end{figure}
+
+xDeepFM, FGCNN 和 AutoInt 三种模型每一代的训练集和验证集上的损失值如图 \ref{fig:train_loss} 和 \ref{fig:val_loss} 所示。
+损失值为交叉熵，在 CTR 领域中也称 \texttt{LogLoss}，计算公式请参考公式 \ref{eq:loss}。
+训练过程使用 EarlyStopping 避免浪费时间在过拟合上。
+值得一提的是，因为使用的 batch 超级大（10240），使得训练过程虽然是 mini batch 随机梯度下降不过更加像全局梯度下降了，总是就是很快就收敛了。
+
+\begin{table}[htb]
+  \centering
+  \caption{复现的测试集 AUC 结果以及原文结果对比}
+  \label{tab:reproduce_auc}
+  \begin{tabular}{ccc}
+    \toprule
+    \textbf{论文}         & \textbf{复现的 AUC}           & \textbf{原文结果 AUC}            \\
+    \midrule
+    \textbf{xDeepFM} (\cite{xdeepfm}) & 0.7574 & 0.8052 \\
+    \textbf{FGCNN} (\cite{fgcnn})           & 0.737           & 0.8022  \\
+    \textbf{AutoInt} (\cite{autoint})         & 0.7579           & 0.8061 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+对于测试阶段，使用的评价指标为 AUC（在第 \ref{chap:metrics} 章中介绍）。
+最终取训练过程中验证集损失值最低的那一代的模型（也就是最后一代啦）用作测试。
+复现出来的测试结果如表 \ref{tab:reproduce_auc} 所示。
+从结果可以看出来，三种方法的复现的结果都低于原文的结果。
+经过分析，我认为主要有以下几个原因：
+
+\begin{itemize}
+  \item 使用的数据集为 100 万规模的小数据集而不是 Criteo 原数据集的 4500 万规模，在数据集规模上差了 45 倍，很难发挥出模型的最佳性能。
+  \item 因为数据集有变化，所以论文中使用的最优超级参数很可能已经不再适用，我自己也调了好久的超参数，也还没找到最满意的超参数。
+  \item batch size 过大，这导致每一代的更新次数很少（10240 的 batch size 意味着每一代基本上只更新 60 多次），这样的优化结果肯定不如小火慢炖的 mini batch 随机梯度下降。
+\end{itemize}
+
+总的来说，复现结果还算令人满意，复现结果与论文的性能符合预期。
+不过这里面的 FGCNN 复现结果差强人意，我认为原因有以下几个：
+
+\begin{itemize}
+  \item FGCNN 里面用的默认的分类器是 PNN，PNN 是很早起的工作了，结果当然不如 xDeepFM
+  \item FGCNN 里面的核心--卷积的使用基本没多少道理，用卷积学习这些 fields 之间的局部特征就很扯淡。因为 Criteo 里面的 field 都是脱敏的，也就是说根本不知道这些 field 具体是什么，于是乎这些数据的顺序也是可以随意摆放的。如果把相近的 fields 放在一起还能解释一些这个局部特征。
+  \item FGCNN 的卷积的超参数比较多，而且从论文中也可以看出来，作者花了大量的时间来调参数，而且每一个数据集他们公布的最优超参数都不一样。我用的论文给的 Criteo 的超参数大概率是不能用在我这个小数据集上的。
+\end{itemize}
+
+\begin{table}[htb]
+  \centering
+  \caption{时间复杂度测试}
+  \label{tab:time_complex}
+  \begin{tabular}{cc}
+    \toprule
+    \textbf{论文}         & \textbf{每一代花费的时间}  \\
+    \midrule
+    \textbf{xDeepFM} (\cite{xdeepfm}) & 7s \\
+    \textbf{FGCNN} (\cite{fgcnn})           & 32s \\
+    \textbf{AutoInt} (\cite{autoint})         & 6s \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+此外，我还测试了这三种方法训练一代的时间花费，以此来反映模型的时间复杂度。
+结果如表 \ref{tab:time_complex} 所示，可以发现一个有意思的事情。
+FGCNN 的复杂度也太高了吧，三块 2080Ti 都顶不住！
+而且结果还这么的离谱，就算是按照 FGCNN 论文中的那样，结果高于 xDeepFM 低于 AutoInt，那时间复杂度也直接被 AutoInt 吊打啊。
+而且 AutoInt 用 3 层 2-头自注意力网络的情况下，速度还比用两层 CIN 的 xDeepFM 要好，说明 CIN 的时间复杂度也确实有点高。
 
 \chapter{结论}
 
+本文系统地介绍了推荐系统领域中点击率预测任务的发展情况以及主要方法论。
+同时，详细介绍了 xDeepFM，AutoInt 和 FGCNN 这三篇论文的方法。
+在 Criteo 数据集上的复现结果中发现了一些有意思的结论。
+阅读了许多文献后，我发现，CTR 任务在评价标准（例如 AUC）上提升已经非常缓慢了。
+不过已有的论文的时间复杂度过大在工业界部署的时候是一个重要的问题。
+例如 xDeepFM 的 CIN，Deep \& Cross 的 Cross，虽然它们都能很好的学习显式的特征组合，可是他们带来的复杂度还是比较大的。
+最近的论文，如 \cite{deeplight} 提出的 DeepLight 正在致力于解决这类问题，用牺牲很少一点的精度来换取大量的计算复杂度上的优化，在实际部署中是非常有意义的，这将是未来研究 CTR 的一个重要方向。
+同时，AutoInt 这类论文也为学习高阶特征组合带来了更加复杂的神经网络的可能，已有的大量的基于 Transformer 的模型也许能派上用场。
+
 \chapter{所完成的加分项}
 
-\chapter{心得体会}
+\begin{table}[htb]
+  \centering
+  \caption{加分项统计}
+  \label{tab:time_complex}
+  \begin{tabular}{cc}
+    \toprule
+    \textbf{加分项目}         & \textbf{位置}  \\
+    \midrule
+    对 xDeepFM 之后的论文的文献综述 & 第 \ref{sec:after_xeepfm} 小节 \\
+    对 xDeepFM 之后的论文的算法模块介绍           & 第 \ref{sec:autoint} 和 \ref{sec:fgcnn} 节 \\
+    AutoInt 和 FGCNN 的复现过程        & 第 \ref{sec:autoint_reproduce} 和 \ref{sec:fgcnn_reproduce} 节 \\
+    AutoInt 和 FGCNN 的复现结果和分析 & 第 \ref{chap:result} 章 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 % 其他部分
 \backmatter
@@ -702,4 +906,9 @@ print("test AUC (xDeepFM)", round(roc_auc_score(test[target].values, pred_ans), 
 
 % 附录
 \appendix
+
+\chapter{文件清单}
+
+
+
 \end{document}
