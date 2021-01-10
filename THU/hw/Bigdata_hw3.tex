@@ -909,6 +909,40 @@ FGCNN 的复杂度也太高了吧，三块 2080Ti 都顶不住！
 
 \chapter{文件清单}
 
+\begin{table}[htb]
+  \centering
+  \caption{文件清单}
+  \label{tab:files}
+  \begin{tabular}{cc}
+    \toprule
+    \textbf{文件（夹）}         & \textbf{说明}  \\
+    \midrule
+    \texttt{report.pdf} & 课程报告 PDF 文件 \\
+    \texttt{source/report}           & 课程报告 LaTeX 源文件 \\
+    \texttt{source/recommender.ipynb}        & 数据预处理，训练和测试的代码 \\
+    \texttt{source/code} & 实现模型的源代码 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
+\begin{table}[htb]
+  \centering
+  \caption{模型实现代码文件清单（\texttt{source/code}）}
+  \label{tab:files}
+  \begin{tabular}{cc}
+    \toprule
+    \textbf{文件}         & \textbf{说明}  \\
+    \midrule
+    \texttt{models/xdeepfm.py} & xDeepFM 实现代码 \\
+    \texttt{models/fgcnn.py} & FGCNN 实现代码 \\
+    \texttt{models/autoint.py} & autoint 实现代码 \\
+    \texttt{layers/interacting.py}           & MLP (DNN) 和输出层 的实现 \\
+    \texttt{layers/interacting.py}           & CIN, FGCNN, InteractingLayer 的实现 \\
+    \texttt{layers/utils.py}        & 常用函数实现（e.g., softmax, reduce\_sum, 线性层） \\
+    \texttt{feature\_column.py} & 离散特征和连续特征的抽象表示 \\
+    \texttt{inputs.py} & 处理连续特征（变换）和离散特征（嵌入）\\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \end{document}
