@@ -1,0 +1,94 @@
+% !TeX encoding = UTF-8
+% !TeX program = xelatex
+% !TeX spellcheck = en_US
+
+\documentclass[degree=project,degree-type=project,cjk-font=noto]{thuthesis}
+% 著者-出版年制
+\usepackage[sort]{natbib}
+\bibliographystyle{thuthesis-author-year}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usepackage[autosize]{dot2texi}
+% Syntax Highlighting in LaTeX, need pygments
+% Must build with xelatex -shell-escape -enable-8bit-chars.
+\usepackage{minted}
+% https://tex.stackexchange.com/a/112573
+\usepackage{tcolorbox}
+\usepackage{etoolbox}
+\BeforeBeginEnvironment{minted}{\begin{tcolorbox}}%
+\AfterEndEnvironment{minted}{\end{tcolorbox}}%
+% color for minted
+\definecolor{friendlybg}{HTML}{f0f0f0}
+
+
+% 论文基本配置，加载宏包等全局配置
+\thusetup{
+    output = electronic,
+    title  = {数据隐私在营销中的作用},
+    author  = {肖文韬},
+    studentid = {2020214245},
+    major = {电子信息（计算机技术）},
+    email = {xwt20@mails.tsinghua.edu.cn},
+    course = {数据伦理},
+    include-spine = false,
+}
+
+\usepackage{float}
+\graphicspath{{figures/}}
+
+
+\begin{document}
+
+% 封面
+\maketitle
+
+\frontmatter
+\begin{abstract}
+  本文通过阅读老师给出的英文文献，总结了市场营销及相关学科中隐私有关学术研究的现状。
+  正文部分主要从下面三个方面进行展开：
+
+  \begin{enumerate}
+    \item 隐私在社会中的作用
+    \item 隐私心理学
+    \item 隐私经济学
+  \end{enumerate}
+
+
+
+  \thusetup{
+    keywords = {数据隐私, 营销},
+	}
+\end{abstract}
+
+% 目录
+\tableofcontents
+
+% 插图和附表清单
+% \listoffiguresandtables
+% \listoffigures           % 插图清单
+
+% 正文部分
+\mainmatter
+
+\chapter{引言}
+
+广泛获取消费者个人信息的影响是多方面的，包括容易受到欺诈、隐私侵犯、不受欢迎的营销传播，以及目标明确、扰乱日常活动节奏的营销传播。
+
+
+\chapter{隐私在社会中的作用}
+
+\chapter{隐私心理学}
+
+\chapter{隐私经济学}
+
+% 其他部分
+\backmatter
+
+% 参考文献
+\bibliography{ref/refs}  % 参考文献使用 BibTeX 编译
+
+% 附录
+\appendix
+
+\end{document}
