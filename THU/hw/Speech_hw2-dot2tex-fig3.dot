@@ -1,8 +1,0 @@
-    digraph G1 {
-      rankdir=LR;
-      S_0 -> S_0 [label="0.75"];
-      S_0 -> S_1 [label="0.25"];
-      S_1 -> S_1 [label="0.75"];
-      S_1 -> S_2 [label="0.25"];
-   }
-    
