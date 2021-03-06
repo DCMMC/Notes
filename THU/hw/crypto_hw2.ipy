@@ -1,0 +1,31 @@
+# coding: utf-8
+from math import log
+h = lambda x: - sum([xi * log(xi) / log(2) for xi in x])
+pm = [1/3, 8/15, 2/15]
+pk = [1/4, 1/4, 1/2]
+hm = h(pm)
+hk = h(pk)
+print(f'hm: {hm}')
+print(f'hk: {hk}')
+import numpy as np
+# M -> K
+tran = (np.expand_dims(np.array(pm), axis=1) @ np.expand_dims(np.array(pk), axis=0)).T
+p2 = tran[0, 0] + tran[2, 1]
+p1 = tran[1, 2] + tran[2, 0]
+p4 = tran[0, 2] + tran[1, 1]
+p3 = tran[0, 1] + tran[1, 0] + tran[2, 2]
+# p(C)
+pc = p1, p2, p3, p4
+pc = [round(p, 4) for p in pc]
+hc = h(pc)
+print(f'hc: {hc}')
+# H(M|C)
+hmc = h(tran.flatten()) - hc
+print(f'hmc: {hmc}')
+pkc = [[1, tran[1, 2], tran[2, 0]],
+[tran[0, 0], 1, tran[2, 1]],
+[tran[0, 1], tran[1, 0], tran[2, 2]],
+[tran[0, 2], tran[1, 1], 1]]
+# H(K|C)
+hkc = h(np.array(pkc).flatten()) - hc
+print(f'hkc: {hkc}')
