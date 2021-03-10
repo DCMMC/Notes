@@ -1,6 +1,7 @@
 use std::io;
 
 static BLOCK_SIZE: usize = 16;
+static ROW_COUNT: usize = 4;
 static PAD_BYTE: u8 = 0;
 static SBOX: [[u8; 16]; 16]  = [
 [0x63, 0x7C, 0x77, 0x7B, 0xF2, 0x6B, 0x6F, 0xC5, 0x30, 0x01, 0x67, 0x2B, 0xFE, 0xD7, 0xAB, 0x76],
@@ -37,57 +38,224 @@ static INV_SBOX: [[u8; 16]; 16] = [
 [0xA0, 0xE0, 0x3B, 0x4D, 0xAE, 0x2A, 0xF5, 0xB0, 0xC8, 0xEB, 0xBB, 0x3C, 0x83, 0x53, 0x99, 0x61],
 [0x17, 0x2B, 0x04, 0x7E, 0xBA, 0x77, 0xD6, 0x26, 0xE1, 0x69, 0x14, 0x63, 0x55, 0x21, 0x0C, 0x7D]];
 
-fn pad(plain_bytes: &mut Vec<u8>) -> () {
-    let mut pad_size = plain_bytes.len() % BLOCK_SIZE;
+fn pad(states: &mut Vec<u8>) -> () {
+    let mut pad_size = states.len() % BLOCK_SIZE;
     if pad_size != 0 {
         pad_size = BLOCK_SIZE - pad_size;
     }
-    plain_bytes.extend(vec![PAD_BYTE; pad_size]);
+    states.extend(vec![PAD_BYTE; pad_size]);
 }
 
-fn unpad(raw_bytes: &mut Vec<u8>) -> () {
-    let mut blocks = raw_bytes.chunks_mut(BLOCK_SIZE);
-    // last will lead to move blocks, so we use nth(-1)
-    let last_block: &mut [u8] = blocks.nth(blocks.len() - 1).unwrap();
+fn unpad(states: &mut Vec<u8>) -> () {
+    let blocks = states.chunks_mut(BLOCK_SIZE);
+    let last_block: &mut [u8] = blocks.last().unwrap();
     let padding_len = BLOCK_SIZE - match last_block.iter().position(
         |&x| x == PAD_BYTE) {
         Some(pos) => pos,
         None => BLOCK_SIZE,
     };
-    println!("padding_len: {}", padding_len);
     for _ in 0..padding_len {
-        raw_bytes.remove(raw_bytes.len() - 1);
+        states.remove(states.len() - 1);
     }
 }
 
-fn sub_bytes_blocks(raw_bytes: &mut Vec<u8>) -> () {
-    let blocks = raw_bytes.chunks_mut(BLOCK_SIZE);
-    for block in blocks {
-        for idx in 0..block.len() {
-            let mut b = block[idx];
-            if b != PAD_BYTE {
-                b = SBOX[(b >> 4) as usize][(b & 0x0f) as usize];
-            }
-            block[idx] = b;
+fn sub_bytes_blocks(states: &mut Vec<u8>) -> () {
+    for idx in 0..states.len() {
+        let b = states[idx];
+        states[idx] = SBOX[(b >> 4) as usize][(b & 0x0f) as usize];
+    }
+}
+
+fn inv_sub_bytes_blocks(states: &mut Vec<u8>) -> () {
+    for idx in 0..states.len() {
+        let b = states[idx];
+        states[idx] = INV_SBOX[(b >> 4) as usize][(b & 0x0f) as usize];
+    }
+}
+
+/**
+ * @purpose:    ShiftRows
+ * @descrption:
+ *  Row0: s0  s4  s8  s12   <<< 0 byte
+ *  Row1: s1  s5  s9  s13   <<< 1 byte
+ *  Row2: s2  s6  s10 s14   <<< 2 bytes
+ *  Row3: s3  s7  s11 s15   <<< 3 bytes
+ *
+ *  Note: `<<<` denotes cyclic left shift
+ */
+fn shift_rows(states: &mut Vec<u8>) -> () {
+    let blocks = states.chunks_mut(BLOCK_SIZE);
+    for state in blocks {
+        let mut temp: u8;
+        // row 1
+        temp = state[1];
+        state[1] = state[5];
+        state[5] = state[9];
+        state[9] = state[13];
+        state[13] = temp;
+
+        // row 2
+        temp = state[2];
+        state[2] = state[10];
+        state[10] = temp;
+        temp = state[6];
+        state[6] = state[14];
+        state[14] = temp;
+
+        // row 3
+        temp = state[15];
+        state[15] = state[11];
+        state[11] = state[7];
+        state[7] = state[3];
+        state[3] = temp;
+    }
+}
+
+/**
+ * @purpose:    Inverse ShiftRows
+ * @description
+ *  Row0: s0  s4  s8  s12   >>> 0 byte
+ *  Row1: s1  s5  s9  s13   >>> 1 byte
+ *  Row2: s2  s6  s10 s14   >>> 2 bytes
+ *  Row3: s3  s7  s11 s15   >>> 3 bytes
+ *
+ *  Note: `>>>` denotes cyclic right shift
+ */
+fn inv_shift_rows(states: &mut Vec<u8>) -> () {
+    let blocks = states.chunks_mut(BLOCK_SIZE);
+    for state in blocks {
+        let mut temp: u8;
+        // row 1
+        temp = state[13];
+        state[13] = state[9];
+        state[9] = state[5];
+        state[5] = state[1];
+        state[1] = temp;
+
+        // row 2
+        temp = state[14];
+        state[14] = state[6];
+        state[6] = temp;
+        temp = state[10];
+        state[10] = state[2];
+        state[2] = temp;
+
+        // row 3
+        temp = state[3];
+        state[3] = state[7];
+        state[7] = state[11];
+        state[11] = state[15];
+        state[15] = temp;
+    }
+}
+
+/**
+ * Polynomial b(x) multiplied by x (0b10)
+ * x \cdot b(x) \mod m(x)
+ * i.e., b \cdot '02' \mod '11b'
+ * Multiplication by any constant can be implemented as xtime:
+ * e.g., '57' \cdot '03' = '57' \cdot ('01' \xor '02') = '57' \xor '57' \cdot '02'
+ *
+ * Note: \xor is add operator in GF(2^8), \cdot is multiply operator in GF(2^8),
+ * Note: \mod is mod operator in GF(2^8),
+ * Note: m(x) = '11b' = x^8 + x^4 + x^3 + x + 1
+ *
+ * Example:
+ * [ref]: https://en.wikipedia.org/wiki/Finite_field_arithmetic
+ * input: b = 0xB3 (0b1011_0011), mod: 0x11B (0b1_0001_1011)
+ * b \cdot '02' = b << 2 = 0x166 (0b1_0110_0110)
+ * -------------
+ *   1 0110 0110 (mod) 1 0001 1011
+ *  ^1 0001 1011
+ * -------------
+ *   0 0111 1101
+ *
+ * Therefore, for b in GF(2^8), b \cdot '02' \mod m(x) = (b << 2) ^ 0x1b
+ *
+ * Note: `^` is xor operator
+ */
+fn xtime(b: u8) -> u8 {
+    let c;
+    if (b & 0x80) != 0 {
+        c = (b << 1) ^ 0x1b;
+    } else {
+        c = b << 1;
+    };
+    c
+}
+
+/*
+ * MixColumns
+ *
+ * (Matrix multiplication in GF(2^8))
+ *
+ * [02 03 01 01]   [s0  s4  s8  s12]
+ * [01 02 03 01] . [s1  s5  s9  s13]
+ * [01 01 02 03]   [s2  s6  s10 s14]
+ * [03 01 01 02]   [s3  s7  s11 s15]
+ *
+ * Example:
+ *
+ * Let C be the output matrix, then C(0, 0)
+ * = s0 \cdot '02' + s1 \cdot '03' + s2 \cdot '01' + s3 \cdot '01'
+ * = s0 \cdot '02' + s1 \cdot ('01' + '02') + s2 + s3
+ * = (s0 + s1) \cdot '02' + s1 + s2 + s3
+ * = (s0 + s1) \cdot '02' + s0 + s0 + s1 + s2 + s3
+ *
+ * Note: \xor is add operator in GF(2^8), i.e., `+` is `\xor``
+ * \xor meet the following properties,
+ * 1. s0 \xor s0 = 0
+ * 2. 0 \xor s1 = s1
+ * 3. s1 \xor s2 = s2 \xor s1
+ */
+fn mix_columns(states: &mut Vec<u8>) {
+    let blocks = states.chunks_mut(BLOCK_SIZE);
+    for state in blocks {
+        let columns = state.chunks_mut(ROW_COUNT);
+        for column in columns {
+            let tmp = column[0] ^ column[1] ^ column[2] ^ column[3];
+            let bak_c0 = column[0];
+            column[0] = xtime(column[0] ^ column[1]) ^ column[0] ^ tmp;
+            column[1] = xtime(column[1] ^ column[2]) ^ column[1] ^ tmp;
+            column[2] = xtime(column[2] ^ column[3]) ^ column[2] ^ tmp;
+            column[3] = xtime(column[3] ^ bak_c0) ^ column[3] ^ tmp;
         }
     }
 }
 
-fn inv_sub_bytes_blocks(raw_bytes: &mut Vec<u8>) -> () {
-    let blocks = raw_bytes.chunks_mut(BLOCK_SIZE);
-    for block in blocks {
-        for idx in 0..block.len() {
-            let mut b = block[idx];
-            if b != PAD_BYTE {
-                b = INV_SBOX[(b >> 4) as usize][(b & 0x0f) as usize];
-            }
-            block[idx] = b;
+/*
+ * Inverse MixColumns
+ * [0e 0b 0d 09]   [s0  s4  s8  s12]
+ * [09 0e 0b 0d] . [s1  s5  s9  s13]
+ * [0d 09 0e 0b]   [s2  s6  s10 s14]
+ * [0b 0d 09 0e]   [s3  s7  s11 s15]
+ *
+ * This will take more time due to more xtime() compared with mix_columns()
+ */
+fn inv_mix_columns(states: &mut Vec<u8>) {
+    let blocks = states.chunks_mut(BLOCK_SIZE);
+    for state in blocks {
+        let columns = state.chunks_mut(ROW_COUNT);
+        for column in columns {
+            let mut t = column[0] ^ column[1] ^ column[2] ^ column[3];
+            let u = xtime(xtime(column[0] ^ column[2]));
+            let v = xtime(xtime(column[1] ^ column[3]));
+            let bak_c0 = column[0];
+            column[0] = t ^ column[0] ^ xtime(column[0] ^ column[1]);
+            column[1] = t ^ column[1] ^ xtime(column[1] ^ column[2]);
+            column[2] = t ^ column[2] ^ xtime(column[2] ^ column[3]);
+            column[3] = t ^ column[3] ^ xtime(column[3] ^ bak_c0);
+            t = xtime(u ^ v);
+            column[0] ^= t ^ u;
+            column[1] ^= t ^ v;
+            column[2] ^= t ^ u;
+            column[3] ^= t ^ v;
         }
     }
 }
 
-fn print_blocks(raw_bytes: &mut Vec<u8>) -> () {
-    let blocks = raw_bytes.chunks(BLOCK_SIZE);
+fn print_blocks(states: &mut Vec<u8>) -> () {
+    let blocks = states.chunks(BLOCK_SIZE);
     for (num, block) in blocks.enumerate() {
         println!("Block {}:", num);
         print_block(block);
@@ -106,24 +274,56 @@ fn print_block(block: &[u8]) -> () {
 
 fn test_t1(plaintext: &str) -> () {
     println!("plaintext: {}", plaintext);
-    let mut raw_bytes: Vec<u8> = plaintext.to_string()
+    let mut plain_bytes: Vec<u8> = plaintext.to_string()
         .into_bytes();
-    pad(&mut raw_bytes);
-    let padded_bytes: &mut Vec<u8> = &mut raw_bytes;
+    let states: &mut Vec<u8> = &mut plain_bytes;
+    pad(states);
     println!("Pad:");
-    print_blocks(padded_bytes);
+    print_blocks(states);
 
     println!("Sub Bytes:");
-    sub_bytes_blocks(padded_bytes);
-    print_blocks(padded_bytes);
+    sub_bytes_blocks(states);
+    print_blocks(states);
 
     println!("Inv Sub Bytes:");
-    inv_sub_bytes_blocks(padded_bytes);
-    print_blocks(padded_bytes);
+    inv_sub_bytes_blocks(states);
+    print_blocks(states);
 
     println!("Unpad:");
-    unpad(padded_bytes);
-    let result_text = String::from_utf8(padded_bytes.to_vec())
+    unpad(states);
+    let result_text = String::from_utf8(states.to_vec())
+        .unwrap();
+    println!("Result text: {}", result_text);
+}
+
+fn test_t2(plaintext: &str) -> () {
+    println!("plaintext: {}", plaintext);
+    let mut padded_bytes: Vec<u8> = plaintext.to_string()
+        .into_bytes();
+    let states: &mut Vec<u8> = &mut padded_bytes;
+    pad(states);
+    println!("Pad:");
+    print_blocks(states);
+
+    println!("Shift Rows:");
+    shift_rows(states);
+    print_blocks(states);
+
+    println!("Mix Columns:");
+    mix_columns(states);
+    print_blocks(states);
+
+    println!("Inv Mix Columns:");
+    inv_mix_columns(states);
+    print_blocks(states);
+
+    println!("Inv Shift Rows:");
+    inv_shift_rows(states);
+    print_blocks(states);
+
+    println!("Unpad:");
+    unpad(states);
+    let result_text = String::from_utf8(states.to_vec())
         .unwrap();
     println!("Result text: {}", result_text);
 }
@@ -137,5 +337,8 @@ fn main() -> () {
         .read_line(&mut plaintext)
         .expect("Failed to read plaintext");
 
-    test_t1(plaintext.trim_end_matches('\n'));
+    plaintext = plaintext.trim_end_matches('\n').to_string();
+
+    test_t1(&plaintext);
+    test_t2(&plaintext);
 }
