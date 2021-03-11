@@ -50,32 +50,39 @@
 
 ; b. Define total-weight.
 
-(define (enumerate-mobile mobile (length #f))
-  (let ((length (if (eq? length #t) 0 length)))
-    (if (number? mobile)
-      (cons (if length (* mobile length) mobile) nil)
-      (let ((left (branch-structure (left-branch mobile)))
-	    (right (branch-structure (right-branch mobile)))
-	    (left-len (branch-length (left-branch mobile)))
-	    (right-len (branch-length (right-branch mobile))))
-	(append (enumerate-mobile left (if length (+ length left-len) length))
-		(enumerate-mobile right (if length (+ length right-len) length)))))))
-
-(define (my-accumulate proc init seq)
-  (if (null? seq)
-    init
-    (proc (car seq)
-	  (my-accumulate proc init (cdr seq)))))
-
-(define (total-weight mobile (length #f))
+(define (total-weight mobile)
   ; (error "Not yet implemented")
-  (my-accumulate + 0 (enumerate-mobile mobile length)))
+  (if (number? mobile)
+    mobile
+    (+ (total-weight (branch-structure (left-branch mobile)))
+       (total-weight (branch-structure (right-branch mobile))))))
 
 ; c. Define balanced?
 
-(define (balanced? b-mobile)
+(define (balanced-helper b-mobile)
   ; (error "Not yet implemented")
-  )
+  (if (number? b-mobile)
+    ; '(balance? total-weight)
+    (cons #t b-mobile)
+    (let ((left-m (branch-structure (left-branch b-mobile)))
+          (left-l (branch-length (left-branch b-mobile)))
+          (right-m (branch-structure (right-branch b-mobile)))
+          (right-l (branch-length (right-branch b-mobile))))
+      (let ((left-res (balanced-helper left-m))
+            (right-res (balanced-helper right-m)))
+        (cons
+          (and
+             (and
+               (car left-res)
+               (car right-res))
+             (eq?
+               (* left-l (cdr left-res))
+               (* right-l (cdr right-res))))
+          (+ (cdr right-res)
+             (cdr left-res)))))))
+
+(define (balanced? b-mobile)
+  (car (balanced-helper b-mobile)))
 
 ; d. Redefine all the necessary procedures to work with the new
 ; constructors given below.
@@ -225,12 +232,13 @@ op must be symmetric.
 ; Huffman trees: ommited
 
 ; Regroup problem:
-(define (regroup pattern)
-  ; Helpers
-  (define (skip-n n lst)
-    (if (> n 0)
-      (skip (- n 1) (cdr lst))
-      lst))
-  (define (get-n n lst)
-    (car (skip-n (- n 1) lst)))
-  ())
+; (TODO)
+; (define (regroup pattern)
+;   ; Helpers
+;   (define (skip-n n lst)
+;     (if (> n 0)
+;       (skip (- n 1) (cdr lst))
+;       lst))
+;   (define (get-n n lst)
+;     (car (skip-n (- n 1) lst)))
+;   ())
