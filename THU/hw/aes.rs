@@ -1,4 +1,6 @@
 // use std::io;
+// [ref] https://github.com/openluopworld/aes_128/
+// [ref] https://csrc.nist.gov/csrc/media/projects/cryptographic-standards-and-guidelines/documents/aes-development/rijndael-ammended.pdf#page=3
 use std::convert::TryFrom;
 
 const BLOCK_SIZE: usize = 16;
@@ -66,14 +68,14 @@ fn unpad(states: &mut Vec<u8>) -> () {
     }
 }
 
-fn sub_bytes_blocks(states: &mut Vec<u8>) -> () {
+fn sub_bytes(states: &mut Vec<u8>) -> () {
     for idx in 0..states.len() {
         let b = states[idx];
         states[idx] = SBOX[(b >> 4) as usize][(b & 0x0f) as usize];
     }
 }
 
-fn inv_sub_bytes_blocks(states: &mut Vec<u8>) -> () {
+fn inv_sub_bytes(states: &mut Vec<u8>) -> () {
     for idx in 0..states.len() {
         let b = states[idx];
         states[idx] = INV_SBOX[(b >> 4) as usize][(b & 0x0f) as usize];
@@ -276,18 +278,25 @@ fn key_schedule(cipher_key: &[u8; BLOCK_SIZE]) -> [u8; (ROUND + 1) * BLOCK_SIZE]
         // last round (16 bytes), i.e., last round key
         let mut last_round: usize = (i - 1) * 16;
         // RotByte is cyclic right shift, e.g., (a, b, c, d) => (b, c, d, a)
-        round_keys[i * 16] = sub_byte(round_keys[temp_offset + 1]) ^ RCON[i] ^ round_keys[last_round + 1];
-        round_keys[i * 16 + 1] = sub_byte(round_keys[temp_offset + 2]) ^ round_keys[last_round + 2];
-        round_keys[i * 16 + 2] = sub_byte(round_keys[temp_offset + 3]) ^ round_keys[last_round + 3];
-        round_keys[i * 16 + 3] = sub_byte(round_keys[temp_offset]) ^ round_keys[last_round];
+        round_keys[i * 16] = sub_byte(round_keys[temp_offset + 1]) ^ RCON[i] ^ round_keys[
+            last_round + 1];
+        round_keys[i * 16 + 1] = sub_byte(round_keys[temp_offset + 2]) ^ round_keys[
+            last_round + 2];
+        round_keys[i * 16 + 2] = sub_byte(round_keys[temp_offset + 3]) ^ round_keys[
+            last_round + 3];
+        round_keys[i * 16 + 3] = sub_byte(round_keys[temp_offset]) ^ round_keys[
+            last_round];
 
         for j in 1..4 {
             temp_offset += 4;
             last_round += 4;
             round_keys[i * 16 + j * 4] = round_keys[last_round] ^ round_keys[temp_offset];
-            round_keys[i * 16 + j * 4 + 1] = round_keys[last_round + 1] ^ round_keys[temp_offset + 1];
-            round_keys[i * 16 + j * 4 + 2] = round_keys[last_round + 2] ^ round_keys[temp_offset + 2];
-            round_keys[i * 16 + j * 4 + 3] = round_keys[last_round + 3] ^ round_keys[temp_offset + 3];
+            round_keys[i * 16 + j * 4 + 1] = round_keys[last_round + 1] ^ round_keys[
+                temp_offset + 1];
+            round_keys[i * 16 + j * 4 + 2] = round_keys[last_round + 2] ^ round_keys[
+                temp_offset + 2];
+            round_keys[i * 16 + j * 4 + 3] = round_keys[last_round + 3] ^ round_keys[
+                temp_offset + 3];
         }
     }
 
@@ -320,14 +329,14 @@ fn aes128_encrypt(plaintext: &str, cipher_key: &str) -> Vec<u8> {
 
     // 9 rounds
     for i in 1..ROUND {
-        sub_bytes_blocks(&mut states);
+        sub_bytes(&mut states);
         shift_rows(&mut states);
         mix_columns(&mut states);
         add_round_key(&mut states, &round_keys[i * BLOCK_SIZE..(i + 1) * BLOCK_SIZE]);
     }
 
     // last round
-    sub_bytes_blocks(&mut states);
+    sub_bytes(&mut states);
     shift_rows(&mut states);
     add_round_key(&mut states, &round_keys[10 * BLOCK_SIZE..11 * BLOCK_SIZE]);
 
@@ -348,7 +357,7 @@ fn aes128_decrypt(cipher: &Vec<u8>, cipher_key: &str) -> String {
     // first AddRoundKey
     add_round_key(&mut states, &round_keys[r_offset..r_offset + BLOCK_SIZE]);
     inv_shift_rows(&mut states);
-    inv_sub_bytes_blocks(&mut states);
+    inv_sub_bytes(&mut states);
 
     // 9 rounds
     for _ in 1..ROUND {
@@ -356,7 +365,7 @@ fn aes128_decrypt(cipher: &Vec<u8>, cipher_key: &str) -> String {
         add_round_key(&mut states, &round_keys[r_offset..r_offset + BLOCK_SIZE]);
         inv_mix_columns(&mut states);
         inv_shift_rows(&mut states);
-        inv_sub_bytes_blocks(&mut states);
+        inv_sub_bytes(&mut states);
     }
 
     // last round
@@ -387,8 +396,14 @@ fn print_block(block: &[u8]) -> () {
     }
 }
 
+fn title(t: &str) -> () {
+    println!("\n{}", "#####".repeat(12));
+    println!("{}", format!("#{:^58}#", t));
+    println!("{}\n", "#####".repeat(12));
+}
+
 fn test_t1(plaintext: &str) -> () {
-    println!("\nTest T1\n");
+    title("Test T1");
     println!("plaintext: {}", plaintext);
     let mut plain_bytes: Vec<u8> = plaintext.to_string()
         .into_bytes();
@@ -398,11 +413,11 @@ fn test_t1(plaintext: &str) -> () {
     print_blocks(states);
 
     println!("Sub Bytes:");
-    sub_bytes_blocks(states);
+    sub_bytes(states);
     print_blocks(states);
 
     println!("Inv Sub Bytes:");
-    inv_sub_bytes_blocks(states);
+    inv_sub_bytes(states);
     print_blocks(states);
 
     println!("Unpad:");
@@ -413,7 +428,7 @@ fn test_t1(plaintext: &str) -> () {
 }
 
 fn test_t2(plaintext: &str) -> () {
-    println!("\nTest T2\n");
+    title("Test T2");
     println!("plaintext: {}", plaintext);
     let mut padded_bytes: Vec<u8> = plaintext.to_string()
         .into_bytes();
@@ -443,7 +458,7 @@ fn test_t2(plaintext: &str) -> () {
 }
 
 fn test_t3(cipher_key: &str) -> () {
-    println!("\nTest T3\n");
+    title("Test T3");
     let key_bytes = cipher_key.to_string().into_bytes();
     assert_eq!(cipher_key.len(), BLOCK_SIZE);
     let mut key_bytes_vec = [0u8; BLOCK_SIZE];
@@ -458,7 +473,7 @@ fn test_t3(cipher_key: &str) -> () {
 }
 
 fn test_t4(plaintext: &str, cipher_key: &str) -> () {
-    println!("\nTest T4\n");
+    title("Test T4");
     let cipher_text = aes128_encrypt(plaintext, cipher_key);
     let decrypted_text = aes128_decrypt(&cipher_text, cipher_key);
     println!("Plain Text: {:?}", plaintext);
