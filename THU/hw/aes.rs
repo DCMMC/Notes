@@ -462,7 +462,11 @@ fn test_t4(plaintext: &str, cipher_key: &str) -> () {
     let cipher_text = aes128_encrypt(plaintext, cipher_key);
     let decrypted_text = aes128_decrypt(&cipher_text, cipher_key);
     println!("Plain Text: {:?}", plaintext);
-    println!("Cipher Text: {:?}", cipher_text);
+    let mut cipher_str = "0x".to_string();
+    for chr in cipher_text {
+        cipher_str.push_str(&format!("{:02X?}", chr));
+    }
+    println!("Cipher Text: {:?}", cipher_str);
     println!("Decrypted Text: {:?}", decrypted_text);
 }
 
@@ -488,6 +492,6 @@ fn main() -> () {
     let cipher_key = "abcdefghijklmnop";
     test_t3(cipher_key);
 
-    test_t4("Cryptography and Network Security; 2020214245; Wentao Xiao",
+    test_t4("Cryptography and Network Security; 2020214245; 肖文韬 (Wentao Xiao) 🎉🚀",
             "abcdefghijklmnop");
 }
