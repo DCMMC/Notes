@@ -1,4 +1,5 @@
 // use std::io;
+use std::convert::TryFrom;
 
 const BLOCK_SIZE: usize = 16;
 const ROW_COUNT: usize = 4;
@@ -293,6 +294,81 @@ fn key_schedule(cipher_key: &[u8; BLOCK_SIZE]) -> [u8; (ROUND + 1) * BLOCK_SIZE]
     round_keys
 }
 
+fn add_round_key(states: &mut Vec<u8>, round_keys: &[u8]) -> () {
+    assert_eq!(round_keys.len(), BLOCK_SIZE);
+    let blocks = states.chunks_mut(BLOCK_SIZE);
+    for block in blocks {
+        // first AddRoundKey
+        for i in 0..BLOCK_SIZE {
+            block[i] ^= round_keys[i];
+        }
+    }
+}
+
+fn aes128_encrypt(plaintext: &str, cipher_key: &str) -> Vec<u8> {
+    let mut states = plaintext.to_string().into_bytes();
+    assert!(cipher_key.is_ascii());
+    assert_eq!(cipher_key.len(), BLOCK_SIZE);
+    let cipher: [u8; BLOCK_SIZE] = <[u8; BLOCK_SIZE]>::try_from(
+        cipher_key.to_string().into_bytes()).unwrap();
+    let round_keys = key_schedule(&cipher);
+
+    pad(&mut states);
+
+    // first AddRoundKey
+    add_round_key(&mut states, &round_keys[0..BLOCK_SIZE]);
+
+    // 9 rounds
+    for i in 1..ROUND {
+        sub_bytes_blocks(&mut states);
+        shift_rows(&mut states);
+        mix_columns(&mut states);
+        add_round_key(&mut states, &round_keys[i * BLOCK_SIZE..(i + 1) * BLOCK_SIZE]);
+    }
+
+    // last round
+    sub_bytes_blocks(&mut states);
+    shift_rows(&mut states);
+    add_round_key(&mut states, &round_keys[10 * BLOCK_SIZE..11 * BLOCK_SIZE]);
+
+    states
+}
+
+fn aes128_decrypt(cipher: &Vec<u8>, cipher_key: &str) -> String {
+    let mut states = cipher.clone();
+    assert!(cipher_key.is_ascii());
+    assert_eq!(cipher_key.len(), BLOCK_SIZE);
+    let key_array: [u8; BLOCK_SIZE] = <[u8; BLOCK_SIZE]>::try_from(
+        cipher_key.to_string().into_bytes()).unwrap();
+    let round_keys = key_schedule(&key_array);
+
+
+    // from the last round to the first round
+    let mut r_offset = BLOCK_SIZE * 10;
+    // first AddRoundKey
+    add_round_key(&mut states, &round_keys[r_offset..r_offset + BLOCK_SIZE]);
+    inv_shift_rows(&mut states);
+    inv_sub_bytes_blocks(&mut states);
+
+    // 9 rounds
+    for _ in 1..ROUND {
+        r_offset -= BLOCK_SIZE;
+        add_round_key(&mut states, &round_keys[r_offset..r_offset + BLOCK_SIZE]);
+        inv_mix_columns(&mut states);
+        inv_shift_rows(&mut states);
+        inv_sub_bytes_blocks(&mut states);
+    }
+
+    // last round
+    r_offset -= BLOCK_SIZE;
+    add_round_key(&mut states, &round_keys[r_offset..r_offset + BLOCK_SIZE]);
+    unpad(&mut states);
+    let result_text = String::from_utf8(states.to_vec())
+        .unwrap();
+
+    result_text
+}
+
 fn print_blocks(states: &mut Vec<u8>) -> () {
     let blocks = states.chunks(BLOCK_SIZE);
     for (num, block) in blocks.enumerate() {
@@ -381,6 +457,15 @@ fn test_t3(cipher_key: &str) -> () {
     }
 }
 
+fn test_t4(plaintext: &str, cipher_key: &str) -> () {
+    println!("\nTest T4\n");
+    let cipher_text = aes128_encrypt(plaintext, cipher_key);
+    let decrypted_text = aes128_decrypt(&cipher_text, cipher_key);
+    println!("Plain Text: {:?}", plaintext);
+    println!("Cipher Text: {:?}", cipher_text);
+    println!("Decrypted Text: {:?}", decrypted_text);
+}
+
 fn main() -> () {
     println!("AES Lab");
     let mut plaintext = String::new();
@@ -402,4 +487,7 @@ fn main() -> () {
 
     let cipher_key = "abcdefghijklmnop";
     test_t3(cipher_key);
+
+    test_t4("Cryptography and Network Security; 2020214245; Wentao Xiao",
+            "abcdefghijklmnop");
 }
