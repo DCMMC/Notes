@@ -43,6 +43,25 @@
 \setlist[enumerate,3]{label=\roman*.}
 \setlist[enumerate,4]{label=\greek*}
 
+\newcommand*\justify{%
+  \fontdimen2\font=0.4em% interword space
+  \fontdimen3\font=0.2em% interword stretch
+  \fontdimen4\font=0.1em% interword shrink
+  \fontdimen7\font=0.1em% extra space
+  \hyphenchar\font=`\-% allowing hyphenation
+}
+
+\renewcommand{\texttt}[1]{%
+  \begingroup
+  \ttfamily
+  \begingroup\lccode`~=`/\lowercase{\endgroup\def~}{/\discretionary{}{}{}}%
+  \begingroup\lccode`~=`[\lowercase{\endgroup\def~}{[\discretionary{}{}{}}%
+  \begingroup\lccode`~=`.\lowercase{\endgroup\def~}{.\discretionary{}{}{}}%
+  \catcode`/=\active\catcode`[=\active\catcode`.=\active
+  \justify\scantokens{#1\noexpand}%
+  \endgroup
+}
+
 
 \begin{document}
 
@@ -119,7 +138,7 @@ fn sub_bytes(states: &mut Vec<u8>) -> () {
 }
   \end{minted}
 
-其中 SBOX 是提前给定的。
+其中 SBOX 是提前给定的，SBOX 就是一个二维数组，第一维就是字节的高 4 位，第二维就是字节的低 4 位，具体的 SBOX 定义见源代码/实验书。
 
 \subsection{逆字节替代}
 
@@ -132,7 +151,7 @@ fn inv_sub_bytes(states: &mut Vec<u8>) -> () {
 }
   \end{minted}
 
-INV\_SBOX 也是根据 SBOX 对应的逆替换表。
+INV\_SBOX 就是根据 SBOX 对应的逆替换表。
 
 \subsection{逆补位}
 
@@ -167,7 +186,7 @@ fn unpad(states: &mut Vec<u8>) -> () {
 
 \section{行移位变换和逆行移位变换，列混合和逆列混合}
 
-    编写对4×4字节矩阵的行移位变换和逆行移位变换代码。编写对4×4字节矩阵的列混合和逆列混合代码，列混合需要使用x乘法。
+编写对4×4字节矩阵的行移位变换和逆行移位变换代码。编写对4×4字节矩阵的列混合和逆列混合代码，列混合需要使用x乘法 （xtime）。
 
 \subsection{行移位变换}
 
@@ -204,7 +223,7 @@ fn shift_rows(states: &mut Vec<u8>) -> () {
 
 \subsection{列混合}
 
-在列混合中，状态矩阵中的每一个字节都可以看作是 $GF(2^8)$ 上的多项式，且最高项次数不超过 $7$。
+在列混合中，状态矩阵中的每一个字节都可以看作是 $GF(2^8)$ 有限域上的多项式，且最高项次数不超过 $7$。
 在 $GF(2^8)$ 上乘以另外一个模多项式 $c(x)$ 再取模可以写作一个矩阵运算（由 $GF(2^8)$ 上定义的乘法实现的）。
 对于 输入多项式 $a(x)$，乘以模多项式 $c(x) = '03'x^3+'01'x^2+'01'x+'02'$ 可以表示为：
 \begin{align}
@@ -225,7 +244,7 @@ fn shift_rows(states: &mut Vec<u8>) -> () {
 \end{align}
 
 注意 $GF(2^8)$ 上的加法就是异或运算。
-同时，$GF(2^8)$ 上一个多项式乘以任意多项式（任意常数）都可以归约为乘以常数 '01' (也就是多项式 $x$)。
+同时，$GF(2^8)$ 上一个多项式乘以任意多项式（任意常数）都可以归约为乘以常数 '02' (也就是多项式 $x$，也叫做 x 乘法)和 '01' (那就是本身啦）。
 例如，上面矩阵的结果中，有以下推导：
 
 \begin{align*}
@@ -234,6 +253,35 @@ fn shift_rows(states: &mut Vec<u8>) -> () {
     &= (a_0 + a_1) \cdot '02' + a_1 + a_2 + a_3 \\
     &= (a_0 + a_1) \cdot '02' + a_0 + a_0 + a_1 + a_2 + a_3
 \end{align*}
+其中 $GF(2^8)$ 上的加法运算就是二进制的逐位异或（xor），这里面利用了一些异或的性质就不再展开了，比较容易自己推导出来。
+
+x 乘法（xtime）的实现代码如下：
+
+  \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{rust}
+fn xtime(b: u8) -> u8 {
+    let c;
+    if (b & 0x80) != 0 {
+        c = (b << 1) ^ 0x1b;
+    } else {
+        c = b << 1;
+    };
+    c
+}
+  \end{minted}
+
+代码看起来是简单，不过推导起来有不少步骤。
+首先 $GF(2^8)$ 上的数，就是对应一个多项式，例如 $'1B' (0b0001\_1011)$ 就对应多项式 $x^4 + x^3 + x + 1$。
+两个 $GF(2^8)$ 上的数相乘，就是对应他们的多项式在 $\mathbb{R}$ 上的普通乘法。
+比如 x 乘法就是将数乘以多项式 $x$ (也就是 '02')，例如 $'1B' \cdot '02' = (x^4 + x^3 + x + 1) x = x^5 + x^4 + x^2 + x = 0b0011\_0110 = '54'$，其实就是二进制左移一位.
+还有就是取模运算也不用于 $\mathbb{R}$ 上的取模，$GF(2^8)$ 上的取模笼统地来说就是用异或实现的除法。
+举个例子，计算 $'B3' \cdot '02' \;(\bmod\; '11B') = 0b1011\_0011 \ll 2 \;(\bmod\; 0b1\_0001_1011) = 0b1\_0110\_0110 \;(\bmod 0b1\_0001\_1011)$ 过程如下：
+
+\texttt{
+-------------\\
+  1 0110 0110 (mod) 1 0001 1011 \\
+ ^1 0001 1011 \\
+------------- \\
+  0 0111 1101}
 
   \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{rust}
 fn mix_columns(states: &mut Vec<u8>) {
@@ -312,9 +360,27 @@ fn inv_shift_rows(states: &mut Vec<u8>) -> () {
 \subsection{运行结果}
 
 本题使用字符串'abcdefghijklmnop'作为验证输入，将其转换为字节矩阵后对四个变换进行验证，记录其输出。
+行移位变换和列混合运行结果如图~\ref{fig:t2}所示。
+
+\begin{figure}[h]
+\centering%
+\includegraphics[width=.4\linewidth]{aes_t2.png}
+  \caption{行移位变换和列混合运行结果}
+  \label{fig:t2}
+\end{figure}
 
 \section{轮密钥生成}
 
-    使用原始密钥'abcdefghijklmnop'生成总计11组扩展密钥，将用于之后的加解密。初始密钥K转换为字节矩阵后的4列为 $W_0 \sim W_3$，后续的 $W_4 \sim W_{43}$ 使用递归计算得到。
+\subsection{运行结果}
+
+使用原始密钥'abcdefghijklmnop'生成总计11组扩展密钥，将用于之后的加解密。初始密钥K转换为字节矩阵后的4列为 $W\_0 \sim W\_3$，后续的 $W\_4 \sim W\_{43}$ 使用递归计算得到。
+计算结果如图~\ref{fig:t3}所示。
+
+    \begin{figure}[h]
+\centering%
+\includegraphics[width=\linewidth]{aes_t3.png}
+  \caption{轮密钥生成运行结果}
+  \label{fig:t3}
+\end{figure}
 
 \end{document}
