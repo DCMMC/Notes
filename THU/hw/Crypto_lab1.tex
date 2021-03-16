@@ -276,12 +276,20 @@ fn xtime(b: u8) -> u8 {
 还有就是取模运算也不用于 $\mathbb{R}$ 上的取模，$GF(2^8)$ 上的取模笼统地来说就是用异或实现的除法。
 举个例子，计算 $'B3' \cdot '02' \;(\bmod\; '11B') = 0b1011\_0011 \ll 2 \;(\bmod\; 0b1\_0001_1011) = 0b1\_0110\_0110 \;(\bmod 0b1\_0001\_1011)$ 过程如下：
 
-\texttt{
--------------\\
-  1 0110 0110 (mod) 1 0001 1011 \\
- ^1 0001 1011 \\
+{\tt
+{\noindent-------------}\\
+\phantom{0 }1 0110 0110 (mod) 1 0001 1011 \\
+\textasciicircum\phantom{ }1 0001 1011 \\
 ------------- \\
-  0 0111 1101}
+\phantom{0 }0 0111 1101
+}
+
+其中上面的 $\textasciicircum$ 就是异或运算。
+又因为 $GF(2^8)$ 最高阶就是 $x^7$ (二进制的最高位), 而模多项式 $'11B'$ 对应的最高阶是 $x^8$，也就是多一位。
+所以 x 乘法的被乘出只有两种可能：（1）最高位是 $0$，则左移一位也不会超过 $'11B'$，所以取模后仍未原数，（2）最高位是 $1$，则左移一位后可能会大于模多项式，这时候我们需要使用上述取模的过程，与模多项式进行一次异或运算。
+综上，这个代码逻辑就很好理解了。
+
+有了 x 乘法，我们就可以得出乘以任意多项式的算法了，下面的代码就是列混淆的最终实现。
 
   \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{rust}
 fn mix_columns(states: &mut Vec<u8>) {
@@ -302,6 +310,27 @@ fn mix_columns(states: &mut Vec<u8>) {
 
 
 \subsection{逆列混合}
+
+同样的，类似于列混淆，逆列混淆也是一个矩阵运算，只不过是矩阵是另外一个，运算过程为：
+\begin{align}
+  \begin{split}
+    b(x) &= c(x) \otimes a(x) \\
+    &= \begin{bmatrix}
+0e & 0b & 0d & 09 \\
+09 & 0e & 0b & 0d \\
+0d & 09 & 0e & 0b \\
+0b & 0d & 09 & 0e \\
+    \end{bmatrix} \begin{bmatrix}
+      a_0 \\
+      a_1 \\
+      a_2 \\
+      a_3
+    \end{bmatrix}
+  \end{split}
+\end{align}
+
+从矩阵可以看出来，如果用 x 乘法来实现上面的多项式乘法比列混淆要复杂很多，因为都是乘以 $0e$, $0d$ 这样的比较大的数，需要的 x 乘法也自然会多一些。
+AES 专利论文中有相应的优化算法，不过我在代理里面仍然使用的是最 naive 的实现方法。
 
   \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{rust}
 fn inv_mix_columns(states: &mut Vec<u8>) {
@@ -326,7 +355,6 @@ fn inv_mix_columns(states: &mut Vec<u8>) {
     }
 }
   \end{minted}
-
 
 \subsection{逆行移位变换}
 
@@ -364,12 +392,54 @@ fn inv_shift_rows(states: &mut Vec<u8>) -> () {
 
 \begin{figure}[h]
 \centering%
-\includegraphics[width=.4\linewidth]{aes_t2.png}
+\includegraphics[width=.3\linewidth]{aes_t2.png}
   \caption{行移位变换和列混合运行结果}
   \label{fig:t2}
 \end{figure}
 
 \section{轮密钥生成}
+
+\subsection{轮密钥生成算法}
+
+为了把一个 128 bits 的密钥扩展到 AES128 的 10 轮迭代中，我们需要使用密钥扩展算法。
+其实 AES 的密钥扩展比较简单，仍然使用的是字节循环右移（4个字节构成一组，或者说 state 中的一列）和 SBOX 的直接替换来实现的。
+在最后还要再加上（异或） RCON 中规定的 $GF(2^8)$ 多项式。
+
+代码实现如下，
+
+  \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{rust}
+fn key_schedule(cipher_key: &[u8; BLOCK_SIZE]) -> [u8; (ROUND + 1) * BLOCK_SIZE] {
+    let mut round_keys = [0u8; (ROUND + 1) * BLOCK_SIZE];
+    for i in 0..BLOCK_SIZE { round_keys[i] = cipher_key[i]; }
+    for i in 1..(ROUND + 1) {
+        // last 4 bytes (one word), i.e., last column
+        let mut temp_offset: usize = i * 16 - 4;
+        // last round (16 bytes), i.e., last round key
+        let mut last_round: usize = (i - 1) * 16;
+        // RotByte is cyclic right shift, e.g., (a, b, c, d) => (b, c, d, a)
+        round_keys[i * 16] = sub_byte(round_keys[temp_offset + 1]) ^ RCON[i] ^ round_keys[
+            last_round + 1];
+        round_keys[i * 16 + 1] = sub_byte(round_keys[temp_offset + 2]) ^ round_keys[
+            last_round + 2];
+        round_keys[i * 16 + 2] = sub_byte(round_keys[temp_offset + 3]) ^ round_keys[
+            last_round + 3];
+        round_keys[i * 16 + 3] = sub_byte(round_keys[temp_offset]) ^ round_keys[
+            last_round];
+        for j in 1..4 {
+            temp_offset += 4;
+            last_round += 4;
+            round_keys[i * 16 + j * 4] = round_keys[last_round] ^ round_keys[temp_offset];
+            round_keys[i * 16 + j * 4 + 1] = round_keys[last_round + 1] ^ round_keys[
+                temp_offset + 1];
+            round_keys[i * 16 + j * 4 + 2] = round_keys[last_round + 2] ^ round_keys[
+                temp_offset + 2];
+            round_keys[i * 16 + j * 4 + 3] = round_keys[last_round + 3] ^ round_keys[
+                temp_offset + 3];
+        }
+    }
+    round_keys
+}
+\end{minted}
 
 \subsection{运行结果}
 
