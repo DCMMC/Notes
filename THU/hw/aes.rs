@@ -1,4 +1,3 @@
-// use std::io;
 // [ref] https://github.com/openluopworld/aes_128/
 // [ref] https://csrc.nist.gov/csrc/media/projects/cryptographic-standards-and-guidelines/documents/aes-development/rijndael-ammended.pdf#page=3
 use std::convert::TryFrom;
@@ -350,7 +349,6 @@ fn aes128_decrypt(cipher: &Vec<u8>, cipher_key: &str) -> String {
     let key_array: [u8; BLOCK_SIZE] = <[u8; BLOCK_SIZE]>::try_from(
         cipher_key.to_string().into_bytes()).unwrap();
     let round_keys = key_schedule(&key_array);
-
 
     // from the last round to the first round
     let mut r_offset = BLOCK_SIZE * 10;

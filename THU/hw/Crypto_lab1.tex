@@ -401,9 +401,12 @@ fn inv_shift_rows(states: &mut Vec<u8>) -> () {
 
 \subsection{轮密钥生成算法}
 
-为了把一个 128 bits 的密钥扩展到 AES128 的 10 轮迭代中，我们需要使用密钥扩展算法。
-其实 AES 的密钥扩展比较简单，仍然使用的是字节循环右移（4个字节构成一组，或者说 state 中的一列）和 SBOX 的直接替换来实现的。
+为了把一个 128 bits 的密钥扩展到 AES128 的 10 轮迭代中，我们需要使用密钥扩展算法, 把原始密钥再扩展出 10 个轮密钥（round key）。
+其实 AES 的密钥扩展比较简单，仍然使用的是 RotByte 字节循环右移（4个字节构成一组，或者说 state 中的一列）和 使用 SBOX 的 SubByte 字节替换来实现的。
 在最后还要再加上（异或） RCON 中规定的 $GF(2^8)$ 多项式。
+
+具体来说，每一轮将生成 16 字节长度的密钥，每一个轮密钥的前 4 个字节为前面四个字节（也就是上一个轮密钥的最后 4 个字节）先 RotByte 再 SubByte ，并且最后还要对第一个字节加上（异或）\texttt{Rcon[i]} (i 表示当前为第 i 轮)。
+\texttt{Rcon[i]} 直接可以用题目给的那个数组，具体的计算公式见 AES 专利论文~\cite{aes}。 
 
 代码实现如下，
 
@@ -446,11 +449,100 @@ fn key_schedule(cipher_key: &[u8; BLOCK_SIZE]) -> [u8; (ROUND + 1) * BLOCK_SIZE]
 使用原始密钥'abcdefghijklmnop'生成总计11组扩展密钥，将用于之后的加解密。初始密钥K转换为字节矩阵后的4列为 $W\_0 \sim W\_3$，后续的 $W\_4 \sim W\_{43}$ 使用递归计算得到。
 计算结果如图~\ref{fig:t3}所示。
 
-    \begin{figure}[h]
+\begin{figure}[h]
 \centering%
 \includegraphics[width=\linewidth]{aes_t3.png}
   \caption{轮密钥生成运行结果}
   \label{fig:t3}
 \end{figure}
+
+\section{加密机和解密机}
+
+\subsection{代码实现}
+
+加密和解密的逻辑就比较简单了，就是把之前的那些功能整合到一起。
+加密过程包含字节填充，10 轮加密，其中前 9 轮都是一模一样的，最后一轮差别在于没有列混淆过程。
+每一轮加密依次包括字节替换，行移位，列混淆，轮密钥加。
+解密过程就是加密过程的逆过程，需要注意的是，轮密钥的顺序也是反过来的。
+
+具体的加密机代码如下：
+
+  \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{rust}
+fn aes128_encrypt(plaintext: &str, cipher_key: &str) -> Vec<u8> {
+    let mut states = plaintext.to_string().into_bytes();
+    assert!(cipher_key.is_ascii());
+    assert_eq!(cipher_key.len(), BLOCK_SIZE);
+    let cipher: [u8; BLOCK_SIZE] = <[u8; BLOCK_SIZE]>::try_from(
+        cipher_key.to_string().into_bytes()).unwrap();
+    let round_keys = key_schedule(&cipher);
+    pad(&mut states);
+    // first AddRoundKey
+    add_round_key(&mut states, &round_keys[0..BLOCK_SIZE]);
+    // 9 rounds
+    for i in 1..ROUND {
+        sub_bytes(&mut states);
+        shift_rows(&mut states);
+        mix_columns(&mut states);
+        add_round_key(&mut states, &round_keys[i * BLOCK_SIZE..(i + 1) * BLOCK_SIZE]);
+    }
+    // last round
+    sub_bytes(&mut states);
+    shift_rows(&mut states);
+    add_round_key(&mut states, &round_keys[10 * BLOCK_SIZE..11 * BLOCK_SIZE]);
+    states
+}
+\end{minted}
+
+具体的解密机代码如下：
+
+  \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{rust}
+fn aes128_decrypt(cipher: &Vec<u8>, cipher_key: &str) -> String {
+    let mut states = cipher.clone();
+    assert!(cipher_key.is_ascii());
+    assert_eq!(cipher_key.len(), BLOCK_SIZE);
+    let key_array: [u8; BLOCK_SIZE] = <[u8; BLOCK_SIZE]>::try_from(
+        cipher_key.to_string().into_bytes()).unwrap();
+    let round_keys = key_schedule(&key_array);
+    // from the last round to the first round
+    let mut r_offset = BLOCK_SIZE * 10;
+    // first AddRoundKey
+    add_round_key(&mut states, &round_keys[r_offset..r_offset + BLOCK_SIZE]);
+    inv_shift_rows(&mut states);
+    inv_sub_bytes(&mut states);
+    // 9 rounds
+    for _ in 1..ROUND {
+        r_offset -= BLOCK_SIZE;
+        add_round_key(&mut states, &round_keys[r_offset..r_offset + BLOCK_SIZE]);
+        inv_mix_columns(&mut states);
+        inv_shift_rows(&mut states);
+        inv_sub_bytes(&mut states);
+    }
+    // last round
+    r_offset -= BLOCK_SIZE;
+    add_round_key(&mut states, &round_keys[r_offset..r_offset + BLOCK_SIZE]);
+    unpad(&mut states);
+    let result_text = String::from_utf8(states.to_vec())
+        .unwrap();
+    result_text
+}
+\end{minted}
+\subsection{运行结果}
+
+整合轮函数，完成AES加密和解密，原始密钥使用'abcdefghijklmnop'
+明文为 'Cryptography and Network Security; 2020214245; 肖文韬 (Wentao Xiao) 🎉🚀' ，使用自己的学号和姓名拼音替代对应位置字符串。
+最终加密机和解密机的运行结果如图~\ref{fig:t4}所示。
+
+\begin{figure}[h]
+\centering%
+\includegraphics[width=\linewidth]{aes_t4.png}
+  \caption{加密机和解密机运行结果}
+  \label{fig:t4}
+\end{figure}
+
+% 其他部分
+\backmatter
+
+% 参考文献
+\bibliography{ref/refs}  % 参考文献使用 BibTeX 编译
 
 \end{document}
