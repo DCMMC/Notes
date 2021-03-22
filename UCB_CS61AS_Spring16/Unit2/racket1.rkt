@@ -71,6 +71,9 @@
      (if (eval-1 (cadr exp))
          (eval-1 (caddr exp))
          (eval-1 (cadddr exp))))
+    ((and-exp? exp) ; (DCMMC) exercise 1
+     (and (eval-1 (cadr exp))
+          (eval-1 (caddr exp))))
     ((lambda-exp? exp) exp)
     ((pair? exp) (apply-1 (eval-1 (car exp))      ; eval the operator
                   (map eval-1 (cdr exp))))
@@ -115,6 +118,8 @@
 
 (define quote-exp? (exp-checker 'quote))
 (define if-exp? (exp-checker 'if))
+; (DCMMC) exercise 1
+(define and-exp? (exp-checker 'and))
 (define lambda-exp? (exp-checker 'lambda))
 
 
@@ -185,6 +190,7 @@
     (else (map (lambda (subexp) (substitute subexp params args bound))
            exp))))
 
+; (DCMMC) replace parameter name with the actual value in the args
 (define (lookup name params args)
   (cond ((null? params) name)
     ((eq? name (car params)) (maybe-quote (car args)))
