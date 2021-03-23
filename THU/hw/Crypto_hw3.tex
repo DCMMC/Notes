@@ -1,0 +1,81 @@
+% !TeX encoding = UTF-8
+% !TeX program = xelatex
+% !TeX spellcheck = en_US
+
+\documentclass[degree=project,degree-type=project,cjk-font=noto]{thuthesis}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usepackage[autosize]{dot2texi}
+% Syntax Highlighting in LaTeX, need pygments
+% Must build with xelatex -shell-escape -enable-8bit-chars.
+\usepackage{minted}
+% https://tex.stackexchange.com/a/112573
+\usepackage{tcolorbox}
+\usepackage{etoolbox}
+\BeforeBeginEnvironment{minted}{\begin{tcolorbox}}%
+\AfterEndEnvironment{minted}{\end{tcolorbox}}%
+% color for minted
+\definecolor{friendlybg}{HTML}{f0f0f0}
+
+
+% 论文基本配置，加载宏包等全局配置
+\thusetup{
+    output = electronic,
+    title  = {作业三},
+    author  = {肖文韬},
+    studentid = {2020214245},
+    major = {电子信息（计算机技术）},
+    email = {xwt20@mails.tsinghua.edu.cn},
+    course = {密码学与网络安全},
+    include-spine = false,
+}
+
+
+\usepackage{float}
+\usepackage[sort]{natbib}
+\bibliographystyle{thuthesis-numeric}
+\graphicspath{{figures/}}
+
+
+\setlist[enumerate,1]{label=\arabic*.}
+\setlist[enumerate,2]{label=(\alph*)}
+\setlist[enumerate,3]{label=\roman*.}
+\setlist[enumerate,4]{label=\greek*}
+
+
+\begin{document}
+
+% 封面
+\maketitle
+
+\frontmatter
+% \input{data/abstract}
+
+% 目录
+% \tableofcontents
+
+% 插图和附表清单
+% \listoffiguresandtables
+% \listoffigures           % 插图清单
+
+% 正文部分
+\mainmatter
+
+\chapter{作业内容}
+
+\begin{enumerate}
+  \setlength{\itemsep}{3\parskip}
+  \item 在RSA中，如果只知道公钥e和模数N，不知道p、q，求的私钥d的计算复杂度是多少或多大数量集？如果已知p、q呢？请给出证明。
+  \newline
+  {\heiti 解：}
+  
+
+\item 在RSA中：1)给出n=3937和e=17，求私钥d。2)给出n=253和e=3，求私钥d，并对明文m=165进行加密求出密文c。
+\newline
+{\heiti 解：}
+\newline
+
+\end{enumerate}
+
+\end{document}
