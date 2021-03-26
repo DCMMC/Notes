@@ -22,7 +22,7 @@
 % 论文基本配置，加载宏包等全局配置
 \thusetup{
     output = electronic,
-    title  = {作业二},
+    title  = {作业四},
     author  = {肖文韬},
     studentid = {2020214245},
     major = {电子信息（计算机技术）},
@@ -66,106 +66,99 @@
 
 \begin{enumerate}
   \setlength{\itemsep}{3\parskip}
-  \item 考虑一个密码体系 $M = \{a, b, c\}, K = \{k_1, k_2, k_3\}$ 和 $C = \{1, 2, 3, 4\}$, 将明文 M 使用密钥 K 加密为密文 C。假设加密矩阵如下表。
-  \begin{table}[htp]
-  	\centering
-  	\begin{tabular}{|c|c|c|c|}
-  		\hline
-  		& a & b & c \\\hline
-  		$k_1$ & 2 & 3 & 4 \\\hline
-  		$k_2$ & 3 & 4 & 1 \\\hline
-  		$k_3$ & 1 & 2 & 3 \\\hline
-	\end{tabular}
-  \end{table}
-  \newline
-  已知密钥概率分布 $p(k_3) = 1/2, p(k_2) = p(k_1) = 1/4$, 且明文概率分布 $p(a) = 1/3, p(b) = 8/15, p(c)  = 2/15$。请计算 $H(M), H(K), H(C), H(M|C), H(K|C)$。
-  \newline
+  \item 请简要写出抵御重放攻击的几种方案。
+
   {\heiti 解：}
-  \begin{align}
-  	H(M) &= \sum_i p(M_i) I(M_i) = -\sum_i p(M_i) \log p(M_i) \approx 1.3996 \\
-  	H(K) &\approx 1.5 \\
-  	H(C) &\approx 1.9408 \quad (p(C) = [0.2, 0.35, 0.2833, 0.1667]) \\
-  	H(M|C) &= H(MC) - H(C) \nonumber \\
-          &= -\sum_i \sum_j p(M_i, C_j) \log p(M_i, C_j) \approx 2.8996 \\
-  	H(K|C) &= H(KC) - H(C) \approx 2.8996
-  \end{align}
 
-\item 计算英文字母的凯撒密码的唯一解距离。
-\newline
-{\heiti 解：}
-\newline
-\begin{equation}
-N = \frac{H(K)}{D} = - \frac{\log\left(\frac{1}{26}\right)}{3.2} \approx 2
-\end{equation}
-\newline
+  重放攻击（Replay Attacks）又称重播攻击、回放攻击或新鲜性攻击（Freshness Attacks），是指攻击者发送一个目的主机已接收过的包，来达到欺骗系统的目的，主要用于身份认证过程，破坏认证的正确性。
 
-\item 计算重复周期为 6 的维吉尼亚密码的唯一解距离。
-\newline
-{\heiti 解：}
-\newline
-\begin{equation}
-N = \frac{H(K)}{D} = - \frac{\log \left(\frac{1}{26^6}\right)}{3.2} \approx 9
-\end{equation}
-\newline
+  防御重放攻击的一般策略是通过使用会话ID和组件编号标记每个加密的组件，可以防止重放攻击。之所以可行，是因为为程序的每次运行创建了唯一的随机会话ID，因此先前的结果更加难以复制。 由于每个会话的ID不同，攻击者无法执行重放。
 
-\item 某次 AES 加密的轮函数过程中，字节替代的结果为：
-\begin{equation}
-  A = \begin{bmatrix}
-  87 & F2 & 4D & 97 \\
-  EC & 6E & 4C & 90 \\
-  4A & C3 & 46 & E7 \\
-  8C & D8 & 95 & A6
-  \end{bmatrix}
-\end{equation}
-{\heiti 解：}
-\newline
-求这个矩阵经过行移位变换后的结果，以及经过列混淆后第三行第一列的值。
+  具体的防御方案有：
 
-\begin{figure}[!htp]
-\centering%
-\includegraphics[width=.7\linewidth]{aes.png}
-  \caption{移位变换和列混淆的具体过程}
-  \label{fig:aes}
-\end{figure}
+  \begin{enumerate}
+    \item \textbf{会话标识符}。会话标识符是一种可用来帮助避免重放攻击的机制。Bob将一次性令牌发送给Alice，Alice使用该令牌来转换密码并将结果发送给Bob。例如，她将使用令牌来计算会话令牌的哈希，并将其附加到要使用的密码上。Bob使用会话令牌执行相同的计算。当且仅当Alice和Bob的值都匹配时，登录成功。会话令牌应通过随机函数选择（通常使用伪随机函数）。 
+    \item \textbf{一次性密码}。一次性密码与会话令牌类似，因为一次性密码在使用后（或在很短的时间内）就会过期。 除会话外，它们还可用于验证单个交易，也可以在身份验证过程中使用，以帮助在彼此通信的两方之间创建信任。
+    \item \textbf{随机数和MAC}。Bob还可以发送随机数，但消息认证码（MAC）应随其后发送，Alice应检查该消息。
+    \item \textbf{时间戳}。添加时间戳是防止重放攻击的另一种方法。 同步应使用安全协议来实现。例如，Bob 定期广播他的时间和MAC。当Alice要向Bob发送消息时，她会在消息中包含最佳的估计时间，这也是经过身份验证的。 Bob仅接受时间戳在合理范围内的消息。这种方案的优点是Bob不需要生成（伪）随机数，而Alice不需要向Bob询问随机数。在单向或接近单向的网络中，这可能是一个优势。但是，如果重放攻击执行得足够快（即在该“合理”范围内），则可以成功。
+\end{enumerate}
 
-移位变换和列混淆的具体过程如图~\ref{fig:aes}所示。
-移位表换后的结果为 $B$.
+\item 列举四种密钥分配的方式，描述其优缺点。
 
-\begin{equation}
-  B = \begin{bmatrix}
-  87 & F2 & 4D & 97 \\
-  6E & 4C & 90 & EC \\
-  46 & E7 & 4A & C3 \\
-  A6 & 8C & D8 & 95
-  \end{bmatrix}
-\end{equation}
+  {\heiti 解：}
 
-列混淆后的结果为 $C$.
+\begin{enumerate}
+  \item \textbf{基于对称密码体制的密钥分配:无中心的密钥分配}。需要进行保密通信的两个用户事先应该具有主密钥。对n个用户的网络这种方法无实用价值。
+  \item \textbf{基于对称密码体制的密钥分配:有中心的密钥分配}。每个用户与KDC都有共享密钥，用户必须完全信任KDC。在N个用户时，KDC只需要分发N个密钥，成本比较高。
+  \item \textbf{基于非对称加密：公钥的公开发布}。用户将自己的公钥发送给每一个其他的用户。方法简单，容易伪造这种发布。
+  \item \textbf{基于非对称加密：通过公钥管理机构发布公钥}。公钥管理机构为用户建立维护动态的公钥目录。每个用户知道管理机构的公开钥，只有管理机构知道自己的秘密钥。目录表的建立和维护，公布由可信的实体和组织承担。
+\end{enumerate}
 
-\begin{equation}
-  C = \begin{bmatrix}
-  47 & 40 & A3 & 4C \\
-  37 & D4 & 70 & 9F \\
-  94 & E4 & 3A & 42 \\
-  ED & A5 & A6 & BC
-  \end{bmatrix}
-\end{equation}
+\item 简述三种数字签名方案。
 
-\item 思考题：为何 AES 加密算法的最后一轮与前 9 轮不同？
+数字签名是一种功能类似写在纸上的普通签名、但是使用了公钥加密领域的技术，以用于鉴别数字信息的方法。
+一套数字签名通常会定义两种互补的运算，分别用于签名和验证。
 
-{\heiti 解：}
-\newline
-AES算法在处理的轮数上只有最后一轮与前面 9 轮不同之处在于最后一轮少了列混淆处理。
-理由：
-\newline\newline
-在正常的 AES 轮中，列混淆会在轮密钥加操作之前进行。
-不过，也可以调换这些操作的顺序。先执行轮密钥加操作，再执行列混淆操作，稍加修改，就可以收到同样的结果。
-因此，可以认为最后的列混淆不会增加任何安全性，因为它是一个不加键、可逆的操作，可以使其成为最后一轮的最后一步。
-\newline\newline
-然而理论上我们可以进行攻击。考虑到一个AES变体，其中列混淆在最后一轮加密中执行。
-为了攻击解密函数，攻击者可能会交换列混淆和轮密钥加的顺序，这样他就可以直接撤销列混淆。
-现在假设他能够（以某种方式）恢复轮密钥加中使用的轮密钥的一些信息。
-因为他交换了操作，所以他恢复的实际上并不是键表（Key schedule）吐出的轮密钥的信息，而是应用了逆列混淆的轮密钥的信息。
+  {\heiti 解：}
+
+\begin{enumerate}
+  \item \textbf{RSA签名体制}。任意选取两个大素数 p 和 q，计算 n=p*q ，然后随机选取一个与 φ(n) 互素的数 e作为公钥，用扩展Euclid算法计算出私钥 d≡e−1modφ(n)。基于大整数的质因数分解是 NP 问题作为密码安全性的理论基础。
+  \item \textbf{Rabin数字签名方案}。签名算法对应Rabin密码体制中的解密过程。待签名的消息为 m ，判断消息m是否同时是模p和模q的平方剩余。若是，那么对m签字就是计算模m的平方根；若否，则对m作一个变换，将其映射为满足需要的m’
+。求解合数模的平方根是困难的，除非能够对模数进行素因子分解。即知道模数n的两个素因子p和q，然后将问题转化成以此同余方程组，再利用中国剩余定理求解。
+  \item \textbf{DSA数字签名算法}。Digital Signature Algorithm (DSA)是Schnorr和ElGamal签名算法的变种，被美国NIST作为DSS标准。DSA是基于整数有限域离散对数难题的，其安全性与RSA相比差不多。DSA的一个重要特点是两个素数公开，这样，当使用别人的p和q时，即使不知道私钥，你也能确认它们是否是随机产生的，还是作了手脚。RSA算法却做不到。
+\end{enumerate}
+
+\item 如何利用伪造的 X.509 证书实现 SSL 会话劫持?
+
+  {\heiti 解：}
+
+当SSL客户端与SSL服务端建立连接时，在正常的连接握手阶段，客户端必定会要求服务端出示其X.509公钥证书，并根据以下3个要素验证服务器证书的有效性：
+
+\begin{enumerate}
+\item 该公钥证书的subject name(主题名)和所访问的服务器站点的名称是否一致；
+\item 该公钥证书的是否过期；
+\item 该公钥证书及其签发者证书链中的证书的数字签名是否有效（层层验证，一直验证到根CA证书为止）。
+\end{enumerate}
+
+当SSL客户端访问一个基于HTTPS的加密Web站点时，只要上述三个要素有一个验证没有通过，SSL协议就会发出告警，大多数浏览器会弹出一个提示框，提示服务器证书存在的问题，但不会直接断开SSL连接，而是让用户决定是否继续。
+因为用户往往由于缺乏安全意识或者图方便而选择接受不安全的证书。
+这就使得伪造一个和合法证书极为相似的“伪证书”骗取SSL 客户端用户信任的手段成为可能。
+
+主机M通过数据流重定向技术，使得主机C与主机S之间的通信流量都流向主机M，主机C本欲与主机S建立SSL连接，但发送的连接建立请求被重定向到了主机M；主机C首先与主机M建立TCP连接，然后向主机M发起SSL连接请求；主机M收到来自主机C的连接请求后，首先与主机S建立TCP连接，然后向主机S发起SSL连接请求；主机S响应主机M的请求，由此主机M与主机S之间成功建立SSL连接，主机M同时获得主机S的X.509公钥证书Certificate\_S；主机M根据Certificate\_S中的关键信息（主要是subject name、有效期限等）伪造一个极相似的自签名证书Certificate\_S’,并以此证书响应第②步中，来自主机C的SSL连接请求；主机C的浏览器验证Certificate\_S’的有效性，发现subject name与请求的站点名称一致，证书还在有效期内，但是并非由信任的机构颁发。于是弹出提示框，让用户选择是否继续。由于Certificate\_S’与Certificate\_S从外表上几乎看不出来差别，大部分用户会选择继续（这是SSL会话劫持可以成功的关键），由此主机C与主机M成功建立SSL连接。这样以后，主机C发往SSL服务端的数据，主机M可以捕获并解密查看；主机S返回给SSL客户端的数据，主机M也可以捕获并解密查看。至此，主机M实现了完整的SSL中间人监测。
+
+
+\item 下列对 SSL/TLS 协议描述正确的是:
+\begin{enumerate}
+  \item 工作于 TCP/IP 协议栈的网络层
+  \item 不能够提供身份认证功能
+  \item 仅能够实现加解密功能
+  \item 可以被用于实现安全电子邮件的传送
+\end{enumerate}
+
+  {\heiti 解：}
+
+D.
+
+\item 基于 RSA 密钥交换的 TLS 握手流程中，通信双方需要交换几个随机数?
+\begin{enumerate}
+  \item 1
+  \item 2
+  \item 3
+  \item 4
+\end{enumerate}
+
+C.
+
+\item 以下哪种语言没有内建的 TLS 库?
+\begin{enumerate}
+  \item Java
+  \item Golang
+  \item C++
+  \item Python
+\end{enumerate}
+
+C.
+
 \end{enumerate}
 
 \end{document}
