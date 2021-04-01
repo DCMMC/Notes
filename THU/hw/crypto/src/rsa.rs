@@ -1,17 +1,38 @@
 // [ref] https://github.com/openssl/openssl/blob/master/crypto/bn/bn_prime.c
 // [ref] https://www.openssl.org/docs/man1.0.2/man3/BN_generate_prime.html
-use num_bigint::{BigUint, RandBigInt, ToBigUint};
-use std::convert::TryFrom;
+// [ref] https://docs.rs/rug/1.12.0/rug/struct.Integer.html
+// [ref] https://carol-nichols.com/2017/04/20/rust-profiling-with-dtrace-on-osx/
+use rand::random;
+use rug::rand::{RandGen, RandState};
+use rug::Integer;
 mod primes;
-use crate::rsa::primes::primes;
+use crate::rsa::primes::PRIMES;
 
-const BIT_SIZE: u64 = 2048;
+const BIT_SIZE: u32 = 2048;
 
-fn generate_number(bit_size: u64) -> BigUint {
-    let mut rng = rand::thread_rng();
-    let mut big_number = rng.gen_biguint(bit_size);
+struct SimpleGenerator {
+    seed: u64,
+}
+
+impl RandGen for SimpleGenerator {
+    fn gen(&mut self) -> u32 {
+        random::<u32>()
+    }
+    fn seed(&mut self, seed: &Integer) {
+        self.seed = seed.to_u64_wrapping();
+    }
+}
+
+fn generate_number(bit_size: u32) -> Integer {
+    let mut gen = SimpleGenerator { seed: 2014 };
+    let mut rng = RandState::new_custom(&mut gen);
+    let mut big_number = Integer::from(Integer::random_bits(bit_size, &mut rng));
     // odd number
-    big_number |= 1.to_biguint().unwrap();
+    &mut big_number.set_bit(0, true);
+    &mut big_number.set_bit(bit_size - 1, true);
+
+    // println!("big_number={:?}", big_number);
+
     big_number
 }
 
@@ -25,7 +46,7 @@ fn generate_number(bit_size: u64) -> BigUint {
  * 4. (ossl_bn_miller_rabin_is_prime) repeat 64 Miller-Rabin probabilistic primality checks,
  * this yields a false positive rate of at most 2^{-64} for random input.
  */
-fn generate_prime() -> BigUint {
+fn generate_prime() -> Integer {
     'generate: loop {
         let mut rnd = generate_number(BIT_SIZE);
         let mut delta = 0;
@@ -34,30 +55,30 @@ fn generate_prime() -> BigUint {
         // According to Prime number theorem
         // probability of primes in natural numbers is about 1/log(2^{2048}) \approx 1/1418
         let maxdelta = 1418 * 3;
-        let mut mods = vec![0u64; trial_divisions];
+        let mut mods = vec![0u32; trial_divisions];
         // refer to bn_mr_min_checks in bn_prime.c#L94:12
         let checks = 64;
         for i in 1..trial_divisions {
-            mods[i] = u64::try_from(&(&rnd % primes[i])).unwrap();
+            mods[i] = Integer::from(&rnd % PRIMES[i]).to_u32().unwrap();
         }
 
         'trial: loop {
             for i in 1..trial_divisions {
-                if (mods[i] + delta) % primes[i] == 0 {
+                if (mods[i] + delta) % PRIMES[i] == 0 {
                     // try to test new rnd with rnd += 2
                     delta += 2;
                     if delta > maxdelta {
                         continue 'generate;
                     }
                     // println!("trial_divisions w/ {} failed, plus 2 and retry",
-                    //          primes[i]);
+                    //          PRIMES[i]);
                     continue 'trial;
                 }
             }
             break 'trial;
         }
         rnd += delta;
-        if rnd.bits() != BIT_SIZE || !miller_rabin_test(&rnd, checks) {
+        if rnd.significant_bits() != BIT_SIZE || !miller_rabin_test(&rnd, checks) {
             // println!("Miller-Rabin test failed, regenerate");
             continue 'generate;
         } else {
@@ -71,33 +92,34 @@ fn generate_prime() -> BigUint {
  * Fermat test will 100% fail for Carmichael numbers.
  * The Miller-Rabin test checks if number is *strong probable* prime.
  */
-fn miller_rabin_test(n: &BigUint, iteration: u8) -> bool {
+fn miller_rabin_test(rnd: &Integer, iteration: u8) -> bool {
+    let n = Integer::from(rnd);
     // (step 1) write n as 2^r*d + 1 with d odd (by factoring out
     // powers of 2 from n − 1)
-    let one = 1.to_biguint().unwrap();
-    let mut d = n - &one;
+    let mut d: Integer = Integer::from(&n - 1);
     let mut r = 0;
-    while (&(&d & &one)).bits() == 0 {
+    while !(&d.get_bit(0)) {
         d >>= 1;
         r += 1;
     }
 
-    let mut rng = rand::thread_rng();
-    let two = 2.to_biguint().unwrap();
+    let mut rng = RandState::new();
     // println!("r={}", r);
     'witness_loop: for _ in 0..iteration {
-        let a = rng.gen_biguint_range(&two, &(n - &two));
+        let mut n_sub = Integer::from(&n - 2u8);
+        let a = Integer::from(n_sub.random_below_ref(&mut rng)) + 2u8;
         // (step 2) x = a^d mod n
-        let mut x = a.modpow(&d, n);
+        let mut x = a.pow_mod(&d, &n).unwrap();
         // println!("step 2 finish");
         // (step 3)
-        if &x == &one || &x == &(n - &one) {
+        n_sub += 1u8;
+        if &x == &1 || &x == &n_sub {
             continue 'witness_loop;
         }
         // (step 4)
         for _ in 1..r {
-            x = x.modpow(&two, n);
-            if &x == &(n - &one) {
+            x = x.pow_mod(&Integer::from(2), &n).unwrap();
+            if &x == &n_sub {
                 continue 'witness_loop;
             }
         }
@@ -110,5 +132,5 @@ fn miller_rabin_test(n: &BigUint, iteration: u8) -> bool {
 }
 
 pub fn test_rsa() -> () {
-    println!("RSA 2048-bits key:\n{}", generate_prime());
+    println!("\n\nRSA 2048-bits key:\n{}", generate_prime());
 }
