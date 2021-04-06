@@ -10,8 +10,14 @@ use rug::Assign;
 use rug::ops::PowAssign;
 mod primes;
 use crate::rsa::primes::PRIMES;
+use crate::aes::title;
 
+// In my implementation, the length of RSA keys are fixed to 2048
+// which is the most popular and secure kind of RSA.
+// One can easily adapt this to RSA-4096 (more time-consuming) or RSA-1024 (insecure).
 const BIT_SIZE: u32 = 2048;
+// PAD BYTE: 0x00
+const PAD_BYTE: u8 = 0;
 
 struct SimpleGenerator {
     seed: u64,
@@ -35,8 +41,6 @@ fn generate_number(bit_size: u32) -> Integer {
     // odd number
     &mut big_number.set_bit(0, true);
     &mut big_number.set_bit(bit_size - 1, true);
-
-    // println!("big_number={:?}", big_number);
 
     big_number
 }
@@ -88,7 +92,7 @@ fn generate_prime(method: &str) -> Integer {
         } else if method == "miller_rabin" && !miller_rabin_test(&rnd, checks, false) {
             // println!("Miller-Rabin test failed, regenerate");
             continue 'generate;
-        } else if method == "baillie_psw" && !baillie_psw(&rnd) {
+        } else if method == "baillie_psw" && !baillie_psw(&rnd, true) {
             continue 'generate;
         } else if method == "build_in" && (&rnd).is_probably_prime(checks as u32) == IsPrime::No {
             continue 'generate;
@@ -147,9 +151,9 @@ fn jacobi(a_ro: &Integer, n_ro: &Integer) -> i8 {
  * 4. Perform a strong Lucas probable prime test on n using parameters D, P, and Q. If
  * n is not a strong Lucas probable prime, then n is composite. Otherwise, n is almost certainly prime.
  */
-fn baillie_psw(n: &Integer) -> bool {
+fn baillie_psw(n: &Integer, with_mr: bool) -> bool {
     // (step 2)
-    if !miller_rabin_test(n, 1, true) {
+    if with_mr && !miller_rabin_test(n, 1, true) {
         return false;
     }
     // (step 3)
@@ -266,30 +270,266 @@ fn miller_rabin_test(rnd: &Integer, iteration: u8, base_2: bool) -> bool {
     true
 }
 
-pub fn test_all(checks: u32) -> () {
+/**
+ * [ref] https://cp-algorithms.com/algebra/module-inverse.html
+ * Complexity:
+ * 1. extend_gcd: O(2log_{10}(\phi(n))) divide operators on average
+ * 2. binary exponentiation: O(log(\phi(n))) mul operators if \phi(n) is prime.
+ *    However, most of \phi(n) is not prime.
+ */
+fn modular_inverse(e: &Integer, phi_n: &Integer, method: &str) -> Integer {
+    if method == "extend_gcd" {
+        // [ref] https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm#Modular_integers
+        let mut t = Integer::from(0);
+        let mut newt = Integer::from(1);
+        let mut r = Integer::from(phi_n);
+        let mut newr = Integer::from(e);
+        let mut quotient = Integer::new();
+        let mut tmp = Integer::new();
+        while newr.significant_bits() != 0 {
+            quotient.assign(&r / &newr);
+            // (t, newt) := (newt, t − quotient × newt)
+            tmp.assign(&quotient * &newt);
+            tmp *= -1;
+            tmp += &t;
+            t.assign(&newt);
+            newt.assign(&tmp);
+            // (r, newr) := (newr, r − quotient × newr)
+            tmp.assign(&quotient * &newr);
+            tmp *= -1;
+            tmp += &r;
+            r.assign(&newr);
+            newr.assign(&tmp);
+        }
+        if r > 1 {
+            panic!("e is not invertible!");
+        }
+        if t < 0 {
+            t += phi_n;
+        }
+        return t;
+    } else if method == "binary_exp" {
+        // if phi_n is prime, according to Fermat's little theorem,
+        // d can be easily calculated using binary exp,
+        // i.e. e^{-1} = a^{\phi(n) - 2} (mod \phi(n))
+        if baillie_psw(phi_n, true) {
+            println!("phi_n is prime, use binary_exp");
+            return Integer::from((&e).pow_mod_ref(
+                    &Integer::from(phi_n - 2), &phi_n).unwrap())
+        } else {
+            return Integer::from((&e).invert_ref(&phi_n).unwrap());
+        }
+    } else if method == "build_in" {
+        return Integer::from((&e).invert_ref(&phi_n).unwrap());
+    } else {
+        panic!("wrong method!");
+    }
+}
+
+/**
+ * Must be private method, because \phi_n is the secret.
+ */
+fn rsa_key_phase1() -> (Integer, Integer, Integer) {
+    let p = generate_prime("miller_rabin");
+    let q = generate_prime("miller_rabin");
+    let n = Integer::from(&p * &q);
+    // \phi(n) = (p-1)(q-1), \phi is Euler's totient function
+    let phi_n = (p - 1) * (q - 1);
+    // choose e s.t. 1 \le e \le \phi(n) and gcd(e, \phi(n)) = 1
+    // i.e., e and \phi(n) are coprime;
+    // e having a short bit-length and small Hamming weight results in more
+    // efficient encryption - most commonly 0x10001 = 65537. However, small values of
+    // e (such as e=3) have been shown to be less secure in some settings.
+    let e = Integer::from(65537);
+
+    (n, phi_n, e)
+}
+
+/**
+ * Must be private method, because d is the secret.
+ */
+fn rsa_key_pair(method: &str) -> (Integer, Integer, Integer) {
+    let (n, phi_n, e) = rsa_key_phase1();
+    // de = 1 (mod \phi(n))
+    let d = modular_inverse(&e, &phi_n, method);
+
+    // public key: (n, e)
+    // private key: (n, d)
+    (n, e, d)
+}
+
+fn rsa_encrypt(key: (&Integer, &Integer), plaintext: &str) -> Vec<u8> {
+    let (n, e)  = key;
+    // log_2 n
+    let block_size = (n.significant_bits() as f64 / 8.0).ceil() as usize;
+    println!("block_size: {}", block_size);
+    let mut padded_bytes: Vec<u8> = plaintext.to_string()
+            .into_bytes();
+    let mut pad_size = padded_bytes.len() % block_size;
+    if pad_size != 0 {
+        pad_size = block_size - pad_size;
+    }
+    println!("padding_size={}", pad_size);
+    // right padding, e.g., 0x2021 => 0x202100 (padding_size=2)
+    padded_bytes.extend(vec![PAD_BYTE; pad_size]);
+    for block in padded_bytes.chunks_mut(block_size) {
+        let mut num_str = block.iter()
+            .map(|x| format!("{:02X}", x))
+            .fold(String::from(""),
+                  |res: String, curr: String| res + &curr
+            );
+        if num_str.as_bytes()[0] == 0 {
+            // if "0x011...", we must remove the first 0 (=> 0x11)
+            num_str.remove(0);
+        }
+        let mut m = Integer::from(Integer::parse_radix(
+            num_str, 16).unwrap());
+        println!("m={}", m);
+        m.pow_mod_mut(e, n).unwrap();
+        // len(c) may less than len(m)
+        let mut digits = m.to_string_radix(16);
+        if digits.len() % 2 == 1 {
+            digits.insert(0, '0');
+        }
+        for idx in 0..block.len() {
+            block[idx] = u8::from_str_radix(&digits[(idx*2)..(idx*2+2)], 16).unwrap();
+        }
+
+    }
+
+    padded_bytes
+}
+
+fn rsa_decrypt(key: (&Integer, &Integer), cipher: &Vec<u8>) -> String {
+    title("decryption");
+    let (n, d) = key;
+    let block_size = (n.significant_bits() as f64 / 8.0).ceil() as usize;
+    let chunks = cipher.chunks(block_size);
+    let num_chunks = chunks.len();
+    let mut plain = String::new();
+    for (idx, block) in chunks.enumerate() {
+        let mut num_str = block.iter()
+            .map(|x| format!("{:02X}", x))
+            .fold(String::from(""),
+                  |res: String, curr: String| res + &curr
+            );
+        if num_str.as_bytes()[0] == '0' as u8 {
+            // if "0x011...", we must remove the first 0
+            num_str.remove(0);
+        }
+        let mut c = Integer::from(Integer::parse_radix(
+            num_str, 16).unwrap());
+        println!("c={}", c);
+        c.pow_mod_mut(d, n).unwrap();
+
+        let mut digits = c.to_string_radix(16);
+        if digits.len() % 2 == 1 {
+            digits.insert(0, '0');
+        }
+        let mut c_block = vec![0u8; digits.len() / 2];
+        for idx in 0..(digits.len() / 2) {
+            c_block[idx] = u8::from_str_radix(&digits[(idx*2)..(idx*2+2)], 16).unwrap();
+        }
+
+        if idx == (num_chunks - 1) {
+            while c_block[c_block.len() - 1] == PAD_BYTE {
+                c_block.pop();
+            }
+            println!("unpad:");
+            let blocks = c_block.chunks(block_size);
+            for (idx, b) in blocks.enumerate() {
+                println!("Block {}:", idx + 1);
+                for c in b {
+                    print!("{:02X} ", c);
+                }
+                println!("\n");
+            }
+
+        }
+        plain.push_str(&String::from_utf8(c_block).unwrap());
+    }
+
+    plain
+}
+
+pub fn test_all_internal() -> () {
+    title("Test Internals");
+    print!("test jacbi..");
     assert!(jacobi(&Integer::from(1001), &Integer::from(9907)) == -1);
     assert!(jacobi(&Integer::from(19), &Integer::from(45)) == 1);
     assert!(jacobi(&Integer::from(8), &Integer::from(21)) == -1);
     assert!(jacobi(&Integer::from(5), &Integer::from(21)) == 1);
-    //  1159 = 19 * 61 is a lucas pseudoprime
+    println!(" passed");
+    // 1159 = 19 * 61 is a lucas pseudoprime
     // [ref] https://stackoverflow.com/a/38352706
-    assert!(baillie_psw(&Integer::from(113)));
-    assert!(baillie_psw(&Integer::from(19)));
-    assert!(baillie_psw(&Integer::from(479)));
-    assert!(baillie_psw(&Integer::from(17389)));
+    print!("test baillie_psw..");
+    assert!(baillie_psw(&Integer::from(113), true));
+    assert!(baillie_psw(&Integer::from(19), true));
+    assert!(baillie_psw(&Integer::from(1159), false));
+    assert!(baillie_psw(&Integer::from(17389), true));
+    println!(" passed");
 
+    // recommend: run 4096 tests
+    let mut checks = 256;
+    println!("test PSW and MR with {} random numbers..", checks);
     for i in 1..=checks {
         let n = generate_number(BIT_SIZE);
         let r = n.is_probably_prime(64) != IsPrime::No;
-        assert!(r == baillie_psw(&n));
+        assert!(r == baillie_psw(&n, true));
         assert!(r == miller_rabin_test(&n, 64, false));
         if i % 256 == 0 {
             println!("test {:?} passed.", i);
         }
     }
+
+    checks = 4;
+    println!("test modular_inverse with {} random pairs..", checks);
+    assert!(modular_inverse(&Integer::from(5), &Integer::from(9),
+        "extend_gcd") == 2);
+
+    for i in 1..=checks {
+        let (_, phi_n, e) = rsa_key_phase1();
+        // de = 1 (mod \phi(n))
+        let mut d = modular_inverse(&e, &phi_n, "extend_gcd");
+        let mut de = Integer::from(&e * &d);
+        de %= &phi_n;
+        assert!(de == 1);
+        d = modular_inverse(&e, &phi_n, "binary_exp");
+        de.assign(&e * &d);
+        de %= &phi_n;
+        assert!(de == 1);
+        if i % (checks / 4) == 0 {
+            println!("test {:?} passed.", i);
+        }
+    }
+
+    println!("All passed\n\n");
 }
 
+fn test_t2_t3(plaintext: &str) -> () {
+    title("Test T2 & T3");
+    let (n, e, d) = rsa_key_pair("extend_gcd");
+    let cipher = rsa_encrypt((&n, &e), plaintext);
+    println!("RSA encryption of {}", plaintext);
+    let block_size = (n.significant_bits() as f64 / 8.0).ceil() as usize;
+    let blocks = cipher.chunks(block_size);
+    for (idx, b) in blocks.enumerate() {
+        println!("Block {}:", idx + 1);
+        for c in b {
+            print!("{:02X} ", c);
+        }
+        println!("\n");
+    }
+    let decrypted = rsa_decrypt((&n, &d), &cipher);
+    println!("RSA decryption: {}", decrypted);
+    assert!(plaintext == decrypted);
+}
+
+
 pub fn test_rsa() -> () {
-    test_all(4096);
-    println!("\n\nRSA 2048-bits key:\n{}", generate_prime("baillie_psw"));
+    test_all_internal();
+    // test T1
+    let (n, e, d) = rsa_key_pair("extend_gcd");
+    println!("Generate RSA key pair:\nn={},\ne={},\nd={}\n\n", &n, &e, &d);
+    test_t2_t3("Cryptography and Network Security; 2020214245; 肖文韬 (Wentao Xiao) 🎉🚀");
 }

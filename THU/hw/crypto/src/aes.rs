@@ -376,7 +376,7 @@ fn aes128_decrypt(cipher: &Vec<u8>, cipher_key: &str) -> String {
     result_text
 }
 
-fn print_blocks(states: &mut Vec<u8>) -> () {
+pub fn print_blocks(states: &mut Vec<u8>) -> () {
     let blocks = states.chunks(BLOCK_SIZE);
     for (num, block) in blocks.enumerate() {
         println!("Block {}:", num);
@@ -394,7 +394,7 @@ fn print_block(block: &[u8]) -> () {
     }
 }
 
-fn title(t: &str) -> () {
+pub fn title(t: &str) -> () {
     println!("\n{}", "#####".repeat(12));
     println!("{}", format!("#{:^58}#", t));
     println!("{}\n", "#####".repeat(12));
@@ -507,4 +507,5 @@ pub fn test_aes() -> () {
 
     test_t4("Cryptography and Network Security; 2020214245; 肖文韬 (Wentao Xiao) 🎉🚀",
             "abcdefghijklmnop");
+    println!("\n\n");
 }
