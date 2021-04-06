@@ -3,6 +3,9 @@
 // [ref] https://docs.rs/rug/1.12.0/rug/struct.Integer.html
 // [ref] https://carol-nichols.com/2017/04/20/rust-profiling-with-dtrace-on-osx/
 use rand::random;
+use std::hash::Hash;
+use std::hash::Hasher;
+use std::collections::hash_map::DefaultHasher;
 use rug::rand::{RandGen, RandState};
 use rug::Integer;
 use rug::integer::IsPrime;
@@ -476,6 +479,41 @@ fn rsa_decrypt(key: (&Integer, &Integer), cipher: &Vec<u8>) -> String {
     plain
 }
 
+/**
+ * Return:
+ * (n, e, cipher, sign)
+ */
+fn rsa_sign(plaintext: &str) -> (Integer, Integer, Vec<u8>, String) {
+    let (n, e, d) = rsa_key_pair("extend_gcd");
+    // In practice, sender should use the public key of the receiver to
+    // encrypt the message.
+    let cipher = rsa_encrypt((&n, &d), plaintext);
+    let mut hasher = DefaultHasher::new();
+    plaintext.hash(&mut hasher);
+    let hash: u64 = hasher.finish();
+    // use private key to encrypt the hash of plain message
+    let sign = quick_pow_mod(Integer::from(hash), &d, &n).to_string_radix(16);
+
+    (n, e, cipher, sign)
+}
+
+fn rsa_check_sign(cipher: &Vec<u8>, n: &Integer, e: &Integer,
+                  sign: &str, plain: &str) -> bool {
+    let decrypted = rsa_decrypt((n, e), cipher);
+    assert!(decrypted == plain);
+    let mut hasher = DefaultHasher::new();
+    decrypted.hash(&mut hasher);
+    let hash: u64 = hasher.finish();
+    // use public key of the sender to decrypt the hash of the decrypted message
+    let hash_in_sign: u64 = quick_pow_mod(
+        Integer::from(Integer::parse_radix(sign, 16).unwrap()),
+        e, n
+    ).to_u64().unwrap();
+    println!("hash: {},\nsign_in_sign: {}", hash, hash_in_sign);
+
+    hash == hash_in_sign
+}
+
 pub fn test_all_internal() -> () {
     title("Test Internals");
     print!("test jacbi..");
@@ -494,7 +532,7 @@ pub fn test_all_internal() -> () {
     println!(" passed");
 
     // recommend: run 4096 tests
-    let mut checks = 256;
+    let mut checks = 4096;
     println!("test PSW and MR with {} random numbers..", checks);
     for i in 1..=checks {
         let n = generate_number(BIT_SIZE);
@@ -506,7 +544,7 @@ pub fn test_all_internal() -> () {
         }
     }
 
-    checks = 4;
+    checks = 8;
     println!("test modular_inverse with {} random pairs..", checks);
     assert!(modular_inverse(&Integer::from(5), &Integer::from(9),
         "extend_gcd") == 2);
@@ -558,6 +596,25 @@ fn test_t2_t3(plaintext: &str) -> () {
     assert!(plaintext == decrypted);
 }
 
+fn test_t4(plain: &str) -> () {
+    title("Test T4");
+    let (n, e, cipher, sign) = rsa_sign(plain);
+    println!("cipher of {}:\n", plain);
+
+    let block_size = (n.significant_bits() as f64 / 8.0).ceil() as usize;
+    let blocks = cipher.chunks(block_size);
+    for (idx, b) in blocks.enumerate() {
+        println!("Block {}:", idx + 1);
+        for c in b {
+            print!("{:02X} ", c);
+        }
+        println!("\n");
+    }
+    println!("sign:\n{}\n", &sign);
+
+    let check_res = rsa_check_sign(&cipher, &n, &e, &sign, plain);
+    println!("Check result by the receiver: {}", check_res);
+}
 
 pub fn test_rsa() -> () {
     test_all_internal();
@@ -565,4 +622,6 @@ pub fn test_rsa() -> () {
     let (n, e, d) = rsa_key_pair("extend_gcd");
     println!("Generate RSA key pair:\nn={},\ne={},\nd={}\n\n", &n, &e, &d);
     test_t2_t3("Cryptography and Network Security; 2020214245; 肖文韬 (Wentao Xiao) 🎉🚀");
+    test_t4("Cryptography and Network Security; 2020214245; 肖文韬 (Wentao Xiao) 🎉🚀");
 }
+//~
