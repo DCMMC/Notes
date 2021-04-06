@@ -2,6 +2,17 @@
 // [ref] https://www.openssl.org/docs/man1.0.2/man3/BN_generate_prime.html
 // [ref] https://docs.rs/rug/1.12.0/rug/struct.Integer.html
 // [ref] https://carol-nichols.com/2017/04/20/rust-profiling-with-dtrace-on-osx/
+
+// 3rd part dependencies:
+// 1. random
+// 2. hash
+// 3. rug (GNU GMP) for high precision arithmetic operations
+//
+// Note that we can naively implement mul and div (and pow_mod) manually
+// using long multiplication and long devide.
+// However, it's VERY SLOW!!
+// And the speed up tricks are difficult to implement and trivial.
+// More details plz refer to the GMP project.
 use rand::random;
 use std::hash::Hash;
 use std::hash::Hasher;
@@ -11,6 +22,7 @@ use rug::Integer;
 use rug::integer::IsPrime;
 use rug::Assign;
 use rug::ops::PowAssign;
+
 mod primes;
 use crate::rsa::primes::PRIMES;
 use crate::aes::title;
@@ -37,8 +49,10 @@ impl RandGen for SimpleGenerator {
 
 fn generate_number(bit_size: u32) -> Integer {
     let mut gen = SimpleGenerator { seed: 2014 };
-    // 因为如果直接用 RandState::new() 生成的随机数每次都是一摸一样的，估计是软件 bug
-    // 所以改用自定义随机数生成器
+    // Because use RandState::new() to generate random numbers directly will
+    // get the same number every time.
+    // I guess this is a bug of rug.
+    // So I decided to use custom randstate to workaround this.
     let mut rng = RandState::new_custom(&mut gen);
     let mut big_number = Integer::from(Integer::random_bits(bit_size, &mut rng));
     // odd number
