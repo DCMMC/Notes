@@ -358,6 +358,28 @@ fn rsa_key_pair(method: &str) -> (Integer, Integer, Integer) {
     (n, e, d)
 }
 
+/**
+ * Naive algo to calculate `m^e mod n`
+ * O(2 log (e)) mul operators in worst case
+ */
+fn quick_pow_mod(mut m: Integer, e: &Integer, n: &Integer) -> Integer {
+    // e >= 1
+    m %= n;
+    let mut ans = Integer::from(1);
+    let mut e_curr = Integer::from(e);
+    let two = Integer::from(2);
+    while e_curr.significant_bits() != 0 {
+        if e_curr.get_bit(0) {
+            ans *= &m;
+            ans %= n;
+        }
+        m.pow_mod_mut(&two, n).unwrap();
+        e_curr >>= 1;
+    }
+
+    ans
+}
+
 fn rsa_encrypt(key: (&Integer, &Integer), plaintext: &str) -> Vec<u8> {
     let (n, e)  = key;
     // log_2 n
@@ -385,7 +407,8 @@ fn rsa_encrypt(key: (&Integer, &Integer), plaintext: &str) -> Vec<u8> {
         let mut m = Integer::from(Integer::parse_radix(
             num_str, 16).unwrap());
         println!("m={}", m);
-        m.pow_mod_mut(e, n).unwrap();
+        m = quick_pow_mod(m, e, n);
+        // m.pow_mod_mut(e, n).unwrap();
         // len(c) may less than len(m)
         let mut digits = m.to_string_radix(16);
         if digits.len() % 2 == 1 {
@@ -420,7 +443,8 @@ fn rsa_decrypt(key: (&Integer, &Integer), cipher: &Vec<u8>) -> String {
         let mut c = Integer::from(Integer::parse_radix(
             num_str, 16).unwrap());
         println!("c={}", c);
-        c.pow_mod_mut(d, n).unwrap();
+        c = quick_pow_mod(c, d, n);
+        // c.pow_mod_mut(d, n).unwrap();
 
         let mut digits = c.to_string_radix(16);
         if digits.len() % 2 == 1 {
@@ -502,6 +526,15 @@ pub fn test_all_internal() -> () {
             println!("test {:?} passed.", i);
         }
     }
+
+    print!("test quick_pow_mod...");
+    let mut m = Integer::from(3);
+    m = quick_pow_mod(m, &Integer::from(3), &Integer::from(15));
+    assert!(m == 12);
+    m = Integer::from(2);
+    m = quick_pow_mod(m, &Integer::from(4), &Integer::from(15));
+    assert!(m == 1);
+    println!(" passed");
 
     println!("All passed\n\n");
 }
