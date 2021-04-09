@@ -290,8 +290,8 @@ fn miller_rabin_test(rnd: &Integer, iteration: u8, base_2: bool) -> bool {
 /**
  * [ref] https://cp-algorithms.com/algebra/module-inverse.html
  * Complexity:
- * 1. extend_gcd: O(2log_{10}(\phi(n))) divide operators on average
- * 2. binary exponentiation: O(log(\phi(n))) mul operators if \phi(n) is prime.
+ * 1. extend_gcd: O(2 \log_{10}(\phi(n))) divide operators on average
+ * 2. binary exponentiation: O(\log(\phi(n))) mul operators if \phi(n) is prime.
  *    However, most of \phi(n) is not prime.
  */
 fn modular_inverse(e: &Integer, phi_n: &Integer, method: &str) -> Integer {

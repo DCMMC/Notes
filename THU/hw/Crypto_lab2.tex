@@ -1,0 +1,186 @@
+% !TeX encoding = UTF-8
+% !TeX program = xelatex
+% !TeX spellcheck = en_US
+
+\documentclass[degree=project,degree-type=project,cjk-font=noto]{thuthesis}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+\usepackage[autosize]{dot2texi}
+% Syntax Highlighting in LaTeX, need pygments
+% Must build with xelatex -shell-escape -enable-8bit-chars.
+\usepackage{minted}
+% https://tex.stackexchange.com/a/112573
+\usepackage{tcolorbox}
+\usepackage{etoolbox}
+\BeforeBeginEnvironment{minted}{\begin{tcolorbox}}%
+\AfterEndEnvironment{minted}{\end{tcolorbox}}%
+% color for minted
+\definecolor{friendlybg}{HTML}{f0f0f0}
+
+
+% 论文基本配置，加载宏包等全局配置
+\thusetup{
+    output = electronic,
+    title  = {实验二},
+    author  = {肖文韬},
+    studentid = {2020214245},
+    major = {电子信息（计算机技术）},
+    email = {xwt20@mails.tsinghua.edu.cn},
+    course = {密码学与网络安全},
+    include-spine = false,
+}
+
+
+\usepackage{float}
+\usepackage[sort]{natbib}
+\bibliographystyle{thuthesis-numeric}
+\graphicspath{{figures/}}
+
+
+\setlist[enumerate,1]{label=\arabic*.}
+\setlist[enumerate,2]{label=(\alph*)}
+\setlist[enumerate,3]{label=\roman*.}
+\setlist[enumerate,4]{label=\greek*}
+
+\newcommand*\justify{%
+  \fontdimen2\font=0.4em% interword space
+  \fontdimen3\font=0.2em% interword stretch
+  \fontdimen4\font=0.1em% interword shrink
+  \fontdimen7\font=0.1em% extra space
+  \hyphenchar\font=`\-% allowing hyphenation
+}
+
+\renewcommand{\texttt}[1]{%
+  \begingroup
+  \ttfamily
+  \begingroup\lccode`~=`/\lowercase{\endgroup\def~}{/\discretionary{}{}{}}%
+  \begingroup\lccode`~=`[\lowercase{\endgroup\def~}{[\discretionary{}{}{}}%
+  \begingroup\lccode`~=`.\lowercase{\endgroup\def~}{.\discretionary{}{}{}}%
+  \catcode`/=\active\catcode`[=\active\catcode`.=\active
+  \justify\scantokens{#1\noexpand}%
+  \endgroup
+}
+
+
+\begin{document}
+
+% 封面
+\maketitle
+
+\frontmatter
+% \input{data/abstract}
+
+% 目录
+% \tableofcontents
+
+% 插图和附表清单
+% \listoffiguresandtables
+% \listoffigures           % 插图清单
+
+% 正文部分
+\mainmatter
+
+\chapter{实验介绍}
+RSA加密算法是应用最广泛的公钥加密算法，本次实验实现基于RSA算法的加解密以及数字签名功能，包含以下4种操作：生成密钥对、公钥加密、私钥解密和数字签名。
+本次实验中密钥长度为2048比特。
+实验使用 Rust 语言实现 RSA-2048 的密钥生成，加密解密，以及数字签名操作。
+
+实验目的：
+
+\begin{enumerate}
+    \item 熟悉 RSA 公钥加密算法的思路
+    \item 学习 RSA 实现上的技巧
+    \item 学习 rust 语言的基本用法
+\end{enumerate}
+
+实验平台：
+
+\begin{enumerate}
+    \item rust 语言
+    \item Arch Linux (不依赖具体操作系统，rust 亦可在 windows/macOS 上使用)
+\end{enumerate}
+
+\chapter{实验内容}
+
+\section{生成密钥对}
+
+    密钥对的生成过程包括选取随机数，对随机数进行素性测试，根据素数p和q计算n，随机选择和n的欧拉函数互质的e，计算e的逆元d。
+选取的大素数p和q应当满足现有的安全性要求，且至少使用两种不同的算法进行素性测试，请在实验报告中说明你选择参数和算法的安全性以及效率。
+选取的e同样应当满足安全性要求，至少使用两种不同的算法进行计算逆元d。
+
+\section{素性测试}
+
+本实现采用了两种最主流的概率素性测试算法：
+
+\begin{enumerate}
+  \item \textbf{Miller-Rabin 测试},作为费马定理的扩展，每一轮 MR 测试的伪素数的可能性为 $\frac{1}{4}$，所以 $k$ 轮通过仍然是伪素数的可能性为 $4^{-k}$。复杂度 $O(k \log^2 n)$ ($k$ 为测试轮数)。
+  \item \textbf{Baillie–PSW 测试}, 结合了 Miller-Rabin 测试和强 Lucas 概率测试。复杂度为 $O(log^2 n)$，低于 MR 测试。
+\end{enumerate}
+
+\subsection{模逆运算}
+
+本实现中素数 p 和 q 均为 2048 位，是目前主流的 RSA-2048 实现，密钥长度符合安全要求。
+
+对于 e 的选择，过小的 e（例如 3）会存在安全问题，同时短比特长度和小的 Hamming 权重能够使得加密的效率更加高，目前 OpenSSL 以及其他实现广泛采用的是 65537 (0x10001).
+本实现参考主流实现，e 的选择也是 65537.
+
+d 作为 e 的模 $\phi(n)$ 逆元，因为 n 为 4096 位，所以 d 的强度也能够得到保证。
+
+本实现共有两种模逆的算法实现：
+
+\begin{enumerate}
+  \item \textbf{扩展欧几里得算法}，算法效率 $O(2 \log_{10}(\phi(n)))$（除法运算）。
+  \item \textbf{平方幂算法（binary exponentiation）}，算法效率 $O(\log(\phi(n)))$。但是该算法只适用于 $\phi(n)$ 为素数的情况。
+\end{enumerate}
+
+代码：
+
+  \begin{minted}[texcomments,tabsize=2,fontsize=\normalsize,style=friendly,bgcolor=friendlybg]{rust}
+fn modular_inverse(e: &Integer, phi_n: &Integer, method: &str) {
+    if method == "extend_gcd" {
+        let mut t = Integer::from(0);
+        let mut newt = Integer::from(1);
+        let mut r = Integer::from(phi_n);
+        let mut newr = Integer::from(e);
+        let mut quotient = Integer::new();
+        let mut tmp = Integer::new();
+        while newr.significant_bits() != 0 {
+            quotient.assign(&r / &newr);
+            tmp.assign(&quotient * &newt);
+            tmp *= -1; tmp += &t; t.assign(&newt);
+            newt.assign(&tmp);
+            tmp.assign(&quotient * &newr);
+            tmp *= -1; tmp += &r; r.assign(&newr);
+            newr.assign(&tmp);
+        }
+        if r > 1 { panic!("e is not invertible!"); }
+        if t < 0 { t += phi_n; }
+        return t;
+    } else if method == "binary_exp" {
+        if baillie_psw(phi_n, true) {
+            println!("phi_n is prime, use binary_exp");
+            return Integer::from((&e).pow_mod_ref(
+                    &Integer::from(phi_n - 2), &phi_n).unwrap())
+        } else {
+            return Integer::from((&e).invert_ref(&phi_n).unwrap());
+        }
+    }
+}
+  \end{minted}
+
+
+\begin{figure}[h]
+\centering%
+\includegraphics[width=\linewidth]{aes_t4.png}
+  \caption{加密机和解密机运行结果}
+  \label{fig:t4}
+\end{figure}
+
+% 其他部分
+\backmatter
+
+% 参考文献
+\bibliography{ref/refs}  % 参考文献使用 BibTeX 编译
+
+\end{document}
