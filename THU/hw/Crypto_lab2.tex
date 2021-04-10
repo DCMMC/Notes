@@ -2,9 +2,10 @@
 % !TeX program = xelatex
 % !TeX spellcheck = en_US
 
-\documentclass[degree=project,degree-type=project,cjk-font=noto]{thuthesis}
+\documentclass[degree=project,degree-type=project,cjk-font=windows]{thuthesis}
 \usepackage{mathtools}
 \usepackage{tikz}
+\newfontface\EmojiFont{Twemoji Mozilla}[Renderer=HarfBuzz]
 \usetikzlibrary{shapes,arrows}
 \usepackage[autosize]{dot2texi}
 % Syntax Highlighting in LaTeX, need pygments
@@ -126,7 +127,7 @@ RSA加密算法是应用最广泛的公钥加密算法，本次实验实现基�
 
 miller rabin 测试的代码：
 
-\begin{minted}[texcomments,tabsize=2,fontsize=\normalsize,style=friendly,bgcolor=friendlybg]{rust}
+\begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{rust}
 fn miller_rabin_test(rnd: &Integer, iteration: u8, base_2: bool) {
     let n = Integer::from(rnd);
     let mut d: Integer = Integer::from(&n - 1);
@@ -177,7 +178,7 @@ d 作为 e 的模 $\phi(n)$ 逆元，因为 n 为 4096 位，所以 d 的强度�
 
 两种模逆的算法实现代码：
 
-  \begin{minted}[texcomments,tabsize=2,fontsize=\normalsize,style=friendly,bgcolor=friendlybg]{rust}
+  \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{rust}
 fn modular_inverse(e: &Integer, phi_n: &Integer, method: &str) {
     if method == "extend_gcd" {
         let mut t = Integer::from(0);
@@ -215,7 +216,7 @@ fn modular_inverse(e: &Integer, phi_n: &Integer, method: &str) {
 密钥生成就是通过两个大随机素数 $p,q$ 相乘计算出 $n$，然后再计算 $\phi(n) = (p-1)(q-1)$，然后通过 $e = 65537$ 计算它的模逆 $de = 1 (\text{mod } \phi(n))$。
 代码如下：
 
-  \begin{minted}[texcomments,tabsize=2,fontsize=\normalsize,style=friendly,bgcolor=friendlybg]{rust}
+  \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{rust}
 fn rsa_key_phase1() -> (Integer, Integer, Integer) {
     let p = generate_prime("miller_rabin");
     let q = generate_prime("miller_rabin");
@@ -244,7 +245,7 @@ fn rsa_key_pair(method: &str) -> (Integer, Integer, Integer) {
 RSA 的实现跟之前 AES 的实现都使用 cargo 组织项目代码。
 编译运行的代码：
 
-  \begin{minted}[texcomments,tabsize=2,fontsize=\normalsize,style=friendly,bgcolor=friendlybg]{bash}
+  \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{bash}
   cd target/release && cargo build --release && ./crypto
   \end{minted}
 
@@ -256,6 +257,24 @@ RSA 的实现跟之前 AES 的实现都使用 cargo 组织项目代码。
 
 \subsection{快速幂算法}
 快速幂算法就是对计算 $m^e$ 的优化，就是把 $e$ 以二进制表示，复杂度 $O(2\log(n))$.
+实现代码如下：
+
+  \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{rust}
+fn quick_pow_mod(mut m: Integer, e: &Integer, n: &Integer) -> Integer {
+  m %= n;
+  let mut ans = Integer::from(1);
+  let mut e_curr = Integer::from(e);
+  let two = Integer::from(2);
+  while e_curr.significant_bits() != 0 {
+      if e_curr.get_bit(0) {
+          ans *= &m; ans %= n;
+      }
+      m.pow_mod_mut(&two, n).unwrap();
+      e_curr >>= 1;
+  }
+  ans
+}
+  \end{minted}
 
 \subsection{加密填充字符}
 
@@ -265,7 +284,7 @@ RSA 的实现跟之前 AES 的实现都使用 cargo 组织项目代码。
 其中 $e, n$ 为公钥对。
 代码如下：
 
-  \begin{minted}[texcomments,tabsize=2,fontsize=\normalsize,style=friendly,bgcolor=friendlybg]{rust}
+  \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{rust}
 fn rsa_encrypt(key: (&Integer, &Integer), plaintext: &str) -> Vec<u8> {
     let (n, e)  = key;
     let block_size = (n.significant_bits() as f64 / 8.0).ceil() as usize;
@@ -288,8 +307,8 @@ fn rsa_encrypt(key: (&Integer, &Integer), plaintext: &str) -> Vec<u8> {
         let mut digits = m.to_string_radix(16);
         if digits.len() % 2 == 1 { digits.insert(0, '0'); }
         for idx in 0..block.len() {
-            block[idx] = u8::from_str_radix(&digits[(idx*2)..(idx*2+2)],
-              16).unwrap();
+            block[idx] = u8::from_str_radix(&digits[
+              (idx*2)..(idx*2+2)], 16).unwrap();
         }
     }
     padded_bytes
@@ -300,10 +319,13 @@ fn rsa_encrypt(key: (&Integer, &Integer), plaintext: &str) -> Vec<u8> {
 
 \begin{figure}[h]
 \centering%
-\includegraphics[width=\linewidth]{rsa_t1.png}
+\includegraphics[width=\linewidth]{rsa_t2.png}
   \caption{公钥加密运行结果}
   \label{fig:t2}
 \end{figure}
+
+运行结果如图~\ref{fig:t2}所示，明文为“Cryptography and Network Security; 2020214245; 肖文韬 (Wentao Xiao) 🎉🚀”，加密结果为一个加密块。
+值得一提的是，虽然明文对应的块大部分内容都是填充字符，但是加密块就是全满（没有填充字符）的数据。
 
 \section{私钥解密}
 
@@ -315,11 +337,108 @@ fn rsa_encrypt(key: (&Integer, &Integer), plaintext: &str) -> Vec<u8> {
 解密过程就是就是计算 $c^d \text{ mod } n$，其中 $c, d, n$ 分别为密文（块），私钥对。
 去除填充字符的过程也比较简单，因为填充的字符就是 0，所以只需要把最后一块最后面连续的 0 去掉就好啦。
 
+完整的代码如下：
+
+  \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{rust}
+fn rsa_decrypt(key: (&Integer, &Integer), cipher: &Vec<u8>) -> String {
+    title("decryption");
+    let (n, d) = key;
+    let block_size = (n.significant_bits() as f64 / 8.0).ceil() as usize;
+    let chunks = cipher.chunks(block_size);
+    let num_chunks = chunks.len();
+    let mut plain = String::new();
+    for (idx, block) in chunks.enumerate() {
+        let mut num_str = block.iter()
+            .map(|x| format!("{:02X}", x))
+            .fold(String::from(""),
+                  |res: String, curr: String| res + &curr);
+        if num_str.as_bytes()[0] == '0' as u8 {
+            num_str.remove(0); }
+        let mut c = Integer::from(Integer::parse_radix(
+            num_str, 16).unwrap());
+        println!("c={}", c);
+        c = quick_pow_mod(c, d, n);
+        let mut digits = c.to_string_radix(16);
+        if digits.len() % 2 == 1 {
+            digits.insert(0, '0'); }
+        let mut c_block = vec![0u8; digits.len() / 2];
+        for idx in 0..(digits.len() / 2) {
+            c_block[idx] = u8::from_str_radix(&digits[(idx*2)..(idx*2+2)],
+              16).unwrap(); }
+        if idx == (num_chunks - 1) {
+            while c_block[c_block.len() - 1] == PAD_BYTE {
+                c_block.pop(); } }
+        plain.push_str(&String::from_utf8(c_block).unwrap());
+    }
+    plain
+}
+\end{minted}
+
+\subsection{运行结果}
+
+\begin{figure}[h]
+\centering%
+\includegraphics[width=\linewidth]{rsa_t3.png}
+  \caption{私钥解密运行结果}
+  \label{fig:t3}
+\end{figure}
+
+运行结果如图~\ref{fig:t3}所示，解密出来的明文为“Cryptography and Network Security; 2020214245; 肖文韬 (Wentao Xiao)”。
+解密出来的块当中大部分为填充字符。
+
+\section{数字签名}
+
+签名的内容可以和题目2中使用的字符串相同，也可以是从文件中导入的任意一个字符串。
+
+签名过程主要包括消息散列，私钥加密，验证过程包括公钥解密，对比验证。首先需要将字符串压缩成哈希值，在这一环节中允许使用现有的哈希函数库，Python中的哈希函数库为hashlib。私钥加密和公钥解密的过程同题目2和3，使用题目1中生成的密钥对，注意要使用私钥加密，公钥解密，与题目2和3中是相反的，输出每一步的结果。
+
+\subsection{代码说明}
+
+值得注意的是，RSA在传输加密的数据的时候，发送者要用接受者的公钥加密消息，然后用发送者自己的私钥签名（加密）明文消息与密文一起发送给接受者。
+因为数字签名就是加密，只不过用的秘钥不一样，所以代码实现还是很简单的。
+代码如下：
+
+  \begin{minted}[texcomments,tabsize=2,fontsize=\footnotesize,style=friendly,bgcolor=friendlybg]{rust}
+fn rsa_sign(plaintext: &str) -> (Integer, Integer, Vec<u8>, String) {
+    let (n, e, d) = rsa_key_pair("extend_gcd")
+    let cipher = rsa_encrypt((&n, &d), plaintext);
+    let mut hasher = DefaultHasher::new();
+    plaintext.hash(&mut hasher);
+    let hash: u64 = hasher.finish();
+    let sign = quick_pow_mod(Integer::from(hash), &d, &n)
+      .to_string_radix(16);
+    (n, e, cipher, sign)
+}
+
+fn rsa_check_sign(cipher: &Vec<u8>, n: &Integer, e: &Integer,
+                  sign: &str, plain: &str) -> bool {
+    let decrypted = rsa_decrypt((n, e), cipher);
+    let mut hasher = DefaultHasher::new();
+    decrypted.hash(&mut hasher);
+    let hash: u64 = hasher.finish();
+    let hash_in_sign: u64 = quick_pow_mod(
+        Integer::from(Integer::parse_radix(sign, 16).unwrap()),
+        e, n).to_u64().unwrap();
+    hash == hash_in_sign
+}
+\end{minted}
+
+\subsection{运行结果}
+
+\begin{figure}[h]
+\centering%
+\includegraphics[width=\linewidth]{rsa_t4.png}
+  \caption{数字签名运行结果}
+  \label{fig:t4}
+\end{figure}
+
+对消息“Cryptography and Network Security; 2020214245; 肖文韬 (Wentao Xiao)”的RSA数字签名，运行结果如图~\ref{fig:t4}所示。
+
 
 % 其他部分
 \backmatter
 
 % 参考文献
-\bibliography{ref/refs}  % 参考文献使用 BibTeX 编译
+% \bibliography{ref/refs}  % 参考文献使用 BibTeX 编译
 
 \end{document}
