@@ -98,18 +98,17 @@ RSA加密算法是应用最广泛的公钥加密算法，本次实验实现基�
 
 \begin{enumerate}
     \item rust 语言
-    \item Arch Linux (不依赖具体操作系统，rust 亦可在 windows/macOS 上使用)
 \end{enumerate}
 
 \chapter{实验内容}
 
 \section{生成密钥对}
 
-    密钥对的生成过程包括选取随机数，对随机数进行素性测试，根据素数p和q计算n，随机选择和n的欧拉函数互质的e，计算e的逆元d。
+密钥对的生成过程包括选取随机数，对随机数进行素性测试，根据素数p和q计算n，随机选择和n的欧拉函数互质的e，计算e的逆元d。
 选取的大素数p和q应当满足现有的安全性要求，且至少使用两种不同的算法进行素性测试，请在实验报告中说明你选择参数和算法的安全性以及效率。
 选取的e同样应当满足安全性要求，至少使用两种不同的算法进行计算逆元d。
 
-\section{素性测试}
+\subsection{素性测试}
 
 本实现采用了两种最主流的概率素性测试算法：
 
@@ -117,6 +116,48 @@ RSA加密算法是应用最广泛的公钥加密算法，本次实验实现基�
   \item \textbf{Miller-Rabin 测试},作为费马定理的扩展，每一轮 MR 测试的伪素数的可能性为 $\frac{1}{4}$，所以 $k$ 轮通过仍然是伪素数的可能性为 $4^{-k}$。复杂度 $O(k \log^2 n)$ ($k$ 为测试轮数)。
   \item \textbf{Baillie–PSW 测试}, 结合了 Miller-Rabin 测试和强 Lucas 概率测试。复杂度为 $O(log^2 n)$，低于 MR 测试。
 \end{enumerate}
+
+值得一提的是，素性测试的一些优化技巧：
+
+\begin{enumerate}
+  \item 首先测试是否是常用的小素数的倍数，具体来说，RSA-2048 会首先判断随机数是否是自然数中前 384 个素数的倍数。该技巧和 384 的来源参考的是 OpenSSL 最新代码的 \texttt{bn\_prime.c\#L74:12}。
+  \item 如果当然随机数不是素数，会对随机数 +2 再判断是否是素数，因为按照素数定理，对于 RSA-2048，连续的数中出现素数的概率为 $\frac{1}{\log(2^{2048})} \approx \frac{1}{1418}$。最坏情况下尝试 700 多次就一定会遇到素数。
+\end{enumerate}
+
+miller rabin 测试的代码：
+
+\begin{minted}[texcomments,tabsize=2,fontsize=\normalsize,style=friendly,bgcolor=friendlybg]{rust}
+fn miller_rabin_test(rnd: &Integer, iteration: u8, base_2: bool) {
+    let n = Integer::from(rnd);
+    let mut d: Integer = Integer::from(&n - 1);
+    let mut r = 0;
+    while !(&d.get_bit(0)) { d >>= 1; r += 1; }
+    let mut rng = RandState::new();
+    'witness_loop: for _ in 0..iteration {
+        let mut n_sub = Integer::from(&n - 2u8);
+        let a = if base_2 {
+            Integer::from(2)
+        } else {
+            Integer::from(n_sub.random_below_ref(&mut rng)) + 2u8
+        };
+        let mut x = a.pow_mod(&d, &n).unwrap();
+        n_sub += 1u8;
+        if &x == &1 || &x == &n_sub {
+            continue 'witness_loop;
+        }
+        for _ in 1..r {
+            x = x.pow_mod(&Integer::from(2), &n).unwrap();
+            if &x == &n_sub {
+                continue 'witness_loop;
+            }
+        }
+        return false;
+    }
+    true
+}
+\end{minted}
+
+因为囿于篇幅，具体的代码注释参见源码。
 
 \subsection{模逆运算}
 
@@ -130,11 +171,11 @@ d 作为 e 的模 $\phi(n)$ 逆元，因为 n 为 4096 位，所以 d 的强度�
 本实现共有两种模逆的算法实现：
 
 \begin{enumerate}
-  \item \textbf{扩展欧几里得算法}，算法效率 $O(2 \log_{10}(\phi(n)))$（除法运算）。
+  \item \textbf{扩展欧几里得算法}，算法效率 $O(2 \log_{10}(\phi(n)))$（除法运算）。gcd 的计算复杂度推导很复杂，具体可以参考 TAOCP。
   \item \textbf{平方幂算法（binary exponentiation）}，算法效率 $O(\log(\phi(n)))$。但是该算法只适用于 $\phi(n)$ 为素数的情况。
 \end{enumerate}
 
-代码：
+两种模逆的算法实现代码：
 
   \begin{minted}[texcomments,tabsize=2,fontsize=\normalsize,style=friendly,bgcolor=friendlybg]{rust}
 fn modular_inverse(e: &Integer, phi_n: &Integer, method: &str) {
@@ -169,13 +210,111 @@ fn modular_inverse(e: &Integer, phi_n: &Integer, method: &str) {
 }
   \end{minted}
 
+\subsection{密钥生成}
+
+密钥生成就是通过两个大随机素数 $p,q$ 相乘计算出 $n$，然后再计算 $\phi(n) = (p-1)(q-1)$，然后通过 $e = 65537$ 计算它的模逆 $de = 1 (\text{mod } \phi(n))$。
+代码如下：
+
+  \begin{minted}[texcomments,tabsize=2,fontsize=\normalsize,style=friendly,bgcolor=friendlybg]{rust}
+fn rsa_key_phase1() -> (Integer, Integer, Integer) {
+    let p = generate_prime("miller_rabin");
+    let q = generate_prime("miller_rabin");
+    let n = Integer::from(&p * &q);
+    let phi_n = (p - 1) * (q - 1);
+    let e = Integer::from(65537);
+    (n, phi_n, e)
+}
+
+fn rsa_key_pair(method: &str) -> (Integer, Integer, Integer) {
+    let (n, phi_n, e) = rsa_key_phase1();
+    let d = modular_inverse(&e, &phi_n, method);
+    (n, e, d)
+}
+\end{minted}
+
+\subsection{运行结果}
 
 \begin{figure}[h]
 \centering%
-\includegraphics[width=\linewidth]{aes_t4.png}
-  \caption{加密机和解密机运行结果}
-  \label{fig:t4}
+\includegraphics[width=\linewidth]{rsa_t1.png}
+  \caption{密钥生成运行结果}
+  \label{fig:t1}
 \end{figure}
+
+RSA 的实现跟之前 AES 的实现都使用 cargo 组织项目代码。
+编译运行的代码：
+
+  \begin{minted}[texcomments,tabsize=2,fontsize=\normalsize,style=friendly,bgcolor=friendlybg]{bash}
+  cd target/release && cargo build --release && ./crypto
+  \end{minted}
+
+密钥生成的 $n, e, d$ 如图~\ref{fig:t1} 所示，其中 $n$ 是两个 2048 位随机大素数 $p, q$ 的乘积, $e$ 则是固定的。
+
+\section{公钥加密}
+
+本题使用公钥对明文进行加密，明文为 'Cryptography and Network Security;学号;姓名拼音' ，使用自己的学号和姓名拼音替代对应位置字符串。加密过程包括分块，字符串转数字，公钥加密。分块将待加密的字符串分解成多个块，对于每个块分别加密。每个块的长度取决于选择的大素数p和q的大小，具体来说，比特串的长度应当小于log2n。块长度不足的部分需要使用填充字符补齐。字符串转数字可以先转化成比特串，再转化为数字，或者采用自行规定的转化规则。公钥加密部分请使用快速幂算法计算密文。输出每一步的结果。
+
+\subsection{快速幂算法}
+快速幂算法就是对计算 $m^e$ 的优化，就是把 $e$ 以二进制表示，复杂度 $O(2\log(n))$.
+
+\subsection{加密填充字符}
+
+首先计算 $\log_2 n$ 作为加密块的大小，因为 $n$ 为 4096 位，也就是每一块为 512 字节。
+对于明文的最后一块不足 512 字节的话，在最后面填充 0.
+对于每一块的加密，就是把这一块当做一个大整数 $m$, 然后计算 $m^e \text{ mod } n$.
+其中 $e, n$ 为公钥对。
+代码如下：
+
+  \begin{minted}[texcomments,tabsize=2,fontsize=\normalsize,style=friendly,bgcolor=friendlybg]{rust}
+fn rsa_encrypt(key: (&Integer, &Integer), plaintext: &str) -> Vec<u8> {
+    let (n, e)  = key;
+    let block_size = (n.significant_bits() as f64 / 8.0).ceil() as usize;
+    let mut padded_bytes: Vec<u8> = plaintext.to_string().into_bytes();
+    let mut pad_size = padded_bytes.len() % block_size;
+    if pad_size != 0 {
+        pad_size = block_size - pad_size;
+    }
+    println!("padding_size={}", pad_size);
+    padded_bytes.extend(vec![PAD_BYTE; pad_size]);
+    for block in padded_bytes.chunks_mut(block_size) {
+        let mut num_str = block.iter()
+            .map(|x| format!("{:02X}", x))
+            .fold(String::from(""),
+                  |res: String, curr: String| res + &curr
+            );
+        let mut m = Integer::from(Integer::parse_radix(
+            num_str, 16).unwrap());
+        m = quick_pow_mod(m, e, n);
+        let mut digits = m.to_string_radix(16);
+        if digits.len() % 2 == 1 { digits.insert(0, '0'); }
+        for idx in 0..block.len() {
+            block[idx] = u8::from_str_radix(&digits[(idx*2)..(idx*2+2)],
+              16).unwrap();
+        }
+    }
+    padded_bytes
+}
+\end{minted}
+
+\subsection{运行结果}
+
+\begin{figure}[h]
+\centering%
+\includegraphics[width=\linewidth]{rsa_t1.png}
+  \caption{公钥加密运行结果}
+  \label{fig:t2}
+\end{figure}
+
+\section{私钥解密}
+
+私钥解密是公钥加密操作的逆操作，首先需要将比特串转化为数字，然后对数字使用私钥d进行解密，同样建议使用快速幂等算法计算，然后将数字还原成字符串，输出每一步的结果。
+
+\subsection{代码说明}
+
+因为 RSA 加密解密差不多一模一样，而且都能简单。
+解密过程就是就是计算 $c^d \text{ mod } n$，其中 $c, d, n$ 分别为密文（块），私钥对。
+去除填充字符的过程也比较简单，因为填充的字符就是 0，所以只需要把最后一块最后面连续的 0 去掉就好啦。
+
 
 % 其他部分
 \backmatter
