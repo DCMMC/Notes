@@ -31,8 +31,9 @@ use crate::aes::title;
 // which is the most popular and secure kind of RSA.
 // One can easily adapt this to RSA-4096 (more time-consuming) or RSA-1024 (insecure).
 const BIT_SIZE: u32 = 2048;
+// [deprecated] Zero padding
 // PAD BYTE: 0x00
-const PAD_BYTE: u8 = 0;
+// const PAD_BYTE: u8 = 0;
 
 struct SimpleGenerator {
     seed: u64,
@@ -74,7 +75,8 @@ fn generate_number(bit_size: u32) -> Integer {
  */
 fn generate_prime(method: &str) -> Integer {
     'generate: loop {
-        let mut rnd = generate_number(BIT_SIZE);
+        // p, q are both 1024 bit
+        let mut rnd = generate_number(BIT_SIZE / 2);
         let mut delta = 0;
         // for 2048 bits, more details refer to bn_prime.c#L74:12
         let trial_divisions = 384;
@@ -104,7 +106,7 @@ fn generate_prime(method: &str) -> Integer {
             break 'trial;
         }
         rnd += delta;
-        if rnd.significant_bits() != BIT_SIZE {
+        if rnd.significant_bits() != BIT_SIZE / 2 {
             continue 'generate;
         } else if method == "miller_rabin" && !miller_rabin_test(&rnd, checks, false) {
             // println!("Miller-Rabin test failed, regenerate");
@@ -402,21 +404,19 @@ fn rsa_encrypt(key: (&Integer, &Integer), plaintext: &str) -> Vec<u8> {
     // log_2 n
     let block_size = (n.significant_bits() as f64 / 8.0).ceil() as usize;
     println!("block_size: {}", block_size);
+    // PKCS#7
+    // TODO(DCMMC) only supprt RSA <= 2048. For RSA 4096, refer to OEAP.
+    // [ref] https://en.wikipedia.org/wiki/Padding_(cryptography)#PKCS#5_and_PKCS#7
     let mut padded_bytes: Vec<u8> = plaintext.to_string()
             .into_bytes();
-    let mut pad_size = padded_bytes.len() % block_size;
-    if pad_size != 0 {
-        pad_size = block_size - pad_size;
-    }
-    println!("padding_size={}", pad_size);
-    // right padding, e.g., 0x2021 => 0x202100 (padding_size=2)
-    padded_bytes.extend(vec![PAD_BYTE; pad_size]);
-    for block in padded_bytes.chunks_mut(block_size) {
+    let mut block_chunks = padded_bytes.chunks_exact_mut(block_size);
+    for block in block_chunks {
         let mut num_str = block.iter()
             .map(|x| format!("{:02X}", x))
             .fold(String::from(""),
                   |res: String, curr: String| res + &curr
             );
+        num_str = Integer::from_str_radix(&num_str, 16).to_string_radix(16);
         if num_str.as_bytes()[0] == 0 {
             // if "0x011...", we must remove the first 0 (=> 0x11)
             num_str.remove(0);
@@ -434,8 +434,19 @@ fn rsa_encrypt(key: (&Integer, &Integer), plaintext: &str) -> Vec<u8> {
         for idx in 0..block.len() {
             block[idx] = u8::from_str_radix(&digits[(idx*2)..(idx*2+2)], 16).unwrap();
         }
-
     }
+    let mut block = block_chunks.into_remainder();
+    let mut pad_size = padded_bytes.len() % block_size;
+    if pad_size != 0 {
+        pad_size = block_size - pad_size;
+    }
+    if pad_size == 0 {
+        pad_size = block_size;
+    }
+    assert!(pad_size <= 256);
+    // right padding, e.g., 0x2021 => 0x2021[1][1] (padding_size=2)
+    padded_bytes.extend(vec![(pad_size - 1) as u8; pad_size]);
+    println!("padding_size={}", pad_size);
 
     padded_bytes
 }
@@ -473,8 +484,11 @@ fn rsa_decrypt(key: (&Integer, &Integer), cipher: &Vec<u8>) -> String {
         }
 
         if idx == (num_chunks - 1) {
-            while c_block[c_block.len() - 1] == PAD_BYTE {
+            let pad_byte: u8 = c_block[c_block.len() - 1];
+            let mut pad_cnt: u16 = pad_byte as u16 + 1u16;
+            while c_block[c_block.len() - 1] == pad_byte && pad_cnt > 0 {
                 c_block.pop();
+                pad_cnt -= 1;
             }
             println!("unpad:");
             let blocks = c_block.chunks(block_size);
@@ -546,7 +560,7 @@ pub fn test_all_internal() -> () {
     println!(" passed");
 
     // recommend: run 4096 tests
-    let mut checks = 4096;
+    let mut checks = 256;
     println!("test PSW and MR with {} random numbers..", checks);
     for i in 1..=checks {
         let n = generate_number(BIT_SIZE);
@@ -587,6 +601,10 @@ pub fn test_all_internal() -> () {
     m = quick_pow_mod(m, &Integer::from(4), &Integer::from(15));
     assert!(m == 1);
     println!(" passed");
+
+    // test padding
+    test_t2_t3(&String::from_utf8(vec![0; 256]).unwrap());
+    test_t2_t3(&String::from_utf8(vec![1; 256]).unwrap());
 
     println!("All passed\n\n");
 }
