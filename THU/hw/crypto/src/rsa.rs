@@ -409,33 +409,6 @@ fn rsa_encrypt(key: (&Integer, &Integer), plaintext: &str) -> Vec<u8> {
     // [ref] https://en.wikipedia.org/wiki/Padding_(cryptography)#PKCS#5_and_PKCS#7
     let mut padded_bytes: Vec<u8> = plaintext.to_string()
             .into_bytes();
-    let mut block_chunks = padded_bytes.chunks_exact_mut(block_size);
-    for block in block_chunks {
-        let mut num_str = block.iter()
-            .map(|x| format!("{:02X}", x))
-            .fold(String::from(""),
-                  |res: String, curr: String| res + &curr
-            );
-        num_str = Integer::from_str_radix(&num_str, 16).to_string_radix(16);
-        if num_str.as_bytes()[0] == 0 {
-            // if "0x011...", we must remove the first 0 (=> 0x11)
-            num_str.remove(0);
-        }
-        let mut m = Integer::from(Integer::parse_radix(
-            num_str, 16).unwrap());
-        println!("m={}", m);
-        m = quick_pow_mod(m, e, n);
-        // m.pow_mod_mut(e, n).unwrap();
-        // len(c) may less than len(m)
-        let mut digits = m.to_string_radix(16);
-        if digits.len() % 2 == 1 {
-            digits.insert(0, '0');
-        }
-        for idx in 0..block.len() {
-            block[idx] = u8::from_str_radix(&digits[(idx*2)..(idx*2+2)], 16).unwrap();
-        }
-    }
-    let mut block = block_chunks.into_remainder();
     let mut pad_size = padded_bytes.len() % block_size;
     if pad_size != 0 {
         pad_size = block_size - pad_size;
@@ -447,6 +420,32 @@ fn rsa_encrypt(key: (&Integer, &Integer), plaintext: &str) -> Vec<u8> {
     // right padding, e.g., 0x2021 => 0x2021[1][1] (padding_size=2)
     padded_bytes.extend(vec![(pad_size - 1) as u8; pad_size]);
     println!("padding_size={}", pad_size);
+    for block in padded_bytes.chunks_mut(block_size) {
+        println!("block={:?}", block);
+        let mut num_str = block.iter()
+            .map(|x| format!("{:02X}", x))
+            .fold(String::from(""),
+                  |res: String, curr: String| res + &curr
+            );
+        num_str = Integer::from_str_radix(&num_str, 16).unwrap().to_string_radix(16);
+        if num_str.as_bytes()[0] == 0 {
+            // if "0x011...", we must remove the first 0 (=> 0x11)
+            num_str.remove(0);
+        }
+        let mut m = Integer::from(Integer::parse_radix(
+            num_str, 16).unwrap());
+        println!("m={}", m);
+        m = quick_pow_mod(m, e, n);
+        // m.pow_mod_mut(e, n).unwrap();
+        // len(c) may less than len(m)
+        let mut digits = m.to_string_radix(16);
+        for _ in 0..(block_size * 2 - digits.len()) {
+            digits.insert(0, '0');
+        }
+        for idx in 0..block.len() {
+            block[idx] = u8::from_str_radix(&digits[(idx*2)..(idx*2+2)], 16).unwrap();
+        }
+    }
 
     padded_bytes
 }
@@ -475,13 +474,15 @@ fn rsa_decrypt(key: (&Integer, &Integer), cipher: &Vec<u8>) -> String {
         // c.pow_mod_mut(d, n).unwrap();
 
         let mut digits = c.to_string_radix(16);
-        if digits.len() % 2 == 1 {
+        for _ in 0..(block_size * 2 - digits.len()) {
             digits.insert(0, '0');
         }
+        println!("#digits = {:?}, #block={}", digits.len(), block.len());
         let mut c_block = vec![0u8; digits.len() / 2];
         for idx in 0..(digits.len() / 2) {
             c_block[idx] = u8::from_str_radix(&digits[(idx*2)..(idx*2+2)], 16).unwrap();
         }
+        println!("c_block={:?}", c_block);
 
         if idx == (num_chunks - 1) {
             let pad_byte: u8 = c_block[c_block.len() - 1];
