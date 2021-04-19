@@ -13,7 +13,7 @@ async fn accept_loop(addr: impl ToSocketAddrs) -> Result<()> { // 1
     while let Some(stream) = incoming.next().await { // 3
         let stream = stream?;
         stream.set_nodelay(true)?;
-        println!("Accepting from: {:?}", stream.peer_addr()?);
+        println!("\nAccepting from: {:?}", stream.peer_addr()?);
         let _handle = spawn_and_log_error(connection_loop(stream));
     }
     Ok(())
@@ -45,8 +45,13 @@ async fn connection_loop(stream: TcpStream) -> Result<()> {
     Ok(())
 }
 
-pub fn run_server() -> Result<()> {
+pub async fn run_server() -> Result<()> {
     println!("\n\nStart running server on 0.0.0.0:8080");
-    let fut = accept_loop("0.0.0.0:8080");
-    task::block_on(fut)
+    let _fut = accept_loop("0.0.0.0:8080");
+    match _fut.await {
+        Err(e) => eprintln!("Error: {}", e),
+        Ok(_) => ()
+    };
+    // task::block_on(fut)
+    Ok(())
 }

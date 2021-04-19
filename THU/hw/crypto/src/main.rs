@@ -6,6 +6,7 @@ mod server;
 use crate::server::run_server;
 mod client;
 use crate::client::run_client;
+use crate::client::spawn_socks_server;
 use async_std::task;
 use std::time::Duration;
 
@@ -16,9 +17,33 @@ fn main() -> Result<()> {
     test_rsa();
     task::spawn(async {
         task::sleep(Duration::from_secs(3u64)).await; // 1
-        if let Err(e) =  run_client() {
+        if let Err(e) = run_client() {
+            eprintln!("Error: {}", e);
+        };
+        println!("Client: send twice.");
+        task::sleep(Duration::from_secs(3u64)).await; // 1
+        if let Err(e) = run_client() {
             eprintln!("Error: {}", e);
         };
     });
-    run_server()
+    task::block_on(async {
+        let _socks5_server = task::spawn(async {
+            loop {
+                match spawn_socks_server().await {
+                    Ok(_) => (),
+                    Err(e) => {
+                        eprintln!("Error: {}, recovering server.", e);
+                        continue;
+                    },
+                };
+            }
+        });
+        let _server = task::spawn(run_server());
+        match _server.await {
+            Ok(_) => (),
+            Err(e) => eprintln!("Error: {}", e)
+        };
+    });
+
+    Ok(())
 }
