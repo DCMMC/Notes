@@ -1,13 +1,12 @@
 use async_std::{
     net::TcpStream,
+    net::TcpListener,
     prelude::*,
     task,
     io::BufReader,
 };
-use fast_socks5::{
-    server::{Config, Socks5Server, Socks5Socket},
-};
-use futures::{AsyncRead, AsyncWrite};
+mod socks5;
+use crate::client::socks5::process;
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
 async fn test_t1(msg: &str) -> Result<()> {
@@ -24,57 +23,24 @@ async fn test_t1(msg: &str) -> Result<()> {
     Ok(())
 }
 
-fn spawn_and_log_error<F>(fut: F) -> task::JoinHandle<()>
-where
-    F: Future<Output = Result<()>> + Send + 'static,
-{
-    task::spawn(async move {
-        if let Err(e) = fut.await {
-            println!("Error in socks5 server: {:#}", &e);
-        }
-    })
-}
-
-async fn connection_loop<T>(mut socket: Socks5Socket<T>) -> Result<()>
-where T: AsyncRead + AsyncWrite + Unpin
-{
-    let mut buf = vec![0; 1024];
-    while let Ok(content_size) = (&mut socket).read(&mut buf).await {
-        if content_size > 0 {
-            println!("line (socks5, {}B): {:?}\n", content_size, &buf);
-            let msg = "Response to client: ".to_owned() + "debug" + "\n";
-            socket.write_all(&msg.as_bytes()).await?;
-        }
-    }
-    println!("EOF");
-
-    Ok(())
-}
-
 pub async fn spawn_socks_server() -> Result<()> {
-    let mut config = Config::default();
-    config.set_skip_auth(false);
-    // socks5h
-    config.set_dns_resolve(true);
-    let listen_addr = "127.0.0.1:1080";
-    let mut listener = Socks5Server::bind(listen_addr).await?;
-    listener.set_config(config);
+    let bind_str = "0.0.0.0:1080";
+    let bind_addr = "0.0.0.0".to_string();
+    let listener = TcpListener::bind(bind_str).await?;
+    println!("Socks5 server Listening on {}", listener.local_addr()?);
     let mut incoming = listener.incoming();
-    println!("Listen for socks5 connections @ {}", listen_addr);
-
-    while let Some(socket_res) = incoming.next().await {
-        match socket_res {
-            Ok(socket) => {
-                spawn_and_log_error(connection_loop(
-                    socket.upgrade_to_socks5().await?));
+    while let Some(stream) = incoming.next().await {
+        let stream = stream?;
+        let addr = bind_addr.clone();
+        task::spawn(async {
+            match process(stream, addr).await {
+                Ok(()) => {}
+                Err(e) => {
+                    eprintln!("broken pipe: {}", e);
+                }
             }
-            Err(e) => {
-                println!("Error: {}", e);
-                return Err(Box::new(e));
-            }
-        }
+        });
     }
-
     Ok(())
 }
 

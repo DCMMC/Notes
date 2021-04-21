@@ -5,6 +5,8 @@ use crate::rsa::test_rsa;
 mod server;
 use crate::server::run_server;
 mod client;
+#[macro_use]
+extern crate lazy_static;
 use crate::client::run_client;
 use crate::client::spawn_socks_server;
 use async_std::task;
