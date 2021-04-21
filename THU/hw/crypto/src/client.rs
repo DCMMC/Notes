@@ -38,11 +38,13 @@ where
 async fn connection_loop<T>(mut socket: Socks5Socket<T>) -> Result<()>
 where T: AsyncRead + AsyncWrite + Unpin
 {
-    let mut content = String::new();
-    while let Ok(content_size) = socket.read_to_string(&mut content).await {
-        println!("line (socks5, {}B): {:?}\n", content_size, &content);
-        let msg = "Response to client: ".to_owned() + &content + "\n";
-        socket.write_all(&msg.as_bytes()).await?;
+    let mut buf = vec![0; 1024];
+    while let Ok(content_size) = (&mut socket).read(&mut buf).await {
+        if content_size > 0 {
+            println!("line (socks5, {}B): {:?}\n", content_size, &buf);
+            let msg = "Response to client: ".to_owned() + "debug" + "\n";
+            socket.write_all(&msg.as_bytes()).await?;
+        }
     }
     println!("EOF");
 
