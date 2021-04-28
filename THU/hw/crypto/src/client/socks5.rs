@@ -5,6 +5,9 @@ use async_std::net::{TcpListener, TcpStream, UdpSocket};
 use async_std::prelude::*;
 use async_std::sync::{Arc, Mutex};
 use async_std::task;
+use async_std::task::{Poll, Context};
+use std::pin::Pin;
+use std::io::{IoSlice, IoSliceMut};
 use bytes::{Buf, BufMut};
 use chrono::Local;
 use clap::{App, Arg};
@@ -17,6 +20,95 @@ use std::time::Duration;
 
 lazy_static! {
     static ref HASHSET: Mutex<HashSet<String>> = Mutex::new(HashSet::new());
+}
+
+#[derive(Debug, Clone)]
+struct ProxyStream {
+    pub(super) tcp_stream: Arc<TcpStream>,
+}
+
+impl ProxyStream {
+    fn new(tcp_stream: TcpStream) -> io::Result<ProxyStream> {
+        return Ok(ProxyStream {
+            tcp_stream: Arc::new(tcp_stream),
+        });
+    }
+
+    pub fn shutdown(&self, how: std::net::Shutdown) -> std::io::Result<()> {
+        self.tcp_stream.shutdown(how)
+    }
+}
+
+impl io::Read for ProxyStream {
+    fn poll_read(
+        self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        buf: &mut [u8],
+    ) -> Poll<io::Result<usize>> {
+        Pin::new(&mut &*self).poll_read(cx, buf)
+    }
+
+    fn poll_read_vectored(
+        self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        bufs: &mut [IoSliceMut<'_>],
+    ) -> Poll<io::Result<usize>> {
+        Pin::new(&mut &*self).poll_read_vectored(cx, bufs)
+    }
+}
+
+impl io::Read for &ProxyStream {
+    fn poll_read(
+        self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        buf: &mut [u8],
+    ) -> Poll<io::Result<usize>> {
+        Pin::new(&mut &*self.tcp_stream).poll_read(cx, buf)
+    }
+}
+
+impl io::Write for ProxyStream {
+    fn poll_write(
+        self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        buf: &[u8],
+    ) -> Poll<io::Result<usize>> {
+        Pin::new(&mut &*self).poll_write(cx, buf)
+    }
+
+    fn poll_write_vectored(
+        self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        bufs: &[IoSlice<'_>],
+    ) -> Poll<io::Result<usize>> {
+        Pin::new(&mut &*self).poll_write_vectored(cx, bufs)
+    }
+
+    fn poll_flush(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
+        Pin::new(&mut &*self).poll_flush(cx)
+    }
+
+    fn poll_close(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
+        Pin::new(&mut &*self).poll_close(cx)
+    }
+}
+
+impl io::Write for &ProxyStream {
+    fn poll_write(
+        self: Pin<&mut Self>,
+        cx: &mut Context<'_>,
+        buf: &[u8],
+    ) -> Poll<io::Result<usize>> {
+        Pin::new(&mut &*self.tcp_stream).poll_write(cx, buf)
+    }
+
+    fn poll_flush(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
+        Pin::new(&mut &*self.tcp_stream).poll_flush(cx)
+    }
+
+    fn poll_close(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<io::Result<()>> {
+        Pin::new(&mut &*self.tcp_stream).poll_close(cx)
+    }
 }
 
 // start from ATYPE, then ADDRESS and PORT
@@ -146,11 +238,14 @@ pub async fn process(stream: TcpStream, addr: String) -> io::Result<()> {
                         0x05u8, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                     ])
                     .await?;
-                let mut remote_read = remote_stream.clone();
-                let mut remote_write = remote_stream;
+                let mut proxy_stream = ProxyStream::new(remote_stream).unwrap();
+                let mut proxy_read = proxy_stream.clone();
+                let mut proxy_write = proxy_stream;
+                // let mut remote_read = remote_stream.clone();
+                // let mut remote_write = remote_stream;
                 task::spawn(async move {
                     // (DCMMC) socks5 server => target website's server
-                    match io::copy(&mut reader, &mut remote_write).await {
+                    match io::copy(&mut reader, &mut proxy_read).await {
                         Ok(_) => {}
                         Err(e) => {
                             eprintln!("broken pipe: {}", e);
@@ -158,12 +253,12 @@ pub async fn process(stream: TcpStream, addr: String) -> io::Result<()> {
                     }
                     task::sleep(Duration::from_secs(30)).await;
                     let _ = reader.shutdown(Shutdown::Both);
-                    let _ = remote_write.shutdown(Shutdown::Both);
+                    let _ = proxy_write.shutdown(Shutdown::Both);
                 });
                 // (DCMMC) target website's server => socks5 server
-                io::copy(&mut remote_read, &mut writer).await?;
+                io::copy(&mut proxy_read, &mut writer).await?;
                 task::sleep(Duration::from_secs(30)).await;
-                remote_read.shutdown(Shutdown::Both)?;
+                proxy_read.shutdown(Shutdown::Both)?;
                 writer.shutdown(Shutdown::Both)?
             } else {
                 writer
