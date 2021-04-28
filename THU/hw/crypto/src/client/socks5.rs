@@ -18,6 +18,8 @@ use std::io::Write;
 use std::net::Shutdown;
 use std::time::Duration;
 
+const PROXY_ADDR: &str = "0.0.0.0:8080";
+
 lazy_static! {
     static ref HASHSET: Mutex<HashSet<String>> = Mutex::new(HashSet::new());
 }
@@ -28,7 +30,7 @@ struct ProxyStream {
 }
 
 impl ProxyStream {
-    fn new(tcp_stream: TcpStream) -> io::Result<ProxyStream> {
+    fn new(tcp_stream: TcpStream, target_addr: &str) -> io::Result<ProxyStream> {
         return Ok(ProxyStream {
             tcp_stream: Arc::new(tcp_stream),
         });
@@ -231,21 +233,21 @@ pub async fn process(stream: TcpStream, addr: String) -> io::Result<()> {
         0x01 => {
             //create connection to remote server
             // (DCMMC) connect to a ip according to the socks5 client's packet
-            if let Ok(remote_stream) = TcpStream::connect(addr_port.as_str()).await {
+            if let Ok(remote_stream) = TcpStream::connect(PROXY_ADDR.as_str()).await {
                 println!("connect to {} ok", addr_port);
                 writer
                     .write(&[
                         0x05u8, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                     ])
                     .await?;
-                let mut proxy_stream = ProxyStream::new(remote_stream).unwrap();
+                let mut proxy_stream = ProxyStream::new(remote_stream, addr_port).unwrap();
                 let mut proxy_read = proxy_stream.clone();
                 let mut proxy_write = proxy_stream;
                 // let mut remote_read = remote_stream.clone();
                 // let mut remote_write = remote_stream;
                 task::spawn(async move {
-                    // (DCMMC) socks5 server => target website's server
-                    match io::copy(&mut reader, &mut proxy_read).await {
+                    // (DCMMC) local socks5 server => target website's server
+                    match io::copy(&mut reader, &mut proxy_write).await {
                         Ok(_) => {}
                         Err(e) => {
                             eprintln!("broken pipe: {}", e);
@@ -255,7 +257,7 @@ pub async fn process(stream: TcpStream, addr: String) -> io::Result<()> {
                     let _ = reader.shutdown(Shutdown::Both);
                     let _ = proxy_write.shutdown(Shutdown::Both);
                 });
-                // (DCMMC) target website's server => socks5 server
+                // (DCMMC) target website's server => local socks5 server
                 io::copy(&mut proxy_read, &mut writer).await?;
                 task::sleep(Duration::from_secs(30)).await;
                 proxy_read.shutdown(Shutdown::Both)?;

@@ -5,6 +5,9 @@ use async_std::{
     io::BufReader,
     net::{TcpListener, TcpStream, ToSocketAddrs},
 };
+use std::time::Duration;
+use async_std::future::timeout;
+
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>; // 4
 
 async fn accept_loop(addr: impl ToSocketAddrs) -> Result<()> { // 1
@@ -32,7 +35,30 @@ where
 
 async fn connection_loop(stream: TcpStream) -> Result<()> {
     let reader = BufReader::new(&stream);
+    // TODO(DCMMC) buffer size
     let mut stream_writer = stream.clone();
+    loop {
+        // (DCMMC) 1B flag, 3B payload length (in bytes), 3B padding length (in bytes)
+        let mut buf = vec![0u8; 7];
+        match timeout(Duration::from_secs(60), reader.read_exact(&mut buf)).await {
+            Err(e) => return Err(e),
+            Ok(Err(e)) => return Err(e),
+            Ok(Ok(())) => println!("debug: header={:?}", buf),
+        }
+        let flag = buf[0];
+        let payload_size = usize::from_be_bytes(buf[1..4]);
+        let padding_size = usize::from_be_bytes(buf[4..7]);
+        if payload_size < padding_size {
+            return Err("payload_size must large than padding_size!");
+        }
+        buf = vec![0u8; payload_size];
+        match timeout(Duration::from_secs(60), reader.read_exact(&mut buf)).await {
+            Err(e) => return Err(e),
+            Ok(Err(e)) => return Err(e),
+            Ok(Ok(())) => println!("debug: payload={:?}", buf),
+        }
+        
+    }
     let mut lines = reader.lines();
 
     while let Some(line) = lines.next().await {

@@ -24,10 +24,10 @@ async fn test_t1(msg: &str) -> Result<()> {
 }
 
 pub async fn spawn_socks_server() -> Result<()> {
-    let bind_str = "0.0.0.0:1080";
+    let bind_str = "0.0.0.0:1088";
     let bind_addr = "0.0.0.0".to_string();
     let listener = TcpListener::bind(bind_str).await?;
-    println!("Socks5 server Listening on {}", listener.local_addr()?);
+    println!("\n\nSocks5 server Listening on {}", listener.local_addr()?);
     let mut incoming = listener.incoming();
     while let Some(stream) = incoming.next().await {
         let stream = stream?;
