@@ -5,10 +5,14 @@ use async_std::{
     io::BufReader,
     net::{TcpListener, TcpStream, ToSocketAddrs},
 };
+use async_std::io;
 use std::time::Duration;
 use async_std::future::timeout;
+use std::convert::TryInto;
+use std::error::Error;
+use std::str;
 
-type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>; // 4
+type Result<T> = std::result::Result<T, Box<dyn Error + Send + Sync>>; // 4
 
 async fn accept_loop(addr: impl ToSocketAddrs) -> Result<()> { // 1
     let listener = TcpListener::bind(addr).await?; // 2
@@ -34,38 +38,50 @@ where
 }
 
 async fn connection_loop(stream: TcpStream) -> Result<()> {
-    let reader = BufReader::new(&stream);
+    let writer = stream.clone();
+    let mut reader = stream;
+    let mut connection: Option<TcpStream> = None;
     // TODO(DCMMC) buffer size
-    let mut stream_writer = stream.clone();
     loop {
         // (DCMMC) 1B flag, 3B payload length (in bytes), 3B padding length (in bytes)
         let mut buf = vec![0u8; 7];
         match timeout(Duration::from_secs(60), reader.read_exact(&mut buf)).await {
-            Err(e) => return Err(e),
-            Ok(Err(e)) => return Err(e),
+            Err(e) => {
+                eprintln!("Timeout: {:?}", e);
+                break;
+            },
+            Ok(Err(e)) => return Err(Box::new(e)),
             Ok(Ok(())) => println!("debug: header={:?}", buf),
         }
         let flag = buf[0];
-        let payload_size = usize::from_be_bytes(buf[1..4]);
-        let padding_size = usize::from_be_bytes(buf[4..7]);
+        let payload_size = usize::from_le_bytes(buf[1..4].try_into().unwrap());
+        let padding_size = usize::from_le_bytes(buf[4..7].try_into().unwrap());
         if payload_size < padding_size {
-            return Err("payload_size must large than padding_size!");
+            return Err(Box::new(io::Error::new(
+                        io::ErrorKind::Other, "payload_size must large than padding_size!")));
+        }
+        if payload_size == 0 {
+            // EOF
+            break;
         }
         buf = vec![0u8; payload_size];
         match timeout(Duration::from_secs(60), reader.read_exact(&mut buf)).await {
-            Err(e) => return Err(e),
-            Ok(Err(e)) => return Err(e),
+            Err(e) => {
+                eprintln!("Timeout: {:?}", e);
+                break;
+            },
+            Ok(Err(e)) => return Err(Box::new(e)),
             Ok(Ok(())) => println!("debug: payload={:?}", buf),
         }
-        
-    }
-    let mut lines = reader.lines();
-
-    while let Some(line) = lines.next().await {
-        let line = line?;
-        println!("line: {:?}\n", &line);
-        let msg = "Response to client: ".to_owned() + &line + "\n";
-        stream_writer.write_all(&msg.as_bytes()).await?;
+        if flag & 0b0001 > 0 {
+            // set target addr
+            let target = str::from_utf8(
+                    &buf[0..(payload_size - padding_size)])?;
+            println!("debug: server get target={}", target);
+            connection = Some(TcpStream::connect(target).await?);
+        } else if flag & 0b0010 > 0 {
+            // record message
+        }
     }
     println!("EOF");
     Ok(())

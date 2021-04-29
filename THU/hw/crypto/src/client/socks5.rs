@@ -18,6 +18,8 @@ use std::io::Write;
 use std::net::Shutdown;
 use std::time::Duration;
 
+type Result<T> = std::result::Result<T, Box<dyn Error + Send + Sync>>; // 4
+
 const PROXY_ADDR: &str = "0.0.0.0:8080";
 
 lazy_static! {
@@ -30,13 +32,25 @@ struct ProxyStream {
 }
 
 impl ProxyStream {
-    fn new(tcp_stream: TcpStream, target_addr: &str) -> io::Result<ProxyStream> {
+    async fn new(mut tcp_stream: TcpStream, target_addr: &str) -> Result<ProxyStream> {
+        // handshake
+        let addr = String::from(target_addr).into_bytes();
+        if addr.len() > 0xffff_ffff_ffff {
+            return Err(Box::new(io::Error::new(
+                        io::ErrorKind::Other,
+                        "length of addr must <= 0xffff_ffff_ffff!")));
+        }
+        let addr_len = addr.len().to_le_bytes();
+        // padding_size == 0
+        let pkt: Vec<u8> = vec![0x1, addr_len[0], addr_len[1], addr_len[2], 0, 0, 0];
+        pkt.extend(addr);
+        tcp_stream.write_all(&pkt[..]).await?;
         return Ok(ProxyStream {
             tcp_stream: Arc::new(tcp_stream),
         });
     }
 
-    pub fn shutdown(&self, how: std::net::Shutdown) -> std::io::Result<()> {
+    async fn shutdown(&self, how: std::net::Shutdown) -> std::io::Result<()> {
         self.tcp_stream.shutdown(how)
     }
 }
@@ -233,14 +247,15 @@ pub async fn process(stream: TcpStream, addr: String) -> io::Result<()> {
         0x01 => {
             //create connection to remote server
             // (DCMMC) connect to a ip according to the socks5 client's packet
-            if let Ok(remote_stream) = TcpStream::connect(PROXY_ADDR.as_str()).await {
+            if let Ok(remote_stream) = TcpStream::connect(String::from(PROXY_ADDR)).await {
                 println!("connect to {} ok", addr_port);
                 writer
                     .write(&[
                         0x05u8, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                     ])
                     .await?;
-                let mut proxy_stream = ProxyStream::new(remote_stream, addr_port).unwrap();
+                let proxy_stream: ProxyStream = ProxyStream::new(
+                    remote_stream, &addr_port).await?;
                 let mut proxy_read = proxy_stream.clone();
                 let mut proxy_write = proxy_stream;
                 // let mut remote_read = remote_stream.clone();
