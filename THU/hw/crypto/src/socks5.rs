@@ -18,7 +18,6 @@ use pin_project_lite::pin_project;
 use crate::rsa::{generate_number, rsa_encrypt};
 use rug::Integer;
 use sha3::{Shake128, digest::{Update, ExtendableOutput, XofReader}};
-use hex;
 use crate::aes::{aes128_decrypt, aes128_encrypt};
 use openssl::x509::{X509VerifyResult, X509};
 
@@ -81,14 +80,15 @@ where
                 match aes128_decrypt(&buffer, &this.secret) {
                     Ok(res) => {
                         println!("decrypted len={}", res.len());
-                        match hex::decode(res) {
-                            Err(e) => {
-                                eprintln!("err when decode: {}", e);
-                            },
-                            Ok(b) => {
-                                buffer = b;
-                            }
-                        };
+                        buffer = res;
+                        // match hex::decode(res) {
+                        //     Err(e) => {
+                        //         eprintln!("err when decode: {}", e);
+                        //     },
+                        //     Ok(b) => {
+                        //         buffer = b;
+                        //     }
+                        // };
                     },
                     Err(e) => {
                         eprintln!("err when aes128_decrypt: {}", e);
@@ -193,22 +193,51 @@ where
             }
 
             if matches!(this.proxy_direct, ProxyDirect::ToProxy) {
-                // TODO(DCMMC) encode will lead to the content increase 100%!
-                // e.g. 1B ff => 2B 'ff' (i.e., 0x0f, 0x0f)
-                match aes128_encrypt(&hex::encode(&buffer), &this.secret) {
-                    Ok(b) => {buffer = b},
+                // DCMMC: because of the padding, the encrypted content
+                // will large than the plain content.
+                // This is a problem if the encrypted content large than
+                // the buf size of the BufReader (i.e. reader)
+                let mut buffers: Vec<Vec<u8>> = Vec::new();
+                let buf1 = if buffer.len() < 65530 {buffer.len()} else {65530};
+                let buf2 = if buffer.len() < 65530 {0} else {buffer.len() - buf1};
+                match aes128_encrypt(buffer[0..buf1].to_vec(), &this.secret) {
+                    Ok(b) => {buffers.push(b)},
                     Err(e) => {
                         eprintln!("err when aes128_encrypt: {}", e);
                     },
                 }
+                if buf2 > 0 {
+                    match aes128_encrypt(buffer[buf1..buf1+buf2].to_vec(), &this.secret) {
+                        Ok(b) => {buffers.push(b)},
+                        Err(e) => {
+                            eprintln!("err when aes128_encrypt: {}", e);
+                        },
+                    }
+                }
                 println!("encrypt to len={}", buffer.len());
                 // println!("polled_write={}, content={:?}", buffer.len(), buffer);
-            }
-            let i = futures_core::ready!(this.writer.as_mut().poll_write(cx, &buffer))?;
-            futures_core::ready!(this.writer.as_mut().poll_flush(cx))?;
-            println!("poll_write: {}", i);
-            if i == 0 {
-                return Poll::Ready(Err(io::ErrorKind::WriteZero.into()));
+                let mut i = futures_core::ready!(this.writer.as_mut().poll_write(cx, &buffers[0]))?;
+                futures_core::ready!(this.writer.as_mut().poll_flush(cx))?;
+                println!("poll_write: {}", i);
+                if i == 0 {
+                    return Poll::Ready(Err(io::ErrorKind::WriteZero.into()));
+                }
+                if buf2 > 0 {
+                    i = futures_core::ready!(this.writer.as_mut().poll_write(
+                            cx, &buffers[1]))?;
+                    futures_core::ready!(this.writer.as_mut().poll_flush(cx))?;
+                    println!("poll_write: {}", i);
+                    if i == 0 {
+                        return Poll::Ready(Err(io::ErrorKind::WriteZero.into()));
+                    }
+                }
+            } else {
+                let i = futures_core::ready!(this.writer.as_mut().poll_write(cx, &buffer))?;
+                futures_core::ready!(this.writer.as_mut().poll_flush(cx))?;
+                println!("poll_write: {}", i);
+                if i == 0 {
+                    return Poll::Ready(Err(io::ErrorKind::WriteZero.into()));
+                }
             }
             *this.amt += cnt_read as u64;
             this.reader.as_mut().consume(cnt_read);
@@ -219,7 +248,7 @@ where
     let future = CopyFuture {
         // TODO(DCMMC) must set large capacity... while default is 8K (8192!)
         // now I set to 640K while maximum size of TCP is 64K (65535)
-        reader: BufReader::with_capacity(655350, reader),
+        reader: BufReader::with_capacity(65535, reader),
         writer,
         amt: 0,
         proxy_role: proxy_role,
@@ -250,7 +279,7 @@ pub enum ProxyDirect {
 
 impl ProxyStream {
     pub async fn new(mut tcp_stream: TcpStream, proxy_role: ProxyRole, target_addr: &str) -> Result<ProxyStream> {
-        tcp_stream.set_nodelay(true)?;
+        // tcp_stream.set_nodelay(true)?;
         match proxy_role {
             ProxyRole::Client => {
                 // handshake

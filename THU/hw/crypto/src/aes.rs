@@ -328,8 +328,12 @@ fn add_round_key(states: &mut Vec<u8>, round_keys: &[u8]) -> Result<(), String> 
     Ok(())
 }
 
-pub fn aes128_encrypt(plaintext: &str, cipher_key: &str) -> Result<Vec<u8>, String> {
+fn aes128_encrypt_str(plaintext: &str, cipher_key: &str) -> Result<Vec<u8>, String> {
     let mut states = plaintext.to_string().into_bytes();
+    aes128_encrypt(states, cipher_key)
+}
+
+pub fn aes128_encrypt(mut states: Vec<u8>, cipher_key: &str) -> Result<Vec<u8>, String> {
     assert!(cipher_key.is_ascii());
     assert_eq!(cipher_key.len(), BLOCK_SIZE);
     let cipher: [u8; BLOCK_SIZE] = <[u8; BLOCK_SIZE]>::try_from(
@@ -358,7 +362,15 @@ pub fn aes128_encrypt(plaintext: &str, cipher_key: &str) -> Result<Vec<u8>, Stri
     Ok(states)
 }
 
-pub fn aes128_decrypt(cipher: &Vec<u8>, cipher_key: &str) -> Result<String, String> {
+fn aes128_decrypt_str(cipher: &Vec<u8>, cipher_key: &str) -> Result<String, String> {
+    let mut states = aes128_decrypt(cipher, cipher_key)?;
+    let result_text = String::from_utf8(states)
+        .unwrap();
+
+    Ok(result_text)
+}
+
+pub fn aes128_decrypt(cipher: &Vec<u8>, cipher_key: &str) -> Result<Vec<u8>, String> {
     let mut states = cipher.clone();
     if states.len() % BLOCK_SIZE != 0 {
         return Err("unexpected states.len".to_owned());
@@ -389,10 +401,8 @@ pub fn aes128_decrypt(cipher: &Vec<u8>, cipher_key: &str) -> Result<String, Stri
     r_offset -= BLOCK_SIZE;
     add_round_key(&mut states, &round_keys[r_offset..r_offset + BLOCK_SIZE])?;
     unpad(&mut states);
-    let result_text = String::from_utf8(states.to_vec())
-        .unwrap();
 
-    Ok(result_text)
+    Ok(states.to_vec())
 }
 
 pub fn print_blocks(states: &mut Vec<u8>) -> () {
@@ -491,8 +501,8 @@ fn test_t3(cipher_key: &str) -> () {
 
 fn test_t4(plaintext: &str, cipher_key: &str) -> () {
     title("Test T4");
-    let cipher_text = aes128_encrypt(plaintext, cipher_key).unwrap();
-    let decrypted_text = aes128_decrypt(&cipher_text, cipher_key).unwrap();
+    let cipher_text = aes128_encrypt_str(plaintext, cipher_key).unwrap();
+    let decrypted_text = aes128_decrypt_str(&cipher_text, cipher_key).unwrap();
     println!("Plain Text: {:?}", plaintext);
     let mut cipher_str = "0x".to_string();
     for chr in cipher_text {
