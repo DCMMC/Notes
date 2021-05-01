@@ -16,6 +16,12 @@ use crate::socks5::{ProxyStream, ProxyRole, ProxyDirect, copy};
 use crate::rsa::{rsa_key_pair, rsa_decrypt, generate_number};
 use rug::Integer;
 use sha3::{Shake128, digest::{Update, ExtendableOutput, XofReader}};
+use openssl::rsa::Rsa;
+use openssl::bn::{MsbOption, BigNum};
+use openssl::pkey::PKey;
+use openssl::x509::{X509NameBuilder, X509};
+use openssl::asn1::Asn1Time;
+use openssl::hash::MessageDigest;
 
 lazy_static! {
     // secret used for symmetric encryption
@@ -59,7 +65,6 @@ async fn connection_loop(stream: TcpStream) -> Result<()> {
             eprintln!("Timeout: {:?}", e);
             return Err(Box::new(e));
         },
-        Ok(res_size) => println!("debug: receive={:?}", res_size),
     }
     let flag = buf[0];
     if SECRET.lock().await.len() == 0 {
@@ -68,26 +73,57 @@ async fn connection_loop(stream: TcpStream) -> Result<()> {
             // like TLS 1.2
             // [ref] https://halfrost.com/https-key-cipher/
             let client_random = &buf[1..13];
-            let (n, _, d) = rsa_key_pair("extend_gcd");
+            let (n, e, d) = rsa_key_pair("extend_gcd");
             let server_random = generate_number(48).to_string_radix(16).into_bytes();
-            let n_str = n.to_string_radix(16).into_bytes();
-            println!("debug: #server_random={}, #n={}",
-                     server_random.len(), n_str.len());
+            // X509 cert
+            // [ref] https://zhuanlan.zhihu.com/p/69995175
+            // [ref] https://github.com/sfackler/rust-openssl/pull/1339/files
+            // [ref] https://zhaohuabing.com/post/2020-03-19-pki/
+            let ca_cert = X509::from_pem(include_bytes!("root-ca.pem"))?;
+            let ca_key = PKey::private_key_from_pem(include_bytes!("root-ca.key"))?;
+            let pubkey = PKey::from_rsa(Rsa::from_public_components(
+                BigNum::from_hex_str(&n.to_string_radix(16)).unwrap(),
+                BigNum::from_hex_str(&e.to_string_radix(16)).unwrap(),
+            ).unwrap()).unwrap();
+            let mut x509_name = X509NameBuilder::new().unwrap();
+            x509_name.append_entry_by_text("C", "CN").unwrap();
+            x509_name.append_entry_by_text("ST", "SZ").unwrap();
+            x509_name.append_entry_by_text("O", "DCMMC").unwrap();
+            x509_name.append_entry_by_text("CN", "www.example.com").unwrap();
+            let x509_name = x509_name.build();
+            let mut builder = X509::builder().unwrap();
+            builder.set_pubkey(&pubkey)?;
+            builder.set_subject_name(&x509_name)?;
+            let mut serial = BigNum::new().unwrap();
+            serial.rand(128, MsbOption::MAYBE_ZERO, false).unwrap();
+            builder
+                .set_serial_number(&serial.to_asn1_integer().unwrap())
+                .unwrap();
+            builder
+                .set_not_before(&Asn1Time::days_from_now(0).unwrap())
+                .unwrap();
+            builder
+                .set_not_after(&Asn1Time::days_from_now(365).unwrap())
+                .unwrap();
+            builder.set_issuer_name(&ca_cert.subject_name())?;
+            builder.sign(&ca_key, MessageDigest::sha256())?;
+            let server_cert: Vec<u8> = builder.build().to_pem()?;
+
+            // let n_str = n.to_string_radix(16).into_bytes();
+            println!("debug: #server_random={}, #cert={}",
+                     server_random.len(), server_cert.len());
             writer.write_all(
                 &([&[
                   server_random.len() as u8, (server_random.len() >> 8) as u8,
-                  n_str.len() as u8, (n_str.len() >> 8) as u8][..],
-                &server_random[..], &n_str[..]].concat())[..]).await?;
+                  server_cert.len() as u8, (server_cert.len() >> 8) as u8][..],
+                &server_random[..], &server_cert[..]].concat())[..]).await?;
             let mut buf_new = vec![0u8; 2048];
-            let res_size = reader.read(&mut buf_new).await?;
-            println!("debug: res_size={}", res_size);
+            let _ = reader.read(&mut buf_new).await?;
             let len_master = buf_new[0] as usize + (buf_new[1] as usize) << 8;
             let mut pre_master_cipher = vec![0u8; len_master];
             pre_master_cipher.copy_from_slice(&buf_new[2..(2 + len_master)]);
-            println!("debug: pre_master_cipher={:?}", pre_master_cipher);
             let pre_master_secret = Integer::from_str_radix(&rsa_decrypt(
                     (&n, &d), &pre_master_cipher), 16).unwrap();
-            println!("debug: pre_master={}", pre_master_secret);
             let mut hasher = Shake128::default();
             // println!("debug: client_random={:?}", client_random);
             // println!("debug: server_random={:?}", server_random);
@@ -95,9 +131,9 @@ async fn connection_loop(stream: TcpStream) -> Result<()> {
             hasher.update(client_random);
             hasher.update(server_random);
             hasher.update(pre_master_secret.to_string_radix(16).into_bytes());
-            let mut reader = hasher.finalize_xof();
+            let mut reader_sha = hasher.finalize_xof();
             let mut secret_buf = [0u8; 32];
-            reader.read(&mut secret_buf);
+            reader_sha.read(&mut secret_buf);
             let num_str = secret_buf.iter()
                 .map(|x| format!("{:02X}", x))
                 .fold(String::from(""),
@@ -107,6 +143,8 @@ async fn connection_loop(stream: TcpStream) -> Result<()> {
                 num_str, 16).unwrap()).to_string_radix(16))[0..16];
             println!("debug: secret={:?}", secret);
             SECRET.lock().await.push(String::from(secret));
+            let _ = writer.shutdown(Shutdown::Both);
+            let _ = reader.shutdown(Shutdown::Both);
             return Ok(());
         } else {
             return Err(Box::new(io::Error::new(

@@ -20,6 +20,7 @@ use rug::Integer;
 use sha3::{Shake128, digest::{Update, ExtendableOutput, XofReader}};
 use hex;
 use crate::aes::{aes128_decrypt, aes128_encrypt};
+use openssl::x509::{X509VerifyResult, X509};
 
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>; // 4
 
@@ -69,16 +70,29 @@ where
             let mut buffer = vec![0u8; polled_buf.len()];
             buffer.copy_from_slice(polled_buf);
             if matches!(this.proxy_direct, ProxyDirect::FromProxy) {
-                println!("direct={:?}, role={:?}", this.proxy_direct, this.proxy_role);
-                // println!("polled_buf={}, content={:?}", polled_buf.len(), buffer);
                 if polled_buf.len() % 16 > 0 {
                     // TODO(DCMMC) BUG!! there are some duplicated packets whose
                     // length is not multiplication of 16 (BLOCK_SIZE of aes128)!
-                    // futures_core::ready!(this.writer.as_mut().poll_flush(cx))?;
-                    // return Poll::Ready(Ok(*this.amt));
+                    futures_core::ready!(this.writer.as_mut().poll_flush(cx))?;
+                    return Poll::Ready(Ok(*this.amt));
                 }
-                buffer = hex::decode(aes128_decrypt(&buffer, &this.secret)).unwrap();
-                println!("buffer after decrypting: {}", buffer.len());
+                match aes128_decrypt(&buffer, &this.secret) {
+                    Ok(res) => {
+                        match hex::decode(res) {
+                            Err(e) => {
+                                eprintln!("err: {}", e);
+                            },
+                            Ok(b) => {
+                                buffer = b;
+                            }
+                        };
+                    },
+                    Err(e) => {
+                        eprintln!("err: {}", e);
+                        futures_core::ready!(this.writer.as_mut().poll_flush(cx))?;
+                        return Poll::Ready(Ok(*this.amt));
+                    }
+                }
             }
 
             if matches!(this.proxy_role, ProxyRole::Client) && matches!(
@@ -164,7 +178,12 @@ where
             }
 
             if matches!(this.proxy_direct, ProxyDirect::ToProxy) {
-                buffer = aes128_encrypt(&hex::encode(buffer), &this.secret);
+                match aes128_encrypt(&hex::encode(&buffer), &this.secret) {
+                    Ok(b) => {buffer = b},
+                    Err(e) => {
+                        eprintln!("err when aes128_encrypt: {}", e);
+                    },
+                }
                 // println!("polled_write={}, content={:?}", buffer.len(), buffer);
             }
             let i = futures_core::ready!(this.writer.as_mut().poll_write(cx, &buffer))?;
@@ -339,15 +358,30 @@ pub async fn establish_session() -> io::Result<()> {
     // println!("debug: buf={:?}", buf);
 
     let len_sr: usize = ((buf[1] as usize) << 8) + buf[0] as usize;
-    let len_n: usize = ((buf[3] as usize) << 8) + buf[2] as usize;
-    println!("debug: #server_random={}, #n={}", len_sr, len_n);
+    let len_cert: usize = ((buf[3] as usize) << 8) + buf[2] as usize;
+    println!("debug: #server_random={}, #cert={}", len_sr, len_cert);
     let server_random = Integer::from_str_radix(
         std::str::from_utf8(
             &buf[4..(4 + len_sr)]
             .to_vec()).unwrap(), 16).unwrap();
+    let cert = X509::from_pem(&buf[(4 + len_sr)..(4 + len_sr + len_cert)])?;
+    // DCMMC: CA chain verify
+    let ca_cert = X509::from_pem(include_bytes!("root-ca.pem"))?;
+    match ca_cert.issued(&cert) {
+        X509VerifyResult::OK => {
+            println!("cert verify success!");
+        },
+        err => {
+            println!("error when verifying cert: {}", err.error_string());
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::ConnectionAborted,
+                "error when verifying cert: ".to_owned() + err.error_string(),
+            ));
+        }
+    }
+    // DCMMC: n is the pubkey in the server_cert
     let n = Integer::from_str_radix(
-        std::str::from_utf8(&buf[(4 + len_sr)..(4 + len_sr + len_n)]
-                            .to_vec()).unwrap(), 16).unwrap();
+        &cert.public_key()?.rsa()?.n().to_hex_str()?, 16).unwrap();
     let pre_master_secret = generate_number(48);
     let pre_master_cipher = rsa_encrypt((&n, &Integer::from(65537)),
         &pre_master_secret.to_string_radix(16));
@@ -365,9 +399,9 @@ pub async fn establish_session() -> io::Result<()> {
     hasher.update(client_random);
     hasher.update(server_random.to_string_radix(16).into_bytes());
     hasher.update(pre_master_secret.to_string_radix(16).into_bytes());
-    let mut reader = hasher.finalize_xof();
+    let mut reader_sha = hasher.finalize_xof();
     let mut secret_buf = [0u8; 32];
-    reader.read(&mut secret_buf);
+    reader_sha.read(&mut secret_buf);
     let num_str = secret_buf.iter()
         .map(|x| format!("{:02X}", x))
         .fold(String::from(""),
@@ -377,6 +411,7 @@ pub async fn establish_session() -> io::Result<()> {
         num_str, 16).unwrap()).to_string_radix(16))[0..16];
     println!("debug: secret={:?}", secret);
     SECRET.lock().await.push(String::from(secret));
+    let _ = remote_stream.shutdown(Shutdown::Both);
     Ok(())
 }
 
