@@ -67,20 +67,23 @@ where
                 futures_core::ready!(this.writer.as_mut().poll_flush(cx))?;
                 return Poll::Ready(Ok(*this.amt));
             }
-            let mut buffer = vec![0u8; polled_buf.len()];
+            let cnt_read = polled_buf.len();
+            let mut buffer = vec![0u8; cnt_read];
             buffer.copy_from_slice(polled_buf);
             if matches!(this.proxy_direct, ProxyDirect::FromProxy) {
-                if polled_buf.len() % 16 > 0 {
-                    // TODO(DCMMC) BUG!! there are some duplicated packets whose
-                    // length is not multiplication of 16 (BLOCK_SIZE of aes128)!
-                    futures_core::ready!(this.writer.as_mut().poll_flush(cx))?;
-                    return Poll::Ready(Ok(*this.amt));
-                }
+                println!("received encrypted len={}", cnt_read);
+                // if polled_buf.len() % 16 > 0 {
+                //     // TODO(DCMMC) BUG!! there are some duplicated packets whose
+                //     // length is not multiplication of 16 (BLOCK_SIZE of aes128)!
+                //     futures_core::ready!(this.writer.as_mut().poll_flush(cx))?;
+                //     return Poll::Ready(Ok(*this.amt));
+                // }
                 match aes128_decrypt(&buffer, &this.secret) {
                     Ok(res) => {
+                        println!("decrypted len={}", res.len());
                         match hex::decode(res) {
                             Err(e) => {
-                                eprintln!("err: {}", e);
+                                eprintln!("err when decode: {}", e);
                             },
                             Ok(b) => {
                                 buffer = b;
@@ -88,7 +91,7 @@ where
                         };
                     },
                     Err(e) => {
-                        eprintln!("err: {}", e);
+                        eprintln!("err when aes128_decrypt: {}", e);
                         futures_core::ready!(this.writer.as_mut().poll_flush(cx))?;
                         return Poll::Ready(Ok(*this.amt));
                     }
@@ -115,6 +118,8 @@ where
                 if flag & 0b0010 != 0b0010 {
                     // currently only support record message type
                     // drop this packet
+                    *this.amt += cnt_read as u64;
+                    this.reader.as_mut().consume(cnt_read);
                     continue;
                 }
                 let payload_size = usize::from_le_bytes(
@@ -124,11 +129,15 @@ where
                 if payload_size < padding_size {
                     // payload_size must large than padding_size!
                     // drop this packet
+                    *this.amt += cnt_read as u64;
+                    this.reader.as_mut().consume(cnt_read);
                     continue;
                 }
                 if payload_size == 0 {
                     // EOF
                     // drop this packet
+                    *this.amt += cnt_read as u64;
+                    this.reader.as_mut().consume(cnt_read);
                     continue;
                 }
                 println!("Server => Client, payload={}, pad={}, pkt={}",
@@ -142,6 +151,8 @@ where
                 if flag & 0b0010 != 0b0010 {
                     // currently only support record message type
                     // drop this packet
+                    *this.amt += cnt_read as u64;
+                    this.reader.as_mut().consume(cnt_read);
                     continue;
                 }
                 let payload_size = usize::from_le_bytes(
@@ -151,11 +162,15 @@ where
                 if payload_size < padding_size {
                     // payload_size must large than padding_size!
                     // drop this packet
+                    *this.amt += cnt_read as u64;
+                    this.reader.as_mut().consume(cnt_read);
                     continue;
                 }
                 if payload_size == 0 {
                     // EOF
                     // drop this packet
+                    *this.amt += cnt_read as u64;
+                    this.reader.as_mut().consume(cnt_read);
                     continue;
                 }
                 println!("Server => Target, payload={}, pad={}, pkt={}",
@@ -178,27 +193,33 @@ where
             }
 
             if matches!(this.proxy_direct, ProxyDirect::ToProxy) {
+                // TODO(DCMMC) encode will lead to the content increase 100%!
+                // e.g. 1B ff => 2B 'ff' (i.e., 0x0f, 0x0f)
                 match aes128_encrypt(&hex::encode(&buffer), &this.secret) {
                     Ok(b) => {buffer = b},
                     Err(e) => {
                         eprintln!("err when aes128_encrypt: {}", e);
                     },
                 }
+                println!("encrypt to len={}", buffer.len());
                 // println!("polled_write={}, content={:?}", buffer.len(), buffer);
             }
             let i = futures_core::ready!(this.writer.as_mut().poll_write(cx, &buffer))?;
             futures_core::ready!(this.writer.as_mut().poll_flush(cx))?;
+            println!("poll_write: {}", i);
             if i == 0 {
                 return Poll::Ready(Err(io::ErrorKind::WriteZero.into()));
             }
-            *this.amt += i as u64;
-            this.reader.as_mut().consume(i);
+            *this.amt += cnt_read as u64;
+            this.reader.as_mut().consume(cnt_read);
         }
     }
 }
 
     let future = CopyFuture {
-        reader: BufReader::new(reader),
+        // TODO(DCMMC) must set large capacity... while default is 8K (8192!)
+        // now I set to 640K while maximum size of TCP is 64K (65535)
+        reader: BufReader::with_capacity(655350, reader),
         writer,
         amt: 0,
         proxy_role: proxy_role,
@@ -218,6 +239,7 @@ pub struct ProxyStream {
 pub enum ProxyRole {
     Client,
     Server,
+    Channel,
 }
 
 #[derive(Debug, Clone)]
@@ -228,6 +250,7 @@ pub enum ProxyDirect {
 
 impl ProxyStream {
     pub async fn new(mut tcp_stream: TcpStream, proxy_role: ProxyRole, target_addr: &str) -> Result<ProxyStream> {
+        tcp_stream.set_nodelay(true)?;
         match proxy_role {
             ProxyRole::Client => {
                 // handshake
@@ -243,7 +266,8 @@ impl ProxyStream {
                 pkt.extend(addr);
                 tcp_stream.write_all(&pkt[..]).await?;
             },
-            ProxyRole::Server => {}
+            ProxyRole::Server => {},
+            ProxyRole::Channel => {},
         }
         return Ok(ProxyStream {
             tcp_stream: Arc::new(tcp_stream),
