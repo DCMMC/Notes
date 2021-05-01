@@ -65,6 +65,10 @@ async fn connection_loop(stream: TcpStream) -> Result<()> {
             eprintln!("Timeout: {:?}", e);
             return Err(Box::new(e));
         },
+        Ok(Err(e)) => return Err(Box::new(e)),
+        Ok(Ok(_)) => {
+            // println!("debug: header={:?}", buf);
+        },
     }
     let flag = buf[0];
     if SECRET.lock().await.len() == 0 {
