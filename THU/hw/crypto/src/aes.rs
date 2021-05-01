@@ -48,23 +48,33 @@ const RCON: [u8; 32] = [
 
 fn pad(states: &mut Vec<u8>) -> () {
     let mut pad_size = states.len() % BLOCK_SIZE;
-    if pad_size != 0 {
-        pad_size = BLOCK_SIZE - pad_size;
-    }
-    states.extend(vec![PAD_BYTE; pad_size]);
+    pad_size = BLOCK_SIZE - pad_size;
+    assert!(pad_size <= 128);
+    states.extend(vec![(pad_size - 1) as u8; pad_size]);
+    //
+    // let mut pad_size = states.len() % BLOCK_SIZE;
+    // if pad_size != 0 {
+    //     pad_size = BLOCK_SIZE - pad_size;
+    // }
+    // states.extend(vec![PAD_BYTE; pad_size]);
 }
 
 fn unpad(states: &mut Vec<u8>) -> () {
     let blocks = states.chunks_mut(BLOCK_SIZE);
     let last_block: &mut [u8] = blocks.last().unwrap();
-    let padding_len = BLOCK_SIZE - match last_block.iter().position(
-        |&x| x == PAD_BYTE) {
-        Some(pos) => pos,
-        None => BLOCK_SIZE,
-    };
-    for _ in 0..padding_len {
+    let pad_byte: u8 = last_block[last_block.len() - 1];
+    let pad_cnt: i16 = pad_byte as i16 + 1i16;
+    for _ in 0..pad_cnt {
         states.remove(states.len() - 1);
     }
+    // let padding_len = BLOCK_SIZE - match last_block.iter().position(
+    //     |&x| x == PAD_BYTE) {
+    //     Some(pos) => pos,
+    //     None => BLOCK_SIZE,
+    // };
+    // for _ in 0..padding_len {
+    //     states.remove(states.len() - 1);
+    // }
 }
 
 fn sub_bytes(states: &mut Vec<u8>) -> () {
@@ -313,7 +323,7 @@ fn add_round_key(states: &mut Vec<u8>, round_keys: &[u8]) -> () {
     }
 }
 
-fn aes128_encrypt(plaintext: &str, cipher_key: &str) -> Vec<u8> {
+pub fn aes128_encrypt(plaintext: &str, cipher_key: &str) -> Vec<u8> {
     let mut states = plaintext.to_string().into_bytes();
     assert!(cipher_key.is_ascii());
     assert_eq!(cipher_key.len(), BLOCK_SIZE);
@@ -322,6 +332,7 @@ fn aes128_encrypt(plaintext: &str, cipher_key: &str) -> Vec<u8> {
     let round_keys = key_schedule(&cipher);
 
     pad(&mut states);
+    assert!(states.len() % BLOCK_SIZE == 0);
 
     // first AddRoundKey
     add_round_key(&mut states, &round_keys[0..BLOCK_SIZE]);
@@ -342,8 +353,9 @@ fn aes128_encrypt(plaintext: &str, cipher_key: &str) -> Vec<u8> {
     states
 }
 
-fn aes128_decrypt(cipher: &Vec<u8>, cipher_key: &str) -> String {
+pub fn aes128_decrypt(cipher: &Vec<u8>, cipher_key: &str) -> String {
     let mut states = cipher.clone();
+    assert!(states.len() % BLOCK_SIZE == 0);
     assert!(cipher_key.is_ascii());
     assert_eq!(cipher_key.len(), BLOCK_SIZE);
     let key_array: [u8; BLOCK_SIZE] = <[u8; BLOCK_SIZE]>::try_from(

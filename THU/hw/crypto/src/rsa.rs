@@ -48,7 +48,7 @@ impl RandGen for SimpleGenerator {
     }
 }
 
-fn generate_number(bit_size: u32) -> Integer {
+pub fn generate_number(bit_size: u32) -> Integer {
     let mut gen = SimpleGenerator { seed: 2014 };
     // Because use RandState::new() to generate random numbers directly will
     // get the same number every time.
@@ -367,7 +367,7 @@ fn rsa_key_phase1() -> (Integer, Integer, Integer) {
 /**
  * Must be private method, because d is the secret.
  */
-fn rsa_key_pair(method: &str) -> (Integer, Integer, Integer) {
+pub fn rsa_key_pair(method: &str) -> (Integer, Integer, Integer) {
     let (n, phi_n, e) = rsa_key_phase1();
     // de = 1 (mod \phi(n))
     let d = modular_inverse(&e, &phi_n, method);
@@ -399,7 +399,7 @@ fn quick_pow_mod(mut m: Integer, e: &Integer, n: &Integer) -> Integer {
     ans
 }
 
-fn rsa_encrypt(key: (&Integer, &Integer), plaintext: &str) -> Vec<u8> {
+pub fn rsa_encrypt(key: (&Integer, &Integer), plaintext: &str) -> Vec<u8> {
     let (n, e)  = key;
     // log_2 n
     let block_size = (n.significant_bits() as f64 / 8.0).ceil() as usize - 1;
@@ -442,7 +442,7 @@ fn rsa_encrypt(key: (&Integer, &Integer), plaintext: &str) -> Vec<u8> {
     cipher
 }
 
-fn rsa_decrypt(key: (&Integer, &Integer), cipher: &Vec<u8>) -> String {
+pub fn rsa_decrypt(key: (&Integer, &Integer), cipher: &Vec<u8>) -> String {
     title("decryption");
     let (n, d) = key;
     let block_size = (n.significant_bits() as f64 / 8.0).ceil() as usize - 1;

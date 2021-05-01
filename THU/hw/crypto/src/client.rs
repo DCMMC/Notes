@@ -1,29 +1,21 @@
 use async_std::{
-    net::TcpStream,
     net::TcpListener,
     prelude::*,
     task,
-    io::BufReader,
 };
-mod socks5;
-use crate::client::socks5::process;
+use crate::socks5::{process, establish_session};
 type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>;
 
-async fn test_t1(msg: &str) -> Result<()> {
-    let stream = TcpStream::connect("127.0.0.1:8080").await?;
-    stream.set_nodelay(true)?;
-    let (reader, mut writer) = (&stream, &stream);
-    let mut lines_from_server = BufReader::new(reader).lines();
-    writer.write_all(msg.as_bytes()).await?;
-    writer.write_all(b"\n").await?;
-    while let Some(Ok(line)) = lines_from_server.next().await {
-        println!("Received from server: {:?}", line);
-        break;
-    }
-    Ok(())
-}
-
 pub async fn spawn_socks_server() -> Result<()> {
+    match establish_session().await {
+        Ok(()) => {
+            println!("establish session success.");
+        },
+        Err(e) => {
+            eprintln!("establish session failed!");
+            return Err(Box::new(e));
+        },
+    }
     let bind_str = "0.0.0.0:1088";
     let bind_addr = "0.0.0.0".to_string();
     let listener = TcpListener::bind(bind_str).await?;
@@ -42,8 +34,4 @@ pub async fn spawn_socks_server() -> Result<()> {
         });
     }
     Ok(())
-}
-
-pub fn run_client() -> Result<()> {
-    task::block_on(test_t1("Cryptography and Network Security; 2020214245; 肖文韬 (Wentao Xiao) 🎉🚀"))
 }

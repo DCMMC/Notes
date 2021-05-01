@@ -1,7 +1,8 @@
 // Big thanks to https://github.com/WANG-lp/socks5-rs
 use async_std::io;
+use async_std::io::{BufReader, BufRead, Read, Write};
 use async_std::net::{IpAddr, Ipv4Addr, Ipv6Addr, SocketAddrV4, SocketAddrV6};
-use async_std::net::{TcpListener, TcpStream, UdpSocket};
+use async_std::net::{TcpStream, UdpSocket};
 use async_std::prelude::*;
 use async_std::sync::{Arc, Mutex};
 use async_std::task;
@@ -9,48 +10,229 @@ use async_std::task::{Poll, Context};
 use std::pin::Pin;
 use std::io::{IoSlice, IoSliceMut};
 use bytes::{Buf, BufMut};
-use chrono::Local;
-use clap::{App, Arg};
-use env_logger::Builder;
-use log::LevelFilter;
 use std::collections::HashSet;
-use std::io::Write;
 use std::net::Shutdown;
 use std::time::Duration;
+use std::convert::TryInto;
+use pin_project_lite::pin_project;
+use crate::rsa::{generate_number, rsa_encrypt};
+use rug::Integer;
+use sha3::{Shake128, digest::{Update, ExtendableOutput, XofReader}};
+use hex;
+use crate::aes::{aes128_decrypt, aes128_encrypt};
 
-type Result<T> = std::result::Result<T, Box<dyn Error + Send + Sync>>; // 4
+type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>>; // 4
 
 const PROXY_ADDR: &str = "0.0.0.0:8080";
 
 lazy_static! {
     static ref HASHSET: Mutex<HashSet<String>> = Mutex::new(HashSet::new());
+    // secret used for symmetric encryption
+    static ref SECRET: Mutex<Vec<String>> = Mutex::new(vec![]);
+}
+
+pub async fn copy<R, W>(reader: &mut R, writer: &mut W,
+                        proxy_role: ProxyRole, proxy_direct: ProxyDirect,
+                        secret: String) -> io::Result<u64>
+where
+R: Read + Unpin + ?Sized,
+W: Write + Unpin + ?Sized,
+{
+pin_project! {
+    struct CopyFuture<R, W> {
+        #[pin]
+        reader: R,
+        #[pin]
+        writer: W,
+        amt: u64,
+        proxy_role: ProxyRole,
+        proxy_direct: ProxyDirect,
+        secret: String,
+    }
+}
+
+impl<R, W> Future for CopyFuture<R, W>
+where
+    R: BufRead,
+    W: Write + Unpin,
+{
+    type Output = io::Result<u64>;
+
+    fn poll(self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
+        let mut this = self.project();
+        loop {
+            let polled_buf = futures_core::ready!(this.reader.as_mut().poll_fill_buf(cx))?;
+            if polled_buf.is_empty() {
+                futures_core::ready!(this.writer.as_mut().poll_flush(cx))?;
+                return Poll::Ready(Ok(*this.amt));
+            }
+            let mut buffer = vec![0u8; polled_buf.len()];
+            buffer.copy_from_slice(polled_buf);
+            if matches!(this.proxy_direct, ProxyDirect::FromProxy) {
+                println!("direct={:?}, role={:?}", this.proxy_direct, this.proxy_role);
+                // println!("polled_buf={}, content={:?}", polled_buf.len(), buffer);
+                if polled_buf.len() % 16 > 0 {
+                    // TODO(DCMMC) BUG!! there are some duplicated packets whose
+                    // length is not multiplication of 16 (BLOCK_SIZE of aes128)!
+                    // futures_core::ready!(this.writer.as_mut().poll_flush(cx))?;
+                    // return Poll::Ready(Ok(*this.amt));
+                }
+                buffer = hex::decode(aes128_decrypt(&buffer, &this.secret)).unwrap();
+                println!("buffer after decrypting: {}", buffer.len());
+            }
+
+            if matches!(this.proxy_role, ProxyRole::Client) && matches!(
+                this.proxy_direct, ProxyDirect::ToProxy) {
+                // add header
+                if buffer.len() > 0xffff_ffff_ffff {
+                    return task::Poll::Ready(Err(std::io::Error::new(
+                                io::ErrorKind::Other,
+                                "length of addr must <= 0xffff_ffff_ffff!")));
+                }
+                let len = buffer.len().to_le_bytes();
+                let mut buf = vec![0b0010u8, len[0], len[1], len[2], 0, 0, 0];
+                buf.extend(buffer.iter());
+                buffer = buf;
+                println!("Client => Server, pkt={}", buffer.len());
+            } else if matches!(this.proxy_role, ProxyRole::Client) && matches!(
+                this.proxy_direct, ProxyDirect::FromProxy) {
+                // remove header
+                let flag = buffer[0];
+                if flag & 0b0010 != 0b0010 {
+                    // currently only support record message type
+                    // drop this packet
+                    continue;
+                }
+                let payload_size = usize::from_le_bytes(
+                    [&buffer[1..4], &[0u8; 5]].concat().try_into().unwrap());
+                let padding_size = usize::from_le_bytes(
+                    [&buffer[4..7], &[0u8; 5]].concat().try_into().unwrap());
+                if payload_size < padding_size {
+                    // payload_size must large than padding_size!
+                    // drop this packet
+                    continue;
+                }
+                if payload_size == 0 {
+                    // EOF
+                    // drop this packet
+                    continue;
+                }
+                println!("Server => Client, payload={}, pad={}, pkt={}",
+                         payload_size, padding_size, buffer.len());
+                // remove the header
+                buffer = buffer.drain(7..).collect();
+            } else if matches!(this.proxy_role, ProxyRole::Server) && matches!(
+                this.proxy_direct, ProxyDirect::FromProxy) {
+                // remove header
+                let flag = buffer[0];
+                if flag & 0b0010 != 0b0010 {
+                    // currently only support record message type
+                    // drop this packet
+                    continue;
+                }
+                let payload_size = usize::from_le_bytes(
+                    [&buffer[1..4], &[0u8; 5]].concat().try_into().unwrap());
+                let padding_size = usize::from_le_bytes(
+                    [&buffer[4..7], &[0u8; 5]].concat().try_into().unwrap());
+                if payload_size < padding_size {
+                    // payload_size must large than padding_size!
+                    // drop this packet
+                    continue;
+                }
+                if payload_size == 0 {
+                    // EOF
+                    // drop this packet
+                    continue;
+                }
+                println!("Server => Target, payload={}, pad={}, pkt={}",
+                         payload_size, padding_size, buffer.len());
+                // remove the header
+                buffer = buffer.drain(7..).collect();
+            } else if matches!(this.proxy_role, ProxyRole::Server) && matches!(
+                this.proxy_direct, ProxyDirect::ToProxy) {
+                // add header
+                if buffer.len() > 0xffff_ffff_ffff {
+                    return task::Poll::Ready(Err(std::io::Error::new(
+                                io::ErrorKind::Other,
+                                "length of addr must <= 0xffff_ffff_ffff!")));
+                }
+                let len = buffer.len().to_le_bytes();
+                let mut buf = vec![0b0010u8, len[0], len[1], len[2], 0, 0, 0];
+                buf.extend(buffer.iter());
+                buffer = buf;
+                println!("Target => Server, pkt={}", buffer.len());
+            }
+
+            if matches!(this.proxy_direct, ProxyDirect::ToProxy) {
+                buffer = aes128_encrypt(&hex::encode(buffer), &this.secret);
+                // println!("polled_write={}, content={:?}", buffer.len(), buffer);
+            }
+            let i = futures_core::ready!(this.writer.as_mut().poll_write(cx, &buffer))?;
+            futures_core::ready!(this.writer.as_mut().poll_flush(cx))?;
+            if i == 0 {
+                return Poll::Ready(Err(io::ErrorKind::WriteZero.into()));
+            }
+            *this.amt += i as u64;
+            this.reader.as_mut().consume(i);
+        }
+    }
+}
+
+    let future = CopyFuture {
+        reader: BufReader::new(reader),
+        writer,
+        amt: 0,
+        proxy_role: proxy_role,
+        proxy_direct: proxy_direct,
+        secret: secret,
+    };
+    future.await
 }
 
 #[derive(Debug, Clone)]
-struct ProxyStream {
+pub struct ProxyStream {
     pub(super) tcp_stream: Arc<TcpStream>,
+    pub(super) proxy_role: ProxyRole,
+}
+
+#[derive(Debug, Clone)]
+pub enum ProxyRole {
+    Client,
+    Server,
+}
+
+#[derive(Debug, Clone)]
+pub enum ProxyDirect {
+    ToProxy,
+    FromProxy,
 }
 
 impl ProxyStream {
-    async fn new(mut tcp_stream: TcpStream, target_addr: &str) -> Result<ProxyStream> {
-        // handshake
-        let addr = String::from(target_addr).into_bytes();
-        if addr.len() > 0xffff_ffff_ffff {
-            return Err(Box::new(io::Error::new(
-                        io::ErrorKind::Other,
-                        "length of addr must <= 0xffff_ffff_ffff!")));
+    pub async fn new(mut tcp_stream: TcpStream, proxy_role: ProxyRole, target_addr: &str) -> Result<ProxyStream> {
+        match proxy_role {
+            ProxyRole::Client => {
+                // handshake
+                let addr = String::from(target_addr).into_bytes();
+                if addr.len() > 0xffff_ffff_ffff {
+                    return Err(Box::new(std::io::Error::new(
+                                io::ErrorKind::Other,
+                                "length of addr must <= 0xffff_ffff_ffff!")));
+                }
+                let addr_len = addr.len().to_le_bytes();
+                // padding_size == 0
+                let mut pkt: Vec<u8> = vec![0b0001u8, addr_len[0], addr_len[1], addr_len[2], 0, 0, 0];
+                pkt.extend(addr);
+                tcp_stream.write_all(&pkt[..]).await?;
+            },
+            ProxyRole::Server => {}
         }
-        let addr_len = addr.len().to_le_bytes();
-        // padding_size == 0
-        let pkt: Vec<u8> = vec![0x1, addr_len[0], addr_len[1], addr_len[2], 0, 0, 0];
-        pkt.extend(addr);
-        tcp_stream.write_all(&pkt[..]).await?;
         return Ok(ProxyStream {
             tcp_stream: Arc::new(tcp_stream),
+            proxy_role: proxy_role,
         });
     }
 
-    async fn shutdown(&self, how: std::net::Shutdown) -> std::io::Result<()> {
+    pub fn shutdown(&self, how: std::net::Shutdown) -> std::io::Result<()> {
         self.tcp_stream.shutdown(how)
     }
 }
@@ -145,6 +327,57 @@ fn socket_addr_to_vec(socket_addr: std::net::SocketAddr) -> Vec<u8> {
     }
     res.put_u16(socket_addr.port());
     res
+}
+
+pub async fn establish_session() -> io::Result<()> {
+    let mut remote_stream = TcpStream::connect(String::from(PROXY_ADDR)).await?;
+    let client_random = generate_number(48).to_string_radix(16).into_bytes();
+    remote_stream.write_all(&([&[0b0100,][..], &client_random[..]].concat())[..]).await?;
+    let mut buf = vec![0u8; 20480];
+    let res_size = remote_stream.read(&mut buf).await?;
+    println!("debug: res_size={}", res_size);
+    // println!("debug: buf={:?}", buf);
+
+    let len_sr: usize = ((buf[1] as usize) << 8) + buf[0] as usize;
+    let len_n: usize = ((buf[3] as usize) << 8) + buf[2] as usize;
+    println!("debug: #server_random={}, #n={}", len_sr, len_n);
+    let server_random = Integer::from_str_radix(
+        std::str::from_utf8(
+            &buf[4..(4 + len_sr)]
+            .to_vec()).unwrap(), 16).unwrap();
+    let n = Integer::from_str_radix(
+        std::str::from_utf8(&buf[(4 + len_sr)..(4 + len_sr + len_n)]
+                            .to_vec()).unwrap(), 16).unwrap();
+    let pre_master_secret = generate_number(48);
+    let pre_master_cipher = rsa_encrypt((&n, &Integer::from(65537)),
+        &pre_master_secret.to_string_radix(16));
+    println!("debug: pre_master={}", pre_master_secret);
+    println!("debug: pre_master_cipher={:?}", pre_master_cipher);
+    remote_stream.write_all(
+        &([&[
+          pre_master_cipher.len() as u8,
+          (pre_master_cipher.len() >> 8) as u8][..],
+        &pre_master_cipher].concat())[..]).await?;
+    let mut hasher = Shake128::default();
+    // println!("debug: client_random: {:?}", client_random);
+    // println!("debug: server_random: {:?}", server_random.to_string_radix(16).into_bytes());
+    // println!("debug: pre_master: {:?}", pre_master_secret.to_string_radix(16).into_bytes());
+    hasher.update(client_random);
+    hasher.update(server_random.to_string_radix(16).into_bytes());
+    hasher.update(pre_master_secret.to_string_radix(16).into_bytes());
+    let mut reader = hasher.finalize_xof();
+    let mut secret_buf = [0u8; 32];
+    reader.read(&mut secret_buf);
+    let num_str = secret_buf.iter()
+        .map(|x| format!("{:02X}", x))
+        .fold(String::from(""),
+              |res: String, curr: String| res + &curr
+        );
+    let secret = &(Integer::from(Integer::parse_radix(
+        num_str, 16).unwrap()).to_string_radix(16))[0..16];
+    println!("debug: secret={:?}", secret);
+    SECRET.lock().await.push(String::from(secret));
+    Ok(())
 }
 
 pub async fn process(stream: TcpStream, addr: String) -> io::Result<()> {
@@ -255,14 +488,21 @@ pub async fn process(stream: TcpStream, addr: String) -> io::Result<()> {
                     ])
                     .await?;
                 let proxy_stream: ProxyStream = ProxyStream::new(
-                    remote_stream, &addr_port).await?;
+                    remote_stream, ProxyRole::Client, &addr_port).await.unwrap();
                 let mut proxy_read = proxy_stream.clone();
                 let mut proxy_write = proxy_stream;
                 // let mut remote_read = remote_stream.clone();
                 // let mut remote_write = remote_stream;
                 task::spawn(async move {
                     // (DCMMC) local socks5 server => target website's server
-                    match io::copy(&mut reader, &mut proxy_write).await {
+                    // TODO(DCMMC) is this line replace with secret in the copy call,
+                    // the whole process will stuck! This is a bug (maybe)!
+                    let secret = String::from(SECRET.lock().await.get(0).unwrap());
+                    match copy(&mut reader, &mut proxy_write, ProxyRole::Client,
+                               ProxyDirect::ToProxy,
+                               secret
+                               // String::from("")
+                               ).await {
                         Ok(_) => {}
                         Err(e) => {
                             eprintln!("broken pipe: {}", e);
@@ -273,7 +513,11 @@ pub async fn process(stream: TcpStream, addr: String) -> io::Result<()> {
                     let _ = proxy_write.shutdown(Shutdown::Both);
                 });
                 // (DCMMC) target website's server => local socks5 server
-                io::copy(&mut proxy_read, &mut writer).await?;
+                let secret = String::from(SECRET.lock().await.get(0).unwrap());
+                copy(&mut proxy_read, &mut writer, ProxyRole::Client,
+                     ProxyDirect::FromProxy,
+                     secret,
+                     ).await?;
                 task::sleep(Duration::from_secs(30)).await;
                 proxy_read.shutdown(Shutdown::Both)?;
                 writer.shutdown(Shutdown::Both)?
@@ -325,7 +569,7 @@ pub async fn process(stream: TcpStream, addr: String) -> io::Result<()> {
 
                     //start to transfer data
                     //recv first packet
-                    let mut buf = vec![0u8; 2048];
+                    let mut buf = vec![0u8; 20480];
                     let (mut n, local_peer) = socket.recv_from(&mut buf).await?;
 
                     let socket_remote_raw = UdpSocket::bind("0.0.0.0:0").await?;
@@ -487,66 +731,4 @@ pub async fn process(stream: TcpStream, addr: String) -> io::Result<()> {
 
     println!("disconnect from {}", peer_addr);
     Ok(())
-}
-
-fn _socks5_main() -> io::Result<()> {
-    Builder::new()
-        .format(|buf, record| {
-            writeln!(
-                buf,
-                "{} [{}] - {}",
-                Local::now().format("%Y-%m-%d %H:%M:%S"),
-                record.level(),
-                record.args()
-            )
-        })
-        .filter(None, LevelFilter::Info)
-        .init();
-    let matches = App::new("A lightweight and fast socks5 server written in Rust")
-        .version(env!("CARGO_PKG_VERSION"))
-            .arg(
-            Arg::with_name("bind")
-                .short("b")
-                .long("bind")
-                .value_name("BIND_ADDR")
-                .help("bind address")
-                .required(false)
-                .takes_value(true),
-        )
-        .arg(
-            Arg::with_name("port")
-                .short("p")
-                .long("port")
-                .value_name("BIND_PORT")
-                .help("bind port")
-                .required(false)
-                .takes_value(true),
-        )
-        .get_matches();
-
-    let bind_addr = String::from(matches.value_of("bind").unwrap_or("127.0.0.1"));
-    let bind_port = String::from(matches.value_of("port").unwrap_or("8080"));
-
-    let bind_str = format!("{}:{}", bind_addr, bind_port);
-
-    task::block_on(async {
-        let listener = TcpListener::bind(bind_str).await?;
-        log::info!("Listening on {}", listener.local_addr()?);
-
-        let mut incoming = listener.incoming();
-
-        while let Some(stream) = incoming.next().await {
-            let addr = bind_addr.clone();
-            let stream = stream?;
-            task::spawn(async {
-                match process(stream, addr).await {
-                    Ok(()) => {}
-                    Err(_e) => {
-                        // log::warn!("broken pipe: {}", e);
-                    }
-                }
-            });
-        }
-        Ok(())
-    })
 }
