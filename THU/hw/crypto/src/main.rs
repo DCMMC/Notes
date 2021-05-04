@@ -18,7 +18,7 @@ type Result<T> = std::result::Result<T, Box<dyn std::error::Error + Send + Sync>
 fn main() -> Result<()> {
     let matches = App::new("Cryptop lab")
         .version("1.0")
-        .author("Wentao Xiao (xwt20@mails.tsinghua.edu.cn)")
+        .author("Wentao Xiao; Duan Guanglin")
         .about("powered by rust")
         .arg("-c, --client 'start client'")
         .arg("-s, --server 'start server'")
