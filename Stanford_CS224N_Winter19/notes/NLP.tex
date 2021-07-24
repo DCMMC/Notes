@@ -60,10 +60,10 @@ Note that the visualization of word vectos utilizes 2D projection (e.g. PCA) tha
 p(w_o | w_c) = \frac{\exp(u_o^\top v_c)}{\sum_{w \in V}(u_w^\top v_c)}
 \end{equation}
 where $v_c$ denotes the center word vector of $w$ when $w$ is used as a center word in the formula, and $u_w$ denotes the context word vector of $w$ as the similar way.
-A demo of the window size and conditional probability is shown in Fig.~\ref{fig:word2vec:window_cond}.
+A demo of the window size and conditional probability is shown in Fig.~\ref{fig:word2vec_window_cond}.
 
 \MoveNextFigure{+5cm}
-\Figure{word2vec:window_cond}{A demo of the window size and $p(w_o | w_c)$}
+\Figure{word2vec_window_cond}{A demo of the window size and $p(w_o | w_c)$}
 
 
 The objective function (a.k.a loss or cost function) is given by the (average) negative log likelihood (abbr. \concept{NLL}).
@@ -885,3 +885,28 @@ In linguistics, morphemes (subwords) is the smallest semantic unit that has mean
 
 There are many languages that do not segment words or has many separated and joined words, e.g. Chinese, French.
 Moreover, subword models solve the OOV problem.
+
+\subsection{HW5}
+
+Enhance the NMT model with character-based CNN encoder and LSTM decoder.
+
+\textbf{1. Character-based convolutional encoder for NMT}
+
+(a) Characters are significantly less diverse than words. So, characters have less semantic information. Besides, we will use CharCNN to map $e_{\text{char}} \times m_{\text{word}}$ to $e_{\text{word}}$.
+
+(b) \begin{align}
+		\begin{split}
+			\text{\#parameters(char-based)} &= V_{\text{char}} \times e_{\text{char}} + k \times e_{\text{char}} \times e_{\text{word}} + e_{\text{word}} + (2 e_{\text{word}} + 2) \times e_{\text{word}} \\
+			&= 200,640
+		\end{split} \nonumber \\
+		\begin{split}
+			\text{\#parameters(word-based)} &= V_{\text{word}} \times e_{\text{word}} \\
+			&\approx 12,800,000
+		\end{split} \nonumber
+	\end{align}
+	
+	The parameters of char-based embedding are much less than word-based. However, the char-based embedding need more computation resources.
+	
+(c) The computational efficiency of CNN is better than RNN. Although CNN works worse than RNN on sequential information due to the sliding window, CNN has good ability to capture sequential information inside the kernel window (e.g. $k=5$). Also, the parameters of CNN is less than LSTM in this scenario.
+
+(d) If the position of objects is not important, Max Pooling seems to be the better choice. If it is, it seems that better results can be achieved with Average Pooling. For me, I don’t think one of the poolings has any significant advantage over the other.

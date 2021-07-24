@@ -15,7 +15,6 @@
 \usepackage{pdfpages}
 \usepackage{amsthm}
 \usepackage{xcolor}
-\usepackage{hyperref}
 %\usepackage{wrapfig}
 % http://mirrors.ctan.org/macros/latex209/contrib/picins/picins.sty
 \usepackage{picins}
@@ -74,6 +73,10 @@
 
 \let\cleardoublepage\clearpage
 
+% https://tex.stackexchange.com/questions/514312/secnumdepth-not-working-for-me
+% (DCMMC) Ensure this to be the last package loaded
+\usepackage{hyperref}
+
 \makeindex
 
 
@@ -81,8 +84,9 @@
 
 %\Opensolutionfile{solutions}[ans2]{Solutions}
 %\Writetofile{solutions}{\protect\chapter{Solutions To Exercises}}
-
+\setcounter{tocdepth}{3}
 \setcounter{secnumdepth}{3}
+
 
 \frontmatter
 
@@ -99,6 +103,7 @@
 
 %\include{pub}
 %\include{ded}
+
 \tableofcontents
 \listoffigures
 \listoftables
