@@ -99,7 +99,7 @@ def question_1f_sanity_check():
     print("-"*80)
 
 def question_1g_sanity_check():
-    """Sanity check for 1g"""
+    """Sanity check for 1g (DCMMC)"""
     print ("-"*80)
     print("Running Sanity Check for Question 1g: to_input_tensor_char()")
     print ("-"*80)
@@ -113,30 +113,37 @@ def question_1g_sanity_check():
     print("-"*80)
 
 def question_1h_sanity_check():
-    """Sanity check for Highway"""
+    """Sanity check for Highway (DCMMC)
+    What a sanity need do:
+    (1) verify all the shapes
+    (2) with manually defined inputs, weights, and bias, manually calculate the output
+        and then verify the output of your implementation.
+    (3) check all intermediate (especially when you face wrong output)
+    (4) think and create some edge cases
+    """
     print ("-"*80)
     print("Running Sanity Check for Question 1h: Module Highway")
     print ("-"*80)
-    p = lambda w: nn.Parameter(torch.tensor(w).double())
+    p = lambda w: nn.Parameter(torch.tensor(w).float())
     with open('./sanity_check_en_es_data/highway_sanity.pkl', 'rb') as f:
         highway = pickle.load(f)
     with torch.no_grad():
-        highway1 = Highway(16, 0., dtype=torch.float64)
+        highway1 = Highway(16, 0.)
         highway1.proj.weight = p(highway['w1_proj'])
         highway1.proj.bias = p(highway['b1_proj'])
         highway1.gate.weight = p(highway['w1_gate'])
         highway1.gate.bias = p(highway['b1_gate'])
-        y1 = highway1(torch.tensor(highway['x1']).double())
+        y1 = highway1(torch.tensor(highway['x1']).float())
         assert list(y1.shape) == list(highway['x1_highway'].shape), (
             'shape=' + str(y1.shape) + ', but expected ' + str(highway['x1_highway'].shape))
         assert np.allclose(
             y1.numpy(), highway['x1_highway'].numpy()), 'The output is incorrect.'
-        highway2 = Highway(2, 0., dtype=torch.float64)
+        highway2 = Highway(2, 0.)
         highway2.proj.weight = p(highway['w2_proj'])
         highway2.proj.bias = p(highway['b2_proj'])
         highway2.gate.weight = p(highway['w2_gate'])
         highway2.gate.bias = p(highway['b2_gate'])
-        y2 = highway2(torch.tensor(highway['x2']).double())
+        y2 = highway2(torch.tensor(highway['x2']).float())
         assert list(y2.shape) == list(highway['x2_highway'].shape), (
             'shape=' + str(y2.shape) + ', but expected ' + str(highway['x2_highway'].shape))
         assert np.allclose(
