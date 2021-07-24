@@ -7,6 +7,8 @@ CS224N 2018-19: Homework 5
 
 import torch
 import torch.nn as nn
+import numpy as np
+
 
 class CharDecoder(nn.Module):
     def __init__(self, hidden_size, char_embedding_size=50, target_vocab=None):
@@ -27,7 +29,19 @@ class CharDecoder(nn.Module):
         ### Hint: - Use target_vocab.char2id to access the character vocabulary for the target language.
         ###       - Set the padding_idx argument of the embedding matrix.
         ###       - Create a new Embedding layer. Do not reuse embeddings created in Part 1 of this assignment.
-        
+        super(CharDecoder, self).__init__()
+        self.charDecoder = nn.LSTM(
+            input_size=char_embedding_size,
+            hidden_size=hidden_size,
+            bidirectional=False)
+        self.char_output_projection = nn.Linear(
+            hidden_size, len(target_vocab.char2id))
+        self.decoderCharEmb = nn.Embedding(
+            len(target_vocab.char2id),
+            char_embedding_size,
+            padding_idx=target_vocab.char_unk)
+        self.target_vocab = target_vocab
+        self.ce_loss = nn.CrossEntropyLoss(reduction='none')
 
         ### END YOUR CODE
 
@@ -44,7 +58,12 @@ class CharDecoder(nn.Module):
         """
         ### YOUR CODE HERE for part 2b
         ### TODO - Implement the forward pass of the character decoder.
-        
+        # => (len, batch, embed_size)
+        input_embed = self.decoderCharEmb(input)
+        h_t, dec_hidden = self.charDecoder(input_embed, dec_hidden)
+        # => (len, batch, V_char)
+        s_t = self.char_output_projection(h_t)
+        return s_t, dec_hidden
         
         ### END YOUR CODE 
 
@@ -62,7 +81,22 @@ class CharDecoder(nn.Module):
         ###
         ### Hint: - Make sure padding characters do not contribute to the cross-entropy loss.
         ###       - char_sequence corresponds to the sequence x_1 ... x_{n+1} from the handout (e.g., <START>,m,u,s,i,c,<END>).
-
+        # (len, batch, V_char) logits
+        s_t, _ = self.forward(char_sequence[:-1], dec_hidden)
+        # => (len * batch, )
+        char_sequence = char_sequence[1:].flatten()
+        # loss per batch element (reduce=none)
+        # => (len * batch, )
+        losses = self.ce_loss(
+            s_t.reshape(-1, len(self.target_vocab.char2id)),
+            # left shift
+            char_sequence
+        )
+        # ignore both padding and end_of_word
+        mask = (char_sequence != self.target_vocab.end_of_word) & (
+            char_sequence != self.target_vocab.char2id['<pad>'])
+        sum_loss = torch.sum(losses * mask.bool())
+        return sum_loss
 
         ### END YOUR CODE
 
@@ -83,7 +117,30 @@ class CharDecoder(nn.Module):
         ###      - Use torch.tensor(..., device=device) to turn a list of character indices into a tensor.
         ###      - We use curly brackets as start-of-word and end-of-word characters. That is, use the character '{' for <START> and '}' for <END>.
         ###        Their indices are self.target_vocab.start_of_word and self.target_vocab.end_of_word, respectively.
-        
-        
+        current_char = torch.ones(
+            1, initialStates[0].shape[1],
+            dtype=torch.long, device=device
+        ) * self.target_vocab.start_of_word
+        states = initialStates
+        decoded_chars = []
+        for t in range(max_length):
+            # s_t: (1, batch, V_char)
+            s_t, states = self.forward(current_char, states)
+            # => (1, batch)
+            current_char = torch.argmax(s_t, dim=-1)
+            decoded_chars.append(current_char[0].tolist())
+        decodedWords = []
+        decoded_chars = np.array(decoded_chars).T.tolist()
+        for sample in decoded_chars:
+            sample = ''.join([self.target_vocab.id2char[c] for c in sample])
+            try:
+                pos_end = sample.index(
+                    self.target_vocab.id2char[self.target_vocab.end_of_word])
+            except ValueError:
+                pos_end = len(sample)
+            sample = sample[1: pos_end]
+            decodedWords.append(sample)
+        return decodedWords
+
         ### END YOUR CODE
 
