@@ -41,7 +41,10 @@ class CharDecoder(nn.Module):
             char_embedding_size,
             padding_idx=target_vocab.char_unk)
         self.target_vocab = target_vocab
-        self.ce_loss = nn.CrossEntropyLoss(reduction='none')
+        # (DCMMC) It's important to remember that the score should ignore <pad> but should contain end_of_word
+        self.ce_loss = nn.CrossEntropyLoss(
+            reduction='sum',
+            ignore_index=self.target_vocab.char2id['<pad>'])
 
         ### END YOUR CODE
 
@@ -83,19 +86,13 @@ class CharDecoder(nn.Module):
         ###       - char_sequence corresponds to the sequence x_1 ... x_{n+1} from the handout (e.g., <START>,m,u,s,i,c,<END>).
         # (len, batch, V_char) logits
         s_t, _ = self.forward(char_sequence[:-1], dec_hidden)
-        # => (len * batch, )
+        # left shift => (len * batch, )
         char_sequence = char_sequence[1:].flatten()
         # loss per batch element (reduce=none)
         # => (len * batch, )
-        losses = self.ce_loss(
+        sum_loss = self.ce_loss(
             s_t.reshape(-1, len(self.target_vocab.char2id)),
-            # left shift
-            char_sequence
-        )
-        # ignore both padding and end_of_word
-        mask = (char_sequence != self.target_vocab.end_of_word) & (
-            char_sequence != self.target_vocab.char2id['<pad>'])
-        sum_loss = torch.sum(losses * mask.bool())
+            char_sequence)
         return sum_loss
 
         ### END YOUR CODE
@@ -138,7 +135,8 @@ class CharDecoder(nn.Module):
                     self.target_vocab.id2char[self.target_vocab.end_of_word])
             except ValueError:
                 pos_end = len(sample)
-            sample = sample[1: pos_end]
+            # (DCMMC) It's important to remember that the first char of the output IS NOT start_of_word
+            sample = sample[:pos_end]
             decodedWords.append(sample)
         return decodedWords
 

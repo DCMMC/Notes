@@ -45,7 +45,8 @@ import math
 import sys
 import pickle
 import time
-
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
 
 from docopt import docopt
 from nltk.translate.bleu_score import corpus_bleu, sentence_bleu, SmoothingFunction

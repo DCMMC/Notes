@@ -890,7 +890,7 @@ Moreover, subword models solve the OOV problem.
 
 Enhance the NMT model with character-based CNN encoder and LSTM decoder.
 
-\textbf{1. Character-based convolutional encoder for NMT}
+\textbf{1. Character-based convolutional encoder for NMT~\cite{CharCNN}}
 
 (a) Characters are significantly less diverse than words. So, characters have less semantic information. Besides, we will use CharCNN to map $e_{\text{char}} \times m_{\text{word}}$ to $e_{\text{word}}$.
 
@@ -911,4 +911,14 @@ Enhance the NMT model with character-based CNN encoder and LSTM decoder.
 
 (d) If the position of objects is not important, Max Pooling seems to be the better choice. If it is, it seems that better results can be achieved with Average Pooling. For me, I don’t think one of the poolings has any significant advantage over the other.
 
-(l) The test result is $99.29792465574434$ BLEU.
+(l) The test q1 result is $99.29792465574434$ BLEU.
+
+\textbf{2. Character-based LSTM decoder for NMT}
+
+The key idea of this~\cite{CharDecoderLSTM} is that when word-level decoder produces an \texttt{<UNK>} token, we can run character-level decoder to generate the rare and out-of-vocabulary target words.
+CharDecoderLSTM is trained like LSTM-based LM but on character-level of every word.
+If the target word is \texttt{music}, the input seq is \texttt{[<START>, m, u, s, i, c]}, and the target seq is \texttt{[m, u, s, i, c, <END>]}.
+
+The test q2 result is $99.29792465574434$ BLEU.
+
+
