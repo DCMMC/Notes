@@ -71,7 +71,7 @@
      (if (eval-1 (cadr exp))
          (eval-1 (caddr exp))
          (eval-1 (cadddr exp))))
-    ((and-exp? exp) ; (DCMMC) exercise 1
+    ((and-exp? exp) ; (DCMMC) exercise 0d
      (and (eval-1 (cadr exp))
           (eval-1 (caddr exp))))
     ((lambda-exp? exp) exp)

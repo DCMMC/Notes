@@ -45,3 +45,50 @@
 ; '(the rain in spain)) ; the argument n for MAP
 ;
 ; Key idea: pass the lambda itself as its parameter
+
+; Homework 6
+; Exercise 0c
+; Both examples get the same result: '(t r i s)
+; Because g(x) = f(x) is equivalent to f(x)
+;
+; Exercise 0d is shown in racket1
+
+; Exercise 1
+; SICP 2.74
+; I cannot figure out what the questions want to express...
+;
+; SICP 2.75
+; `message passing` is very like `closure`
+
+(define (make-from-mag-ang mag ang)
+  (lambda (op) ; op is the message
+    (cond ((eq? op 'mag-part) mag)
+          ((eq? op 'ang-part) ang)
+          ((eq? op 'real)
+           (* mag (cos ang)))
+          ((eq? op 'imag)
+           (* mag (sin ang)))
+          (else
+            (error "Unknown op -- MAKE-FROM-MAG-ANG" op)))))
+
+; SICP 2.76
+; (1) generic operations with explicit dispatch: edit and need add more condition rules for every
+;     generic op.
+; (2) data-directed style: put operations of this new type into the hash table.
+; (3) message-passing: add a new function of this new type.
+
+; SICP 2.77
+; how many times is apply-generic invoked?
+; real-part: 1
+; imag-part: 1
+; magnitude: 2
+; angle: 2
+
+; SICP 2.79
+; use message-passing, omit
+
+; SICP 2.80
+; same as 2.79
+
+; SICP 2.81
+;
