@@ -710,7 +710,7 @@ There are many ways to obtain query vector: dot product $e_i = \bm{s}^\top \bm{h
 As for \emph{out-of-vocabulary} (OOV) problem in NMT, we can increase the size of vocabulary.
 However, large vocabulary leads to huge computations in the softmax layer.
 To solve it, we can use \emph{hierarchical softmax} (tree-structured vocabulary).
-We can also use character-based model instead of word-based to handle OOV problem.
+We can also use character-based~\cite{CharCNN} (or sub-word) model instead of word-based to handle OOV problem. But pure character-level seq2seq is very slow (as longer sequence got through LSTM, see HW5).
 
 \subsection{HW4}
 \textbf{1. Neural Machine Translation with RNNs}
@@ -885,6 +885,27 @@ In linguistics, morphemes (subwords) is the smallest semantic unit that has mean
 
 There are many languages that do not segment words or has many separated and joined words, e.g. Chinese, French.
 Moreover, subword models solve the OOV problem.
+
+\subsection{Byte Pair Encoding}
+
+Like gzip compression.
+Replace bytes with character ngrams.
+Merge together several bytes that are common sequences into a new byte.
+Rather than splitting the word into pieces, the sentence piece~\footnote{\url{https://github.com/google/sentencepiece}} tokenizes from the raw text.
+For example, \texttt{[Hello] [\_Wor] [ld] [.]}.
+
+BERT uses a variant of the wordpiece model:
+
+\begin{enumerate}
+	\item (Relatively) common words directly in the vocabulary.
+	\item Other words are built from wordpieces. e.g., \texttt{hypatia = h, \#\#yp, \#\#ati, \#\#a} (non-initial word pieces are start with \texttt{\#\#})
+\end{enumerate}
+
+\subsection{FastText embeddings}
+
+Proposed by the authors of Word2Vec.
+Represent word as char n-grams augmented with boundary symbols and as whole word.
+For example, \texttt{where = <wh, whe, her, ere, re>, where}.
 
 \subsection{HW5}
 
