@@ -764,6 +764,21 @@ Recommendation sources: ACL, NeurIPS, ICML, ICLR, arXiv (\href{http://www.arxiv-
 
 \section{Contextual Word Representations and Pretraining} \label{contextual_word_rep}
 
+The context-independent word representations (such as Word2Vec and GloVe) have limitations: the same word will have a ton of meanings in different contexts, but has a fixed word representation in these models.
+Instead of a fixed embedding table, we can (unsupervisely) pre-train a neural network model and freeze it as a word representation model (e.g., $f(w, c(w))$).
+
+TagLM~\cite{TagLM} ("Pre-ELMo"): pre-train a Neural Language Modeling on large unlabeled corpus and get the output as the contextual word representation. Use both (context-independent) word embeddings (e.g., Word2Vec) and (frozen) LM embeddings in the downstream sequence tagging model (NER task) w/ small task-labeled data.
+
+CoVe~\cite{CoVe}: Use NMT as the pre-training task. But, the results aren't as strong as the simpler NLM.
+
+ELMo~\cite{ELMo}: the word representation is the (learnable) weighted sum of hidden features of each layer in stacked BiLSTM.
+
+Transformer~\cite{Transformer}: scaled dot-product self-attention (QKV formula, the softmax scores are derived from the same source as the target sequence), multihead (like channels in CNN), position embedding (because self-attention has not position-aware), good parallelization than RNN (sequential because of the unroll operation), feed-forward layer (like $1\times 1$ convolution), residual connection, layer normalization, masked attention.
+Key resource: \url{http://nlp.seas.harvard.edu/2018/04/03/attention.html}.
+
+BERT~\cite{BERT} (Bidirectional Encoder Representations from Transformers): two tasks: masked (bidirectional) LM and next sentence prediction (NSP, but is useless according to follow up papers because this task is misconstrcuted and too easy).
+
+
 \section{Attention Model and Question Answering}
 
 Compared with previous versions, Stanford Question Answering Dataset (SQuAD) 2.0 has many unanswerable questions.
