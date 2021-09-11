@@ -710,7 +710,7 @@ There are many ways to obtain query vector: dot product $e_i = \bm{s}^\top \bm{h
 As for \emph{out-of-vocabulary} (OOV) problem in NMT, we can increase the size of vocabulary.
 However, large vocabulary leads to huge computations in the softmax layer.
 To solve it, we can use \emph{hierarchical softmax} (tree-structured vocabulary).
-We can also use character-based~\cite{CharCNN} (or sub-word) model instead of word-based to handle OOV problem. But pure character-level seq2seq is very slow (as longer sequence got through LSTM, see HW5).
+We can also use character-based~\mycite{CharCNN} (or sub-word) model instead of word-based to handle OOV problem. But pure character-level seq2seq is very slow (as longer sequence got through LSTM, see HW5).
 
 \subsection{HW4}
 \textbf{1. Neural Machine Translation with RNNs}
@@ -767,16 +767,19 @@ Recommendation sources: ACL, NeurIPS, ICML, ICLR, arXiv (\href{http://www.arxiv-
 The context-independent word representations (such as Word2Vec and GloVe) have limitations: the same word will have a ton of meanings in different contexts, but has a fixed word representation in these models.
 Instead of a fixed embedding table, we can (unsupervisely) pre-train a neural network model and freeze it as a word representation model (e.g., $f(w, c(w))$).
 
-TagLM~\cite{TagLM} ("Pre-ELMo"): pre-train a Neural Language Modeling on large unlabeled corpus and get the output as the contextual word representation. Use both (context-independent) word embeddings (e.g., Word2Vec) and (frozen) LM embeddings in the downstream sequence tagging model (NER task) w/ small task-labeled data.
+TagLM~\mycite{TagLM} ("Pre-ELMo"): pre-train a Neural Language Modeling on large unlabeled corpus and get the output as the contextual word representation. Use both (context-independent) word embeddings (e.g., Word2Vec) and (frozen) LM embeddings in the downstream sequence tagging model (NER task) w/ small task-labeled data.
 
-CoVe~\cite{CoVe}: Use NMT as the pre-training task. But, the results aren't as strong as the simpler NLM.
+CoVe~\mycite{CoVe}: Use NMT as the pre-training task. But, the results aren't as strong as the simpler NLM.
 
-ELMo~\cite{ELMo}: the word representation is the (learnable) weighted sum of hidden features of each layer in stacked BiLSTM.
+ELMo~\mycite{ELMo}: the word representation is the (learnable) weighted sum of hidden features of each layer in stacked BiLSTM.
 
-Transformer~\cite{Transformer}: scaled dot-product self-attention (QKV formula, the softmax scores are derived from the same source as the target sequence), multihead (like channels in CNN), position embedding (because self-attention has not position-aware), good parallelization than RNN (sequential because of the unroll operation), feed-forward layer (like $1\times 1$ convolution), residual connection, layer normalization, masked attention.
+Transformer~\mycite{Transformer}: scaled dot-product self-attention (QKV formula, the softmax scores are derived from the same source as the target sequence), multihead (like channels in CNN), position embedding (because self-attention has not position-aware), good parallelization than RNN (sequential because of the unroll operation), feed-forward layer (like $1\times 1$ convolution), residual connection (propagate the position information to higher layers), layer normalization, masked attention.
 Key resource: \url{http://nlp.seas.harvard.edu/2018/04/03/attention.html}.
+Other applications~\mycite{ImgTransformer,huang2018music} of the transformer are shown in the sidenote.
 
-BERT~\cite{BERT} (Bidirectional Encoder Representations from Transformers): two tasks: masked (bidirectional) LM and next sentence prediction (NSP, but is useless according to follow up papers because this task is misconstrcuted and too easy).
+BERT~\mycite{BERT} (Bidirectional Encoder Representations from Transformers): two tasks: masked (bidirectional) LM and next sentence prediction (NSP, but is useless according to follow up papers because this task is misconstrcuted and too easy).
+
+\sidenotedcmmc{Transformer for Image: due to the self-similarity (or translational equivariance) in images, we can limite the receptive field of the self-attention by masking with diagonal matrix (e.g., tridiagonal matrix). Transformer for Music Generation: decrease memory usage for storing the relative position embeddings of $L \times L$ to $L$ by padding, reshape, and slice.}
 
 
 \section{Attention Model and Question Answering}
@@ -926,7 +929,7 @@ For example, \texttt{where = <wh, whe, her, ere, re>, where}.
 
 Enhance the NMT model with character-based CNN encoder and LSTM decoder.
 
-\textbf{1. Character-based convolutional encoder for NMT~\cite{CharCNN}}
+\textbf{1. Character-based convolutional encoder for NMT~\mycite{CharCNN}}
 
 (a) Characters are significantly less diverse than words. So, characters have less semantic information. Besides, we will use CharCNN to map $e_{\text{char}} \times m_{\text{word}}$ to $e_{\text{word}}$.
 
@@ -951,7 +954,7 @@ Enhance the NMT model with character-based CNN encoder and LSTM decoder.
 
 \textbf{2. Character-based LSTM decoder for NMT}
 
-The key idea of this~\cite{CharDecoderLSTM} is that when word-level decoder produces an \texttt{<UNK>} token, we can run character-level decoder to generate the rare and out-of-vocabulary target words.
+The key idea of this~\mycite{CharDecoderLSTM} is that when word-level decoder produces an \texttt{<UNK>} token, we can run character-level decoder to generate the rare and out-of-vocabulary target words.
 CharDecoderLSTM is trained like LSTM-based LM but on character-level of every word.
 If the target word is \texttt{music}, the input seq is \texttt{[<START>, m, u, s, i, c]}, and the target seq is \texttt{[m, u, s, i, c, <END>]}.
 
