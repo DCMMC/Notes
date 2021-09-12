@@ -669,6 +669,8 @@ However, the aforementioned (greedy) decoding has no way to undo decisions. This
 The target is the path with the largest cumulative log probabilities with shortest one (i.e. average).
 Apart from all paths reach <END> as the stop sign, we can set some pre-defined cutoff for maximum number of timesteps or finished paths.
 
+\sidenotedcmmc{For NMT, increasing beam size too much much decreases BLEU scores. Because large-k beam search produces too-short translations. In open-ended task such as chit-chat dialogue, large beam size make output more generic.}
+
 Although NMT is much simple and less human engineering effort while achieves better performance, NMT is diffcult to control (i.e. specify rules or guidelines) and less interpretable which leads to hard to debug.
 
 The popular evaluation metric for MT is \concept{BLEU} (Bilingual Evaluation Understudy).
@@ -961,3 +963,31 @@ If the target word is \texttt{music}, the input seq is \texttt{[<START>, m, u, s
 The test q2 result is $99.29792465574434$ BLEU.
 
 The final score of the full test is $24.660168424600386$ (which is a lot more than the score required for full points).
+
+\section{Natural Language Generation}
+
+Natural Language Generation (NLP) is a subcomponent of: Machine Translation, (Abstractive) Summarization, Dialogue, Creative writting, Freeform Question Answering (the answer is not the raw part of the question but a newly generated text), and Image captioning.
+
+Conditional Language Modeling: $P(y_t | y_1, \cdots, y_{t-1}, \textcolor{red}{x})$.
+Examples: Machine Translation (x=source sentence, y=target sentence), Summarization (x=input text, y=summarized text).
+
+Sampling-based decoding: like greedy decoding in NMT, on each step $t$, randomly sample from the probability distribution (output of softmax) $P_t$ to obtain the next word instead of argmax.
+
+Softmax temperature:
+
+\begin{equation}
+	P_t(w) = \frac{\exp (s_w / \tau)}{\sum_{w^\prime \in V} \exp (s_{w^\prime} / \tau)}
+\end{equation}
+
+Raising the temperature $\tau$ leads to $P_t$ more uniform.
+
+Summarization evaluation metric: ROUGE (Recall-Oriented Understudy for Gisting Evaluation) is based on recall, while BLEU is based on precision.
+Copy mechanisms~\mycite{copysumm} (seq2seq + attention) in Neural summarization: mixture of an attention distribution over the source text that indicates copy, and a generating distribution that generates new word.
+But copy mechanisms copy too much and are bad at overall content selection on long documents.
+Bottom-up summarization~\mycite{gehrmann-etal-2018-bottom} splits to two stages (like pre-neural methods): content selection stage to tag words as \textit{include} or \textit{don't include}, bottom-up attention stage to use seq2seq+attention model to generate summarization w/ word tagged \textit{don't include} are masked.
+Reinforcement learning summarization~\mycite{paulus2018a} uses RL to directly optimize ROUGE-L because ROUGE-L is a non-differentiable function and standard maximum likelihood (ML) training doesn't work.
+However, like BLEU, ROUGE-L was not really a perfect analogy to actual summarization quality.
+With only RL, we can get high ROUGE-L socres but lower human judgement scores.
+So the authors also combine RL and ML.
+
+Na\"ive seq2seq-based dialogue has serious pervasive deficiencies: 
