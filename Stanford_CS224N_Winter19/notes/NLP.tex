@@ -990,4 +990,29 @@ However, like BLEU, ROUGE-L was not really a perfect analogy to actual summariza
 With only RL, we can get high ROUGE-L socres but lower human judgement scores.
 So the authors also combine RL and ML.
 
-Na\"ive seq2seq-based dialogue has serious pervasive deficiencies: 
+Na\"ive seq2seq-based dialogue has serious pervasive deficiencies (with their solutions): 
+
+\begin{enumerate}
+	\item \textbf{Genericness/ boring responses}: upweight rare words during beam search; use sampling-based decoding algorithm; condition the decoder on some additional content; train a retrieve-and-refine model.
+	\item \textbf{Repetition problem}: block repetition during beam search; prevent the repeated attention attending to the same word multiply times; a training objective to discourage repetition (maybe a non-differentiable and require RL).
+\end{enumerate}
+
+\textbf{NLG evaluation}: word overlap based metrices (e.g., BLEU, ROUGE, METEOR, F1) are not ideal for many NLP tasks (e.g., NMT, summarization, dialogue).
+Word embedding based metrices still do not correlate well with human judgements.
+But we can define more focused automatic metrices to capture particular aspects of generated text (e.g., fluency, diversity).
+Human evaluation also has some problems (e.g., inconsistent, illogical).
+
+\section{Coreference Resolution}
+
+Def: Identify all mentions that refer to the same entity (e.g., a person can be refered as him, they, and his name).
+Its applications include text understanding (e.g., QA, summarization), machine translation (e.g., gender).
+
+Def of \textit{anaphora}: the interpretation of the \textit{anaphor} is in some way determined by the interpretation of the \textit{antecedent}.
+For example, "We went to see \textcolor{blue}{a concert} last night. The \textcolor{red}{tickets} were really expensive." The term "tickets" (\textit{anaphor}) is interpreted by the term "a concert" (\textit{antecedent}).
+\textit{Cataphora}: when the \textit{antecedent} comes after the \textit{anaphor}.
+For example, "From the corner of the divan of Persian saddle-bags on which \textcolor{red}{he} was lying, smoking, as was \textcolor{red}{his} custom, innumerable cigarettes, \textcolor{red}{Lord Henry Wotton} could just catch the gleam of the honey-sweet and honey-coloured blossoms of a laburnum...".
+Knowledge-based pronominal coreference: for example, Winograd Schema: "She poured water from the \textcolor{red}{pitcher} into the \textcolor{red}{cup} until \textcolor{red}{it} was full", and "She poured water from the \textcolor{red}{pitcher} into the cup until \textcolor{red}{it} was empty".
+Based on the knowledge (through logical reasoning), which antecedents the term "it" refers in both sentences are different.
+
+Coreference resolution in two steps (pipelined system): (1) detect the mentions (easy, POS, NER, dependency parser for noun phrases, but over-generating mentions is a problem), (2) cluster the mentions (hard).
+End-to-end system (combine these two steps): 
