@@ -1015,4 +1015,22 @@ Knowledge-based pronominal coreference: for example, Winograd Schema: "She poure
 Based on the knowledge (through logical reasoning), which antecedents the term "it" refers in both sentences are different.
 
 Coreference resolution in two steps (pipelined system): (1) detect the mentions (easy, POS, NER, dependency parser for noun phrases, but over-generating mentions is a problem), (2) cluster the mentions (hard).
-End-to-end system (combine these two steps): 
+
+Coreference Models:
+
+\begin{enumerate}
+	\item \textbf{Rule-based}(pronominal anaphora resolution): Hobbs’ naive algorithm (based on the dependency parse tree).
+	\item \textbf{Mention Pair}: Train a binary classifier that assigns every pair of mentions a probability of being coreferent. Cons: $C_n^2$ is large for long document.
+	\item \textbf{Mention Ranking}: Assign each mention its highest scoring candidate antecedent according to the model (there is only one antecedent for each anaphor).
+	\item \textbf{Clustering-based}: Coreference is a clustering task. Use agglomerative clustering. Iteratively merge the clusters (initial clusters are the mention and antecedent candidates).
+\end{enumerate}
+
+End-to-End Coref model~\mycite{lee-etal-2017-end}:
+Word embedding => LSTM => 3-gram span representation $\boldsymbol{g_i} = [\boldsymbol{x}_{\text{START}(i)}^*, \boldsymbol{x}_{\text{END}(i)}^*, \boldsymbol{\hat{x}}_{i}^*, \phi(i)]$ ($\boldsymbol{\hat{x}}_{i}^*$ denotes the soft attention-based representation over words in the span, $\phi(i)$ denotes a extra feature vector such as Grammatical Role and Semantic Compatibility) => Score every pair of spans to decide if they are coreferent mentions (is span $i$ a mention? do a pair of spans looks coreferent?)
+Problems: $O(L^2)$ pairs of spans, computational impracticable.
+Thus they do lots of pruning.
+
+Coreference Evaluation:
+B-cubed: the average of the precisions and recalls of each cluster.
+Coreference is still far to a solved problem.
+2016's state-of-the-art~\mycite{lee-etal-2017-end} got 67 B-cubed result.
