@@ -1,0 +1,33 @@
+\chapter{Recommentation System}\label{sec:rs}
+
+\chapternote{Sequence-based Recommentation System}{Intern @ Tencent}
+
+\begin{learningobjectives}
+	\item Recommentation System
+	\item Contrastive Learning
+	\item Sequence Modeling
+	\item Graph Neural Network
+\end{learningobjectives}
+
+\dependencies{NLP Basic}
+
+\section{Contrastive Self-supervised Learning}
+
+\concept{Self-supervised Learning}: a learning paradigm which aims to capture the intrinsic patterns and properties of input
+data without using human-provided labels. For example, the two objectives of BERT.
+
+\concept{Contrastive Self-supervised Learning}: generate (large number of) augmented examples of original data examples, create a task to predict whether two augmented examples come from the same original data example or not.
+
+SimCLR~\mycite{SimCLR}: $\boldsymbol{z}$ is a latent representation of the input image $\boldsymbol{x}$. Given a similar pair $(\boldsymbol{x}_i, \boldsymbol{x}_j)$, and a set of negative images $\boldsymbol{x}_k$ that dissimilar from the original image of $\boldsymbol{x}_i$, the contrastive loss is:
+
+\begin{equation} \label{eq:simclr}
+	- \log \frac{\exp(\text{sim}(\boldsymbol{z}_i, \boldsymbol{z}_j)/\tau)}{\exp(\text{sim}(\boldsymbol{z}_i, \boldsymbol{z}_j)/\tau) + \sum_k \exp(\text{sim}(\boldsymbol{z}_i, \boldsymbol{z}_k)/\tau)}
+\end{equation}
+where $\tau$ is a temperature parameter.
+
+But SimCLR requires a large minibatch size to yield high performance.
+MoCo (Momentum Contrast)~\mycite{MoCo} addresses this problem w/ the hypothesis that good features can be learned by a \emph{large} dictionary (by a queue) that covers a rich set of negative samples, while the encoder for the dictionary keys is kept as \emph{consistent} as possible (by momentum update) despite its evolution.
+The queue contains many mini-batches.
+In each step, the current mini-batch is enqueued to the dictionary, and the oldest mini-batch in the queue is removed.
+To avoid he rapidly changing encoder that reduces the key (i.e., the second parameter of $\text{sim}(\cdot, \cdot)$ in Eq.~\ref{eq:simclr}, and the first parameter is query) representations’ consistency.
+The authors propose a momentum update ($\theta_k \leftarrow m\theta_k + (1 - m) \theta_q$ where $m$ is a large momentum coefficient, e.g., $0.99$, $\theta_q$ is parameters of the representation model of the query) to address this issue.

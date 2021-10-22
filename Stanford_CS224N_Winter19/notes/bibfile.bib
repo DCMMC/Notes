@@ -58,6 +58,32 @@
 	abstract = "We introduce the first end-to-end coreference resolution model and show that it significantly outperforms all previous work without using a syntactic parser or hand-engineered mention detector. The key idea is to directly consider all spans in a document as potential mentions and learn distributions over possible antecedents for each. The model computes span embeddings that combine context-dependent boundary representations with a head-finding attention mechanism. It is trained to maximize the marginal likelihood of gold antecedent spans from coreference clusters and is factored to enable aggressive pruning of potential mentions. Experiments demonstrate state-of-the-art performance, with a gain of 1.5 F1 on the OntoNotes benchmark and by 3.1 F1 using a 5-model ensemble, despite the fact that this is the first approach to be successfully trained with no external resources.",
 }
 
+@InProceedings{MoCo,
+	author = {He, Kaiming and Fan, Haoqi and Wu, Yuxin and Xie, Saining and Girshick, Ross},
+	title = {Momentum Contrast for Unsupervised Visual Representation Learning},
+	booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+	month = {June},
+	year = {2020}
+}
+
+
+@InProceedings{SimCLR,
+	title = 	 {A Simple Framework for Contrastive Learning of Visual Representations},
+	author =       {Chen, Ting and Kornblith, Simon and Norouzi, Mohammad and Hinton, Geoffrey},
+	booktitle = 	 {Proceedings of the 37th International Conference on Machine Learning},
+	pages = 	 {1597--1607},
+	year = 	 {2020},
+	editor = 	 {III, Hal Daumé and Singh, Aarti},
+	volume = 	 {119},
+	series = 	 {Proceedings of Machine Learning Research},
+	month = 	 {13--18 Jul},
+	publisher =    {PMLR},
+	pdf = 	 {http://proceedings.mlr.press/v119/chen20j/chen20j.pdf},
+	url = 	 {https://proceedings.mlr.press/v119/chen20j.html},
+	abstract = 	 {This paper presents SimCLR: a simple framework for contrastive learning of visual representations. We simplify recently proposed contrastive self-supervised learning algorithms without requiring specialized architectures or a memory bank. In order to understand what enables the contrastive prediction tasks to learn useful representations, we systematically study the major components of our framework. We show that (1) composition of data augmentations plays a critical role in defining effective predictive tasks, (2) introducing a learnable nonlinear transformation between the representation and the contrastive loss substantially improves the quality of the learned representations, and (3) contrastive learning benefits from larger batch sizes and more training steps compared to supervised learning. By combining these findings, we are able to considerably outperform previous methods for self-supervised and semi-supervised learning on ImageNet. A linear classifier trained on self-supervised representations learned by SimCLR achieves 76.5% top-1 accuracy, which is a 7% relative improvement over previous state-of-the-art, matching the performance of a supervised ResNet-50. When fine-tuned on only 1% of the labels, we achieve 85.8% top-5 accuracy, outperforming AlexNet with 100X fewer labels.}
+}
+
+
 @inproceedings{
 	paulus2018a,
 	title={A Deep Reinforced Model for Abstractive Summarization},
