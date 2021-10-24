@@ -17,6 +17,8 @@
 data without using human-provided labels. For example, the two objectives of BERT.
 
 \concept{Contrastive Self-supervised Learning}: generate (large number of) augmented examples of original data examples, create a task to predict whether two augmented examples come from the same original data example or not.
+In CV, the augmentation includes cropping, flipping, distortion and rotation.
+In NLP, it includes word deletion, reordering, and substitution.
 
 SimCLR~\mycite{SimCLR}: $\boldsymbol{z}$ is a latent representation of the input image $\boldsymbol{x}$. Given a similar pair $(\boldsymbol{x}_i, \boldsymbol{x}_j)$, and a set of negative images $\boldsymbol{x}_k$ that dissimilar from the original image of $\boldsymbol{x}_i$, the contrastive loss is:
 
@@ -28,6 +30,26 @@ where $\tau$ is a temperature parameter.
 But SimCLR requires a large minibatch size to yield high performance.
 MoCo (Momentum Contrast)~\mycite{MoCo} addresses this problem w/ the hypothesis that good features can be learned by a \emph{large} dictionary (by a queue) that covers a rich set of negative samples, while the encoder for the dictionary keys is kept as \emph{consistent} as possible (by momentum update) despite its evolution.
 The queue contains many mini-batches.
-In each step, the current mini-batch is enqueued to the dictionary, and the oldest mini-batch in the queue is removed.
-To avoid he rapidly changing encoder that reduces the key (i.e., the second parameter of $\text{sim}(\cdot, \cdot)$ in Eq.~\ref{eq:simclr}, and the first parameter is query) representations’ consistency.
+In each step, the current mini-batch is enqueued to the dictionary queue, and the oldest mini-batch in the queue is removed.
+To avoid rapidly changing encoder that reduces the key (i.e., the second parameter of $\text{sim}(\cdot, \cdot)$ in Eq.~\ref{eq:simclr}, and the first parameter is query) representations’ consistency.
 The authors propose a momentum update ($\theta_k \leftarrow m\theta_k + (1 - m) \theta_q$ where $m$ is a large momentum coefficient, e.g., $0.99$, $\theta_q$ is parameters of the representation model of the query) to address this issue.
+MoCo uses \emph{dual-encoder} architecture, i.e., a encoder $f_q$ for the query, and another encoder $f_k$ for keys.
+
+CERT (Contrastive Self-supervised Learning for Language Understanding)~\mycite{fang2020cert} utilizes MoCo to fine-tune (aka., secondary pre-train) pre-trained BERT (or any other pre-training models).
+The augmentation approach is \emph{back-translation}: given sentence $x$ of source language $S$, translate $x$ to $y$ in language $T$, and then translate $y$ back to augmented sample $x^\prime$ in language $S$.
+With different $T$ and different translation model, we can collect many augmented samples.
+However, the results of CERT are not significant and worse than ALBERT.
+
+\begin{figure}[!thp]
+	\centerline{\includegraphics[width=10.0cm]{figs/SimCSE.png}}
+	\caption{General idea of SimCSE.}
+	\label{fig:SimCSE}
+\end{figure}
+
+SimCSE~\mycite{gao2021simcse} (Simple Contrastive Learning of Sentence Embeddings) leverages the dropout mask (like in BERT) to achieve the positve sample pairs, and proposes a supervised SimCSE w/ a natural language inference (NLI) datasets.
+In the dataset, each sentence (aka., query) contains one entailment and one contradication.
+The entailment is the positive sample (aka., key), the contradiction is the negative sample (key).
+According to Want et al.~\mycite{wang2020hypersphere}, the quality of contrastive learning can be measured by alignment (the distance of the latent representations of the positive pair should close) and uniformity (the distance of the query and all the negative keys should scatter uniformly on the hypersphere).
+It's shown~\mycite{wang2020hypersphere} that the anisotropy problem appears in language representations.
+The number of (dominating and significant) singular values of the word embedding matrix in a language model decay drastically.
+
