@@ -52,4 +52,36 @@ The entailment is the positive sample (aka., key), the contradiction is the nega
 According to Want et al.~\mycite{wang2020hypersphere}, the quality of contrastive learning can be measured by alignment (the distance of the latent representations of the positive pair should close) and uniformity (the distance of the query and all the negative keys should scatter uniformly on the hypersphere).
 It's shown~\mycite{wang2020hypersphere} that the anisotropy problem appears in language representations.
 The number of (dominating and significant) singular values of the word embedding matrix in a language model decay drastically.
+This is unfavorable to the uniformity.
+
+ELECTRA~\mycite{clark2020electra} utilizes a GAN-style training process to learn a more powerful LM.
+It uses MLM (masked language modeling, e.g., BERT) as the generator.
+The output of the generator replaces the masked tokens with the predicted ones.
+The discriminator is also a transformer encoder, whose \emph{replaced token detection} task is to predict whether each token in the output of generator is replaced by the generator or not.
+The discriminator is the final pre-trained LM and the generator is a auxiliary network.
+Compared with MLM-based methods, ELECTRA substantially outperforms them with less computations.
+COCO-LM~\mycite{meng2021cocolm} enhances the replaced token detection of ELECTRA with CLM (Correcting Language Modeling).
+The CLM is with a multi-task setting that combines the copy mechanism (aka., replaced token detection) and (a harder task) correction of the replaced tokens.
+Pretraining at token level does not explicitly learn language semantics at the sequence level.
+In addition to the token level pretraining, COCO-LM also introduces a sequence contrastive learning task (SCL).
+The SCL is just a vanilla contractive learning where the query is the original sequence and the positive key is the randomly cropping of the query.
+The output of \texttt{[CLS]} token is used as the representation of the whole sequence.
+
+DeCLUTR~\mycite{DeCLUTR} proposes a token-level contrastive learning task based on span sampling.
+The anchor is a randomly sampled span in a document.
+For each anchor, there are multiple positive spans sampled near by the anchor.
+The length of the anchor is longer than it's positives.
+In most cases, the positive span is overlapped or subsumed with the anchor.
+The negative spans inlcude easy (sampled from other documents) and hard negatives (sampled from the same document of the anchor).
+A pooler (aka., mean pooling) maps the encodings of the tokens in the sample into a fixed-length encoding.
+The performance of the mean pooling outperforms the embedding of \texttt{[CLS]} token.
+
+
+\subsection{Relation to Metric Learning}
+
+Metric learning is a type of representation learning that aims to learn an embedding space where the vector representations of similar data are mapped close together, and vice versa.
+As a most successful approach of deep metric learning, contrastive learning attempts to close the distance between the anchor (aka., query) data point and some corresponding positive data points.
+Under the setting of metric learning, MLM can be seen as an instance of contrastive learning.
+
+\section{Graph Neural Networks}
 
