@@ -11,6 +11,44 @@
 
 \dependencies{NLP Basic}
 
+\section{Recommender Systems}
+
+Stages:
+
+\begin{itemize}
+	\item \textbf{Matching}: Generates hundreds of candidate items from the extremely large item pool (million-level or even billion-level). Usually contains multiple matching channels with multiple (lightweight) models, such as embedding matching, geographical matching, popularity matching, social matching, etc.
+	\item \textbf{Ranking}: Candidate items merged from different channels are scored by a single ranking model.
+	\item \textbf{Re-ranking}: To meet the requirements of freshness, diversity, fairness, etc, a re-ranking stage removes certain items or changes the order of the list of items.
+\end{itemize}
+
+Scenarios:
+
+\begin{itemize}
+	\item \textbf{Social Recommendation}: \emph{social influence}: users’ behavior (e.g., like) may be influenced by what their friends might do or think. \emph{social homophily}: people tend to build social relations with others who have similar preferences with them.
+	\item \textbf{Sequential Recommendation}: Users will produce a large number of interaction behaviors over time (i.e., historical behaviors). The goal is to predict the next item the user will interact, w.r.t. historical behaviors.
+	\item \textbf{Session-based Recommendation}: It is impossible or not necessary to track the user’s behaviors over a long period of time due to limited storage resources. Session-based recommendation aims to predicting the next item with a given behavioral session data.
+	\item \textbf{Bundle Recommendation}: Bundle recommendation aims to recommend a combination of items (e.g., music playlists) for users instead of independent items.
+	\item \textbf{Cross-Domain Recommendation}: Utilize information from multiple domains can improve performance.
+	\item \textbf{Multi-behavior Recommendation}: Users may interact with multiple types of behaviors (e.g., user clicks on the video may also collect or comment).
+\end{itemize}
+
+Objectives:
+
+\begin{itemize}
+	\item \textbf{Diversity}: individual-level (the dissimilarity of the recommended items for certain user) and system-level diversity (dissimilarity of recommendation results of different users).
+	\item \textbf{Explainability}: Current representing explainable information requires graph-structural item attributes with the power of GNN.
+	\item \textbf{Fairness}: user fairness and item faireness.
+\end{itemize}
+
+\subsection{Sequential Recommendation}
+
+Challenges~\mycite{SURGE}:
+
+\begin{enumerate}
+	\item User behaviors in long sequences contain implicit (e.g., clicks and watches compared with explicit such as likes and favorities) and noisy (user may click on items that are not of their interest most of the time and will not choose similar items for interaction afterward) preference signals.
+	\item User behaviors are always drifting over the time due to their diversity.
+\end{enumerate}
+
 \section{Contrastive Self-supervised Learning}
 
 \concept{Self-supervised Learning}: a learning paradigm which aims to capture the intrinsic patterns and properties of input
@@ -85,3 +123,102 @@ Under the setting of metric learning, MLM can be seen as an instance of contrast
 
 \section{Graph Neural Networks}
 
+Types:
+
+\begin{itemize}
+	\item \textbf{Homogeneous graph}: only one type of nodes and edges.
+	\item \textbf{Heterogeneous graph}: there are multiple types of nodes or edges.
+	\item \textbf{Hypergraph}: degree of the edge may large than two.
+\end{itemize}
+
+GNN:
+
+\begin{itemize}
+	\item GCN
+	\item GraphSAGE
+	\item GAT
+	\item HetGNN
+	\item HGNN
+\end{itemize}
+
+Model Optimization:
+
+\begin{itemize}
+	\item 
+\end{itemize}
+
+SURGE~\mycite{SURGE} proposes a novel GNN architecture to approach sequential recommendation by taking into consideration the implicit and noisy signal behaviors and fast-changing preferences.
+According to the prior assumption that neighbor nodes are similar, and dense subgraphs are the core interests of users.
+The authors construct graph with metric learning.
+Given two item (node) embeddings $h_i, h_j$, the multi-head similarity metric function is:
+
+\begin{align}
+	M_{ij}^\delta &= \cos(w_\delta \odot h_i, w_\delta \odot h_j), \\
+	M_{ij} &= \frac{1}{\phi} \sum_{\delta = 1}^\phi M_{ij}^\delta
+\end{align}
+where each head can be seen as one perspective and each element in weight vector $w_\delta$ is used to adaptively highlight different dimensions of the item embeddings.
+
+Constructing graph from the similarity matrix $M$ w/ $\epsilon$-sparseness:
+
+\begin{equation}
+	A_{ij} = \begin{cases}
+		1, & M_{ij} \ge \text{Rank}_{\epsilon n^2} (M); \\
+		0, & \text{otherwise};
+	\end{cases}
+\end{equation}
+where $A$ is the adjacency matrix of the generated graph and $\text{Rank}_{\epsilon n^2}(\cdot)$ returns the value of $\epsilon n^2$-th largest value.
+
+To gather weak (implicit) signals to strong (explicit) ones that accurately reflect user perferences, the information in the graph is aggregated (interest fusion) via cluster- and query (current target prediction item)-aware graph attentive convolution:
+
+\begin{equation}
+	h_i^\prime = \parallel_{\delta = 1}^\phi \sigma (W_a^\delta \cdot \text{Agg}(E_{ij}^\delta \cdot h_j | j \in \mathcal{N}(i)) + h_i)
+\end{equation}
+where $\text{Agg}(\cdot)$ is the aggregation function such as mean, sum, etc, $E_{ij}^\delta$ are normalized attention coefficients obtained by the $\delta$-th attention head, $W_a^\delta$ is a linear transformation, and $\parallel$ denotes the concatenation operation.
+
+The cluster- and query-aware attention $E_{ij}$ (for one head) is given by:
+
+\begin{align}
+	\alpha_i &= \text{Att}_c (W_c h_i \vert h_{i_c} \vert W_c h_i \odot h_{i_c}), \\
+	\beta_j &= \text{Att}_q (W_q h_j \vert h_t \vert W_q h_j \odot h_t), \\
+	E_{ij} &= \text{softmax}_j (\alpha_i + \beta_j) = \frac{\exp (\alpha_i + \beta_j)}{\sum_{k \in \mathcal{N}_i} (\exp (\alpha_i + \beta_k))}
+\end{align}
+where $h_{i_c}$ is the average value of all nodes' embedding in the cluster ($k$-hop neighborhood) of the node $h_i$, $\text{Att}$ is a two-layer MLP w/ LeakyReLU, $h_t$ is the target (query) item embedding (\textit{viz.} learn the user interest's independent evolution for different target intertests), and $E_{ij}$ is the additive attention to consider the factors of cluster and query simultaneously.
+
+Graph pooling is applied to fuse (aka. evolution) implicit interest signals to explicit ones.
+
+\begin{align}
+	S_{i,:} &= \text{softmax} (W_p \cdot \text{Agg} (A_{ij}) \cdot h_j^\prime | j \in \mathcal{N}_i), \\
+	[h_1^*, \cdots, h_m^*] &= S^\top [h_1^\prime, \cdots, h_n^\prime]^\top, \\
+	[\gamma_1^*, \cdots, \gamma_m^*] &= S^\top [\gamma_1^\prime, \cdots, \gamma_n^\prime]^\top, \\
+	\gamma_i &= \text{softmax}_i (\beta_i), \\
+	A^* &= S^\top A S
+\end{align}
+where $S \in \mathbb{R}^{n \times m}$ is a soft cluster assignment matrix.
+
+However, it is difficult to train $S$ and the temporal order of the nodes $h_i$ and the pooled nodes $h_i^*$ reflect the historical user interest.
+The authors use some trivial regularization terms to alleviate the issue.
+
+\begin{align}
+	L_M = \lVert A - SS^\top \rVert_F, \quad &\parbox{15em}{ make two nodes with greater connection strength map to the same cluster}, \\
+	L_A = \frac{1}{n} \sum_{i=1}^n H(S_{i,:}), \quad &\parbox{15em}{ approach rach row a one-hot vector}, \\
+	L_P = \lVert p_n S - p_m \rVert_2, \quad &\parbox{15em}{ make the position of the non-zero elements in S closer to the main diagonal elements}
+\end{align}
+where position encoding vectors $p_n = [1, 2, \cdots, n], p_m = [1, 2, \cdots, m]$.
+
+Graph readout to aggregates all node embeddings of the raw graph (before pooling):
+
+\begin{align}
+	h_g = \text{Readout} ([\gamma_i \cdot h^\prime_i | i \in \mathcal{G}])
+\end{align}
+where $\text{Readout}(\cdot)$ is just the sum in the paper to ensure permutation invariant.
+
+Any sequential recommendation method can be used to model the pooled sequence $h^*$, where this paper uses $h_s = \text{AUGRU}(h_1^*, \cdots, h_m^*)$.
+The final prediction is:
+
+\begin{equation}
+	\hat{y} = \text{Pred} (h_s \vert h_g \vert h_t \vert h_g \odot h_t)
+\end{equation}
+where Pred is a two-layer MLP.
+
+The task is CTR (CTR).
+The loss is vanilla NLL (negative log-likelihood) w/ L2 regularization term.
