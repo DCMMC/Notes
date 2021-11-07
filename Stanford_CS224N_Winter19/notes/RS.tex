@@ -178,8 +178,8 @@ where $\text{Agg}(\cdot)$ is the aggregation function such as mean, sum, etc, $E
 The cluster- and query-aware attention $E_{ij}$ (for one head) is given by:
 
 \begin{align}
-	\alpha_i &= \text{Att}_c (W_c h_i \vert h_{i_c} \vert W_c h_i \odot h_{i_c}), \\
-	\beta_j &= \text{Att}_q (W_q h_j \vert h_t \vert W_q h_j \odot h_t), \\
+	\alpha_i &= \text{Att}_c (W_c h_i \parallel h_{i_c} \parallel W_c h_i \odot h_{i_c}), \\
+	\beta_j &= \text{Att}_q (W_q h_j \parallel h_t \parallel W_q h_j \odot h_t), \\
 	E_{ij} &= \text{softmax}_j (\alpha_i + \beta_j) = \frac{\exp (\alpha_i + \beta_j)}{\sum_{k \in \mathcal{N}_i} (\exp (\alpha_i + \beta_k))}
 \end{align}
 where $h_{i_c}$ is the average value of all nodes' embedding in the cluster ($k$-hop neighborhood) of the node $h_i$, $\text{Att}$ is a two-layer MLP w/ LeakyReLU, $h_t$ is the target (query) item embedding (\textit{viz.} learn the user interest's independent evolution for different target intertests), and $E_{ij}$ is the additive attention to consider the factors of cluster and query simultaneously.
@@ -216,7 +216,7 @@ Any sequential recommendation method can be used to model the pooled sequence $h
 The final prediction is:
 
 \begin{equation}
-	\hat{y} = \text{Pred} (h_s \vert h_g \vert h_t \vert h_g \odot h_t)
+	\hat{y} = \text{Pred} (h_s \parallel h_g \parallel h_t \parallel h_g \odot h_t)
 \end{equation}
 where Pred is a two-layer MLP.
 
@@ -256,3 +256,4 @@ LightGCN employs Bayesian Personalized Ranking (BPR) loss that encourages the pr
 \begin{equation}
 	\mathcal{L} = - \sum_{u=1}^M \sum_{i \in \mathcal{N}_u} \sum_{j \ne \mathcal{N}_u} \ln \sigma (\hat{y}_{u,i} - \hat{y}_{u,j}) + \lambda \lVert E^{(0)} \rVert^2
 \end{equation}
+
