@@ -227,13 +227,20 @@ LightGCN~\mycite{lightgcn} conducts extensive ablation studies on NGCF and finds
 For NGCF~\mycite{NGCF} (Neural Graph Collaborative Filtering), given the ID embedding $e_u^{(0)}$ of user $u$ and $e_i^{(0)}$ of item $i$, the outputs of the layer $(k+1)$ are:
 
 \begin{align}
-	e_u^{(k+1)} &= \sigma\left( W_1 e_u^{(k)} + \sum_{i \in \mathcal{N}_u} \frac{1}{\sqrt{|\mathcal{N}_u||\mathcal{N}_i|}} (W_1 e_u^{(k)} + W_2(e_i^{(k)} \odot e_u^{(k)})) \right), \nonumber \\
-	e_i^{(k+1)} &= \sigma\left( W_1 e_i^{(k)} + \sum_{u \in \mathcal{N}_i} \frac{1}{\sqrt{|\mathcal{N}_u||\mathcal{N}_i|}} (W_1 e_i^{(k)} + W_2(e_u^{(k)} \odot e_i^{(k)})) \right) \label{eq:NGCF}
+	e_u^{(k+1)} &= \sigma\left( W_1 e_u^{(k)} + \sum_{i \in \mathcal{N}_u} \frac{1}{\sqrt{|\mathcal{N}_u||\mathcal{N}_i|}} (W_1 e_i^{(k)} + W_2(e_i^{(k)} \odot e_u^{(k)})) \right), \nonumber \\
+	e_i^{(k+1)} &= \sigma\left( W_1 e_i^{(k)} + \sum_{u \in \mathcal{N}_i} \frac{1}{\sqrt{|\mathcal{N}_u||\mathcal{N}_i|}} (W_1 e_u^{(k)} + W_2(e_u^{(k)} \odot e_i^{(k)})) \right) \label{eq:NGCF}
 \end{align}
 where $\mathcal{N}_i$ denotes the set of users that interact with item $i$, $\mathcal{N}_u$ denotes the set of items that are interacted by user $u$.
 
+The above formula~\ref{eq:NGCF}'s matrix form is implemented with graph Laplacian (exact the one used in GCN~\mycite{GCN}):
+
+\begin{align}
+	E^{(k+1)} &= \sigma \left( (I + \mathcal{L}) E^{(k)} W_1 + (\mathcal{L} E^{(k)}) \odot E^{(k)} W_2 \right), \\
+	\mathcal{L} &= D^{-\frac{1}{2}} A D^{-\frac{1}{2}}
+\end{align}
+where $A$ is the adjacency matrix and $D$ is the diagonal degree matrix (w/ some tricks mentioned in GCN).
+
 NGCF then concatenates the embeddings of all layers to obtain the final user and item embeddings, using the inner product to generate the prediction score.
-Eqn.~\ref{eq:NGCF} is implemented with graph Laplacian (exact the one used in GCN~\mycite{GCN}).
 
 The authors of LightGCN argue that the nodes in tasks of the original GCN paper have rich semantic features such as the title and the abstract, but in collaborative filtering, each node only has an ID.
 The motivation of LightGCN is very reasonable and the story is nice.
