@@ -286,3 +286,4 @@ In overall, the motivation to distinguish two types of interactions is reasonabl
 However, the proposed two graphs cannot bring any structure information (i.e., the edge information) of the graph because they are complete graphs.
 The fusion part (GRU over a sequence of three elements) is a unreasonable and stiff hyperparameter tuning.
 Besides, this work lacks the usage of the information of the relation between users and the historical interactions of the user.
+According to the ablation experiments (Fig. 3 and Table 3), the fusing algorithm ($\text{MLP} \rightarrow \text{GRU}$ improves 0.0102 AUC) contributes more than using different interactions ($\texttt{<Bi, Bi>} \rightarrow \texttt{<MLP, Bi>}$ improves 0.0093 AUC).
