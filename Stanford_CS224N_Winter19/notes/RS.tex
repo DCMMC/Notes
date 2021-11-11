@@ -264,3 +264,25 @@ LightGCN employs Bayesian Personalized Ranking (BPR) loss that encourages the pr
 	\mathcal{L} = - \sum_{u=1}^M \sum_{i \in \mathcal{N}_u} \sum_{j \ne \mathcal{N}_u} \ln \sigma (\hat{y}_{u,i} - \hat{y}_{u,j}) + \lambda \lVert E^{(0)} \rVert^2
 \end{equation}
 
+For user and item attribute (e.g., Female is a user attribute, sci-fi is a item attribute for a moive) interactions, there are two types of attributes interactions: inner interactions (interactions between homogeneous attributes, aka. both user or both item attributes), cross interactions (between heterogenous attributes).
+Existing methods do not distinguish these two types of interactions.
+GMCF~\mycite{GMCF} aruges that it is most effective way to explicitly model these two types of interactions separately.
+
+Formally, user attributes and item attributes are both the set of key-value pairs (e.g., \texttt{(female, 1)}, \texttt{(age, 22)}).
+Each node is the embedding of the attribute $u = \text{val} \cdot e_{\text{attribute}}$.
+User attribute graph is a \concept{complete} graph constructed from attributes of the user, which is same as the item attribute graph.
+
+The inner interaction (for characteristic learning) is just the edge between two nodes in the same graph and is modeled by a MLP.
+After message passing, the new representation of node $i$ is $z_i = \sum_{j \in \mathcal{N}(i)} \text{MLP}_{2d \rightarrow d} (u_i \parallel u_j)$.
+
+The cross interaction (for node matching) is modeled by Hadamand product between the node of user graph and the node of item graph.
+The node matching result is the aggregation of a node in one graph and all node in the other graph: $s_i^U = \sum_{j \in V(I)} u_i^U \odot u_j^I$.
+
+The final node representation is fused by GRU with the input sequence $[u_i, z_i, s_i]$.
+The final graph representations are $v_G^U = \sum_{i \in V(U)} u_i^U, v_G^I = \sum_{i \in V(I)} u_i^I$.
+The task is the prediction of an action (e.g., watch, like) w.r.t. a user and an item, using the inner product (graph matching) of user graph and item graph: $\hat{y} = v_G^{U \top} v_G^I$.
+
+In overall, the motivation to distinguish two types of interactions is reasonable and gains some improved performance.
+However, the proposed two graphs cannot bring any structure information (i.e., the edge information) of the graph because they are complete graphs.
+The fusion part (GRU over a sequence of three elements) is a unreasonable and stiff hyperparameter tuning.
+Besides, this work lacks the usage of the information of the relation between users and the historical interactions of the user.
