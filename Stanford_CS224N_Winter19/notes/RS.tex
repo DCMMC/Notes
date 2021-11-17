@@ -266,7 +266,7 @@ LightGCN employs Bayesian Personalized Ranking (BPR) loss that encourages the pr
 
 For user and item attribute (e.g., Female is a user attribute, sci-fi is a item attribute for a moive) interactions, there are two types of attributes interactions: inner interactions (interactions between homogeneous attributes, aka. both user or both item attributes), cross interactions (between heterogenous attributes).
 Existing methods do not distinguish these two types of interactions.
-GMCF~\mycite{GMCF} aruges that it is most effective way to explicitly model these two types of interactions separately.
+GMCF~\mycite{GMCF} (Neural Graph Matching based Collaborative Filtering) aruges that it is most effective way to explicitly model these two types of interactions separately.
 
 Formally, user attributes and item attributes are both the set of key-value pairs (e.g., \texttt{(female, 1)}, \texttt{(age, 22)}).
 Each node is the embedding of the attribute $u = \text{val} \cdot e_{\text{attribute}}$.
@@ -287,3 +287,61 @@ However, the proposed two graphs cannot bring any structure information (i.e., t
 The fusion part (GRU over a sequence of three elements) is a unreasonable and stiff hyperparameter tuning.
 Besides, this work lacks the usage of the information of the relation between users and the historical interactions of the user.
 According to the ablation experiments (Fig. 3 and Table 3), the fusing algorithm ($\text{MLP} \rightarrow \text{GRU}$ improves 0.0102 AUC) contributes more than using different interactions ($\texttt{<Bi, Bi>} \rightarrow \texttt{<MLP, Bi>}$ improves 0.0093 AUC).
+
+Multi-behavior recommendation: given a user and an item, there are multiple behavior types (aka., interactions, e.g., view, purchase, favorite) between them.
+HMG-CR~\mycite{HMG-CR} (Hyper Meta-Graph Contrastive learning for Recommendations) proposes hyper meta-graph contrastive learning to learn the encoder for each behavior that awares other bahaviors.
+For each user $u_i$ and behavior $r_j$, the user and all items she interacted are constructed to a hyper meta graph $\mathcal{G}_j^i$.
+I think this hyper meta graph is not actual "hyper" like hypergraph.
+For each behavior we will have different graph encoder (aka., the parameters are not shared) $h_j^i = g_t (\mathcal{G}_j^i)$.
+To leverage constrative learning, the negative pair is $(h_{j-1}^i, h_j^i)$ and the positive is $h_j^i$ and $\hat{h}^i_j = g_{j-1} (\mathcal{G}_j^i)$.
+Another training task is recommendation task, where we need predict the interaction between the user (represented as the fusion of all encodings of the hyper meta graphs) and a given item.
+
+For session-based recommendation (SBR), there are many sessions for one user.
+Each session (e.g., item1 => item2 => item3 => item2 => item4) can be constructed into a (session) weighted graph.
+Because the node (item) set in all the session graphs are same.
+Besides the session graph, GCE-GNN~\mycite{wang2020global} (Global Context Enhanced Graph Neural Networks) proposes a global graph that combines all the sessions.
+Based on GCE-GNN, DAT-MDI (dual attention transfer based on multi-dimensional integration)~\mycite{dat-mdi} enhances it with multi-domain scenario.
+According to the Section 1 in the paper, different domain has different items.
+The assumption is that if two users have similar session behaviour in one domain (e.g., view), they should have similar session behaviour in another domain (e.g., click or purchase).
+Conceptually, the multi-domain is like multi-behaviour but can be more general.
+The authors proposes a dual attention transfer learning layer to learn better item representations by considering the relation of the similarity across domains.
+However, the formula (most of them are borrowed from GCE-GNN) in this paper has so many mistakes.
+And it seems consume far more computing resources than GCE-GNN (but no experiments given).
+
+SBR also suffers from the very long behavior history.
+Current industrial solutions that truncate the sequences will leads modelings periodicity or long-term dependency a problem.
+In UBR4CTR~\mycite{UBR2CTR} (User Behavior Retrieval for CTR prediction), the most relevant and appropriate user behaviors will be firstly retrieved from the entire user history sequence using a learnable search method.
+Given the user behavior history $H_u = {b_1^u, \cdots, b_T^u}$ for user $u$, each behavior is consist of user features $u = [ f_1^u, \cdots, f_{K_u}^u ]$, item features $v = [f_1^v, \cdots, f_{K_v}^v]$, and context (e.g., time and scenario) feature $c = [f_1^c, \cdots, f_{K_c}^c]$.
+The input of each behavior is the embeddings of it's categorical field features: $b_i^u \in \mathbb{R}^{K \times d} = u \parallel v \parallel c$.
+UBR4CTR contains user behavior retrieval and prediction module. 
+For user behavior retrieval, the query is $q = u \parallel v \parallel c$ and UBR4CTR utilizes self-attention to randomly select subset of features w/ the probability $\hat{E} = \text{sigmoid}(\text{MLP}(\text{Multihead}(q, q, q))) \in \mathbb{R}^K$, where $q \in \mathbb{R}^{K \times d}$.
+The similarity between $q = [f_1, \cdots, f_n]$ after randomly selecting and all the history behaviors $H_u$ can be seen as searching one sentence in the document sorted by the number of matched words.
+The behavior search is based on SM25 (similar to TF-IDF) and can be seen as searching for exact match fields:
+
+\begin{align}
+	s = \sum_{i=1}^n \log \frac{(N - N(f_i) + 0.5) (\text{TF}(f_i, H_u) \cdot 2.2)}{(N(f_i) + 0.5) (\text{TF}(f_i, H_u) + 1.2)}
+\end{align}
+where $\text{TF}(f_i, H_u)$ is the term frequent in $H_u$ (e.g., $f_i$ is a categorical feature representing age), $N(f_i)$ is the total number of the behaviors in $H_u$ that contains $f_i$.
+
+According to the similarity score, we get $S$ behaviors from the very long history and use a simple soft attention with MLP to perform CTR.
+Because the history behavior search is indifferentiable, reinforcement learning \concept{($\pi_{\theta} (H_u^{(S)}) = \prod_{j=1}^n p(f_j)$, just expand the expectation of the loss, use log-trick, and approximate the distribution $\pi$ as the empirical distribution)} is used to train the model.
+However, the behavior retrieval proposed by UBR4CTR is based on exact matching which misses the semantic similarity between the categorical features (e.g., T-shirts is close to pants).
+
+\sidenotedcmmc{log-trick: \url{https://medium.com/@aminamollaysa/policy-gradients-and-log-derivative-trick-4aad962e43e0}}
+
+Alibaba solve the very long ($\ge 54,000$ and get $7.1\%$ CTR lifting in Alibaba display advertising system) history behavior problem with a search-based interest model (SIM~\mycite{SIM}).
+For a given target item (aka., query) $a$, the relevant score is:
+
+\begin{equation}
+	r_i = \begin{cases}
+		\text{sign} (C_i = C_a), &\text{hard-search;} \\
+		(W_b e_i) (W_a e_a)^\top, &\text{soft-search;}
+	\end{cases}
+\end{equation}
+where for the soft-search, directly using the parameters learned from short-term user interest modeling in soft-search model may mislead the long-term user interest modeling.
+So, the authors train the soft-search model (inner product plus a MLP) under an auxiliary CTR prediction task based on long-term behavior data.
+
+According to the relevant scores, the top-K related sub-user behavior sequence $B^*$ is selected from long-term user behaviors.
+The input feature of the history behavior is concatenated with the embedding of time intervals.
+And the precition model is based on $\text{Multihead}(e_a, B^*, B^*)$.
+External features and other sequential model (e.g., DIEN) can also be added.

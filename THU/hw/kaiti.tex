@@ -55,7 +55,7 @@
   最后，本文将复现上述三个方法，并分析它们的实验结果。
 
   \thusetup{
-    keywords = {推荐系统, 点击率预测，深度学习, xDeepFM, AutoInt, FGCNN},
+    keywords = {流量分类, 注意力机制, 序列模型, GAN},
 	}
 \end{abstract}
 
@@ -86,7 +86,7 @@
 % 正文部分
 \mainmatter
 
-\chapter{引言}
+\chapter{研究背景和意义}
 
 推荐系统是防止消费者过度选择的一道直观防线。
 鉴于网络上信息的爆炸性增长，用户经常会被无数的商品、电影或餐馆所吸引。
@@ -112,7 +112,7 @@ CTR 数据有以下特点：
 
 所以，CTR 的重点一般在于如何学习不同域之间的特征组合 (field interaction)。
 
-\chapter{文献综述}
+\chapter{国内外研究现状}
 
 按照是否是基于深度学习，推荐系统可以分为传统方法和基于深度学习的方法。
 对于传统方法，大致可以分为线性模型和因式分解机模型。
@@ -411,14 +411,14 @@ AutoInt 除了第一层为嵌入层之外，核心就是采用了多层特征组
 最后 FGCNN 把 CNN 中每一个池化的输出都用重组层提取一遍全局特征，然后再跟原特征拼在一起。
 这就变成了深度 CTR 分类器的输入数据了。
 
-\chapter{评价指标}
+\chapter{研究目标和拟解决的关键问题}
 \label{chap:metrics}
 
 对于评价指标，我使用两个指标来评估模型。AUC（ROC曲线下面积）和Logloss（交叉熵）。这两个指标评估来自两个不同方面的性能：
 
 AUC衡量的是一个正向实例比随机选择的负向实例排名更高的概率。它只考虑了预测实例的顺序，对类不平衡问题不敏感。而Logloss则是测量每个实例的预测分数和真实标签之间的距离。有时我们更依赖Logloss，因为我们需要使用预测的概率来估计排名策略的收益（通常调整为CTR×bid）。
 
-\chapter{数据集}
+\chapter{研究内容和方法}
 
 数据集我使用的是一个大小为一百万的 criteo 数据集 \footnote{\url{https://www.kaggle.com/leonerd/criteo-small}}, 老师给的那个数据集实在太小了，只有 10 万规模，很难满足训练需求, 或者说复现结果会跟原文差很多。
 Criteo 原始数据集由 4500 万规模，太大了，而且网站已经 404 无法下载了，于是我就没有尝试原始数据集。
@@ -426,7 +426,7 @@ Criteo 数据集是一个著名的工业基准数据集，用于开发预测广�
 不过里面的数据全都是脱敏处理了.
 
 
-\chapter{复现流程}
+\chapter{现有工作基础}
 
 \section{数据预处理}
 
@@ -790,7 +790,7 @@ print("test LogLoss (FGCNN)", round(log_loss(test[target].values, pred_ans), 4))
 print("test AUC (FGCNN)", round(roc_auc_score(test[target].values, pred_ans), 4))
   \end{minted}
 
-\chapter{实验结果及分析}
+\chapter{预期研究成果}
 \label{chap:result}
 
 \begin{figure}[h]
@@ -869,18 +869,8 @@ FGCNN 的复杂度也太高了吧，三块 2080Ti 都顶不住！
 而且结果还这么的离谱，就算是按照 FGCNN 论文中的那样，结果高于 xDeepFM 低于 AutoInt，那时间复杂度也直接被 AutoInt 吊打啊。
 而且 AutoInt 用 3 层 2-头自注意力网络的情况下，速度还比用两层 CIN 的 xDeepFM 要好，说明 CIN 的时间复杂度也确实有点高。
 
-\chapter{结论}
+\chapter{研究工作计划}
 
-本文系统地介绍了推荐系统领域中点击率预测任务的发展情况以及主要方法论。
-同时，详细介绍了 xDeepFM，AutoInt 和 FGCNN 这三篇论文的方法。
-在 Criteo 数据集上的复现结果中发现了一些有意思的结论。
-阅读了许多文献后，我发现，CTR 任务在评价标准（例如 AUC）上提升已经非常缓慢了。
-不过已有的论文的时间复杂度过大在工业界部署的时候是一个重要的问题。
-例如 xDeepFM 的 CIN，Deep \& Cross 的 Cross，虽然它们都能很好的学习显式的特征组合，可是他们带来的复杂度还是比较大的。
-最近的论文，如 \cite{deeplight} 提出的 DeepLight 正在致力于解决这类问题，用牺牲很少一点的精度来换取大量的计算复杂度上的优化，在实际部署中是非常有意义的，这将是未来研究 CTR 的一个重要方向。
-同时，AutoInt 这类论文也为学习高阶特征组合带来了更加复杂的神经网络的可能，已有的大量的基于 Transformer 的模型也许能派上用场。
-
-\chapter{所完成的加分项}
 
 \begin{table}[htb]
   \centering
@@ -907,42 +897,5 @@ FGCNN 的复杂度也太高了吧，三块 2080Ti 都顶不住！
 % 附录
 \appendix
 
-\chapter{文件清单}
-
-\begin{table}[htb]
-  \centering
-  \caption{文件清单}
-  \label{tab:files}
-  \begin{tabular}{cc}
-    \toprule
-    \textbf{文件（夹）}         & \textbf{说明}  \\
-    \midrule
-    \texttt{report.pdf} & 课程报告 PDF 文件 \\
-    \texttt{source/report}           & 课程报告 LaTeX 源文件 \\
-    \texttt{source/recommender.ipynb}        & 数据预处理，训练和测试的代码 \\
-    \texttt{source/code} & 实现模型的源代码 \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-\begin{table}[htb]
-  \centering
-  \caption{模型实现代码文件清单（\texttt{source/code}）}
-  \label{tab:files}
-  \begin{tabular}{cc}
-    \toprule
-    \textbf{文件}         & \textbf{说明}  \\
-    \midrule
-    \texttt{models/xdeepfm.py} & xDeepFM 实现代码 \\
-    \texttt{models/fgcnn.py} & FGCNN 实现代码 \\
-    \texttt{models/autoint.py} & autoint 实现代码 \\
-    \texttt{layers/interacting.py}           & MLP (DNN) 和输出层 的实现 \\
-    \texttt{layers/interacting.py}           & CIN, FGCNN, InteractingLayer 的实现 \\
-    \texttt{layers/utils.py}        & 常用函数实现（e.g., softmax, reduce\_sum, 线性层） \\
-    \texttt{feature\_column.py} & 离散特征和连续特征的抽象表示 \\
-    \texttt{inputs.py} & 处理连续特征（变换）和离散特征（嵌入）\\
-    \bottomrule
-  \end{tabular}
-\end{table}
 
 \end{document}
