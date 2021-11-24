@@ -264,6 +264,21 @@ Mockingbird~\cite{9265277}建议，我们可以使用最近的痕迹数据库来
 
 \section{研究框架和研究内容}
 
+\begin{figure}[!htp]
+	\centerline{\includegraphics[width=15cm]{framework.png}}
+	\caption{研究内容}
+	\label{framework}
+\end{figure}
+
+研究框架和研究内容如图~\ref{framework}所示。主要是两部分：
+
+\begin{itemize}
+	\item \textbf{网络流量分类}：用户访问网站或使用应用程序的时候都会与服务端进行通信，产生网络流量，本部分的研究内容就是收集到用户产生的这些网络流量，然后使用一个分类器对其进行分类。
+	\item \textbf{网络流量保护}：为了防止攻击者使用网络浏览分类方法识别出用户产生的流量背后对应的行为（例如网站、应用程序），我们可以使用一个网络流量保护方法在用户端（或/和服务端）的流量中加入一些噪声流量（对抗样本），使得攻击者的攻击方法失败。
+\end{itemize}
+
+我们将在后续的章节中介绍这两个研究内容。
+
 \section{网络流量分类}
 
 \begin{figure}[!htp]
