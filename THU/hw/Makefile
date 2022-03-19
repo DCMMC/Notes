@@ -46,7 +46,7 @@ viewdoc: doc
 # (DCMMC)
 clean:
 	$(LATEXMK) -c $(PACKAGE).dtx $(THESIS) $(SPINE) $(THESIS_PROJECT) *.pdf
-	-@$(RM) -rf *~ main-survey.* main-translation.* _markdown_thuthesis* thuthesis.markdown.*  *.ps *.dot *.psbackup
+	-@$(RM) -rf *~ main-survey.* main-translation.* _markdown_thuthesis* thuthesis.markdown.*  *.ps *.dot *.psbackup _minted*
 
 # (DCMMC)
 cleanall: clean

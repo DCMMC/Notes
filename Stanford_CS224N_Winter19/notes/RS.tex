@@ -49,6 +49,25 @@ Challenges~\mycite{SURGE}:
 	\item User behaviors are always drifting over the time due to their diversity.
 \end{enumerate}
 
+\subsection{经典论文阅读}
+
+因式分解机(Factorization Machines, FM)为代表的方法通过将每一个域特征嵌入(embedding)为一个低维隐向量。
+
+\begin{enumerate}
+	\item MF 矩阵分解，只有高阶特征，没有低阶特征
+	\item FNN: FM + DNN
+	\item PNN: FM + product layer + DNN
+	\item Deep \& Wide
+	\item Deep \& Cross (DCN)
+	\item DeepFM
+	\item DIN
+	\item xDeepFM
+	\item FGCNN
+	\item AutoInt
+	\item DeepLight
+\end{enumerate}
+
+
 \section{Contrastive Self-supervised Learning}
 
 \concept{Self-supervised Learning}: a learning paradigm which aims to capture the intrinsic patterns and properties of input
@@ -136,7 +155,7 @@ GNN:
 \begin{itemize}
 	\item GCN
 	\item GraphSAGE
-	\item GAT
+	\item GAT: inspired from multi-head attention. The new feature of node $i$ after one GAT layer is: $h_i^\prime = \parallel_{k=1}^K \sigma \left( \sum_{j \in \mathcal{N}_i} \alpha_{ij}^k W^k h_j \right)$, where $K$ is the number of the heads, $\alpha_{ij} = \text{softmax}_j (\text{LeakyReLU}(a^\top [Wh_i \parallel Wh_j]))$.
 	\item HetGNN
 	\item HGNN
 \end{itemize}

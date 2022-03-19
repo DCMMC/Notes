@@ -91,4 +91,24 @@
 ; same as 2.79
 
 ; SICP 2.81
+; ## Coercion
+; [ref] https://mitpress.mit.edu/sites/default/files/sicp/full-text/book/book-Z-H-18.html
+; In the situation of combining data of different types but each other is related,
+; the coercion is the ways by which objects of one types (e.g., ordinary number) be viewed as
+; being of another type.
+; Coercion procedures transform an object of one type into an equivalent object of another type.
+; A drawback of coercion precedures is there are possibly C_n^2 procedures for a system with n types.
 ;
+; ## Hierarchies of types
+; For two types cannot be converted to each other, these two types may share a same super-type in hierarchy.
+; We can build a type system according to the hierarchies of types.
+; Generic operations defined in the super-type can be easily ``inherit'' to sub-types.
+; However, the multiple-supertypes issue means that there is no unique way to ``raise'' a type.
+
+; http://community.schemewiki.org/?sicp-ex-2.81
+; (a) Infinite loop
+; (b)
+
+
+; SICP 2.83
+; 

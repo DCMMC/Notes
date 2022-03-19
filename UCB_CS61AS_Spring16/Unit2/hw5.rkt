@@ -232,7 +232,7 @@ op must be symmetric.
 ; Huffman trees: ommited
 
 ; Regroup problem:
-; (TODO)
+; TODO (DCMMC)
 ; (define (regroup pattern)
 ;   ; Helpers
 ;   (define (skip-n n lst)
